@@ -197,9 +197,20 @@ div.footer-section .dfs-link-1-cta:hover {
 }
 
 @media (max-width: 768px) {
+    .footer-section .dfs-wrap-6 .dfs-grid-1,
     .footer-section .dfs-grid-1 {
+        display: grid !important;
         grid-template-columns: 1fr !important;
+        grid-template-rows: auto !important;
         grid-row-gap: 0 !important;
+        width: 100% !important;
+    }
+    
+    .footer-section .dfs-wrap-7,
+    .dfs-wrap-7.footer-section-item {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: none !important;
     }
     
     .footer-section .dfs-wrap-2,
