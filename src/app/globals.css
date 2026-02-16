@@ -160,6 +160,45 @@ div.footer-section .dfs-link-1-cta:hover {
     max-width: 100% !important;
 }
 
+/* Mobile responsive footer grid */
+@media (max-width: 991px) {
+    .footer-section .dfs-grid-1 {
+        grid-template-columns: 1fr 1fr !important;
+        grid-row-gap: 2rem !important;
+    }
+    
+    .footer-section .dfs-wrap-1 {
+        flex-direction: column !important;
+    }
+    
+    .footer-section .dfs-wrap-2 {
+        flex: 1 !important;
+        width: 100% !important;
+        padding: 2rem !important;
+    }
+    
+    .footer-section .dfs-wrap-6 {
+        padding: 2rem !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer-section .dfs-grid-1 {
+        grid-template-columns: 1fr !important;
+        grid-row-gap: 2rem !important;
+    }
+    
+    .footer-section .dfs-wrap-2,
+    .footer-section .dfs-wrap-6 {
+        padding: 1.5rem !important;
+    }
+    
+    .footer-section .dfs-wrap-8 {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+}
+
 @media (max-width: 991px) {
     .testimonials-grid {
         grid-template-columns: repeat(2, 1fr);
