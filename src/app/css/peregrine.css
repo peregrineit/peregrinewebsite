@@ -3597,6 +3597,34 @@ img {
 
   .tech-cell {
     flex-flow: column;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .content-4-copy {
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 24px 12px;
+  }
+
+  .wrap-grids {
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .marquee {
+    max-width: 100%;
+  }
+
+  #sec-tech {
+    overflow-x: hidden;
+  }
+
+  #sec-tech .container {
+    max-width: 100%;
+    overflow: hidden;
   }
 
   .dfs-wrap-2 {
