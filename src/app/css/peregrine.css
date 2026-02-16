@@ -3371,7 +3371,7 @@ img {
   }
 
   .dfs-grid-1 {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     width: 100%;
   }
 
