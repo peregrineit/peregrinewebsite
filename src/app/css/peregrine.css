@@ -3349,6 +3349,25 @@ img {
 
   .content-4-copy {
     grid-template-columns: 1fr;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .wrap-grids {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .tech-cell {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .cert-title {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   .dfs-wrap-2 {
