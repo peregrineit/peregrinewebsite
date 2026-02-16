@@ -199,24 +199,25 @@ div.footer-section .dfs-link-1-cta:hover {
 @media (max-width: 768px) {
     .footer-section .dfs-grid-1 {
         grid-template-columns: 1fr !important;
-        grid-row-gap: 0.5rem !important;
+        grid-row-gap: 0 !important;
     }
     
     .footer-section .dfs-wrap-2,
     .footer-section .dfs-wrap-6 {
-        padding: 1.5rem !important;
+        padding: 1rem !important;
     }
     
     .footer-section .dfs-wrap-8 {
         flex-wrap: wrap !important;
         justify-content: center !important;
+        margin-top: 0.25rem !important;
     }
     
     /* Accordion styles for mobile */
     .footer-section-item {
         border-bottom: 1px solid #e5e7eb;
-        padding-bottom: 0.5rem;
-        padding-top: 0.5rem;
+        padding-bottom: 0;
+        padding-top: 0;
     }
     
     .footer-section-header {
@@ -230,6 +231,7 @@ div.footer-section .dfs-link-1-cta:hover {
     
     .footer-section-header h3 {
         margin-bottom: 0 !important;
+        font-size: 1em !important;
     }
     
     .footer-accordion-btn {
@@ -252,8 +254,14 @@ div.footer-section .dfs-link-1-cta:hover {
     
     .footer-section-content.expanded {
         max-height: 1000px !important;
-        padding-top: 0.5rem !important;
+        padding-top: 0.25rem !important;
+        padding-bottom: 0.75rem !important;
         transition: max-height 0.4s ease-in !important;
+    }
+    
+    .footer-section-content a,
+    .footer-section-content p {
+        margin-top: 0.5rem !important;
     }
 }
 
