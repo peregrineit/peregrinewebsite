@@ -1,0 +1,41 @@
+/* Fix for oversized decorative elements in technology section */
+
+/* Hide or reduce decorative background elements that interfere with the marquee slider */
+.wrap-grids::before,
+.wrap-grids::after,
+.content-4-copy::before,
+.content-4-copy::after {
+    display: none !important;
+}
+
+/* Ensure the marquee slider is properly visible */
+.div-block-4 {
+    position: relative;
+    z-index: 10;
+    background: transparent;
+}
+
+/* Remove any large background decorative elements */
+.wrap-grids>.bg-fill-absolo,
+.content-4-copy>.bg-fill-absolo {
+    display: none !important;
+}
+
+/* Ensure icon-space Lottie animations don't overflow */
+.icon-space {
+    max-width: 64px;
+    max-height: 64px;
+    overflow: hidden;
+}
+
+/* Fix marquee container sizing */
+.marquee {
+    height: auto;
+    min-height: 60px;
+    max-height: 100px;
+}
+
+.marquee-image {
+    max-height: 48px;
+    width: auto;
+}

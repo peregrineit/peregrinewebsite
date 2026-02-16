@@ -1,0 +1,253 @@
+@import "tailwindcss";
+
+.tw-grid {
+    display: grid;
+}
+
+/* Highlighted words styling - override animations */
+.hero-title .highlighted-word {
+    display: inline-block !important;
+    padding: 4px 16px !important;
+    border-radius: 8px !important;
+    font-weight: bold !important;
+    margin: 0 4px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.hero-title .highlighted-word:first-of-type {
+    border: 2px solid #06b6d4 !important;
+    color: #22d3ee !important;
+}
+
+.hero-title .highlighted-word:last-of-type {
+    border: 2px solid #9333ea !important;
+    color: #a855f7 !important;
+}
+
+/* Retain Tailwind defaults but remove Next.js starter styles that might conflict */
+
+/* Footer Light Mode Override */
+.footer-section,
+div.footer-section,
+div[data-w-id="53aec337-cf60-1ff7-e4d7-85a8a4b6c559"] {
+    background-color: #ffffff !important;
+    color: #111827 !important;
+    padding-top: 1.5rem !important;
+    padding-bottom: 1rem !important;
+}
+
+.footer-section .dfs-wrap-1,
+div.footer-section .dfs-wrap-1 {
+    outline: none !important;
+    background-color: #ffffff !important;
+    gap: 0 !important;
+    align-items: flex-start !important;
+    overflow: hidden !important;
+    max-width: 100% !important;
+}
+
+.footer-section .dfs-wrap-2,
+div.footer-section .dfs-wrap-2,
+.dfs-wrap-1 .dfs-wrap-2 {
+    background-color: #f9fafb !important;
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+}
+
+.footer-section .dfs-wrap-6,
+div.footer-section .dfs-wrap-6 {
+    background-color: #ffffff !important;
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    grid-row-gap: 0.5rem !important;
+    gap: 0.5rem !important;
+    overflow: hidden !important;
+}
+
+.footer-section .dfs-wrap-7,
+div.footer-section .dfs-wrap-7 {
+    padding-right: 1rem !important;
+    height: auto !important;
+    align-self: start !important;
+    min-width: 0 !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+.footer-section .dfs-wrap-3,
+.footer-section .dfs-wrap-4,
+div.footer-section .dfs-wrap-3,
+div.footer-section .dfs-wrap-4 {
+    background-color: transparent !important;
+    margin-bottom: 1rem !important;
+}
+
+.footer-section .dfs-container-1,
+div.footer-section .dfs-container-1 {
+    background-color: #ffffff !important;
+}
+
+.footer-section .dfs-text-1,
+div.footer-section .dfs-text-1 {
+    color: #6b7280 !important;
+    margin-bottom: 0.75rem !important;
+}
+
+.footer-section .dfs-heading-1,
+div.footer-section .dfs-heading-1 {
+    color: #111827 !important;
+    margin-bottom: 0.75rem !important;
+}
+
+.footer-section .dfs-link-1,
+div.footer-section .dfs-link-1 {
+    color: #6b7280 !important;
+    margin-top: 0.75rem !important;
+}
+
+.footer-section .dfs-link-1:hover,
+div.footer-section .dfs-link-1:hover {
+    color: #06b6d4 !important;
+}
+
+.footer-section .dfs-link-1-cta,
+div.footer-section .dfs-link-1-cta {
+    color: #06b6d4 !important;
+    margin-top: 0.4rem !important;
+}
+
+.footer-section .dfs-link-1-cta:hover,
+div.footer-section .dfs-link-1-cta:hover {
+    color: #0891b2 !important;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 2.5rem;
+    overflow: visible;
+}
+
+#sec-testimonials,
+#sec-testimonials .container-special {
+    overflow: visible;
+}
+
+#sec-testimonials .container-special {
+    gap: 0.75rem;
+}
+
+.footer-section .dfs-wrap-2 {
+    flex: 0 0 25% !important;
+    padding: 5em 2.5em 5em 4em !important;
+    height: auto !important;
+    align-self: flex-start !important;
+}
+
+.footer-section .dfs-grid-1 {
+    grid-template-columns: 1fr 1fr 1fr 1fr !important;
+    align-items: start !important;
+    overflow: hidden !important;
+    grid-column-gap: 1.5rem !important;
+    max-width: 100% !important;
+}
+
+@media (max-width: 991px) {
+    .testimonials-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.testimonial-card {
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.testimonial-card-featured {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.testimonial-card-featured:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.testimonial-category {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #64748b;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 0.2rem 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.testimonial-logo {
+    height: 24px;
+    max-width: 110px;
+    width: auto;
+    object-fit: contain;
+    opacity: 0.6;
+    transition: opacity 0.25s ease;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.testimonial-logo:hover {
+    opacity: 1;
+}
+
+.testimonial-logo.logo-dark-bg {
+    background: #1e293b;
+    border-radius: 6px;
+    padding: 4px 10px;
+}
+
+.testimonial-logo-featured {
+    height: 28px;
+    max-width: 130px;
+    width: auto;
+    object-fit: contain;
+    opacity: 0.6;
+    transition: opacity 0.25s ease;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.testimonial-logo-featured:hover {
+    opacity: 1;
+}
+
+.footer-section .paragraph-40,
+.footer-section .paragraph-41,
+div.footer-section .paragraph-40,
+div.footer-section .paragraph-41 {
+    color: #6b7280 !important;
+}

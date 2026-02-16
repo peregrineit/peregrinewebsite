@@ -1,0 +1,19 @@
+/* Animation for LEAN Principles vertical scrolling text */
+@keyframes scrollVertical {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-50%);
+    }
+}
+
+.track-vertical {
+    animation: scrollVertical 10s linear infinite;
+}
+
+/* Pause animation on hover */
+.infinite-rotation-container:hover .track-vertical {
+    animation-play-state: paused;
+}
