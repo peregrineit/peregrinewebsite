@@ -5,6 +5,53 @@ import Image from 'next/image';
 import Script from 'next/script'; // Ensure Script is available if we use it, though we stripped scripts
 import Link from 'next/link';
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "When should a company hire a software development partner instead of building an in-house team?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Companies benefit from a development partner when they need to ship fast without the overhead of recruiting, onboarding, and managing a full engineering team. If you have a product roadmap but lack the bandwidth — or need specialized skills like API integrations, cloud infrastructure, or SaaS architecture — a partner like Peregrine IT can ramp up in days, not months. It's especially effective for MVPs, platform migrations, and scaling existing products.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How long does it take to build a SaaS platform from scratch?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A production-ready SaaS MVP typically takes 8–14 weeks depending on complexity. This includes core feature development, authentication, billing integration, multi-tenancy, and deployment. At Peregrine IT, we follow a phased approach — discovery, architecture, sprint-based delivery, and launch — so you see working software every two weeks. More complex platforms with advanced integrations or compliance requirements may take 4–6 months.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How do API integrations improve business operations?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "API integrations connect your existing tools — CRMs, ERPs, payment gateways, MLS systems, marketing platforms — into a unified workflow, eliminating manual data entry and reducing errors. For example, integrating your CRM with your billing system can automate invoicing, while connecting to third-party APIs like Stripe, HubSpot, or Zapier lets you scale operations without hiring more staff. Peregrine IT specializes in building robust, scalable API integrations that save hours of manual work weekly.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can legacy systems be modernized without downtime or disrupting current operations?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. We use a strangler fig pattern — incrementally replacing legacy components with modern services while keeping the existing system running. This means zero downtime migrations. We typically start by wrapping legacy APIs, migrating data in stages, and routing traffic gradually to the new system. Our team has modernized monolithic applications into scalable microservices and cloud-native architectures for companies across the US and Canada without any business disruption.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What industries does Peregrine IT specialize in?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "We work primarily with SaaS companies, real estate technology platforms, healthcare IT, fintech, logistics, and e-commerce businesses. Our core strength is product engineering — building and scaling web applications, automation systems, and platform integrations. Whether you're a startup launching an MVP or an established company modernizing your tech stack, we bring deep expertise in Node.js, React, Python, cloud infrastructure (AWS, Azure, GCP), and DevOps to deliver production-grade solutions.",
+      },
+    },
+  ],
+};
+
 // Import extracted CSS
 import './css/index-extracted.css'; // This will be replaced
 import './css/marquee-fix.css'; // Fix for oversized decorative elements in tech section
@@ -41,6 +88,10 @@ export default function Home() {
 
   return (
     <div className="page-wrapper">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       {/* Start Migrated Content */}
 
       <div className="body">

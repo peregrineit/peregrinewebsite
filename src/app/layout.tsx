@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -11,9 +11,47 @@ import "./css/peregrine.css";
 // Tailwind last as it was last in the HTML <head>
 import "./globals.css";
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#06b6d4",
+};
+
 export const metadata: Metadata = {
-  title: "Peregrine IT",
-  description: "We turn lines of code into powerful solutions that drive your business forward",
+  metadataBase: new URL("https://peregrine-it.com"),
+  title: "Peregrine IT — SaaS & Platform Engineering Partner",
+  description:
+    "Product engineering partner for SaaS companies. We build scalable platforms, API integrations, and automation systems. Trusted by CTOs across the US & Canada.",
+  keywords: [
+    "saas development company",
+    "hire remote developers",
+    "api integration services",
+    "mls integration",
+    "software engineering partner",
+    "scale web application",
+    "node.js development team",
+    "platform engineering partner",
+    "saas product development",
+    "remote development team usa canada",
+  ],
+  authors: [{ name: "Peregrine IT Solutions LLP", url: "https://peregrine-it.com" }],
+  creator: "Peregrine IT Solutions LLP",
+  publisher: "Peregrine IT Solutions LLP",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://peregrine-it.com",
+  },
   icons: {
     icon: [
       { url: "/favicons/favicon.ico?v=4", sizes: "any" },
@@ -31,17 +69,35 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
   openGraph: {
     type: "website",
-    url: "https://peregrine-it.com/",
-    title: "Peregrine IT",
-    description: "We turn lines of code into powerful solutions that drive your business forward",
-    images: ["https://peregrine-it.com/images/sharing-preview.png"],
+    siteName: "Peregrine IT",
+    url: "https://peregrine-it.com",
+    title: "Peregrine IT — SaaS & Platform Engineering Partner",
+    description:
+      "Product engineering partner for SaaS companies. We build scalable platforms, API integrations, and automation systems. Trusted by CTOs across the US & Canada.",
+    locale: "en_US",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Peregrine IT — SaaS & Platform Engineering Partner",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Peregrine IT",
-    description: "We turn lines of code into powerful solutions that drive your business forward",
-    images: ["https://peregrine-it.com/images/sharing-preview.png"],
+    title: "Peregrine IT — SaaS & Platform Engineering Partner",
+    description:
+      "Product engineering partner for SaaS companies. We build scalable platforms, API integrations, and automation systems. Trusted by CTOs across the US & Canada.",
+    images: [
+      {
+        url: "/og-image.png",
+        alt: "Peregrine IT — SaaS & Platform Engineering Partner",
+      },
+    ],
   },
+  category: "technology",
 };
 
 export default function RootLayout({
