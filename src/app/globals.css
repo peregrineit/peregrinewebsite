@@ -161,7 +161,7 @@ div.footer-section .dfs-link-1-cta:hover {
 }
 
 /* Mobile responsive footer grid */
-@media (max-width: 991px) {
+@media (max-width: 991px) and (min-width: 769px) {
     .footer-section .dfs-grid-1 {
         grid-template-columns: 1fr 1fr !important;
         grid-row-gap: 2rem !important;
