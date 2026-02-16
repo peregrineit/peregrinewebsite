@@ -160,8 +160,8 @@ div.footer-section .dfs-link-1-cta:hover {
     max-width: 100% !important;
 }
 
-/* Mobile responsive footer grid */
-@media (max-width: 991px) and (min-width: 769px) {
+/* Mobile responsive footer grid - tablet */
+@media screen and (max-width: 991px) {
     .footer-section .dfs-grid-1 {
         grid-template-columns: 1fr 1fr !important;
         grid-row-gap: 2rem !important;
@@ -196,13 +196,16 @@ div.footer-section .dfs-link-1-cta:hover {
     overflow: visible !important;
 }
 
-@media (max-width: 768px) {
+/* Mobile phone footer - single column with accordion */
+@media screen and (max-width: 767px) {
     .footer-section .dfs-wrap-6 .dfs-grid-1,
-    .footer-section .dfs-grid-1 {
+    .footer-section .dfs-grid-1,
+    .dfs-grid-1 {
         display: grid !important;
         grid-template-columns: 1fr !important;
         grid-template-rows: auto !important;
         grid-row-gap: 0 !important;
+        grid-column-gap: 0 !important;
         width: 100% !important;
     }
     
@@ -224,7 +227,6 @@ div.footer-section .dfs-link-1-cta:hover {
         margin-top: 0.25rem !important;
     }
     
-    /* Accordion styles for mobile */
     .footer-section-item {
         border-bottom: 1px solid #e5e7eb;
         padding-bottom: 0;
@@ -277,7 +279,7 @@ div.footer-section .dfs-link-1-cta:hover {
 }
 
 /* Desktop view - ensure content is always visible */
-@media (min-width: 769px) {
+@media screen and (min-width: 768px) {
     .footer-accordion-btn {
         display: none !important;
     }
