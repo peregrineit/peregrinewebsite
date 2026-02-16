@@ -11,7 +11,7 @@
     border-radius: 8px !important;
     font-weight: bold !important;
     margin: 0 4px !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
 }
 
 .hero-title .highlighted-word:first-of-type {
@@ -176,6 +176,7 @@ div.footer-section .dfs-link-1-cta:hover {
 
 /* Mobile/tablet footer - single column with accordion (≤991px) */
 @media screen and (max-width: 991px) {
+
     .footer-section .dfs-wrap-6 .dfs-grid-1,
     .footer-section .dfs-grid-1,
     .dfs-grid-1 {
@@ -192,6 +193,7 @@ div.footer-section .dfs-link-1-cta:hover {
         width: 100% !important;
         max-width: 100% !important;
         flex: none !important;
+        padding-right: 0 !important;
     }
 
     .footer-section .dfs-wrap-1 {
@@ -298,16 +300,16 @@ div.footer-section .dfs-link-1-cta:hover {
 
 .testimonial-card {
     background: #ffffff;
-    border: 1px solid rgba(0,0,0,0.08);
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .testimonial-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .testimonial-card-featured {
@@ -316,7 +318,7 @@ div.footer-section .dfs-link-1-cta:hover {
 
 .testimonial-card-featured:hover {
     transform: translateY(-6px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .testimonial-category {

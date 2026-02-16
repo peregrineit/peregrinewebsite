@@ -125,7 +125,7 @@ export default function Footer() {
 
               </div>
             </div>
-            <div className="dfs-wrap-6" style={{ backgroundColor: '#ffffff', padding: '1.5rem 2rem' }}>
+            <div className="dfs-wrap-6" style={{ backgroundColor: '#ffffff' }}>
               <div
                 style={{ WebkitTransform: 'translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', MozTransform: 'translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', msTransform: 'translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', transform: 'translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)' }}
                 className="dfs-grid-1">

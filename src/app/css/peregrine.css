@@ -3651,7 +3651,7 @@ img {
   }
 
   #w-node-_53aec337-cf60-1ff7-e4d7-85a8a4b6c583-098fe091 {
-    grid-area: span 1 / span 2 / span 1 / span 2;
+    grid-column: span 1 / span 1;
   }
 
   #w-node-_7add3c20-90ac-d052-1bff-55b9c016f555-4e73e7aa,
@@ -3660,6 +3660,6 @@ img {
   }
 
   #w-node-_53aec337-cf60-1ff7-e4d7-85a8a4b6c583-4e73e7aa {
-    grid-area: span 1 / span 2 / span 1 / span 2;
+    grid-column: span 1 / span 1;
   }
 }
