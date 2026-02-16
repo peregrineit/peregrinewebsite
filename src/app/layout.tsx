@@ -101,6 +101,11 @@ export const metadata: Metadata = {
   },
 
   category: "technology",
+
+  other: {
+    "article:author": "Peregrine IT Solutions",
+    "article:publisher": "https://peregrine-it.com",
+  },
 };
 
 export default function RootLayout({
