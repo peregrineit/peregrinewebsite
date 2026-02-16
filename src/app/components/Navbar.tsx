@@ -12,14 +12,13 @@ export default function Navbar() {
         </Link>
         <div className="hidden md:flex items-center gap-8">
           <Link href="/#sec-service"
-            className="transition-colors cursor-pointer font-semibold text-base !text-slate-800 hover:!text-cyan-600 !no-underline">Services</Link>
+            className="transition-colors cursor-pointer font-semibold text-sm uppercase tracking-wider !text-slate-800 hover:!text-cyan-600 !no-underline">Services</Link>
           <Link href="/#sec-process"
-            className="transition-colors cursor-pointer font-semibold text-base !text-slate-800 hover:!text-cyan-600 !no-underline">How We Work</Link>
+            className="transition-colors cursor-pointer font-semibold text-sm uppercase tracking-wider !text-slate-800 hover:!text-cyan-600 !no-underline">How We Work</Link>
           <Link href="/#sec-testimonials"
-            className="transition-colors cursor-pointer font-semibold text-base !text-slate-800 hover:!text-cyan-600 !no-underline">Results</Link>
+            className="transition-colors cursor-pointer font-semibold text-sm uppercase tracking-wider !text-slate-800 hover:!text-cyan-600 !no-underline">Results</Link>
           <Link href="/case-studies"
-            className="transition-colors cursor-pointer font-semibold text-base !text-slate-800 hover:!text-slate-900 border-2 border-transparent hover:border-b-cyan-600 !no-underline">Case
-            Studies</Link>
+            className="transition-colors cursor-pointer font-semibold text-sm uppercase tracking-wider !text-slate-800 hover:!text-slate-900 border-2 border-transparent hover:border-b-cyan-600 !no-underline">Case Studies</Link>
         </div>
         <a href="#" id="lets-talk-btn"
           className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all whitespace-nowrap cursor-pointer font-medium text-sm shadow-lg shadow-cyan-500/30 !no-underline">Book a Strategy Call</a>
