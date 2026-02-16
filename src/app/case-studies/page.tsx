@@ -31,50 +31,12 @@ export default function CaseStudies() {
         });
       });
     }
-
-    // Handle top bar close and update category section positioning
-    const topBarCloseBtn = document.querySelector('#top-bar button[aria-label="Close notification"]');
-    const categoriesSection = document.getElementById('categories');
-    const heroContent = document.getElementById('hero-content');
-
-    if (topBarCloseBtn && categoriesSection && heroContent) {
-      topBarCloseBtn.addEventListener('click', () => {
-        setTimeout(() => {
-          categoriesSection.setAttribute('data-top-bar-hidden', 'true');
-          heroContent.setAttribute('data-top-bar-hidden', 'true');
-        }, 300);
-      });
-    }
   }, []);
 
 
   return (
     <div className="page-wrapper">
       {/* Start Migrated Content */}
-
-      <div id="top-bar" className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-violet-600 to-indigo-600 text-white h-10 flex items-center justify-center px-4 transition-transform duration-300">
-        <div className="flex items-center gap-3 text-xs md:text-sm font-medium">
-          <span className="bg-white/20 px-2 py-0.5 rounded text-[10px] tracking-wider uppercase font-bold">Limited</span>
-          <span className="hidden sm:inline">Valentine's Offer: 14% OFF on Annual Plans. Ends <span className="underline decoration-white/50 underline-offset-2">Feb 14</span>. Code <span className="font-bold">VALENTINEK14</span></span>
-          <span className="sm:hidden">14% OFF Annual Plans. Code: VALENTINEK14</span>
-          <a href="#" className="flex items-center gap-1 bg-white/20 hover:bg-white/30 transition-colors px-2 py-0.5 rounded border border-white/20 ml-2 !no-underline text-white">
-            Claim Deal <i className="ri-arrow-right-up-line"></i>
-          </a>
-        </div>
-        <button
-          className="absolute right-4 text-white hover:bg-white/20 p-1 rounded transition-colors cursor-pointer flex items-center justify-center"
-          aria-label="Close notification"
-          onClick={() => {
-            const bar = document.getElementById('top-bar');
-            const nav = document.querySelector('nav');
-            if (bar) bar.style.transform = 'translateY(-100%)';
-            if (nav) nav.style.top = '0';
-          }}
-        >
-          <i className="ri-close-line text-xl"></i>
-        </button>
-      </div>
-
 
       <div id="root">
         <div className="min-h-screen bg-slate-900">
@@ -85,7 +47,7 @@ export default function CaseStudies() {
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-slate-900"></div>
             </div>
 
-            <div id="hero-content" className="relative z-10 max-w-7xl mx-auto px-6 pt-48 data-[top-bar-hidden=true]:pt-32 pb-40 transition-all duration-300">
+            <div id="hero-content" className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-40 transition-all duration-300">
               <div className="max-w-4xl mx-auto text-center">
                 <div
                   className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 backdrop-blur-md rounded-full text-white mb-8 border border-cyan-400/30 shadow-lg shadow-cyan-500/20">
@@ -134,7 +96,7 @@ export default function CaseStudies() {
             </div>
           </div>
 
-          <div id="categories" className="bg-slate-900 border-b border-white/10 sticky top-[120px] data-[top-bar-hidden=true]:top-[80px] z-40 shadow-xl transition-all duration-300">
+          <div id="categories" className="bg-slate-900 border-b border-white/10 sticky top-[80px] z-40 shadow-xl transition-all duration-300">
             <div className="max-w-7xl mx-auto px-6 py-4">
               <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide" id="category-container">
                 <button data-category="all"
