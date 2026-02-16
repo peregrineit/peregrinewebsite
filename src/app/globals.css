@@ -182,10 +182,24 @@ div.footer-section .dfs-link-1-cta:hover {
     }
 }
 
+/* Hide accordion button by default (desktop) */
+.footer-accordion-btn {
+    display: none !important;
+}
+
+.footer-section-header {
+    cursor: default !important;
+}
+
+.footer-section-content {
+    max-height: none !important;
+    overflow: visible !important;
+}
+
 @media (max-width: 768px) {
     .footer-section .dfs-grid-1 {
         grid-template-columns: 1fr !important;
-        grid-row-gap: 2rem !important;
+        grid-row-gap: 0.5rem !important;
     }
     
     .footer-section .dfs-wrap-2,
@@ -201,7 +215,8 @@ div.footer-section .dfs-link-1-cta:hover {
     /* Accordion styles for mobile */
     .footer-section-item {
         border-bottom: 1px solid #e5e7eb;
-        padding-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        padding-top: 0.5rem;
     }
     
     .footer-section-header {
@@ -209,7 +224,8 @@ div.footer-section .dfs-link-1-cta:hover {
         justify-content: space-between !important;
         align-items: center !important;
         cursor: pointer !important;
-        padding: 0.5rem 0 !important;
+        padding: 0.75rem 0 !important;
+        user-select: none !important;
     }
     
     .footer-section-header h3 {
@@ -220,26 +236,28 @@ div.footer-section .dfs-link-1-cta:hover {
         background: none !important;
         border: none !important;
         cursor: pointer !important;
-        padding: 0.25rem !important;
+        padding: 0.5rem !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         color: #111827 !important;
+        transition: transform 0.3s ease !important;
     }
     
     .footer-section-content {
         max-height: 0 !important;
         overflow: hidden !important;
-        transition: max-height 0.3s ease !important;
+        transition: max-height 0.4s ease-out !important;
     }
     
     .footer-section-content.expanded {
         max-height: 1000px !important;
         padding-top: 0.5rem !important;
+        transition: max-height 0.4s ease-in !important;
     }
 }
 
-/* Hide accordion button on desktop */
+/* Desktop view - ensure content is always visible */
 @media (min-width: 769px) {
     .footer-accordion-btn {
         display: none !important;
@@ -247,10 +265,16 @@ div.footer-section .dfs-link-1-cta:hover {
     
     .footer-section-header {
         cursor: default !important;
+        pointer-events: none !important;
     }
     
     .footer-section-content {
         max-height: none !important;
+        overflow: visible !important;
+    }
+    
+    .footer-section-item {
+        border-bottom: none !important;
     }
 }
 
