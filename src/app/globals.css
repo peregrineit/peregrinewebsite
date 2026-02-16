@@ -197,6 +197,61 @@ div.footer-section .dfs-link-1-cta:hover {
         flex-wrap: wrap !important;
         justify-content: center !important;
     }
+    
+    /* Accordion styles for mobile */
+    .footer-section-item {
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 1rem;
+    }
+    
+    .footer-section-header {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        cursor: pointer !important;
+        padding: 0.5rem 0 !important;
+    }
+    
+    .footer-section-header h3 {
+        margin-bottom: 0 !important;
+    }
+    
+    .footer-accordion-btn {
+        background: none !important;
+        border: none !important;
+        cursor: pointer !important;
+        padding: 0.25rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #111827 !important;
+    }
+    
+    .footer-section-content {
+        max-height: 0 !important;
+        overflow: hidden !important;
+        transition: max-height 0.3s ease !important;
+    }
+    
+    .footer-section-content.expanded {
+        max-height: 1000px !important;
+        padding-top: 0.5rem !important;
+    }
+}
+
+/* Hide accordion button on desktop */
+@media (min-width: 769px) {
+    .footer-accordion-btn {
+        display: none !important;
+    }
+    
+    .footer-section-header {
+        cursor: default !important;
+    }
+    
+    .footer-section-content {
+        max-height: none !important;
+    }
 }
 
 @media (max-width: 991px) {

@@ -1,8 +1,22 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 export default function Footer() {
+  const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
+    services: false,
+    industries: false,
+    company: false,
+    contact: false,
+  });
+
+  const toggleSection = (section: string) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
   useEffect(() => {
     const popup = document.getElementById('contact-popup');
     const openBtn = document.getElementById('lets-talk-btn');
@@ -115,36 +129,72 @@ export default function Footer() {
               <div
                 style={{ WebkitTransform: 'translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', MozTransform: 'translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', msTransform: 'translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', transform: 'translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)' }}
                 className="dfs-grid-1">
-                <div className="dfs-wrap-7">
-                  <h3 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Services</h3>
-                  <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>SaaS &amp; Platform Engineering</a>
-                  <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Systems Integration &amp; APIs</a>
-                  <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Performance Optimization</a>
-                  <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Automation &amp; Internal Tools</a>
-                  <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>AI Workflow Automation</a>
-                  <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Legacy System Modernization</a>
+                <div className="dfs-wrap-7 footer-section-item">
+                  <div className="footer-section-header" onClick={() => toggleSection('services')}>
+                    <h3 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Services</h3>
+                    <button className="footer-accordion-btn" aria-label="Toggle services">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'transform 0.3s', transform: expandedSections.services ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                  </div>
+                  <div className={`footer-section-content ${expandedSections.services ? 'expanded' : ''}`}>
+                    <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>SaaS &amp; Platform Engineering</a>
+                    <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Systems Integration &amp; APIs</a>
+                    <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Performance Optimization</a>
+                    <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Automation &amp; Internal Tools</a>
+                    <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>AI Workflow Automation</a>
+                    <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Legacy System Modernization</a>
+                  </div>
                 </div>
-                <div className="dfs-wrap-7">
-                  <h3 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Industries</h3>
-                  <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Real Estate Platforms &amp; CRMs</a>
-                  <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Marketplaces &amp; Portals</a>
-                  <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Logistics &amp; Operations Systems</a>
-                  <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Data-Heavy SaaS Products</a>
+                <div className="dfs-wrap-7 footer-section-item">
+                  <div className="footer-section-header" onClick={() => toggleSection('industries')}>
+                    <h3 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Industries</h3>
+                    <button className="footer-accordion-btn" aria-label="Toggle industries">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'transform 0.3s', transform: expandedSections.industries ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                  </div>
+                  <div className={`footer-section-content ${expandedSections.industries ? 'expanded' : ''}`}>
+                    <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Real Estate Platforms &amp; CRMs</a>
+                    <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Marketplaces &amp; Portals</a>
+                    <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Logistics &amp; Operations Systems</a>
+                    <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Data-Heavy SaaS Products</a>
+                  </div>
                 </div>
-                <div className="dfs-wrap-7">
-                  <h3 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Company</h3>
-                  <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>About Us</a>
-                  <Link href="/case-studies" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Case Studies</Link>
-                  <a href="https://calendly.com/mukesh-peregrine-it/30min" target="_blank" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Careers</a>
-                  <a href="https://share.google.com/DOm7mkXoRAN5u1mWi" target="_blank" rel="noopener noreferrer" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Testimonials</a>
+                <div className="dfs-wrap-7 footer-section-item">
+                  <div className="footer-section-header" onClick={() => toggleSection('company')}>
+                    <h3 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Company</h3>
+                    <button className="footer-accordion-btn" aria-label="Toggle company">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'transform 0.3s', transform: expandedSections.company ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                  </div>
+                  <div className={`footer-section-content ${expandedSections.company ? 'expanded' : ''}`}>
+                    <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>About Us</a>
+                    <Link href="/case-studies" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Case Studies</Link>
+                    <a href="https://calendly.com/mukesh-peregrine-it/30min" target="_blank" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Careers</a>
+                    <a href="https://share.google.com/DOm7mkXoRAN5u1mWi" target="_blank" rel="noopener noreferrer" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Testimonials</a>
+                  </div>
                 </div>
-                <div id="w-node-_53aec337-cf60-1ff7-e4d7-85a8a4b6c583-098fe091" className="dfs-wrap-7">
-                  <h3 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Get In Touch</h3>
-                  <a href="https://calendly.com/mukesh-peregrine-it/30min" target="_blank" className="dfs-link-1-cta" style={{ color: '#06b6d4', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Book a Strategy Call</a>
-                  <a href="#" id="quick-project-btn-footer-col" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Small task? Get a scoped estimate within 48 hours</a>
-                  <p style={{ color: '#9ca3af', fontSize: '0.78em', marginTop: '0.6rem', lineHeight: '1.5' }}>Real engineers reply — not sales</p>
-                  <p style={{ color: '#9ca3af', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>Daily overlap with North American &amp; European business hours</p>
-                  <p style={{ color: '#9ca3af', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>You talk directly with the developer building your system</p>
+                <div id="w-node-_53aec337-cf60-1ff7-e4d7-85a8a4b6c583-098fe091" className="dfs-wrap-7 footer-section-item">
+                  <div className="footer-section-header" onClick={() => toggleSection('contact')}>
+                    <h3 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Get In Touch</h3>
+                    <button className="footer-accordion-btn" aria-label="Toggle contact">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'transform 0.3s', transform: expandedSections.contact ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                  </div>
+                  <div className={`footer-section-content ${expandedSections.contact ? 'expanded' : ''}`}>
+                    <a href="https://calendly.com/mukesh-peregrine-it/30min" target="_blank" className="dfs-link-1-cta" style={{ color: '#06b6d4', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Book a Strategy Call</a>
+                    <a href="#" id="quick-project-btn-footer-col" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Small task? Get a scoped estimate within 48 hours</a>
+                    <p style={{ color: '#9ca3af', fontSize: '0.78em', marginTop: '0.6rem', lineHeight: '1.5' }}>Real engineers reply — not sales</p>
+                    <p style={{ color: '#9ca3af', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>Daily overlap with North American &amp; European business hours</p>
+                    <p style={{ color: '#9ca3af', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>You talk directly with the developer building your system</p>
+                  </div>
                 </div>
               </div>
               <div style={{WebkitTransform: 'translate3d(0, 12px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', MozTransform: 'translate3d(0, 12px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', msTransform: 'translate3d(0, 12px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', transform: 'translate3d(0, 12px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', display: 'flex', gap: '0.75rem', justifyContent: 'center', marginTop: '0.5rem'}} className="dfs-wrap-8">
