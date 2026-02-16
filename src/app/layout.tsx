@@ -20,24 +20,28 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://peregrine-it.com"),
-  title: "Peregrine IT — SaaS & Platform Engineering Partner",
+
+  title: {
+    default: "Peregrine IT Solutions | SaaS, API & Automation Development Company",
+    template: "%s | Peregrine IT Solutions",
+  },
+
   description:
-    "Product engineering partner for SaaS companies. We build scalable platforms, API integrations, and automation systems. Trusted by CTOs across the US & Canada.",
+    "We design and develop scalable SaaS platforms, APIs, integrations, and business automation systems for startups and growing companies worldwide.",
+
   keywords: [
-    "saas development company",
-    "hire remote developers",
-    "api integration services",
-    "mls integration",
-    "software engineering partner",
-    "scale web application",
-    "node.js development team",
-    "platform engineering partner",
-    "saas product development",
-    "remote development team usa canada",
+    "SaaS development company",
+    "API development services",
+    "automation software development",
+    "custom software development company",
+    "Node.js React development agency",
+    "MLS integration developers",
   ],
+
   authors: [{ name: "Peregrine IT Solutions LLP", url: "https://peregrine-it.com" }],
   creator: "Peregrine IT Solutions LLP",
   publisher: "Peregrine IT Solutions LLP",
+
   robots: {
     index: true,
     follow: true,
@@ -49,9 +53,11 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+
   alternates: {
     canonical: "https://peregrine-it.com",
   },
+
   icons: {
     icon: [
       { url: "/favicons/favicon.ico?v=4", sizes: "any" },
@@ -67,36 +73,33 @@ export const metadata: Metadata = {
     apple: { url: "/favicons/favicon-180x180.png?v=4", sizes: "180x180", type: "image/png" },
   },
   manifest: "/site.webmanifest",
+
   openGraph: {
-    type: "website",
-    siteName: "Peregrine IT",
+    title: "Engineering Scalable Software Systems",
+    description: "SaaS Platforms \u2022 APIs \u2022 Automation \u2022 Infrastructure",
     url: "https://peregrine-it.com",
-    title: "Peregrine IT — SaaS & Platform Engineering Partner",
-    description:
-      "Product engineering partner for SaaS companies. We build scalable platforms, API integrations, and automation systems. Trusted by CTOs across the US & Canada.",
-    locale: "en_US",
+    siteName: "Peregrine IT Solutions",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Peregrine IT — SaaS & Platform Engineering Partner",
-        type: "image/png",
+        alt: "Peregrine IT Solutions - SaaS, API and Automation Development Company",
       },
     ],
+    locale: "en_US",
+    type: "article",
+    publishedTime: "2026-02-17T00:00:00.000Z",
+    modifiedTime: "2026-02-17T00:00:00.000Z",
   },
+
   twitter: {
     card: "summary_large_image",
-    title: "Peregrine IT — SaaS & Platform Engineering Partner",
-    description:
-      "Product engineering partner for SaaS companies. We build scalable platforms, API integrations, and automation systems. Trusted by CTOs across the US & Canada.",
-    images: [
-      {
-        url: "/og-image.png",
-        alt: "Peregrine IT — SaaS & Platform Engineering Partner",
-      },
-    ],
+    title: "Engineering Scalable Software Systems",
+    description: "SaaS Platforms \u2022 APIs \u2022 Automation \u2022 Infrastructure",
+    images: ["/og.png"],
   },
+
   category: "technology",
 };
 
