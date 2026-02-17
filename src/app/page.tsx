@@ -5,49 +5,101 @@ import Image from 'next/image';
 import Script from 'next/script'; // Ensure Script is available if we use it, though we stripped scripts
 import Link from 'next/link';
 
-const faqSchema = {
+const structuredData = {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
+  "@graph": [
     {
-      "@type": "Question",
-      name: "When should a company hire a software development partner instead of building an in-house team?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Companies benefit from a development partner when they need to ship fast without the overhead of recruiting, onboarding, and managing a full engineering team. If you have a product roadmap but lack the bandwidth — or need specialized skills like API integrations, cloud infrastructure, or SaaS architecture — a partner like Peregrine IT can ramp up in days, not months. It's especially effective for MVPs, platform migrations, and scaling existing products.",
+      "@type": "Organization",
+      name: "Peregrine IT Solutions",
+      url: "https://peregrine-it.com",
+      logo: "https://peregrine-it.com/og.png",
+      description:
+        "Peregrine IT builds scalable SaaS platforms, API integrations, automation systems and high-performance software infrastructure for startups and enterprises.",
+      sameAs: [],
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "sales",
+        email: "info@peregrine-it.com",
+        availableLanguage: "English",
+      },
+      areaServed: [
+        { "@type": "Country", name: "United States" },
+        { "@type": "Country", name: "Canada" },
+        { "@type": "Place", name: "Europe" },
+        { "@type": "Country", name: "United Arab Emirates" },
+      ],
+    },
+    {
+      "@type": "ProfessionalService",
+      name: "Peregrine IT Solutions",
+      url: "https://peregrine-it.com",
+      logo: "https://peregrine-it.com/og.png",
+      description:
+        "Peregrine IT builds scalable SaaS platforms, API integrations, automation systems and high-performance software infrastructure for startups and enterprises.",
+      serviceType: [
+        "SaaS Development",
+        "API Integration",
+        "Automation Engineering",
+        "Platform Modernization",
+        "Cloud Infrastructure",
+      ],
+      areaServed: [
+        { "@type": "Country", name: "United States" },
+        { "@type": "Country", name: "Canada" },
+        { "@type": "Place", name: "Europe" },
+        { "@type": "Country", name: "United Arab Emirates" },
+      ],
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "sales",
+        email: "info@peregrine-it.com",
+        availableLanguage: "English",
       },
     },
     {
-      "@type": "Question",
-      name: "How long does it take to build a SaaS platform from scratch?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "A production-ready SaaS MVP typically takes 8–14 weeks depending on complexity. This includes core feature development, authentication, billing integration, multi-tenancy, and deployment. At Peregrine IT, we follow a phased approach — discovery, architecture, sprint-based delivery, and launch — so you see working software every two weeks. More complex platforms with advanced integrations or compliance requirements may take 4–6 months.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How do API integrations improve business operations?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "API integrations connect your existing tools — CRMs, ERPs, payment gateways, MLS systems, marketing platforms — into a unified workflow, eliminating manual data entry and reducing errors. For example, integrating your CRM with your billing system can automate invoicing, while connecting to third-party APIs like Stripe, HubSpot, or Zapier lets you scale operations without hiring more staff. Peregrine IT specializes in building robust, scalable API integrations that save hours of manual work weekly.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Can legacy systems be modernized without downtime or disrupting current operations?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. We use a strangler fig pattern — incrementally replacing legacy components with modern services while keeping the existing system running. This means zero downtime migrations. We typically start by wrapping legacy APIs, migrating data in stages, and routing traffic gradually to the new system. Our team has modernized monolithic applications into scalable microservices and cloud-native architectures for companies across the US and Canada without any business disruption.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What industries does Peregrine IT specialize in?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "We work primarily with SaaS companies, real estate technology platforms, healthcare IT, fintech, logistics, and e-commerce businesses. Our core strength is product engineering — building and scaling web applications, automation systems, and platform integrations. Whether you're a startup launching an MVP or an established company modernizing your tech stack, we bring deep expertise in Node.js, React, Python, cloud infrastructure (AWS, Azure, GCP), and DevOps to deliver production-grade solutions.",
-      },
+      "@type": "FAQPage",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "When should a company hire a software development partner instead of employees?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "When you need to ship product fast without the 3\u20136 month hiring cycle. A development partner gives you an experienced, ready-to-deploy engineering team that scales with your roadmap. It\u2019s ideal when you need specialized skills like SaaS architecture, API integrations, or cloud infrastructure without long-term overhead.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "How long does it take to build a SaaS platform?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "A production-ready MVP typically takes 8\u201314 weeks. This covers core features, authentication, billing, multi-tenancy, and deployment. We deliver working software every two weeks through sprint-based execution. More complex platforms with advanced integrations may take 4\u20136 months.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Can legacy systems be modernized without downtime?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes. We use incremental migration strategies \u2014 wrapping legacy APIs, migrating data in stages, and gradually routing traffic to new services. Your existing system stays live throughout the process. We\u2019ve modernized monolithic applications into cloud-native architectures without any business disruption.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What industries does Peregrine IT specialize in?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "We work with SaaS companies, real estate technology platforms, healthcare IT, fintech, logistics, and e-commerce. Our focus is product engineering \u2014 building scalable web applications, automation systems, and platform integrations using Node.js, React, Python, AWS, Azure, and modern DevOps practices.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "How do API integrations improve operations?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "APIs connect your CRM, ERP, billing, and third-party tools into a single automated workflow. This eliminates manual data entry, reduces errors, and lets you scale operations without adding headcount. We build integrations with platforms like Stripe, HubSpot, Salesforce, and custom internal systems.",
+          },
+        },
+      ],
     },
   ],
 };
@@ -90,7 +142,7 @@ export default function Home() {
     <div className="page-wrapper">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       {/* Start Migrated Content */}
 
