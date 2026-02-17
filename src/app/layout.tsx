@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     siteName: "Peregrine IT Solutions",
     images: [
       {
-        url: "/og.png",
+        url: "/ogimage.png",
         width: 1200,
         height: 630,
         alt: "Peregrine IT Solutions - SaaS, API and Automation Development Company",
@@ -97,7 +97,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Engineering Scalable Software Systems",
     description: "Peregrine IT Solutions builds scalable SaaS platforms, API integrations, automation systems and cloud infrastructure for startups and enterprises. We design, develop and optimize high-performance software products.",
-    images: ["/og.png"],
+    images: ["/ogimage.png"],
   },
 
   category: "technology",
