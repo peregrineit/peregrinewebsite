@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "We design and develop scalable SaaS platforms, APIs, integrations, and business automation systems for startups and growing companies worldwide.",
+    "Peregrine IT Solutions builds scalable SaaS platforms, API integrations, automation systems and cloud infrastructure for startups and enterprises. We design, develop and optimize high-performance software products.",
 
   keywords: [
     "SaaS development company",
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     title: "Engineering Scalable Software Systems",
-    description: "SaaS Platforms \u2022 APIs \u2022 Automation \u2022 Infrastructure",
+    description: "Peregrine IT Solutions builds scalable SaaS platforms, API integrations, automation systems and cloud infrastructure for startups and enterprises. We design, develop and optimize high-performance software products.",
     url: "https://peregrine-it.com",
     siteName: "Peregrine IT Solutions",
     images: [
@@ -96,7 +96,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Engineering Scalable Software Systems",
-    description: "SaaS Platforms \u2022 APIs \u2022 Automation \u2022 Infrastructure",
+    description: "Peregrine IT Solutions builds scalable SaaS platforms, API integrations, automation systems and cloud infrastructure for startups and enterprises. We design, develop and optimize high-performance software products.",
     images: ["/og.png"],
   },
 
