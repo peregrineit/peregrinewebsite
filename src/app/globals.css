@@ -31,6 +31,15 @@ html, body {
 
 /* Retain Tailwind defaults but remove Next.js starter styles that might conflict */
 
+/* Mobile: show grid item gradient/hover effect by default (no hover on touch) */
+@media (hover: none), (max-width: 768px) {
+  .grid__item-img-deco.grid__item-img-deco--mobile-visible {
+    opacity: 1 !important;
+    -webkit-mask-image: radial-gradient(350px circle at 50% 50%, black 25%, rgba(0, 0, 0, 0.35), transparent) !important;
+    mask-image: radial-gradient(350px circle at 50% 50%, black 25%, rgba(0, 0, 0, 0.35), transparent) !important;
+  }
+}
+
 /* Footer Light Mode Override */
 .footer-section,
 div.footer-section,

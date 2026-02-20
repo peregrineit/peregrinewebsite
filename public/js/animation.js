@@ -115,13 +115,16 @@ class Item {
         this.DOM.deco = this.DOM.el.querySelector('.grid__item-img-deco');
         this.calculateSizePosition();
         this.initEvents();
-        // On touch/mobile (no hover), show deco directly with centered mask
-        if (this.DOM.deco && window.matchMedia('(hover: none)').matches) {
+        // On touch/mobile, show deco directly (no hover on mobile)
+        var isMobile = window.matchMedia('(hover: none)').matches || window.matchMedia('(max-width: 768px)').matches;
+        if (this.DOM.deco && isMobile) {
             this.DOM.deco.innerHTML = this.randomString;
-            const cx = this.rect.width / 2;
-            const cy = this.rect.height / 2;
-            gsap.set(this.DOM.el, { '--x': cx + 'px', '--y': cy + 'px' });
-            gsap.set(this.DOM.deco, { opacity: 1 });
+            this.DOM.deco.classList.add('grid__item-img-deco--mobile-visible');
+            var cx = this.rect.width > 0 ? this.rect.width / 2 : 150;
+            var cy = this.rect.height > 0 ? this.rect.height / 2 : 150;
+            this.DOM.el.style.setProperty('--x', cx + 'px');
+            this.DOM.el.style.setProperty('--y', cy + 'px');
+            this.DOM.deco.style.opacity = '1';
         }
     }
     // Calculate and store the current scroll 
@@ -221,7 +224,12 @@ class Item {
     }
 }
 function initGridItems() {
-    document.querySelectorAll('.grid__item > .grid__item-img').forEach((img) => new Item(img));
+    document.querySelectorAll('.grid__item > .grid__item-img').forEach(function (img) {
+        if (!img.dataset.gridItemInited) {
+            img.dataset.gridItemInited = '1';
+            new Item(img);
+        }
+    });
 }
 
 // Count Up
@@ -349,6 +357,7 @@ function runAnimations() {
 }
 function scheduleAnimations() {
     setTimeout(runAnimations, 200);
+    setTimeout(initGridItems, 500);
 }
 if (document.readyState === 'complete') {
     scheduleAnimations();
