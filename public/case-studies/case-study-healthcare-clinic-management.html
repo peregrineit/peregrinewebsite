@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study — Healthcare Clinic Management Platform | Peregrine IT Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf8; --ink: #111; --subtle: #6b6b6b; --accent: #0891b2; --accent-light: #ecfeff;
+    --accent-soft: #22d3ee; --border: #e2e2dd; --card: #fff; --dark-bg: #051e26;
+    --dark-card: #0a2a36; --green: #16a34a; --green-bg: #ecfdf5; --red: #dc2626; --red-bg: #fef2f2;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .hero { background: var(--dark-bg); color: #fff; padding: 80px 24px 60px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 600px 400px at 80% 20%, rgba(8,145,178,0.15), transparent), radial-gradient(ellipse 400px 300px at 20% 80%, rgba(34,211,238,0.08), transparent); pointer-events: none; }
+  .hero-inner { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(8,145,178,0.2); border: 1px solid rgba(8,145,178,0.3); border-radius: 100px; padding: 6px 16px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #67e8f9; margin-bottom: 28px; }
+  .hero-badge span { width: 6px; height: 6px; background: var(--accent-soft); border-radius: 50%; }
+  .hero h1 { font-family: 'Instrument Serif', serif; font-size: clamp(36px, 5.5vw, 56px); line-height: 1.12; font-weight: 400; max-width: 780px; margin-bottom: 20px; letter-spacing: -0.02em; }
+  .hero h1 em { font-style: italic; color: var(--accent-soft); }
+  .hero-sub { font-size: 17px; color: #9ca3af; max-width: 600px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 32px; }
+  .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .hero-meta-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #6b7280; font-weight: 600; }
+  .hero-meta-value { font-size: 14px; font-weight: 600; color: #e5e7eb; }
+  .content { max-width: 760px; margin: 0 auto; padding: 72px 24px 100px; }
+  .section { margin-bottom: 64px; }
+  .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .section-label::before { content: ''; width: 18px; height: 2px; background: var(--accent); border-radius: 1px; }
+  h2 { font-family: 'Instrument Serif', serif; font-size: clamp(26px, 3.5vw, 36px); font-weight: 400; line-height: 1.2; margin-bottom: 20px; }
+  p { color: #444; margin-bottom: 16px; font-size: 15.5px; line-height: 1.75; }
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 48px 0; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 20px; text-align: center; transition: transform 0.2s; }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+  .stat-number { font-family: 'Instrument Serif', serif; font-size: 38px; font-weight: 400; line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 12px; color: var(--subtle); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .cs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 28px 0; }
+  .cs-card { border-radius: 14px; padding: 28px 24px; border: 1px solid; }
+  .cs-card.challenge { background: var(--red-bg); border-color: #fecaca; }
+  .cs-card-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 14px; }
+  .challenge .cs-card-icon { background: #fee2e2; color: var(--red); }
+  .cs-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .cs-card p { font-size: 13.5px; line-height: 1.6; color: #555; margin-bottom: 0; }
+  .arch-block { background: var(--dark-bg); border-radius: 16px; padding: 40px 32px; margin: 32px 0; color: #e5e7eb; position: relative; overflow: hidden; }
+  .arch-block::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 30%, rgba(8,145,178,0.12), transparent 60%); pointer-events: none; }
+  .arch-block h3 { font-family: 'Instrument Serif', serif; font-size: 22px; font-weight: 400; margin-bottom: 28px; color: #fff; position: relative; }
+  .arch-layers { display: flex; flex-direction: column; gap: 12px; position: relative; }
+  .arch-layer { display: flex; align-items: center; gap: 16px; background: var(--dark-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 16px 20px; }
+  .arch-layer-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; background: rgba(8,145,178,0.15); border: 1px solid rgba(8,145,178,0.25); }
+  .arch-layer-name { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color: #67e8f9; margin-bottom: 2px; }
+  .arch-layer-desc { font-size: 13px; color: #9ca3af; line-height: 1.5; }
+  .arch-arrow { text-align: center; color: #374151; font-size: 18px; line-height: 1; }
+  .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin: 24px 0; }
+  .tech-tag { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; font-size: 13.5px; font-weight: 600; transition: border-color 0.2s; }
+  .tech-tag:hover { border-color: var(--accent); }
+  .tech-tag span { font-size: 20px; }
+  .timeline { margin: 32px 0; position: relative; padding-left: 32px; }
+  .timeline::before { content: ''; position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: var(--border); }
+  .timeline-item { position: relative; margin-bottom: 32px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-dot { position: absolute; left: -28px; top: 4px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--accent); background: var(--bg); }
+  .timeline-phase { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .timeline-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .timeline-desc { font-size: 13.5px; color: #666; line-height: 1.6; margin-bottom: 0; }
+  .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .result-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; position: relative; overflow: hidden; }
+  .result-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); }
+  .result-before { font-size: 12px; color: var(--subtle); font-weight: 500; margin-bottom: 4px; }
+  .result-after { font-family: 'Instrument Serif', serif; font-size: 28px; color: var(--green); margin-bottom: 4px; line-height: 1.2; }
+  .result-label { font-size: 13px; font-weight: 600; }
+  .quote-block { background: var(--accent-light); border-left: 4px solid var(--accent); border-radius: 0 14px 14px 0; padding: 28px 32px; margin: 40px 0; }
+  .quote-text { font-family: 'Instrument Serif', serif; font-size: 20px; font-style: italic; line-height: 1.5; margin-bottom: 12px; }
+  .quote-author { font-size: 13px; font-weight: 600; color: var(--accent); }
+  .cta-section { background: var(--dark-bg); border-radius: 20px; padding: 56px 40px; text-align: center; margin-top: 56px; position: relative; overflow: hidden; }
+  .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(8,145,178,0.2), transparent 60%); pointer-events: none; }
+  .cta-section h2 { font-family: 'Instrument Serif', serif; font-size: 32px; color: #fff; margin-bottom: 12px; position: relative; }
+  .cta-section p { color: #9ca3af; margin-bottom: 28px; position: relative; }
+  .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; border-radius: 12px; padding: 16px 36px; font-size: 15px; font-weight: 700; font-family: 'Manrope', sans-serif; cursor: pointer; transition: all 0.2s; position: relative; text-decoration: none; }
+  .cta-btn:hover { background: #0e7490; transform: translateY(-1px); }
+  .image-prompt { background: #fffbeb; border: 1px solid #fde68a; border-radius: 14px; padding: 28px 24px; margin: 48px 0 0; }
+  .image-prompt h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #92400e; }
+  .image-prompt pre { background: #fef3c7; border-radius: 10px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #78350f; white-space: pre-wrap; word-break: break-word; }
+  @media (max-width: 768px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .cs-grid, .results-grid { grid-template-columns: 1fr; }
+    .hero { padding: 60px 20px 40px; }
+    .content { padding: 56px 20px 80px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span> Case Study</div>
+    <h1>Multi-Location <em>Clinic Management</em> Platform with Patient Portal</h1>
+    <p class="hero-sub">How we built a unified healthcare management system handling appointments, patient records, telehealth, and billing across 30+ clinic locations.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><div class="hero-meta-label">Industry</div><div class="hero-meta-value">Healthcare / MedTech</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-label">Duration</div><div class="hero-meta-value">7 Months</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-label">Services</div><div class="hero-meta-value">Full-Stack · HIPAA · Telehealth</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-label">Market</div><div class="hero-meta-value">USA & Canada</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="content">
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-number">30+</div><div class="stat-label">Clinic Locations</div></div>
+    <div class="stat-card"><div class="stat-number">85K</div><div class="stat-label">Patient Records</div></div>
+    <div class="stat-card"><div class="stat-number">-60%</div><div class="stat-label">No-Show Rate</div></div>
+    <div class="stat-card"><div class="stat-number">HIPAA</div><div class="stat-label">Fully Compliant</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Overview</div>
+    <h2>The Healthcare Group's Challenge</h2>
+    <p>A multi-specialty healthcare group operating 30+ clinics across two provinces was running on a 15-year-old legacy system that couldn't handle their growth. Appointment scheduling required phone calls. Patient records were siloed per location — if a patient visited a different clinic, their history was invisible. Telehealth wasn't even possible on their existing infrastructure.</p>
+    <p>They needed a modern, HIPAA-compliant platform that unified patient records across all locations, enabled online booking and telehealth, automated billing and insurance claims, and gave clinic managers real-time operational dashboards — without disrupting daily patient care during migration.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">The Challenge</div>
+    <h2>Legacy System Limitations</h2>
+    <div class="cs-grid">
+      <div class="cs-card challenge"><div class="cs-card-icon">📁</div><h4>Siloed Patient Records</h4><p>Each clinic maintained its own database. When patients visited a different location, doctors had no access to medical history, allergies, or past prescriptions. Critical information was lost between clinics.</p></div>
+      <div class="cs-card challenge"><div class="cs-card-icon">📞</div><h4>Phone-Only Booking</h4><p>All appointments required a phone call. Front desk staff spent 70% of their time answering scheduling calls. No-show rates hit 28% because there were no automated reminders.</p></div>
+      <div class="cs-card challenge"><div class="cs-card-icon">🔒</div><h4>Compliance Gaps</h4><p>The legacy system wasn't designed for modern security standards. Patient data wasn't encrypted at rest. Audit logging was incomplete. A compliance audit flagged 14 critical issues.</p></div>
+      <div class="cs-card challenge"><div class="cs-card-icon">💰</div><h4>Manual Insurance Billing</h4><p>Claims were filed manually by administrative staff. Rejection rates were 18% due to coding errors. Revenue cycle from service to payment averaged 45+ days.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Our Approach</div>
+    <h2>The Platform We Built</h2>
+    <p>We designed a centralized, HIPAA-compliant platform with three interfaces: a patient-facing portal for booking and telehealth, a clinical dashboard for doctors and staff, and an admin panel for billing, analytics, and multi-location management.</p>
+
+    <div class="arch-block">
+      <h3>System Architecture</h3>
+      <div class="arch-layers">
+        <div class="arch-layer"><div class="arch-layer-icon">👤</div><div class="arch-layer-content"><div class="arch-layer-name">Patient Portal (Next.js PWA)</div><div class="arch-layer-desc">Online booking, medical history view, prescription refills, telehealth video sessions, secure messaging with doctors.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">🩺</div><div class="arch-layer-content"><div class="arch-layer-name">Clinical Dashboard</div><div class="arch-layer-desc">Real-time appointment queue, patient chart access across all locations, e-prescribing, clinical notes with templates, lab result integration.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">🗄️</div><div class="arch-layer-content"><div class="arch-layer-name">Unified Patient Database (PostgreSQL + Encryption)</div><div class="arch-layer-desc">Single patient record across all 30+ locations. AES-256 encryption at rest. Full audit trail on every record access. Role-based access control.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">💳</div><div class="arch-layer-content"><div class="arch-layer-name">Billing & Claims Engine</div><div class="arch-layer-desc">Automated insurance claim generation with ICD/CPT coding assistance. Real-time eligibility checks. Denial management and automatic resubmission.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">📊</div><div class="arch-layer-content"><div class="arch-layer-name">Admin Analytics Dashboard</div><div class="arch-layer-desc">Cross-location metrics: patient volume, revenue per provider, no-show rates, telehealth adoption, insurance payer mix, claim rejection analysis.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Technology</div>
+    <h2>Tech Stack</h2>
+    <div class="tech-grid">
+      <div class="tech-tag"><span>⚛️</span> Next.js</div>
+      <div class="tech-tag"><span>🟢</span> Node.js</div>
+      <div class="tech-tag"><span>🐘</span> PostgreSQL</div>
+      <div class="tech-tag"><span>⚡</span> Redis</div>
+      <div class="tech-tag"><span>📹</span> Twilio Video</div>
+      <div class="tech-tag"><span>🔐</span> AES-256 / HIPAA</div>
+      <div class="tech-tag"><span>☁️</span> AWS (HIPAA BAA)</div>
+      <div class="tech-tag"><span>📧</span> AWS SES</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Execution</div>
+    <h2>How We Delivered</h2>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-phase">Phase 1 — Weeks 1–6</div><div class="timeline-title">Data Migration & Security Foundation</div><p class="timeline-desc">Designed the unified patient schema with full encryption. Migrated 85K records from 30 separate databases into one, deduplicating patients who visited multiple locations. Built RBAC and audit logging from day one.</p></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-phase">Phase 2 — Weeks 7–14</div><div class="timeline-title">Clinical Dashboard & Patient Portal</div><p class="timeline-desc">Built the doctor-facing clinical dashboard with cross-location patient chart access, appointment queue, and clinical note templates. Patient portal with online booking, automated SMS/email reminders, and medical history view.</p></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-phase">Phase 3 — Weeks 15–22</div><div class="timeline-title">Telehealth & Billing Automation</div><p class="timeline-desc">Integrated Twilio Video for telehealth sessions with waiting room, screen sharing, and session recording. Built the billing engine with automated ICD/CPT coding suggestions, insurance eligibility checks, and claim submission API.</p></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-phase">Phase 4 — Weeks 23–28</div><div class="timeline-title">Analytics, Testing & Phased Rollout</div><p class="timeline-desc">Management analytics dashboard, HIPAA penetration testing, and compliance audit. Rolled out to 5 pilot clinics first, then remaining locations in waves of 5 per week with dedicated on-site support during each transition.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Results</div>
+    <h2>The Impact</h2>
+    <div class="results-grid">
+      <div class="result-card"><div class="result-before">Patient no-show rate</div><div class="result-after">28% → 11%</div><div class="result-label">60% reduction with automated reminders</div></div>
+      <div class="result-card"><div class="result-before">Insurance claim rejections</div><div class="result-after">18% → 4%</div><div class="result-label">78% fewer billing errors</div></div>
+      <div class="result-card"><div class="result-before">Online bookings</div><div class="result-after">0% → 52%</div><div class="result-label">Half of appointments now self-service</div></div>
+      <div class="result-card"><div class="result-before">Revenue cycle time</div><div class="result-after">45 → 18 days</div><div class="result-label">60% faster payment collection</div></div>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    <div class="quote-text">"For the first time, a doctor at our downtown clinic can see a patient's full history from any of our 30 locations. That alone has improved patient safety more than anything we've done in the last decade."</div>
+    <div class="quote-author">— Chief Medical Officer, Healthcare Group</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Key Takeaways</div>
+    <h2>What Made This Work</h2>
+    <p>Healthcare platforms fail when security is treated as an afterthought. We designed the entire data layer around HIPAA requirements from day one — encryption at rest and in transit, complete audit logging, role-based access control, and session management. Retrofitting security into an existing architecture is ten times harder than building it in from the start.</p>
+    <p>The phased migration was critical. We couldn't take 30 clinics offline simultaneously. By rolling out in waves of 5, we caught integration edge cases at pilot clinics before they affected the wider network. Staff at each clinic got hands-on training during their transition week, which meant adoption was near-instant rather than a months-long struggle.</p>
+  </div>
+
+  <div class="cta-section">
+    <h2>Building a Healthcare Platform?</h2>
+    <p>We build HIPAA-compliant clinic management systems, patient portals, and telehealth solutions. Let's talk.</p>
+    <a href="#" class="cta-btn">Schedule a Free Consultation →</a>
+  </div>
+
+  <div class="image-prompt">
+    <h3>🎨 AI Image Prompt — Hero Image</h3>
+    <pre>Professional tech case study hero image for healthcare clinic management platform. Dark teal-navy background (#051e26). Clean isometric 3D visualization showing interconnected clinic building icons connected to a central patient record database. A floating dashboard screen displaying appointment calendar and patient charts. Medical cross symbols, stethoscope icon, video call icon for telehealth. Subtle cyan and teal glow effects. Connected data flow lines between clinics. Modern, corporate, premium B2B healthcare tech aesthetic. No text. No people. Ultra clean, minimal, futuristic medical SaaS visualization. Landscape 16:9 ratio. High contrast.</pre>
+  </div>
+</div>
+
+</body>
+</html>

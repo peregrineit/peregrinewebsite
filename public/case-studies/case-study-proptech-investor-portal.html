@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study — PropTech Investor Communication Portal | Peregrine IT Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf8; --ink: #111; --subtle: #6b6b6b; --accent: #b45309; --accent-light: #fffbeb;
+    --accent-soft: #fbbf24; --border: #e2e2dd; --card: #fff; --dark-bg: #1a1408;
+    --dark-card: #2a2010; --green: #16a34a; --green-bg: #ecfdf5; --red: #dc2626; --red-bg: #fef2f2;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .hero { background: var(--dark-bg); color: #fff; padding: 80px 24px 60px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 600px 400px at 80% 20%, rgba(180,83,9,0.15), transparent), radial-gradient(ellipse 400px 300px at 20% 80%, rgba(251,191,36,0.08), transparent); pointer-events: none; }
+  .hero-inner { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(180,83,9,0.2); border: 1px solid rgba(180,83,9,0.3); border-radius: 100px; padding: 6px 16px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #fcd34d; margin-bottom: 28px; }
+  .hero-badge span { width: 6px; height: 6px; background: var(--accent-soft); border-radius: 50%; }
+  .hero h1 { font-family: 'Instrument Serif', serif; font-size: clamp(36px, 5.5vw, 56px); line-height: 1.12; font-weight: 400; max-width: 780px; margin-bottom: 20px; letter-spacing: -0.02em; }
+  .hero h1 em { font-style: italic; color: var(--accent-soft); }
+  .hero-sub { font-size: 17px; color: #9ca3af; max-width: 600px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 32px; }
+  .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .hero-meta-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #6b7280; font-weight: 600; }
+  .hero-meta-value { font-size: 14px; font-weight: 600; color: #e5e7eb; }
+  .content { max-width: 760px; margin: 0 auto; padding: 72px 24px 100px; }
+  .section { margin-bottom: 64px; }
+  .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .section-label::before { content: ''; width: 18px; height: 2px; background: var(--accent); border-radius: 1px; }
+  h2 { font-family: 'Instrument Serif', serif; font-size: clamp(26px, 3.5vw, 36px); font-weight: 400; line-height: 1.2; margin-bottom: 20px; }
+  p { color: #444; margin-bottom: 16px; font-size: 15.5px; line-height: 1.75; }
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 48px 0; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 20px; text-align: center; transition: transform 0.2s; }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+  .stat-number { font-family: 'Instrument Serif', serif; font-size: 38px; font-weight: 400; line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 12px; color: var(--subtle); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .cs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 28px 0; }
+  .cs-card { border-radius: 14px; padding: 28px 24px; border: 1px solid; }
+  .cs-card.challenge { background: var(--red-bg); border-color: #fecaca; }
+  .cs-card-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 14px; }
+  .challenge .cs-card-icon { background: #fee2e2; color: var(--red); }
+  .cs-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .cs-card p { font-size: 13.5px; line-height: 1.6; color: #555; margin-bottom: 0; }
+  .arch-block { background: var(--dark-bg); border-radius: 16px; padding: 40px 32px; margin: 32px 0; color: #e5e7eb; position: relative; overflow: hidden; }
+  .arch-block::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 30%, rgba(180,83,9,0.12), transparent 60%); pointer-events: none; }
+  .arch-block h3 { font-family: 'Instrument Serif', serif; font-size: 22px; font-weight: 400; margin-bottom: 28px; color: #fff; position: relative; }
+  .arch-layers { display: flex; flex-direction: column; gap: 12px; position: relative; }
+  .arch-layer { display: flex; align-items: center; gap: 16px; background: var(--dark-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 16px 20px; }
+  .arch-layer-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; background: rgba(180,83,9,0.15); border: 1px solid rgba(180,83,9,0.25); }
+  .arch-layer-name { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color: #fcd34d; margin-bottom: 2px; }
+  .arch-layer-desc { font-size: 13px; color: #9ca3af; line-height: 1.5; }
+  .arch-arrow { text-align: center; color: #374151; font-size: 18px; line-height: 1; }
+  .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin: 24px 0; }
+  .tech-tag { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; font-size: 13.5px; font-weight: 600; transition: border-color 0.2s; }
+  .tech-tag:hover { border-color: var(--accent); }
+  .tech-tag span { font-size: 20px; }
+  .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .result-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; position: relative; overflow: hidden; }
+  .result-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); }
+  .result-before { font-size: 12px; color: var(--subtle); font-weight: 500; margin-bottom: 4px; }
+  .result-after { font-family: 'Instrument Serif', serif; font-size: 28px; color: var(--green); margin-bottom: 4px; line-height: 1.2; }
+  .result-label { font-size: 13px; font-weight: 600; }
+  .quote-block { background: var(--accent-light); border-left: 4px solid var(--accent); border-radius: 0 14px 14px 0; padding: 28px 32px; margin: 40px 0; }
+  .quote-text { font-family: 'Instrument Serif', serif; font-size: 20px; font-style: italic; line-height: 1.5; margin-bottom: 12px; }
+  .quote-author { font-size: 13px; font-weight: 600; color: var(--accent); }
+  .cta-section { background: var(--dark-bg); border-radius: 20px; padding: 56px 40px; text-align: center; margin-top: 56px; position: relative; overflow: hidden; }
+  .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(180,83,9,0.2), transparent 60%); pointer-events: none; }
+  .cta-section h2 { font-family: 'Instrument Serif', serif; font-size: 32px; color: #fff; margin-bottom: 12px; position: relative; }
+  .cta-section p { color: #9ca3af; margin-bottom: 28px; position: relative; }
+  .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; border-radius: 12px; padding: 16px 36px; font-size: 15px; font-weight: 700; font-family: 'Manrope', sans-serif; cursor: pointer; transition: all 0.2s; position: relative; text-decoration: none; }
+  .cta-btn:hover { background: #92400e; transform: translateY(-1px); }
+  .image-prompt { background: #fffbeb; border: 1px solid #fde68a; border-radius: 14px; padding: 28px 24px; margin: 48px 0 0; }
+  .image-prompt h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #92400e; }
+  .image-prompt pre { background: #fef3c7; border-radius: 10px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #78350f; white-space: pre-wrap; word-break: break-word; }
+  @media (max-width: 768px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .cs-grid, .results-grid { grid-template-columns: 1fr; }
+    .hero { padding: 60px 20px 40px; }
+    .content { padding: 56px 20px 80px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span> Case Study</div>
+    <h1><em>PropTech Investor Portal</em> for Real Estate Developers</h1>
+    <p class="hero-sub">How we built a secure investor communication platform that replaced email chains and shared drives with structured project updates, document management, and milestone tracking.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><div class="hero-meta-label">Industry</div><div class="hero-meta-value">PropTech / Real Estate</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-label">Duration</div><div class="hero-meta-value">4 Months</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-label">Services</div><div class="hero-meta-value">Full-Stack · Security · UX</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-label">Market</div><div class="hero-meta-value">Global</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="content">
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-number">120+</div><div class="stat-label">Active Investors</div></div>
+    <div class="stat-card"><div class="stat-number">18</div><div class="stat-label">Projects Tracked</div></div>
+    <div class="stat-card"><div class="stat-number">-90%</div><div class="stat-label">Email Volume</div></div>
+    <div class="stat-card"><div class="stat-number">$340M</div><div class="stat-label">Assets Under Management</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Overview</div>
+    <h2>The Developer's Problem</h2>
+    <p>A property development firm managing 18 active projects with 120+ investors was drowning in communication overhead. Every milestone update, financial report, construction photo, and legal document was sent via email. Investors constantly asked for status updates that had already been shared. Documents lived in scattered Google Drive folders with no version control. Due diligence requests took days to fulfill because nobody could find the right files.</p>
+    <p>They needed a single platform where investors could log in and see everything — project progress, financial performance, documents, construction updates, and upcoming milestones — without a single email being sent.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">The Challenge</div>
+    <h2>Communication Chaos</h2>
+    <div class="cs-grid">
+      <div class="cs-card challenge"><div class="cs-card-icon">📧</div><h4>Email Overload</h4><p>The CEO spent 3+ hours daily on investor emails. The same questions were asked repeatedly. Updates sent to 120 investors generated dozens of reply-all threads with conflicting information.</p></div>
+      <div class="cs-card challenge"><div class="cs-card-icon">📁</div><h4>Document Chaos</h4><p>Legal agreements, financial reports, and construction permits scattered across 40+ Google Drive folders. No version control. Investors frequently referenced outdated documents in their decisions.</p></div>
+      <div class="cs-card challenge"><div class="cs-card-icon">📊</div><h4>No Real-Time Visibility</h4><p>Investors had no way to check project status between quarterly reports. Construction progress, budget utilization, and timeline adherence were opaque between scheduled updates.</p></div>
+      <div class="cs-card challenge"><div class="cs-card-icon">🔐</div><h4>Access Control Issues</h4><p>Different investor tiers had different access rights — some could see financial details, others only construction updates. Managing this via email and shared folders was impossible at scale.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Our Approach</div>
+    <h2>The Platform We Built</h2>
+    <p>We designed a portal with two interfaces: a developer-facing admin panel for publishing updates and managing projects, and an investor-facing dashboard where each investor sees only the projects and documents they're authorized to access.</p>
+
+    <div class="arch-block">
+      <h3>Platform Architecture</h3>
+      <div class="arch-layers">
+        <div class="arch-layer"><div class="arch-layer-icon">🏗️</div><div class="arch-layer-content"><div class="arch-layer-name">Developer Admin Panel</div><div class="arch-layer-desc">Project setup, milestone tracking, update publishing (text + photos + video), document uploads with versioning, investor management and tier assignment.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">👤</div><div class="arch-layer-content"><div class="arch-layer-name">Investor Dashboard (Role-Based)</div><div class="arch-layer-desc">Personalized view per investor. Project timeline, construction photo gallery, financial reports, document library. Only sees projects they're invested in.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">📄</div><div class="arch-layer-content"><div class="arch-layer-name">Document Management System</div><div class="arch-layer-desc">Versioned document storage on S3. Watermarked downloads per investor. Audit trail on every view and download. Bulk upload for quarterly reporting.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">🔔</div><div class="arch-layer-content"><div class="arch-layer-name">Notification Engine</div><div class="arch-layer-desc">In-app notifications, email digests (weekly summary instead of per-update), milestone alerts. Investors choose their notification preferences.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">📊</div><div class="arch-layer-content"><div class="arch-layer-name">Analytics & Engagement Tracking</div><div class="arch-layer-desc">Developer sees which investors viewed updates, downloaded documents, and logged in. Identifies disengaged investors for proactive outreach.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Technology</div>
+    <h2>Tech Stack</h2>
+    <div class="tech-grid">
+      <div class="tech-tag"><span>⚛️</span> Next.js</div>
+      <div class="tech-tag"><span>🟢</span> Node.js</div>
+      <div class="tech-tag"><span>🐘</span> PostgreSQL</div>
+      <div class="tech-tag"><span>⚡</span> Redis</div>
+      <div class="tech-tag"><span>☁️</span> AWS S3</div>
+      <div class="tech-tag"><span>📧</span> AWS SES</div>
+      <div class="tech-tag"><span>🔐</span> JWT + RBAC</div>
+      <div class="tech-tag"><span>📊</span> Chart.js</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Results</div>
+    <h2>The Impact</h2>
+    <div class="results-grid">
+      <div class="result-card"><div class="result-before">CEO email time on investor comms</div><div class="result-after">3hrs → 20min/day</div><div class="result-label">90% reduction in email volume</div></div>
+      <div class="result-card"><div class="result-before">Due diligence document retrieval</div><div class="result-after">2 days → instant</div><div class="result-label">Self-service document access</div></div>
+      <div class="result-card"><div class="result-before">Investor satisfaction (NPS)</div><div class="result-after">+42 points</div><div class="result-label">Transparency builds trust</div></div>
+      <div class="result-card"><div class="result-before">Repeat investment rate</div><div class="result-after">+35%</div><div class="result-label">Informed investors reinvest faster</div></div>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    <div class="quote-text">"Our investors used to email us constantly asking for updates. Now they log in and see everything — construction photos, financials, documents — on their own. Our repeat investment rate increased by 35% within the first year."</div>
+    <div class="quote-author">— CEO, Property Development Firm</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Key Takeaways</div>
+    <h2>What Made This Work</h2>
+    <p>The core insight was that investor communication in real estate development isn't a messaging problem — it's a visibility problem. Investors don't actually want more emails. They want to see project progress, financial performance, and document access whenever they need it, without waiting for someone to respond. Replacing push-based communication (emails) with pull-based access (a dashboard) fundamentally changed the relationship dynamic.</p>
+    <p>Role-based access control was non-negotiable. Different investor tiers have different viewing rights — some see full financial breakdowns, others see only construction progress. Some investors are in multiple projects, others in just one. The RBAC system had to be granular enough to handle all these permutations without requiring manual configuration for every new investor.</p>
+  </div>
+
+  <div class="cta-section">
+    <h2>Need an Investor Portal?</h2>
+    <p>We build secure communication platforms for property developers, fund managers, and investment firms. Let's talk.</p>
+    <a href="#" class="cta-btn">Schedule a Free Consultation →</a>
+  </div>
+
+  <div class="image-prompt">
+    <h3>🎨 AI Image Prompt — Hero Image</h3>
+    <pre>Professional tech case study hero image for PropTech investor communication portal. Dark warm gold-black background (#1a1408). Clean isometric 3D visualization showing a central building/property development icon connected to multiple investor profile icons via secure encrypted lines. Dashboard screens floating showing financial charts, construction timeline, document icons. Lock/shield icon representing secure access. Notification bell icon. Subtle amber and gold glow effects. Modern, corporate, premium B2B PropTech aesthetic. No text. No people. Ultra clean, minimal, futuristic investor portal visualization. Landscape 16:9 ratio. High contrast.</pre>
+  </div>
+</div>
+
+</body>
+</html>

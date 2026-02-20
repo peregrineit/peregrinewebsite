@@ -3,6 +3,29 @@
       font-family: 'Inter', sans-serif;
     }
 
+    /* Case studies hero title: override global h1 styles */
+    #hero-content h1 {
+      font-size: 1.75rem !important; /* 28px - mobile */
+    }
+    @media (min-width: 640px) {
+      #hero-content h1 {
+        font-size: 2.25rem !important; /* 36px - tablet */
+      }
+    }
+    @media (min-width: 768px) {
+      #hero-content h1 {
+        font-size: 3rem !important; /* 48px - desktop */
+      }
+    }
+
+    /* Category tabs: force visible text (override any inherited cyan/blue) */
+    #categories .category-btn {
+      color: #e2e8f0 !important; /* slate-200: visible on dark inactive bg */
+    }
+    #categories .category-btn.bg-cyan-600 {
+      color: #ffffff !important; /* white on cyan active bg */
+    }
+
     .scrollbar-hide::-webkit-scrollbar {
       display: none;
     }

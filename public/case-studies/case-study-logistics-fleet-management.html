@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study — Logistics Fleet Management Platform | Peregrine IT Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf8; --ink: #111; --subtle: #6b6b6b; --accent: #ea580c; --accent-light: #fff7ed;
+    --accent-soft: #fb923c; --border: #e2e2dd; --card: #fff; --dark-bg: #1a0f05;
+    --dark-card: #281a0d; --green: #16a34a; --green-bg: #ecfdf5; --red: #dc2626; --red-bg: #fef2f2;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  .hero { background: var(--dark-bg); color: #fff; padding: 80px 24px 60px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 600px 400px at 80% 20%, rgba(234,88,12,0.15), transparent), radial-gradient(ellipse 400px 300px at 20% 80%, rgba(251,146,60,0.08), transparent); pointer-events: none; }
+  .hero-inner { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(234,88,12,0.2); border: 1px solid rgba(234,88,12,0.3); border-radius: 100px; padding: 6px 16px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #fdba74; margin-bottom: 28px; }
+  .hero-badge span { width: 6px; height: 6px; background: var(--accent-soft); border-radius: 50%; }
+  .hero h1 { font-family: 'Instrument Serif', serif; font-size: clamp(36px, 5.5vw, 56px); line-height: 1.12; font-weight: 400; max-width: 780px; margin-bottom: 20px; letter-spacing: -0.02em; }
+  .hero h1 em { font-style: italic; color: var(--accent-soft); }
+  .hero-sub { font-size: 17px; color: #9ca3af; max-width: 600px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 32px; }
+  .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .hero-meta-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #6b7280; font-weight: 600; }
+  .hero-meta-value { font-size: 14px; font-weight: 600; color: #e5e7eb; }
+
+  .content { max-width: 760px; margin: 0 auto; padding: 72px 24px 100px; }
+  .section { margin-bottom: 64px; }
+  .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .section-label::before { content: ''; width: 18px; height: 2px; background: var(--accent); border-radius: 1px; }
+  h2 { font-family: 'Instrument Serif', serif; font-size: clamp(26px, 3.5vw, 36px); font-weight: 400; line-height: 1.2; margin-bottom: 20px; }
+  p { color: #444; margin-bottom: 16px; font-size: 15.5px; line-height: 1.75; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 48px 0; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 20px; text-align: center; transition: transform 0.2s; }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+  .stat-number { font-family: 'Instrument Serif', serif; font-size: 38px; font-weight: 400; line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 12px; color: var(--subtle); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .cs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 28px 0; }
+  .cs-card { border-radius: 14px; padding: 28px 24px; border: 1px solid; }
+  .cs-card.challenge { background: var(--red-bg); border-color: #fecaca; }
+  .cs-card.solution { background: var(--green-bg); border-color: #bbf7d0; }
+  .cs-card-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 14px; }
+  .challenge .cs-card-icon { background: #fee2e2; color: var(--red); }
+  .solution .cs-card-icon { background: #dcfce7; color: var(--green); }
+  .cs-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .cs-card p { font-size: 13.5px; line-height: 1.6; color: #555; margin-bottom: 0; }
+
+  .arch-block { background: var(--dark-bg); border-radius: 16px; padding: 40px 32px; margin: 32px 0; color: #e5e7eb; position: relative; overflow: hidden; }
+  .arch-block::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 30%, rgba(234,88,12,0.12), transparent 60%); pointer-events: none; }
+  .arch-block h3 { font-family: 'Instrument Serif', serif; font-size: 22px; font-weight: 400; margin-bottom: 28px; color: #fff; position: relative; }
+  .arch-layers { display: flex; flex-direction: column; gap: 12px; position: relative; }
+  .arch-layer { display: flex; align-items: center; gap: 16px; background: var(--dark-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 16px 20px; }
+  .arch-layer-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; background: rgba(234,88,12,0.15); border: 1px solid rgba(234,88,12,0.25); }
+  .arch-layer-name { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color: #fdba74; margin-bottom: 2px; }
+  .arch-layer-desc { font-size: 13px; color: #9ca3af; line-height: 1.5; }
+  .arch-arrow { text-align: center; color: #374151; font-size: 18px; line-height: 1; }
+
+  .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin: 24px 0; }
+  .tech-tag { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; font-size: 13.5px; font-weight: 600; transition: border-color 0.2s; }
+  .tech-tag:hover { border-color: var(--accent); }
+  .tech-tag span { font-size: 20px; }
+
+  .timeline { margin: 32px 0; position: relative; padding-left: 32px; }
+  .timeline::before { content: ''; position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: var(--border); }
+  .timeline-item { position: relative; margin-bottom: 32px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-dot { position: absolute; left: -28px; top: 4px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--accent); background: var(--bg); }
+  .timeline-phase { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .timeline-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .timeline-desc { font-size: 13.5px; color: #666; line-height: 1.6; margin-bottom: 0; }
+
+  .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .result-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; position: relative; overflow: hidden; }
+  .result-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); }
+  .result-before { font-size: 12px; color: var(--subtle); font-weight: 500; margin-bottom: 4px; }
+  .result-after { font-family: 'Instrument Serif', serif; font-size: 28px; color: var(--green); margin-bottom: 4px; line-height: 1.2; }
+  .result-label { font-size: 13px; font-weight: 600; }
+
+  .quote-block { background: var(--accent-light); border-left: 4px solid var(--accent); border-radius: 0 14px 14px 0; padding: 28px 32px; margin: 40px 0; }
+  .quote-text { font-family: 'Instrument Serif', serif; font-size: 20px; font-style: italic; line-height: 1.5; margin-bottom: 12px; }
+  .quote-author { font-size: 13px; font-weight: 600; color: var(--accent); }
+
+  .cta-section { background: var(--dark-bg); border-radius: 20px; padding: 56px 40px; text-align: center; margin-top: 56px; position: relative; overflow: hidden; }
+  .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(234,88,12,0.2), transparent 60%); pointer-events: none; }
+  .cta-section h2 { font-family: 'Instrument Serif', serif; font-size: 32px; color: #fff; margin-bottom: 12px; position: relative; }
+  .cta-section p { color: #9ca3af; margin-bottom: 28px; position: relative; }
+  .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; border-radius: 12px; padding: 16px 36px; font-size: 15px; font-weight: 700; font-family: 'Manrope', sans-serif; cursor: pointer; transition: background 0.2s, transform 0.15s; position: relative; text-decoration: none; }
+  .cta-btn:hover { background: #c2410c; transform: translateY(-1px); }
+
+  .image-prompt { background: #fffbeb; border: 1px solid #fde68a; border-radius: 14px; padding: 28px 24px; margin: 48px 0 0; }
+  .image-prompt h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #92400e; }
+  .image-prompt pre { background: #fef3c7; border-radius: 10px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #78350f; white-space: pre-wrap; word-break: break-word; }
+
+  @media (max-width: 768px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .cs-grid, .results-grid { grid-template-columns: 1fr; }
+    .hero { padding: 60px 20px 40px; }
+    .content { padding: 56px 20px 80px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span> Case Study</div>
+    <h1>Real-Time <em>Logistics & Fleet Tracking</em> Platform for Last-Mile Delivery</h1>
+    <p class="hero-sub">How we built a GPS-powered dispatch and delivery management system that reduced missed deliveries by 40% and gave operators complete fleet visibility.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><div class="hero-meta-label">Industry</div><div class="hero-meta-value">Logistics / Supply Chain</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-label">Duration</div><div class="hero-meta-value">5 Months</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-label">Services</div><div class="hero-meta-value">Backend · Mobile · Real-Time</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-label">Market</div><div class="hero-meta-value">North America</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="content">
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-number">350+</div><div class="stat-label">Active Vehicles</div></div>
+    <div class="stat-card"><div class="stat-number">8K</div><div class="stat-label">Daily Deliveries</div></div>
+    <div class="stat-card"><div class="stat-number">-40%</div><div class="stat-label">Missed Deliveries</div></div>
+    <div class="stat-card"><div class="stat-number">Real-Time</div><div class="stat-label">Fleet Visibility</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Overview</div>
+    <h2>The Company's Problem</h2>
+    <p>A mid-size logistics company running last-mile delivery operations across three Canadian provinces had no real-time visibility into their fleet. Dispatchers relied on phone calls to check driver locations. Route planning was done manually each morning. When a delivery failed, nobody knew until the driver returned to the depot hours later.</p>
+    <p>They needed a platform that could track every vehicle in real-time, automate dispatch and route optimization, give customers live delivery ETAs, and provide management with operational analytics — all without requiring drivers to learn a complex system.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">The Challenge</div>
+    <h2>Operational Blind Spots</h2>
+    <div class="cs-grid">
+      <div class="cs-card challenge"><div class="cs-card-icon">📍</div><h4>Zero Fleet Visibility</h4><p>No GPS tracking. Dispatchers called drivers to check locations. During peak hours with 80+ vehicles on the road, this was impossible to manage.</p></div>
+      <div class="cs-card challenge"><div class="cs-card-icon">🗺️</div><h4>Manual Route Planning</h4><p>Routes were planned on paper maps each morning. No optimization for traffic, delivery windows, or vehicle capacity. Drivers frequently backtracked across the same areas.</p></div>
+      <div class="cs-card challenge"><div class="cs-card-icon">📱</div><h4>No Customer Communication</h4><p>Customers had no delivery ETAs. "Your package will arrive between 8am and 6pm" was the best they could offer. Missed delivery rate was 22%.</p></div>
+      <div class="cs-card challenge"><div class="cs-card-icon">📊</div><h4>No Performance Data</h4><p>No way to measure driver efficiency, route adherence, fuel costs per delivery, or identify bottlenecks. Growth decisions were based entirely on instinct.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Our Approach</div>
+    <h2>What We Built</h2>
+    <p>We designed a three-component system: a dispatcher web dashboard for fleet management, a lightweight driver mobile app for real-time tracking and proof of delivery, and a customer notification engine that sends live ETA updates via SMS.</p>
+
+    <div class="arch-block">
+      <h3>Platform Architecture</h3>
+      <div class="arch-layers">
+        <div class="arch-layer"><div class="arch-layer-icon">📱</div><div class="arch-layer-content"><div class="arch-layer-name">Driver Mobile App (React Native)</div><div class="arch-layer-desc">GPS tracking every 15 seconds, turn-by-turn navigation, proof of delivery (photo + signature), offline-capable queue.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">🔄</div><div class="arch-layer-content"><div class="arch-layer-name">Real-Time Event Bus (WebSocket + Redis Pub/Sub)</div><div class="arch-layer-desc">Location pings, delivery status updates, and alerts stream through a central event bus. Sub-second latency to dispatcher dashboard.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">🖥️</div><div class="arch-layer-content"><div class="arch-layer-name">Dispatcher Dashboard (React + Mapbox)</div><div class="arch-layer-desc">Live fleet map, drag-and-drop route assignment, delivery status board, alert center for delays and exceptions.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">🧠</div><div class="arch-layer-content"><div class="arch-layer-name">Route Optimization Engine</div><div class="arch-layer-desc">Automated route planning using delivery windows, vehicle capacity, traffic data, and geographical clustering. Re-optimizes dynamically on cancellations.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">📲</div><div class="arch-layer-content"><div class="arch-layer-name">Customer Notification Engine (Twilio SMS)</div><div class="arch-layer-desc">Automated ETA updates: "out for delivery", "15 minutes away", "delivered". Live tracking link per delivery.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Technology</div>
+    <h2>Tech Stack</h2>
+    <div class="tech-grid">
+      <div class="tech-tag"><span>⚛️</span> React.js</div>
+      <div class="tech-tag"><span>📱</span> React Native</div>
+      <div class="tech-tag"><span>🟢</span> Node.js</div>
+      <div class="tech-tag"><span>🐘</span> PostgreSQL</div>
+      <div class="tech-tag"><span>⚡</span> Redis Pub/Sub</div>
+      <div class="tech-tag"><span>🗺️</span> Mapbox GL</div>
+      <div class="tech-tag"><span>📲</span> Twilio SMS</div>
+      <div class="tech-tag"><span>☁️</span> AWS EC2 + S3</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Execution</div>
+    <h2>How We Delivered</h2>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-phase">Phase 1 — Weeks 1–4</div><div class="timeline-title">Core Tracking & Driver App</div><p class="timeline-desc">Built the React Native driver app with background GPS tracking, delivery checklist, and proof-of-delivery capture (photo + e-signature). Designed the real-time event pipeline using WebSockets and Redis Pub/Sub.</p></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-phase">Phase 2 — Weeks 5–10</div><div class="timeline-title">Dispatcher Dashboard & Live Map</div><p class="timeline-desc">Built the web dashboard with Mapbox integration showing all vehicles in real-time. Drag-and-drop route assignment, delivery status board with color-coded states, and exception alerts for late or failed deliveries.</p></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-phase">Phase 3 — Weeks 11–16</div><div class="timeline-title">Route Optimization & Customer Notifications</div><p class="timeline-desc">Implemented route optimization engine using geographical clustering and delivery window constraints. Integrated Twilio for automated SMS notifications with live tracking links for each delivery.</p></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-phase">Phase 4 — Weeks 17–20</div><div class="timeline-title">Analytics & Pilot Rollout</div><p class="timeline-desc">Built management analytics dashboard — deliveries per route, driver efficiency scores, fuel cost analysis, on-time percentage. Piloted with 50 vehicles, then rolled out to the full 350+ fleet over 3 weeks.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Results</div>
+    <h2>The Impact</h2>
+    <div class="results-grid">
+      <div class="result-card"><div class="result-before">Missed delivery rate</div><div class="result-after">22% → 13%</div><div class="result-label">40% reduction in failed deliveries</div></div>
+      <div class="result-card"><div class="result-before">Route efficiency</div><div class="result-after">+28% more stops</div><div class="result-label">Same fleet, more deliveries per day</div></div>
+      <div class="result-card"><div class="result-before">Customer ETA accuracy</div><div class="result-after">30-min window</div><div class="result-label">Down from "8am to 6pm" estimates</div></div>
+      <div class="result-card"><div class="result-before">Dispatcher call volume</div><div class="result-after">-85%</div><div class="result-label">No more "where are you?" calls to drivers</div></div>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    <div class="quote-text">"Our dispatchers used to spend half the day on the phone tracking down drivers. Now they can see every vehicle, every delivery, and every exception in real-time. It's a completely different operation."</div>
+    <div class="quote-author">— VP of Operations, Logistics Company</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Key Takeaways</div>
+    <h2>What Made This Work</h2>
+    <p>The biggest technical challenge wasn't GPS tracking — that's straightforward. It was handling 350+ vehicles sending location pings every 15 seconds while simultaneously recalculating ETAs for thousands of active deliveries. Redis Pub/Sub as the event bus was the right call — it gave us the throughput for real-time updates without overwhelming the PostgreSQL database with write operations.</p>
+    <p>On the driver side, the app had to work in areas with poor cellular coverage. We built an offline queue that stores delivery completions and location data locally, then syncs when connectivity returns. This meant zero lost data even in rural delivery zones.</p>
+  </div>
+
+  <div class="cta-section">
+    <h2>Building a Logistics Platform?</h2>
+    <p>We help logistics companies build real-time tracking, dispatch, and delivery management systems. Let's talk.</p>
+    <a href="#" class="cta-btn">Schedule a Free Consultation →</a>
+  </div>
+
+  <div class="image-prompt">
+    <h3>🎨 AI Image Prompt — Hero Image</h3>
+    <pre>Professional tech case study hero image for logistics fleet management platform. Dark warm brown-black background (#1a0f05). Clean isometric 3D visualization showing a city map grid with multiple delivery truck icons on roads, connected by glowing orange route lines. Central dispatch dashboard screen showing a live map with vehicle dots. GPS signal waves emanating from trucks. Package icons at delivery points. Subtle orange and amber glow effects. Modern, corporate, premium B2B logistics aesthetic. No text. No people. Ultra clean, minimal, futuristic fleet tracking visualization. Landscape 16:9 ratio. High contrast.</pre>
+  </div>
+</div>
+
+</body>
+</html>

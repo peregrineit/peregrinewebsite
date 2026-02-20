@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study — Self-Storage Management SaaS | Peregrine IT Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf8; --ink: #111; --subtle: #6b6b6b; --accent: #7c3aed; --accent-light: #f3edff;
+    --accent-soft: #a78bfa; --border: #e2e2dd; --card: #fff; --dark-bg: #0f0a1a;
+    --dark-card: #1a1228; --green: #16a34a; --green-bg: #ecfdf5; --red: #dc2626; --red-bg: #fef2f2;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  .hero { background: var(--dark-bg); color: #fff; padding: 80px 24px 60px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 600px 400px at 80% 20%, rgba(124,58,237,0.15), transparent), radial-gradient(ellipse 400px 300px at 20% 80%, rgba(167,139,250,0.08), transparent); pointer-events: none; }
+  .hero-inner { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(124,58,237,0.2); border: 1px solid rgba(124,58,237,0.3); border-radius: 100px; padding: 6px 16px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #c4b5fd; margin-bottom: 28px; }
+  .hero-badge span { width: 6px; height: 6px; background: var(--accent-soft); border-radius: 50%; }
+  .hero h1 { font-family: 'Instrument Serif', serif; font-size: clamp(36px, 5.5vw, 56px); line-height: 1.12; font-weight: 400; max-width: 780px; margin-bottom: 20px; letter-spacing: -0.02em; }
+  .hero h1 em { font-style: italic; color: var(--accent-soft); }
+  .hero-sub { font-size: 17px; color: #9ca3af; max-width: 600px; line-height: 1.65; margin-bottom: 36px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 32px; }
+  .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .hero-meta-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #6b7280; font-weight: 600; }
+  .hero-meta-value { font-size: 14px; font-weight: 600; color: #e5e7eb; }
+
+  .content { max-width: 760px; margin: 0 auto; padding: 72px 24px 100px; }
+  .section { margin-bottom: 64px; }
+  .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .section-label::before { content: ''; width: 18px; height: 2px; background: var(--accent); border-radius: 1px; }
+  h2 { font-family: 'Instrument Serif', serif; font-size: clamp(26px, 3.5vw, 36px); font-weight: 400; line-height: 1.2; margin-bottom: 20px; letter-spacing: -0.01em; }
+  p { color: #444; margin-bottom: 16px; font-size: 15.5px; line-height: 1.75; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 48px 0; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px 20px; text-align: center; transition: transform 0.2s, box-shadow 0.2s; }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
+  .stat-number { font-family: 'Instrument Serif', serif; font-size: 38px; font-weight: 400; color: var(--ink); line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 12px; color: var(--subtle); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .cs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 28px 0; }
+  .cs-card { border-radius: 14px; padding: 28px 24px; border: 1px solid; }
+  .cs-card.challenge { background: var(--red-bg); border-color: #fecaca; }
+  .cs-card.solution { background: var(--green-bg); border-color: #bbf7d0; }
+  .cs-card-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 14px; font-weight: 700; }
+  .challenge .cs-card-icon { background: #fee2e2; color: var(--red); }
+  .solution .cs-card-icon { background: #dcfce7; color: var(--green); }
+  .cs-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--ink); }
+  .cs-card p { font-size: 13.5px; line-height: 1.6; color: #555; margin-bottom: 0; }
+
+  .arch-block { background: var(--dark-bg); border-radius: 16px; padding: 40px 32px; margin: 32px 0; color: #e5e7eb; position: relative; overflow: hidden; }
+  .arch-block::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 30%, rgba(124,58,237,0.12), transparent 60%); pointer-events: none; }
+  .arch-block h3 { font-family: 'Instrument Serif', serif; font-size: 22px; font-weight: 400; margin-bottom: 28px; position: relative; color: #fff; }
+  .arch-layers { display: flex; flex-direction: column; gap: 12px; position: relative; }
+  .arch-layer { display: flex; align-items: center; gap: 16px; background: var(--dark-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 16px 20px; }
+  .arch-layer-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.25); }
+  .arch-layer-name { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color: #c4b5fd; margin-bottom: 2px; }
+  .arch-layer-desc { font-size: 13px; color: #9ca3af; line-height: 1.5; }
+  .arch-arrow { text-align: center; color: #374151; font-size: 18px; line-height: 1; }
+
+  .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin: 24px 0; }
+  .tech-tag { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 10px; font-size: 13.5px; font-weight: 600; color: var(--ink); transition: border-color 0.2s; }
+  .tech-tag:hover { border-color: var(--accent); }
+  .tech-tag span { font-size: 20px; }
+
+  .timeline { margin: 32px 0; position: relative; padding-left: 32px; }
+  .timeline::before { content: ''; position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: var(--border); border-radius: 1px; }
+  .timeline-item { position: relative; margin-bottom: 32px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-dot { position: absolute; left: -28px; top: 4px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--accent); background: var(--bg); }
+  .timeline-phase { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .timeline-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--ink); }
+  .timeline-desc { font-size: 13.5px; color: #666; line-height: 1.6; margin-bottom: 0; }
+
+  .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .result-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; position: relative; overflow: hidden; }
+  .result-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); border-radius: 3px 3px 0 0; }
+  .result-before { font-size: 12px; color: var(--subtle); font-weight: 500; margin-bottom: 4px; }
+  .result-after { font-family: 'Instrument Serif', serif; font-size: 28px; color: var(--green); margin-bottom: 4px; line-height: 1.2; }
+  .result-label { font-size: 13px; font-weight: 600; color: var(--ink); }
+
+  .quote-block { background: var(--accent-light); border-left: 4px solid var(--accent); border-radius: 0 14px 14px 0; padding: 28px 32px; margin: 40px 0; }
+  .quote-text { font-family: 'Instrument Serif', serif; font-size: 20px; font-style: italic; line-height: 1.5; color: var(--ink); margin-bottom: 12px; }
+  .quote-author { font-size: 13px; font-weight: 600; color: var(--accent); }
+
+  .cta-section { background: var(--dark-bg); border-radius: 20px; padding: 56px 40px; text-align: center; margin-top: 56px; position: relative; overflow: hidden; }
+  .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(124,58,237,0.2), transparent 60%); pointer-events: none; }
+  .cta-section h2 { font-family: 'Instrument Serif', serif; font-size: 32px; color: #fff; margin-bottom: 12px; position: relative; }
+  .cta-section p { color: #9ca3af; margin-bottom: 28px; position: relative; }
+  .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; border: none; border-radius: 12px; padding: 16px 36px; font-size: 15px; font-weight: 700; font-family: 'Manrope', sans-serif; cursor: pointer; transition: background 0.2s, transform 0.15s; position: relative; text-decoration: none; }
+  .cta-btn:hover { background: #6d28d9; transform: translateY(-1px); }
+
+  .image-prompt { background: #fffbeb; border: 1px solid #fde68a; border-radius: 14px; padding: 28px 24px; margin: 48px 0 0; }
+  .image-prompt h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #92400e; }
+  .image-prompt pre { background: #fef3c7; border-radius: 10px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #78350f; white-space: pre-wrap; word-break: break-word; }
+
+  @media (max-width: 768px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .cs-grid, .results-grid { grid-template-columns: 1fr; }
+    .hero { padding: 60px 20px 40px; }
+    .content { padding: 56px 20px 80px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span> Case Study</div>
+    <h1>Building a Self-Storage <em>Management SaaS</em> from Ground Up</h1>
+    <p class="hero-sub">How we built a complete facility management platform with unit booking, smart access control, automated billing, and real-time occupancy tracking for operators across Europe.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><div class="hero-meta-label">Industry</div><div class="hero-meta-value">Self-Storage / PropTech</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-label">Duration</div><div class="hero-meta-value">6 Months</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-label">Services</div><div class="hero-meta-value">Full-Stack · IoT · SaaS</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-label">Market</div><div class="hero-meta-value">Europe & UK</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="content">
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-number">45+</div><div class="stat-label">Facilities Live</div></div>
+    <div class="stat-card"><div class="stat-number">12K+</div><div class="stat-label">Units Managed</div></div>
+    <div class="stat-card"><div class="stat-number">92%</div><div class="stat-label">Avg Occupancy</div></div>
+    <div class="stat-card"><div class="stat-number">€0</div><div class="stat-label">Manual Billing Errors</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Overview</div>
+    <h2>The Operator's Problem</h2>
+    <p>A fast-growing self-storage operator managing 15 facilities across Spain and the UK was running their entire operation on spreadsheets, manual invoicing, and a patchwork of disconnected tools. Unit availability was tracked on whiteboards. Access codes were handed out on paper. Billing errors were costing them thousands every month.</p>
+    <p>They needed a centralized SaaS platform that could handle everything — from a customer booking a unit online to automated monthly billing, smart access control, and real-time occupancy dashboards — across all their locations from a single admin panel.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">The Challenge</div>
+    <h2>What Needed Fixing</h2>
+    <div class="cs-grid">
+      <div class="cs-card challenge"><div class="cs-card-icon">📋</div><h4>Manual Unit Management</h4><p>Staff tracked availability on spreadsheets. Double-bookings happened weekly. No visibility into which units were vacant, reserved, or overdue across facilities.</p></div>
+      <div class="cs-card challenge"><div class="cs-card-icon">🔐</div><h4>No Digital Access Control</h4><p>Physical keys and paper access codes. No audit trail of who entered when. Lost keys meant expensive lock replacements and security concerns.</p></div>
+      <div class="cs-card challenge"><div class="cs-card-icon">💳</div><h4>Billing Chaos</h4><p>Manual invoicing in Excel. Late payment follow-ups done by email. No automatic proration for mid-month move-ins. Revenue leakage estimated at 8-12% monthly.</p></div>
+      <div class="cs-card challenge"><div class="cs-card-icon">📊</div><h4>Zero Operational Visibility</h4><p>No centralized dashboard. Owners had to call each facility manager to get occupancy numbers. Business decisions were based on gut feeling, not data.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Our Approach</div>
+    <h2>The Platform We Built</h2>
+    <p>We designed a multi-tenant SaaS platform where each facility operates independently but rolls up into a single owner dashboard. The system handles the full tenant lifecycle — from online booking through move-in, monthly billing, access management, and eventually move-out.</p>
+
+    <div class="arch-block">
+      <h3>System Architecture</h3>
+      <div class="arch-layers">
+        <div class="arch-layer"><div class="arch-layer-icon">🌐</div><div class="arch-layer-content"><div class="arch-layer-name">Customer-Facing Booking Portal</div><div class="arch-layer-desc">White-label websites per facility. Real-time unit availability, size comparison, instant online reservations.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">🏢</div><div class="arch-layer-content"><div class="arch-layer-name">Facility Management Dashboard</div><div class="arch-layer-desc">Visual unit maps, tenant management, move-in/move-out workflows, maintenance tracking per location.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">💳</div><div class="arch-layer-content"><div class="arch-layer-name">Automated Billing Engine</div><div class="arch-layer-desc">Stripe integration. Auto-invoicing, proration, late fee calculation, failed payment retries, dunning emails.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">🔐</div><div class="arch-layer-content"><div class="arch-layer-name">Smart Access Control Layer</div><div class="arch-layer-desc">IoT gate integration. Unique digital access codes per tenant. Auto-revoke on non-payment. Full access audit log.</div></div></div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer"><div class="arch-layer-icon">📊</div><div class="arch-layer-content"><div class="arch-layer-name">Owner Analytics Dashboard</div><div class="arch-layer-desc">Cross-facility occupancy, revenue, churn rates, forecasting. Real-time KPIs across all locations.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Technology</div>
+    <h2>Tech Stack</h2>
+    <div class="tech-grid">
+      <div class="tech-tag"><span>⚛️</span> React.js</div>
+      <div class="tech-tag"><span>🟢</span> Node.js</div>
+      <div class="tech-tag"><span>🐘</span> PostgreSQL</div>
+      <div class="tech-tag"><span>⚡</span> Redis</div>
+      <div class="tech-tag"><span>💳</span> Stripe API</div>
+      <div class="tech-tag"><span>🔐</span> IoT / MQTT</div>
+      <div class="tech-tag"><span>☁️</span> AWS</div>
+      <div class="tech-tag"><span>📧</span> SendGrid</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Execution</div>
+    <h2>How We Delivered</h2>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-phase">Phase 1 — Weeks 1–4</div><div class="timeline-title">Core Platform & Unit Management</div><p class="timeline-desc">Built multi-tenant database schema, facility setup workflows, visual unit mapping interface, and tenant CRUD operations. Each facility gets isolated data with shared owner-level reporting.</p></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-phase">Phase 2 — Weeks 5–10</div><div class="timeline-title">Booking Portal & Billing Automation</div><p class="timeline-desc">Customer-facing booking flow with real-time availability checks. Stripe integration for recurring billing, automatic proration, late fees, and failed payment retry logic with configurable dunning sequences.</p></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-phase">Phase 3 — Weeks 11–18</div><div class="timeline-title">Access Control & IoT Integration</div><p class="timeline-desc">Integrated with facility gate controllers via MQTT protocol. Each tenant receives a unique digital access code on move-in. Codes auto-revoke when payment lapses. Full entry/exit audit trail per unit.</p></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-phase">Phase 4 — Weeks 19–24</div><div class="timeline-title">Analytics, Optimization & Rollout</div><p class="timeline-desc">Owner-level dashboard with cross-facility KPIs, occupancy heatmaps, revenue forecasting, and churn analysis. Staged rollout across all 15 facilities with staff training and onboarding support.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Results</div>
+    <h2>The Impact</h2>
+    <div class="results-grid">
+      <div class="result-card"><div class="result-before">Billing errors per month</div><div class="result-after">€4,200 → €0</div><div class="result-label">100% automated invoicing accuracy</div></div>
+      <div class="result-card"><div class="result-before">Online booking rate</div><div class="result-after">0% → 68%</div><div class="result-label">Customers self-serve without calling</div></div>
+      <div class="result-card"><div class="result-before">Occupancy visibility</div><div class="result-after">Real-time</div><div class="result-label">Across all 45 facilities instantly</div></div>
+      <div class="result-card"><div class="result-before">Admin time per facility</div><div class="result-after">-70%</div><div class="result-label">Staff freed for customer service</div></div>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    <div class="quote-text">"We went from managing everything on spreadsheets to having a real-time view of every unit, every tenant, and every payment across all our locations. It completely changed how we operate."</div>
+    <div class="quote-author">— Operations Director, Self-Storage Operator</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Key Takeaways</div>
+    <h2>What Made This Work</h2>
+    <p>Self-storage software often fails because it treats facility management as a simple CRUD problem. The real complexity is in the lifecycle automation — what happens when a payment fails on day 15, the tenant's access needs to be restricted on day 20, a late fee needs to apply on day 30, and the unit needs to be flagged for lien processing on day 60. Getting that workflow engine right is what separates a prototype from a production SaaS.</p>
+    <p>The multi-tenant architecture was critical. Each facility operates with its own pricing rules, unit types, access schedules, and billing cycles — but the owner sees everything rolled up into unified reporting. This balance between local autonomy and centralized visibility is what operators actually need.</p>
+  </div>
+
+  <div class="cta-section">
+    <h2>Building a Self-Storage Platform?</h2>
+    <p>We help storage operators digitize their facilities with custom SaaS solutions. Let's talk.</p>
+    <a href="#" class="cta-btn">Schedule a Free Consultation →</a>
+  </div>
+
+  <div class="image-prompt">
+    <h3>🎨 AI Image Prompt — Hero Image</h3>
+    <pre>Professional tech case study hero image for self-storage management SaaS platform. Dark purple-navy background (#0f0a1a). Clean isometric 3D visualization showing a grid of storage units in rows, some highlighted green (occupied) and some blue (available). A central dashboard screen floating above showing occupancy charts and billing data. Digital lock icons on unit doors. Connected lines flowing from units to a cloud server. Subtle purple and white glow effects. Modern, corporate, premium B2B SaaS aesthetic. No text. No people. Ultra clean, minimal, futuristic facility management visualization. Landscape 16:9 ratio. High contrast.</pre>
+  </div>
+</div>
+
+</body>
+</html>

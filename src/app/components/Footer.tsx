@@ -47,6 +47,7 @@ export default function Footer() {
     const popup = document.getElementById('contact-popup');
     const openBtn = document.getElementById('lets-talk-btn');
     const closeBtn = document.getElementById('close-popup');
+    const extraOpenBtns = document.querySelectorAll('[data-open-contact]');
 
     const handleOpen = (e: any) => {
       e.preventDefault();
@@ -66,6 +67,7 @@ export default function Footer() {
     };
 
     if (openBtn) openBtn.addEventListener('click', handleOpen);
+    extraOpenBtns.forEach(btn => btn.addEventListener('click', handleOpen));
     if (closeBtn) closeBtn.addEventListener('click', handleClose);
     if (popup) popup.addEventListener('click', handleOutsideClick);
 
@@ -98,6 +100,7 @@ export default function Footer() {
 
     return () => {
       if (openBtn) openBtn.removeEventListener('click', handleOpen);
+      extraOpenBtns.forEach(btn => btn.removeEventListener('click', handleOpen));
       if (closeBtn) closeBtn.removeEventListener('click', handleClose);
       if (popup) popup.removeEventListener('click', handleOutsideClick);
       if (qpOpenBtn) qpOpenBtn.removeEventListener('click', handleQpOpen);
