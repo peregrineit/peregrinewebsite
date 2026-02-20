@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import "./css/normalize.css";
 import "./css/components.css";
 import "./css/peregrine.css";
+import "./css/popup-overlay.css";
 
 // Tailwind last as it was last in the HTML <head>
 import "./globals.css";
