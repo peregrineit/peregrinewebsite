@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { appendFileSync } from "fs";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return null;
+  return new Resend(apiKey);
+}
 
 interface LeadData {
   name: string;
@@ -28,6 +32,9 @@ function logLead(data: LeadData) {
 }
 
 async function sendNotificationEmail(data: LeadData) {
+  const resend = getResend();
+  if (!resend) return;
+
   const { name, email, company, budget, projectType, message, pageUrl } = data;
 
   const body = `
@@ -53,6 +60,9 @@ ${message}
 }
 
 async function sendAutoReply(email: string, name: string) {
+  const resend = getResend();
+  if (!resend) return;
+
   await resend.emails.send({
     from: "Peregrine IT <onboarding@resend.dev>",
     to: email,
