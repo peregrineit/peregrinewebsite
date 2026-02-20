@@ -20,42 +20,45 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white backdrop-blur-md border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 md:py-5 flex items-center justify-between gap-3">
-        <Link href="/" className="flex-shrink-0" onClick={() => setMenuOpen(false)}>
-          <img src="/images/peregrine-logo-new.png" alt="Peregrine IT" className="h-7 md:h-10 w-auto" />
-        </Link>
-
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map(({ href, label }) => (
-            <Link key={href} href={href}
-              className="transition-colors cursor-pointer font-medium text-sm uppercase tracking-wider !text-slate-800 hover:!text-cyan-600 !no-underline">
-              {label}
-            </Link>
-          ))}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 md:py-5">
+        {/* Mobile: logo centered, hamburger right */}
+        <div className="flex md:hidden items-center">
+          <div className="flex-1 min-w-0" />
+          <Link href="/" className="flex-shrink-0" onClick={() => setMenuOpen(false)}>
+            <img src="/images/peregrine-logo-new.png" alt="Peregrine IT" className="h-9 w-auto" />
+          </Link>
+          <div className="flex-1 flex justify-end min-w-0">
+            <button
+              type="button"
+              aria-label="Open menu"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen(true)}
+              className="p-2 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-700 hover:text-cyan-600 hover:bg-slate-100 rounded-lg transition-colors"
+            >
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
         </div>
 
-        {/* Desktop CTA */}
-        <a href="#" id="lets-talk-btn"
-          className="hidden md:inline-flex px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all whitespace-nowrap cursor-pointer font-medium text-sm shadow-lg shadow-cyan-500/30 !no-underline">
-          Book a Strategy Call
-        </a>
-
-        {/* Mobile: hamburger + compact CTA */}
-        <div className="flex md:hidden items-center gap-2 flex-shrink-0">
-          <a href="#" data-open-contact
-            className="px-3 py-1.5 text-xs font-medium bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg whitespace-nowrap !no-underline">
-            Book Call
+        {/* Desktop: logo left, nav center, CTA right */}
+        <div className="hidden md:flex items-center justify-between">
+          <Link href="/" className="flex-shrink-0" onClick={() => setMenuOpen(false)}>
+            <img src="/images/peregrine-logo-new.png" alt="Peregrine IT" className="h-10 w-auto" />
+          </Link>
+          <div className="flex items-center gap-8">
+            {navLinks.map(({ href, label }) => (
+              <Link key={href} href={href}
+                className="transition-colors cursor-pointer font-medium text-sm uppercase tracking-wider !text-slate-800 hover:!text-cyan-600 !no-underline">
+                {label}
+              </Link>
+            ))}
+          </div>
+          <a href="#" id="lets-talk-btn"
+            className="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all whitespace-nowrap cursor-pointer font-medium text-sm shadow-lg shadow-cyan-500/30 !no-underline">
+            Book a Strategy Call
           </a>
-          <button
-            type="button"
-            aria-label="Open menu"
-            onClick={() => setMenuOpen(true)}
-            className="p-2 -mr-2 text-slate-700 hover:text-cyan-600 hover:bg-slate-100 rounded-lg transition-colors">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
         </div>
       </div>
 

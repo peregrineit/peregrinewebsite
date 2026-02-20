@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import MobileFloatingButtons from "./components/MobileFloatingButtons";
 
 // Import CSS in order matching original HTML to preserve cascade
 import "./css/normalize.css";
@@ -124,6 +125,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <MobileFloatingButtons />
 
         {/* Scripts from original HTML */}
         <Script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" strategy="beforeInteractive" />
