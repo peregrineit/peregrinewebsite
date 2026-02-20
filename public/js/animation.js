@@ -1,14 +1,13 @@
 // animated fading text -------------------------------------------------------------------
 // Function to handle animation when text comes into view
+let observer;
 function animateText(entry) {
     if (entry.isIntersecting) {
         const textWrapper = entry.target;
         textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
-        anime.timeline({
-            loop: false
-        })
+        anime.timeline({ loop: false })
             .add({
-                targets: '.letter',
+                targets: textWrapper.querySelectorAll('.letter'),
                 translateX: [40, 0],
                 translateZ: 0,
                 opacity: [0, 1],
@@ -16,20 +15,13 @@ function animateText(entry) {
                 duration: 800,
                 delay: (el, i) => 40 + 30 * i
             });
-        // Unobserve the element after animating so it doesn't repeat
         observer.unobserve(textWrapper);
     }
 }
-// Create a new IntersectionObserver instance
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(animateText);
-}, {
-    threshold: 0
-}); // Adjust threshold as needed
-// Observe all elements with the class 'animation3'
-document.querySelectorAll('.txtanimation3').forEach((element) => {
-    observer.observe(element);
-});
+function initTxtAnimation() {
+    observer = new IntersectionObserver((entries) => entries.forEach(animateText), { threshold: 0 });
+    document.querySelectorAll('.txtanimation3').forEach((el) => observer.observe(el));
+}
 
 // Animate SVG Paths --------------------------------------------------------------------
 $(document).ready(function () {
@@ -121,10 +113,16 @@ class Item {
     constructor(DOM_el) {
         this.DOM.el = DOM_el;
         this.DOM.deco = this.DOM.el.querySelector('.grid__item-img-deco');
-        // calculates initial size and position
         this.calculateSizePosition();
-        // sets up event listeners
         this.initEvents();
+        // On touch/mobile (no hover), show deco directly with centered mask
+        if (this.DOM.deco && window.matchMedia('(hover: none)').matches) {
+            this.DOM.deco.innerHTML = this.randomString;
+            const cx = this.rect.width / 2;
+            const cy = this.rect.height / 2;
+            gsap.set(this.DOM.el, { '--x': cx + 'px', '--y': cy + 'px' });
+            gsap.set(this.DOM.deco, { opacity: 1 });
+        }
     }
     // Calculate and store the current scroll 
     // position and size/position of the DOM element
@@ -222,7 +220,9 @@ class Item {
         this.loopRender();
     }
 }
-[...document.querySelectorAll('.grid__item > .grid__item-img')].forEach(img => new Item(img));
+function initGridItems() {
+    document.querySelectorAll('.grid__item > .grid__item-img').forEach((img) => new Item(img));
+}
 
 // Count Up
 jQuery(document).ready(function ($) {
@@ -327,16 +327,31 @@ const phrases = [
     'Product Design',
     'Full-Stack Development',
     'AI Services'
-]
-const el = document.querySelector('.scramble-text')
-if (el) {
-    const fx = new TextScramble(el)
-    let counter = 0
-    const next = () => {
-        fx.setText(phrases[counter]).then(() => {
-            setTimeout(next, 800)
-        })
-        counter = (counter + 1) % phrases.length
+];
+function initScrambleText() {
+    const el = document.querySelector('.scramble-text');
+    if (el) {
+        const fx = new TextScramble(el);
+        let counter = 0;
+        const next = () => {
+            fx.setText(phrases[counter]).then(() => setTimeout(next, 800));
+            counter = (counter + 1) % phrases.length;
+        };
+        next();
     }
-    next()
+}
+
+// Run all init after load + delay so React hydration completes (fixes first-load animation issues)
+function runAnimations() {
+    initTxtAnimation();
+    initGridItems();
+    initScrambleText();
+}
+function scheduleAnimations() {
+    setTimeout(runAnimations, 200);
+}
+if (document.readyState === 'complete') {
+    scheduleAnimations();
+} else {
+    window.addEventListener('load', scheduleAnimations);
 }

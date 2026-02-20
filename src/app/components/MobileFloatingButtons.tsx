@@ -6,11 +6,7 @@ export default function MobileFloatingButtons() {
   return (
     <div
       className="fixed bottom-0 left-0 right-0 z-40 md:hidden flex gap-3 px-4 pb-3 pt-2"
-      style={{
-        paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 10px))',
-        backgroundColor: 'rgba(255,255,255,0.95)',
-        boxShadow: '0 -4px 20px rgba(0,0,0,0.08)',
-      }}
+      style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 10px))' }}
     >
       <a
         href="#"

@@ -1142,7 +1142,7 @@ export default function Home() {
                 </div>
                 <div style={{ flex: '1 1 340px', background: 'rgba(255,255,255,0.04)', borderRadius: '12px', padding: '2rem', textAlign: 'center', border: '1px solid rgba(255,255,255,0.08)' }}>
                   <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1rem' }}>Need a specific integration, fix, or automation</p>
-                  <a href="#" id="quick-project-btn"
+                  <a href="#" id="quick-project-btn" data-open-quick-project
                     className="cta-primary dark blue w-inline-block" style={{ display: 'inline-flex', marginBottom: '1rem' }}>
                     <div className="cta-label">Request a Quick Project Quote</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                       fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"

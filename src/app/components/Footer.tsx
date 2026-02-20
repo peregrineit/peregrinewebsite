@@ -75,6 +75,7 @@ export default function Footer() {
     const qpCloseBtn = document.getElementById('close-quick-popup');
     const qpOpenBtn = document.getElementById('quick-project-btn-footer');
     const qpOpenBtnCol = document.getElementById('quick-project-btn-footer-col');
+    const qpOpenBtns = document.querySelectorAll('[data-open-quick-project], #quick-project-btn');
 
     const handleQpOpen = (e: any) => {
       e.preventDefault();
@@ -95,6 +96,7 @@ export default function Footer() {
 
     if (qpOpenBtn) qpOpenBtn.addEventListener('click', handleQpOpen);
     if (qpOpenBtnCol) qpOpenBtnCol.addEventListener('click', handleQpOpen);
+    qpOpenBtns.forEach((btn) => btn.addEventListener('click', handleQpOpen));
     if (qpCloseBtn) qpCloseBtn.addEventListener('click', handleQpClose);
     if (qpPopup) qpPopup.addEventListener('click', handleQpOutsideClick);
 
@@ -105,6 +107,7 @@ export default function Footer() {
       if (popup) popup.removeEventListener('click', handleOutsideClick);
       if (qpOpenBtn) qpOpenBtn.removeEventListener('click', handleQpOpen);
       if (qpOpenBtnCol) qpOpenBtnCol.removeEventListener('click', handleQpOpen);
+      qpOpenBtns.forEach((btn) => btn.removeEventListener('click', handleQpOpen));
       if (qpCloseBtn) qpCloseBtn.removeEventListener('click', handleQpClose);
       if (qpPopup) qpPopup.removeEventListener('click', handleQpOutsideClick);
     };
