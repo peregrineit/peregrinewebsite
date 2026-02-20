@@ -275,7 +275,7 @@ export default function Home() {
             </div>
             <div className="grid">
               <div className="grid__item">
-                <a href="#" className="grid__item-img w-inline-block">
+                <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about Product Architecture & Prototyping">
                   <div className="iconx_component">
                     <div className="iconx_screen is-radar">
                       <div className="iconx_radar">
@@ -323,7 +323,7 @@ export default function Home() {
                 </div>
               </div>
               <div id="w-node-_0f6253c9-ec94-a38c-1516-7c75675ef41d-098fe091" className="grid__item">
-                <a href="#" className="grid__item-img w-inline-block">
+                <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about SaaS & Platform Engineering">
                   <div id="w-node-_0f6253c9-ec94-a38c-1516-7c75675ef41f-098fe091" className="iconx_component">
                     <div data-w-id="0f6253c9-ec94-a38c-1516-7c75675ef420" className="iconx_screen is-speaker">
                       <div className="loader_component">
@@ -368,7 +368,7 @@ export default function Home() {
                 </div>
               </div>
               <div id="w-node-ec268015-87b7-7bec-e74d-d8b979ff626c-098fe091" className="grid__item">
-                <a href="#" className="grid__item-img w-inline-block">
+                <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about Systems Integration & Data Pipelines">
                   <div className="iconx_component">
                     <div className="iconx_top-bar-wrap">
                       <div className="iconx_tip-bar">
@@ -428,7 +428,7 @@ export default function Home() {
                 </div>
               </div>
               <div id="w-node-_11afe82e-c384-13e8-e364-3e6e558d1844-098fe091" className="grid__item">
-                <a href="#" className="grid__item-img w-inline-block">
+                <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about Cloud Performance & DevOps">
                   <div id="w-node-_11afe82e-c384-13e8-e364-3e6e558d1846-098fe091" className="iconx_component---nnofle"><img
                     src="/images/updateicon.svg" loading="lazy" data-w-id="20085b6b-40e9-5543-2650-533d1fdece93" alt=""
                     className="image-6" /><img src="/images/lap.svg" loading="lazy" alt="" className="image-7" /></div>
@@ -467,7 +467,7 @@ export default function Home() {
                 </div>
               </div>
               <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520b-098fe091" className="grid__item">
-                <a href="#" className="grid__item-img w-inline-block">
+                <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about AI & Intelligent Automation">
                   <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520d-098fe091" className="iconx_component"><img
                     src="/images/ai-gif.gif" loading="lazy" alt="" className="image-5" /></div>
                   <div className="grid__item-img-deco"></div>
@@ -507,7 +507,7 @@ export default function Home() {
               </div>
               <div id="w-node-_762728e3-2fcf-7363-3693-f41c1c075e2c-098fe091"
                 data-w-id="762728e3-2fcf-7363-3693-f41c1c075e2c" className="grid__item">
-                <a href="#" className="grid__item-img w-inline-block">
+                <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about Workflow Automation & Internal Tools">
                   <div className="iconx_component">
                     <div className="iconx_screen is-radar">
                       <div className="radar-dot"></div>
@@ -657,21 +657,21 @@ export default function Home() {
                 <span className="testimonial-category">Performance Optimization</span>
                 <a href="https://www.easyagentpro.com" target="_blank" rel="noopener noreferrer"><img src="/logos/easyagentpro.webp" alt="Easy Agent PRO" className="testimonial-logo logo-dark-bg" /></a>
                 <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;We brought them in to fix performance bottlenecks across our all-in-one CRM. They optimized page loads, fixed the lead ingestion pipeline so leads flow directly into marketing sequences, and tightened up the overall system architecture. Agents on our platform started capturing more leads simply because the forms and pages stopped lagging. The full optimization was completed in a single sprint cycle.&rdquo;</p>
-                <p style={{ color: '#0891b2', fontSize: '0.85rem', fontWeight: '600' }}>Josh Keeton</p>
+                <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Josh Keeton</p>
                 <p style={{ color: '#64748b', fontSize: '0.8rem' }}>CEO, Easy Agent PRO</p>
               </div>
               <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="testimonial-category">Lead Automation System</span>
                 <a href="https://www.brokerlinx.com" target="_blank" rel="noopener noreferrer"><img src="/logos/brokerlinx.jpg" alt="BrokerLinx" className="testimonial-logo" /></a>
                 <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;We were drowning in inbound leads with no structured way to route or follow up on them. The team built a custom automation layer on top of our CRM — auto-assigning leads, triggering follow-up sequences, and giving agents mobile access to their pipeline. Response time dropped from hours to minutes. They delivered two weeks ahead of schedule and came in under budget.&rdquo;</p>
-                <p style={{ color: '#0891b2', fontSize: '0.85rem', fontWeight: '600' }}>William Betancourt</p>
+                <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>William Betancourt</p>
                 <p style={{ color: '#64748b', fontSize: '0.8rem' }}>Founder, BrokerLinx</p>
               </div>
               <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="testimonial-category">SaaS Platform Rebuild</span>
                 <a href="https://www.kypiq.com" target="_blank" rel="noopener noreferrer"><img src="/logos/kypiq.png" alt="Kypiq" className="testimonial-logo" /></a>
                 <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;Our legacy self-storage platform required manual intervention for most access and billing tasks. Peregrine rebuilt it as a fully automated 24/7-access system — eliminating the manual workflow entirely and cutting operational costs by roughly 40%. Page load times dropped to under a second, and we shipped the full rebuild in about 10 weeks.&rdquo;</p>
-                <p style={{ color: '#0891b2', fontSize: '0.85rem', fontWeight: '600' }}>Iván Palacios</p>
+                <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Iván Palacios</p>
                 <p style={{ color: '#64748b', fontSize: '0.8rem' }}>CEO, Kypiq</p>
               </div>
 
@@ -680,21 +680,21 @@ export default function Home() {
                 <span className="testimonial-category">High-Traffic Streaming Platform</span>
                 <a href="https://www.torrins.com" target="_blank" rel="noopener noreferrer"><img src="/logos/torrins-logo.svg" alt="Torrins" className="testimonial-logo logo-dark-bg" /></a>
                 <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;We needed our video streaming infrastructure to handle thousands of concurrent users without buffering or session drops. They re-architected the streaming pipeline and course portal — lesson load times went from several seconds to near-instant. We also added automated enrollment workflows and personalized learning paths, which removed most of the admin overhead our team was spending 15+ hours a week on.&rdquo;</p>
-                <p style={{ color: '#0891b2', fontSize: '0.85rem', fontWeight: '600' }}>Manpreet Singh</p>
+                <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Manpreet Singh</p>
                 <p style={{ color: '#64748b', fontSize: '0.8rem' }}>Co-Founder, Torrins</p>
               </div>
               <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="testimonial-category">Portal + CRM Integration</span>
                 <a href="https://www.bahiainternationalrealty.com" target="_blank" rel="noopener noreferrer"><img src="/logos/bahia-realty.png" alt="Bahia International Realty" className="testimonial-logo" /></a>
                 <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;We needed a property portal that could serve both international and local buyers, connected to our CRM and marketing stack. They built a fast-loading listing site with automated client-to-listing matching, which cut the manual search-and-send process our agents were doing daily. Operational costs dropped, and our agents reclaimed several hours per week. The system has been stable since launch with no unplanned downtime.&rdquo;</p>
-                <p style={{ color: '#0891b2', fontSize: '0.85rem', fontWeight: '600' }}>Raul Aleman</p>
+                <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Raul Aleman</p>
                 <p style={{ color: '#64748b', fontSize: '0.8rem' }}>Broker/Owner, Bahia International Realty</p>
               </div>
               <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="testimonial-category">High-Load Infrastructure</span>
                 <a href="https://www.searchrealty.ca" target="_blank" rel="noopener noreferrer"><img src="/logos/search-realty.png" alt="Search Realty" className="testimonial-logo" /></a>
                 <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;Our Leads on Demand product needed a backend that could handle large traffic spikes without dropping requests or slowing down. They built a scalable infrastructure layer integrated with our CRM — lead capture and nurture now happen in real time with zero delay. Conversion rates improved measurably because prospects aren’t waiting on slow pages. The platform has been handling peak loads cleanly since launch.&rdquo;</p>
-                <p style={{ color: '#0891b2', fontSize: '0.85rem', fontWeight: '600' }}>Sterling Wong</p>
+                <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Sterling Wong</p>
                 <p style={{ color: '#64748b', fontSize: '0.8rem' }}>Founder & CEO, Search Realty</p>
               </div>
             </div>
@@ -704,7 +704,7 @@ export default function Home() {
               <span className="testimonial-category">CRM Feature Expansion</span>
               <a href="https://www.mmnovatech.com" target="_blank" rel="noopener noreferrer"><img src="/logos/mmnovatech.png" alt="MM Nova Tech" className="testimonial-logo-featured" /></a>
               <p style={{ color: '#1e293b', fontSize: '1.1rem', lineHeight: '1.7', marginBottom: '1.25rem', fontStyle: 'italic' }}>&ldquo;We’re a SaaS company ourselves, so we had high standards for the team working on our platform. They integrated AI-driven lead scoring, email automation, and analytics dashboards directly into our CRM. System response times improved noticeably, and we can now support 3x the concurrent users on the same infrastructure. Development wrapped faster than our internal estimates, and their support team resolves issues same-day.&rdquo;</p>
-              <p style={{ color: '#0891b2', fontSize: '0.95rem', fontWeight: '600' }}>Deepak Kumar</p>
+              <p style={{ color: '#0e7490', fontSize: '0.95rem', fontWeight: '600' }}>Deepak Kumar</p>
               <p style={{ color: '#64748b', fontSize: '0.85rem' }}>CEO, MM Nova Tech</p>
             </div>
 

@@ -10,11 +10,37 @@ export default function Footer() {
     contact: false,
   });
 
+  const [formStatus, setFormStatus] = useState<{ loading: boolean; success: boolean; error: string }>({
+    loading: false, success: false, error: '',
+  });
+  const [qpFormStatus, setQpFormStatus] = useState<{ loading: boolean; success: boolean; error: string }>({
+    loading: false, success: false, error: '',
+  });
+
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
       ...prev,
       [section]: !prev[section]
     }));
+  };
+
+  const submitLead = async (formData: Record<string, string>, setStatus: typeof setFormStatus) => {
+    setStatus({ loading: true, success: false, error: '' });
+    try {
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, pageUrl: window.location.href }),
+      });
+      const json = await res.json();
+      if (res.ok && json.success) {
+        setStatus({ loading: false, success: true, error: '' });
+      } else {
+        setStatus({ loading: false, success: false, error: json.error || 'Something went wrong.' });
+      }
+    } catch {
+      setStatus({ loading: false, success: false, error: 'Network error. Please try again.' });
+    }
   };
 
   useEffect(() => {
@@ -121,7 +147,7 @@ export default function Footer() {
                 >
                   Book a Strategy Call &rarr;
                 </a>
-                <a href="#" id="quick-project-btn-footer" style={{ color: '#0891b2', fontSize: '0.8rem', marginTop: '0.5rem', display: 'block', textDecoration: 'none' }}>Have a smaller task? Submit a quick request &rarr;</a>
+                <a href="#" id="quick-project-btn-footer" style={{ color: '#0e7490', fontSize: '0.8rem', marginTop: '0.5rem', display: 'block', textDecoration: 'none' }}>Have a smaller task? Submit a quick request &rarr;</a>
 
               </div>
             </div>
@@ -131,7 +157,7 @@ export default function Footer() {
                 className="dfs-grid-1">
                 <div className="dfs-wrap-7 footer-section-item">
                   <div className="footer-section-header" onClick={() => toggleSection('services')}>
-                    <h3 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Services</h3>
+                    <h2 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Services</h2>
                     <button className="footer-accordion-btn" aria-label="Toggle services">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'transform 0.3s', transform: expandedSections.services ? 'rotate(180deg)' : 'rotate(0deg)' }}>
                         <polyline points="6 9 12 15 18 9"></polyline>
@@ -149,7 +175,7 @@ export default function Footer() {
                 </div>
                 <div className="dfs-wrap-7 footer-section-item">
                   <div className="footer-section-header" onClick={() => toggleSection('industries')}>
-                    <h3 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Industries</h3>
+                    <h2 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Industries</h2>
                     <button className="footer-accordion-btn" aria-label="Toggle industries">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'transform 0.3s', transform: expandedSections.industries ? 'rotate(180deg)' : 'rotate(0deg)' }}>
                         <polyline points="6 9 12 15 18 9"></polyline>
@@ -165,7 +191,7 @@ export default function Footer() {
                 </div>
                 <div className="dfs-wrap-7 footer-section-item">
                   <div className="footer-section-header" onClick={() => toggleSection('company')}>
-                    <h3 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Company</h3>
+                    <h2 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Company</h2>
                     <button className="footer-accordion-btn" aria-label="Toggle company">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'transform 0.3s', transform: expandedSections.company ? 'rotate(180deg)' : 'rotate(0deg)' }}>
                         <polyline points="6 9 12 15 18 9"></polyline>
@@ -181,7 +207,7 @@ export default function Footer() {
                 </div>
                 <div id="w-node-_53aec337-cf60-1ff7-e4d7-85a8a4b6c583-098fe091" className="dfs-wrap-7 footer-section-item">
                   <div className="footer-section-header" onClick={() => toggleSection('contact')}>
-                    <h3 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Get In Touch</h3>
+                    <h2 className="dfs-heading-1" style={{ color: '#111827', fontSize: '1.15em', fontWeight: '700', marginBottom: '0.75rem' }}>Get In Touch</h2>
                     <button className="footer-accordion-btn" aria-label="Toggle contact">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'transform 0.3s', transform: expandedSections.contact ? 'rotate(180deg)' : 'rotate(0deg)' }}>
                         <polyline points="6 9 12 15 18 9"></polyline>
@@ -189,11 +215,11 @@ export default function Footer() {
                     </button>
                   </div>
                   <div className={`footer-section-content ${expandedSections.contact ? 'expanded' : ''}`}>
-                    <a href="https://calendly.com/mukesh-peregrine-it/30min" target="_blank" className="dfs-link-1-cta" style={{ color: '#06b6d4', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Book a Strategy Call</a>
+                    <a href="https://calendly.com/mukesh-peregrine-it/30min" target="_blank" className="dfs-link-1-cta" style={{ color: '#0e7490', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Book a Strategy Call</a>
                     <a href="#" id="quick-project-btn-footer-col" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Small task? Get a scoped estimate within 48 hours</a>
-                    <p style={{ color: '#9ca3af', fontSize: '0.78em', marginTop: '0.6rem', lineHeight: '1.5' }}>Real engineers reply — not sales</p>
-                    <p style={{ color: '#9ca3af', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>Daily overlap with North American &amp; European business hours</p>
-                    <p style={{ color: '#9ca3af', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>You talk directly with the developer building your system</p>
+                    <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.6rem', lineHeight: '1.5' }}>Real engineers reply — not sales</p>
+                    <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>Daily overlap with North American &amp; European business hours</p>
+                    <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>You talk directly with the developer building your system</p>
                   </div>
                 </div>
               </div>
@@ -251,12 +277,29 @@ export default function Footer() {
             <button id="close-popup" className="close-btn">&times;</button>
           </div>
           <div className="popup-body">
-            <form onSubmit={(e: any) => { e.preventDefault(); window.open('https://calendly.com/mukesh-peregrine-it/30min', '_blank'); }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <input type="text" placeholder="Your name" required
+            {formStatus.success ? (
+              <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
+                <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>&#10003;</div>
+                <p style={{ color: '#22d3ee', fontWeight: '600', fontSize: '1.05rem', margin: '0 0 0.5rem' }}>Request sent successfully!</p>
+                <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0' }}>An engineer will review and reply within 6 hours.</p>
+              </div>
+            ) : (
+            <form onSubmit={(e: any) => {
+              e.preventDefault();
+              const f = e.target;
+              submitLead({
+                name: f.scName.value,
+                email: f.scEmail.value,
+                projectType: f.scType.value,
+                budget: f.scTimeline.value,
+                message: f.scMessage.value || 'Strategy call request',
+              }, setFormStatus);
+            }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <input type="text" name="scName" placeholder="Your name" required
                 style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
-              <input type="email" placeholder="Work email" required
+              <input type="email" name="scEmail" placeholder="Work email" required
                 style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
-              <select required defaultValue=""
+              <select name="scType" required defaultValue=""
                 style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', appearance: 'none' as const, WebkitAppearance: 'none' as const }}>
                 <option value="" disabled style={{ color: '#64748b' }}>Select project type...</option>
                 <option value="new-build">New platform or product build</option>
@@ -264,7 +307,7 @@ export default function Footer() {
                 <option value="performance">Performance / infrastructure fix</option>
                 <option value="other">Other / not sure yet</option>
               </select>
-              <select required defaultValue=""
+              <select name="scTimeline" required defaultValue=""
                 style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', appearance: 'none' as const, WebkitAppearance: 'none' as const }}>
                 <option value="" disabled style={{ color: '#64748b' }}>Expected timeline...</option>
                 <option value="asap">ASAP (within 2 weeks)</option>
@@ -272,16 +315,20 @@ export default function Footer() {
                 <option value="2-6-months">2–6 months</option>
                 <option value="exploring">Just exploring</option>
               </select>
-              <textarea placeholder="Tell us briefly what you need" rows={2}
+              <textarea name="scMessage" placeholder="Tell us briefly what you need" rows={2}
                 style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', resize: 'vertical' as const }} />
-              <button type="submit" className="newsletter-btn"
-                style={{ width: '100%', padding: '0.75rem', borderRadius: '0.75rem', fontSize: '0.95rem', fontWeight: '600', marginTop: '0.25rem' }}>
-                Book a Strategy Call
+              {formStatus.error && (
+                <p style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>{formStatus.error}</p>
+              )}
+              <button type="submit" className="newsletter-btn" disabled={formStatus.loading}
+                style={{ width: '100%', padding: '0.75rem', borderRadius: '0.75rem', fontSize: '0.95rem', fontWeight: '600', marginTop: '0.25rem', opacity: formStatus.loading ? 0.6 : 1 }}>
+                {formStatus.loading ? 'Sending...' : 'Book a Strategy Call'}
               </button>
               <p style={{ color: '#64748b', fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>
                 We&apos;ll review your details and reach out within 1 business day.
               </p>
             </form>
+            )}
           </div>
         </div>
       </div>
@@ -293,16 +340,23 @@ export default function Footer() {
             <button id="close-quick-popup" className="close-btn">&times;</button>
           </div>
           <div className="popup-body">
+            {qpFormStatus.success ? (
+              <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
+                <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>&#10003;</div>
+                <p style={{ color: '#22d3ee', fontWeight: '600', fontSize: '1.05rem', margin: '0 0 0.5rem' }}>Request sent successfully!</p>
+                <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0' }}>We&apos;ll scope your request and respond within 48 hours.</p>
+              </div>
+            ) : (
             <form onSubmit={(e: any) => {
               e.preventDefault();
-              const form = e.target;
-              const name = form.qpName.value;
-              const email = form.qpEmail.value;
-              const need = form.qpNeed.value;
-              const timeline = form.qpTimeline.value;
-              const subject = encodeURIComponent('Quick Project Request from ' + name);
-              const body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nTimeline: ' + timeline + '\n\nWhat they need:\n' + need);
-              window.location.href = 'mailto:info@peregrine-it.com?subject=' + subject + '&body=' + body;
+              const f = e.target;
+              submitLead({
+                name: f.qpName.value,
+                email: f.qpEmail.value,
+                projectType: 'Quick Project Request',
+                budget: f.qpTimeline.value,
+                message: f.qpNeed.value,
+              }, setQpFormStatus);
             }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <input type="text" name="qpName" placeholder="Your name" required
                 style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
@@ -318,14 +372,18 @@ export default function Footer() {
                 <option value="2-6-months">2–6 months</option>
                 <option value="exploring">Just exploring</option>
               </select>
-              <button type="submit" className="newsletter-btn"
-                style={{ width: '100%', padding: '0.75rem', borderRadius: '0.75rem', fontSize: '0.95rem', fontWeight: '600', marginTop: '0.25rem' }}>
-                Send Request
+              {qpFormStatus.error && (
+                <p style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>{qpFormStatus.error}</p>
+              )}
+              <button type="submit" className="newsletter-btn" disabled={qpFormStatus.loading}
+                style={{ width: '100%', padding: '0.75rem', borderRadius: '0.75rem', fontSize: '0.95rem', fontWeight: '600', marginTop: '0.25rem', opacity: qpFormStatus.loading ? 0.6 : 1 }}>
+                {qpFormStatus.loading ? 'Sending...' : 'Send Request'}
               </button>
               <p style={{ color: '#64748b', fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>
                 We&apos;ll scope your request and respond within 48 hours.
               </p>
             </form>
+            )}
           </div>
         </div>
       </div>

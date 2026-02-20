@@ -123,13 +123,13 @@ div.footer-section .dfs-link-1:hover {
 
 .footer-section .dfs-link-1-cta,
 div.footer-section .dfs-link-1-cta {
-    color: #06b6d4 !important;
+    color: #0e7490 !important;
     margin-top: 0.4rem !important;
 }
 
 .footer-section .dfs-link-1-cta:hover,
 div.footer-section .dfs-link-1-cta:hover {
-    color: #0891b2 !important;
+    color: #0c636e !important;
 }
 
 .testimonials-grid {
@@ -326,13 +326,31 @@ div.footer-section .dfs-link-1-cta:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
+/* WCAG AA contrast overrides */
+.section-borrow {
+    color: #1d4ed8 !important; /* blue-800, 4.5:1+ on white */
+}
+
+.label-nextcounter {
+    color: #6d28d9 !important; /* violet-700, 4.5:1+ on white */
+}
+
+.circle-div .title-capped,
+.circle-div .counterup {
+    color: #1f2937 !important; /* gray-800 on white */
+}
+
+.circle-div .label-nextcounter {
+    color: #6d28d9 !important;
+}
+
 .testimonial-category {
     display: inline-block;
     font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #64748b;
+    color: #475569;
     background: #f1f5f9;
     border: 1px solid #e2e8f0;
     border-radius: 4px;
