@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -128,6 +129,7 @@ export default function RootLayout({
         <Footer />
         <MobileFloatingButtons />
         <SpeedInsights />
+        <Analytics />
 
         {/* Scripts from original HTML */}
         <Script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" strategy="beforeInteractive" />
