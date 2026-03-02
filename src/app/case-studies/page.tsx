@@ -166,6 +166,51 @@ export default function CaseStudies() {
                   </div>
                 </Link>
 
+                {/* NorthBridge Realty AI Platform Case Study */}
+                <Link href="/case-studies/northbridge-realty-ai-platform"
+                  className="article-card group bg-slate-800/50 rounded-xl overflow-hidden border border-slate-700 hover:border-purple-500/50 transition-all hover:shadow-xl hover:shadow-purple-500/10 cursor-pointer !no-underline"
+                  data-category="proptech saas">
+                  <div className="relative h-56 w-full overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a0a2e 0%, #2d1854 40%, #1a0a2e 100%)' }}>
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="text-center px-6">
+                        <div className="flex items-center justify-center gap-4 mb-4">
+                          <div className="w-12 h-12 rounded-xl border border-purple-500/30 bg-purple-500/10 flex items-center justify-center">
+                            <i className="ri-robot-2-line text-xl text-purple-400"></i>
+                          </div>
+                          <div className="w-12 h-12 rounded-xl border border-purple-500/30 bg-purple-500/10 flex items-center justify-center">
+                            <i className="ri-chat-voice-line text-xl text-purple-400"></i>
+                          </div>
+                          <div className="w-12 h-12 rounded-xl border border-purple-500/30 bg-purple-500/10 flex items-center justify-center">
+                            <i className="ri-calculator-line text-xl text-purple-400"></i>
+                          </div>
+                        </div>
+                        <p className="text-purple-300/60 text-xs font-mono tracking-wider">AI · NLP Search · AVM · Chatbot</p>
+                      </div>
+                    </div>
+                    <div className="absolute top-4 left-4">
+                      <span className="px-3 py-1 bg-purple-600/90 text-white rounded-full text-xs font-semibold backdrop-blur-sm">Case Study</span>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-4 mb-4 text-xs text-gray-400">
+                      <div className="flex items-center gap-1.5"><i className="ri-building-line"></i><span>Real Estate / PropTech</span></div>
+                      <div className="flex items-center gap-1.5"><i className="ri-time-line"></i><span>14 month project</span></div>
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors line-clamp-2">
+                      AI-Powered Multi-Market Real Estate Platform</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed mb-5 line-clamp-3">How we built an AI-native platform for NorthBridge Realty — 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy across 4 MLS markets.</p>
+                    <div className="flex items-center justify-between pt-4 border-t border-slate-700">
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 text-xs text-gray-500">
+                          <span className="px-2 py-0.5 bg-slate-700/80 rounded text-gray-300">4 MLS</span>
+                          <span className="px-2 py-0.5 bg-slate-700/80 rounded text-gray-300">AI/ML</span>
+                        </div>
+                      </div>
+                      <i className="ri-arrow-right-line text-purple-400 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                  </div>
+                </Link>
+
                 {/* Self-Storage Management SaaS Case Study */}
                 <Link href="/case-studies/self-storage-management-platform"
                   className="article-card group bg-slate-800/50 rounded-xl overflow-hidden border border-slate-700 hover:border-purple-500/50 transition-all hover:shadow-xl hover:shadow-purple-500/10 cursor-pointer !no-underline"

@@ -19,6 +19,12 @@ export default function sitemap() {
       priority: 0.7,
     },
     {
+      url: "https://peregrine-it.com/case-studies/northbridge-realty-ai-platform",
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
       url: "https://peregrine-it.com/case-studies/self-storage-management-platform",
       lastModified: new Date(),
       changeFrequency: "monthly",
