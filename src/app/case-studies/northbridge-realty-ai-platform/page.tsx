@@ -5,18 +5,18 @@ import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
   title: 'AI-Powered Multi-Market Real Estate Platform — Case Study',
-  description: 'How we built an AI-native platform for NorthBridge Realty — 4 MLS integrations, 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy. NLP search, AVM, chatbot, and unified data pipeline.',
+  description: 'How we built an AI-native platform for W3|re — 4 MLS integrations, 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy. NLP search, AVM, chatbot, and unified data pipeline.',
   keywords: ['AI real estate', 'PropTech', 'MLS integration', 'property valuation', 'NLP search', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — AI-Powered Multi-Market Real Estate Platform | Peregrine IT Solutions',
-    description: 'How we built an AI-native platform for NorthBridge Realty — 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy.',
+    description: 'How we built an AI-native platform for W3|re — 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy.',
     type: 'article',
     url: 'https://peregrine-it.com/case-studies/northbridge-realty-ai-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'NorthBridge Realty AI Platform Case Study — Peregrine IT Solutions' }],
+    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'W3|re AI Platform Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -113,7 +113,7 @@ export default function NorthbridgeRealtyAIPlatform() {
         {/* CLIENT OVERVIEW */}
         <div className="csd-section">
           <div className="csd-section-label">Client Overview</div>
-          <h2>NorthBridge Realty Group</h2>
+          <h2>W3|re</h2>
           <p>
             A growing brokerage with 120+ agents across multiple U.S. markets, handling residential and commercial properties with a combined annual volume of $480M+. Markets include Texas (NTREIS), Florida (Stellar MLS), Arizona (ARMLS), and Colorado (REcolorado).
           </p>
@@ -124,7 +124,7 @@ export default function NorthbridgeRealtyAIPlatform() {
           <div className="csd-section-label">The Challenge</div>
           <h2>Five Critical Problems Bleeding Revenue</h2>
           <p>
-            NorthBridge was losing an estimated $2.3M annually to operational inefficiencies, misqualified leads, and pricing errors. Their existing stack — a patchwork of 7 disconnected tools — was collapsing under scale.
+            W3|re was losing an estimated $2.3M annually to operational inefficiencies, misqualified leads, and pricing errors. Their existing stack — a patchwork of 7 disconnected tools — was collapsing under scale.
           </p>
 
           <div className="csd-cs-grid">
@@ -396,7 +396,7 @@ export default function NorthbridgeRealtyAIPlatform() {
           <div className="csd-quote-text">
             &ldquo;We went from juggling seven disconnected tools to having one platform that actually thinks. The AI search alone changed how our buyers find homes — they describe what they want in plain English, and the system just gets it. Our agents now spend their time closing deals instead of fighting spreadsheets.&rdquo;
           </div>
-          <div className="csd-quote-author">— Marcus Chen, Managing Broker & Co-Founder, NorthBridge Realty Group</div>
+          <div className="csd-quote-author">— Marcus Chen, Managing Broker & Co-Founder, W3|re</div>
         </div>
 
         {/* CTA */}

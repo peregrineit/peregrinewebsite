@@ -166,7 +166,7 @@ export default function CaseStudies() {
                   </div>
                 </Link>
 
-                {/* NorthBridge Realty AI Platform Case Study */}
+                {/* W3|re AI Platform Case Study */}
                 <Link href="/case-studies/northbridge-realty-ai-platform"
                   className="article-card group bg-slate-800/50 rounded-xl overflow-hidden border border-slate-700 hover:border-purple-500/50 transition-all hover:shadow-xl hover:shadow-purple-500/10 cursor-pointer !no-underline"
                   data-category="proptech saas">
@@ -198,7 +198,7 @@ export default function CaseStudies() {
                     </div>
                     <h3 className="text-xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors line-clamp-2">
                       AI-Powered Multi-Market Real Estate Platform</h3>
-                    <p className="text-gray-400 text-sm leading-relaxed mb-5 line-clamp-3">How we built an AI-native platform for NorthBridge Realty — 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy across 4 MLS markets.</p>
+                    <p className="text-gray-400 text-sm leading-relaxed mb-5 line-clamp-3">How we built an AI-native platform for W3|re — 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy across 4 MLS markets.</p>
                     <div className="flex items-center justify-between pt-4 border-t border-slate-700">
                       <div className="flex items-center gap-3">
                         <div className="flex items-center gap-2 text-xs text-gray-500">
