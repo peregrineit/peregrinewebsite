@@ -866,6 +866,12 @@ export default function Home() {
                         <p className="checkitem-lrg"><strong>Multiple Brokerage Support</strong>: Scalable solutions managing multiple brokerages and agent hierarchies.</p>
                       </div>
                     </div>
+                    <p className="checkitem-lrg" style={{ marginTop: '1rem' }}>
+                      We also build and operate our own product in this space: <a
+                        href="https://realfoyer.com/"
+                        style={{ color: '#4f46e5', textDecoration: 'underline', display: 'inline' }}>RealFoyer</a>, a real estate
+                      platform combining IDX websites, CRM and marketing tools.
+                    </p>
                   </div>
                   <div data-w-id="f439b134-dbd1-a6a9-c41d-0daf558a5745" className="card sticky _2">
                     <div className="margin-bottom margin-xsmall">
