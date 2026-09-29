@@ -18,9 +18,13 @@ function animateText(entry) {
         observer.unobserve(textWrapper);
     }
 }
+const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 function initTxtAnimation() {
+    if (prefersReducedMotion) return;
     observer = new IntersectionObserver((entries) => entries.forEach(animateText), { threshold: 0 });
-    document.querySelectorAll('.txtanimation3').forEach((el) => observer.observe(el));
+    // The hero H1 is excluded: fading it in letter by letter left its last word
+    // faded at load and re-wrapped the hero (layout shift).
+    document.querySelectorAll('.txtanimation3:not(h1)').forEach((el) => observer.observe(el));
 }
 
 // Animate SVG Paths --------------------------------------------------------------------
@@ -338,7 +342,8 @@ const phrases = [
 ];
 function initScrambleText() {
     const el = document.querySelector('.scramble-text');
-    if (el) {
+    // Reduced motion: keep the server-rendered text instead of cycling phrases.
+    if (el && !prefersReducedMotion) {
         const fx = new TextScramble(el);
         let counter = 0;
         const next = () => {
