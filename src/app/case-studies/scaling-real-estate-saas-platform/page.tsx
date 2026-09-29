@@ -19,13 +19,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/scaling-real-estate-saas-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Real Estate SaaS Platform Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Scaling a Real Estate SaaS Platform',
     description: 'From 5 agents to 200+. How we rebuilt a real estate SaaS platform to handle millions of MLS listings with sub-second search.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/scaling-real-estate-saas-platform' },
 };
@@ -162,7 +160,7 @@ export default function ScalingRealEstateSaas() {
               <div className="csd-cs-card-icon">
                 <i className="ri-timer-line" />
               </div>
-              <h4>Slow Property Search</h4>
+              <h3>Slow Property Search</h3>
               <p>
                 MongoDB direct queries for property search were taking 3–5 seconds under load.
                 Auto-suggestions were unusable for agents showing properties to buyers in real-time.
@@ -172,7 +170,7 @@ export default function ScalingRealEstateSaas() {
               <div className="csd-cs-card-icon">
                 <i className="ri-refresh-line" />
               </div>
-              <h4>MLS Data Sync Failures</h4>
+              <h3>MLS Data Sync Failures</h3>
               <p>
                 The cron-based sync was running as a single process with no error recovery. One
                 failed MLS feed would stall updates for all agents across the platform.
@@ -182,7 +180,7 @@ export default function ScalingRealEstateSaas() {
               <div className="csd-cs-card-icon">
                 <i className="ri-building-line" />
               </div>
-              <h4>No Multi-Tenant Isolation</h4>
+              <h3>No Multi-Tenant Isolation</h3>
               <p>
                 All agents shared configuration, leads, and property data in flat collections. One
                 agent&apos;s misconfiguration could affect every other agent&apos;s website.
@@ -192,7 +190,7 @@ export default function ScalingRealEstateSaas() {
               <div className="csd-cs-card-icon">
                 <i className="ri-hard-drive-2-line" />
               </div>
-              <h4>Sold &amp; Active Data Conflicts</h4>
+              <h3>Sold &amp; Active Data Conflicts</h3>
               <p>
                 Sold and active properties lived in the same collection with no clear status
                 management. Agents were showing sold properties as active listings on their sites.

@@ -242,7 +242,7 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  <div className="grid__item-img-deco"></div>
+                  <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
                 <p className="card-title">Product Architecture & Prototyping</p>
@@ -286,7 +286,7 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  <div className="grid__item-img-deco"></div>
+                  <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
                 <p className="card-title">SaaS & Platform Engineering</p>
@@ -338,7 +338,7 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  <div className="grid__item-img-deco"></div>
+                  <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
                 <p className="card-title">Systems Integration & Data Pipelines</p>
@@ -386,7 +386,7 @@ export default function Home() {
                   <div id="w-node-_11afe82e-c384-13e8-e364-3e6e558d1846-098fe091" className="iconx_component---nnofle"><img loading="lazy" width="24" height="21"
                     src="/images/updateicon.svg" data-w-id="20085b6b-40e9-5543-2650-533d1fdece93" alt=""
                     className="image-6" /><img loading="lazy" width="96" height="96" src="/images/lap.svg" alt="" className="image-7" /></div>
-                  <div className="grid__item-img-deco"></div>
+                  <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
                 <p className="card-title">Cloud Performance & DevOps</p>
@@ -422,8 +422,8 @@ export default function Home() {
               </div>
               <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520b-098fe091" className="grid__item">
                 <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about AI & Intelligent Automation">
-                  <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520d-098fe091" className="iconx_component"><Image src="/images/ai-anim.webp" width={140} height={140} unoptimized alt="" className="image-5" /></div>
-                  <div className="grid__item-img-deco"></div>
+                  <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520d-098fe091" className="iconx_component"><Image src="/images/ai-anim.webp" width={96} height={96} unoptimized alt="" className="image-5" /></div>
+                  <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
                 <p className="card-title">AI & Intelligent Automation</p>
@@ -476,7 +476,7 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  <div className="grid__item-img-deco"></div>
+                  <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
                 <p className="card-title">Workflow Automation & Internal Tools</p>
@@ -788,7 +788,7 @@ export default function Home() {
               <h2 className="heading-primary">Guides for Software Buyers</h2>
               <div className="section-sub">Costs, trade-offs and build-versus-buy decisions for real estate and SaaS teams, with every figure linked to its source.</div>
             </div>
-            <div className="tw-grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="tw-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {guides.map((g) => (
                 <Link key={g.slug} href={`/blog/${g.slug}`} className="home-guide-card">
                   <span className="home-guide-label">Guide</span>
@@ -847,7 +847,7 @@ export default function Home() {
                           d="M19.916 4.62592C20.2607 4.85568 20.3538 5.32134 20.124 5.66598L11.124 19.166C10.9994 19.3529 10.7975 19.4742 10.5739 19.4963C10.3503 19.5184 10.1286 19.4392 9.96967 19.2803L3.96967 13.2803C3.67678 12.9874 3.67678 12.5125 3.96967 12.2196C4.26256 11.9267 4.73744 11.9267 5.03033 12.2196L10.3834 17.5727L18.876 4.83393C19.1057 4.48929 19.5714 4.39616 19.916 4.62592Z"
                           fill="currentColor"></path>
                       </svg>
-                        <p className="checkitem-lrg"><strong>Custom IDX Websites</strong>: Seamless MLS integration for up-to-date property listings.</p>
+                        <p className="checkitem-lrg"><strong>Custom IDX Websites</strong>: MLS integration that keeps property listings up to date.</p>
                       </div>
                       <div className="w-layout-hflex check-list-item"><svg viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg" className="svg-checkicon">
@@ -1018,7 +1018,7 @@ export default function Home() {
                       <div className="cert-title">Backend: Laravel, .NET, Node.js, Python, NestJS, Django, FastAPI, Spring
                         Boot
                       </div>
-                      <p id="w-node-d73c53f8-5359-9799-b71c-8af21aa3f015-098fe091" className="card-caption">Provides robust,
+                      <p id="w-node-d73c53f8-5359-9799-b71c-8af21aa3f015-098fe091" className="card-caption">Provides reliable,
                         scalable server-side solutions</p>
                     </div>
                   </div>

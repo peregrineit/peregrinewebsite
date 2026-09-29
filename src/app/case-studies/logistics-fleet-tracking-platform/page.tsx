@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/logistics-fleet-tracking-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Fleet Tracking Platform Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Real-Time Fleet Tracking Platform',
     description: 'GPS-powered fleet management with live tracking, route optimization, and driver apps for 500+ vehicles across the MENA region.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: {
     canonical: 'https://peregrine-it.com/case-studies/logistics-fleet-tracking-platform',
@@ -164,7 +162,7 @@ export default function LogisticsFleetTrackingPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-map-pin-line" />
               </div>
-              <h4>No Fleet Visibility</h4>
+              <h3>No Fleet Visibility</h3>
               <p>
                 Dispatchers relied on phone calls to locate trucks. During peak hours, a single
                 dispatcher would make 80+ calls per shift just to get location updates. Route
@@ -175,7 +173,7 @@ export default function LogisticsFleetTrackingPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-route-line" />
               </div>
-              <h4>Manual Route Planning</h4>
+              <h3>Manual Route Planning</h3>
               <p>
                 Routes were planned on paper maps and WhatsApp. Drivers followed familiar roads
                 rather than optimal paths, resulting in 30%+ excess fuel consumption and frequent
@@ -186,7 +184,7 @@ export default function LogisticsFleetTrackingPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-smartphone-line" />
               </div>
-              <h4>No Driver App</h4>
+              <h3>No Driver App</h3>
               <p>
                 Drivers had no digital proof of delivery, no turn-by-turn navigation, and no way to
                 report issues. Everything was communicated verbally, leading to constant disputes
@@ -197,7 +195,7 @@ export default function LogisticsFleetTrackingPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-time-line" />
               </div>
-              <h4>Customer Blind Spot</h4>
+              <h3>Customer Blind Spot</h3>
               <p>
                 Customers had no tracking visibility. They would call the operations center
                 repeatedly asking &ldquo;Where is my delivery?&rdquo; — consuming 3 full-time staff
@@ -386,7 +384,7 @@ export default function LogisticsFleetTrackingPlatform() {
           <div className="csd-section-label">Results</div>
           <h2>The Impact</h2>
           <p>
-            Within weeks of going live, the platform transformed fleet operations across all three
+            Within weeks of going live, the platform changed how fleet operations ran across all three
             countries — eliminating manual processes and delivering measurable ROI.
           </p>
 
@@ -431,7 +429,7 @@ export default function LogisticsFleetTrackingPlatform() {
           <p>
             Fleet management systems fail when they treat GPS tracking as the product. Tracking is
             table stakes — the real value is in what you do with the data. Route optimization,
-            geofencing alerts, and predictive ETAs are what transform a tracking dashboard into an
+            geofencing alerts, and predictive ETAs are what turn a tracking dashboard into an
             operational command center.
           </p>
           <p>

@@ -377,9 +377,17 @@
   color: var(--csd-green);
 }
 
+/* Card titles are h3 (they sit under an h2); pin the values they had as h4 so the
+   global h3 rules in peregrine.css don't change their look. */
+.case-study-detail .csd-cs-card h3,
 .case-study-detail .csd-cs-card h4 {
   font-size: 14px;
   font-weight: 700;
+  line-height: 1.2;
+  font-style: normal;
+  letter-spacing: normal;
+  font-family: Satoshi, Arial, sans-serif;
+  margin-top: 0;
   margin-bottom: 8px;
   color: var(--csd-ink);
 }
@@ -889,6 +897,7 @@
     padding: 20px 16px;
   }
 
+  .case-study-detail .csd-cs-card h3,
   .case-study-detail .csd-cs-card h4 {
     font-size: 13px;
   }

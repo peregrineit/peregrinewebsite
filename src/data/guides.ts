@@ -21,7 +21,7 @@ export const guides: Guide[] = [
     description:
       'What MLS and IDX integration costs in 2026: IDX vendor plans, MLS data license fees, RESO Web API vendors and development, with every figure sourced.',
     datePublished: '2026-09-29',
-    dateModified: '2026-09-29',
+    dateModified: '2026-09-30',
     service: 'mls-idx-integration',
     caseStudy: 'w3re-ai-real-estate-platform',
   },
@@ -32,7 +32,7 @@ export const guides: Guide[] = [
     description:
       'When a brokerage should subscribe to a real estate CRM and when a custom platform makes sense, with published CRM pricing and the trade-offs of building.',
     datePublished: '2026-09-29',
-    dateModified: '2026-09-29',
+    dateModified: '2026-09-30',
     service: 'saas-development',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
@@ -43,9 +43,20 @@ export const guides: Guide[] = [
     description:
       'What drives the cost of a real estate platform: developer rates in the US, Canada and India, MLS data fees, maps and hosting, with every figure sourced.',
     datePublished: '2026-09-29',
-    dateModified: '2026-09-29',
+    dateModified: '2026-09-30',
     service: 'saas-development',
     caseStudy: 'proptech-investor-portal',
+  },
+  {
+    slug: 'how-to-get-mls-data-access',
+    title: 'How to Get MLS Data Access for Your App',
+    metaTitle: 'How to Get MLS Data Access for Your App',
+    description:
+      'The licenses, broker sponsorship, agreements, platforms (MLS Grid, Trestle, Bridge), fees and compliance rules for getting MLS data into your app, with sources.',
+    datePublished: '2026-09-30',
+    dateModified: '2026-09-30',
+    service: 'mls-idx-integration',
+    caseStudy: 'w3re-ai-real-estate-platform',
   },
 ];
 

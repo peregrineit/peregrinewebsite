@@ -23,7 +23,7 @@ export function guideMetadata(slug: string): Metadata {
       modifiedTime: g.dateModified,
       siteName: 'Peregrine IT Solutions',
       locale: 'en_US',
-      images: [{ url: '/ogimage.png', width: 1200, height: 630, alt: g.title }],
+      // og:image / twitter:image come from the route's opengraph-image.tsx (next/og).
     },
   };
 }
@@ -47,7 +47,7 @@ export default function GuideLayout({ slug, children }: { slug: string; children
         '@id': `${url}#article`,
         headline: g.title,
         description: g.description,
-        image: `${SITE_URL}/ogimage.png`,
+        image: `${url}/opengraph-image`,
         url,
         mainEntityOfPage: url,
         datePublished: g.datePublished,
@@ -105,5 +105,42 @@ export default function GuideLayout({ slug, children }: { slug: string; children
         </div>
       </section>
     </main>
+  );
+}
+
+/** An answer is text plus cited figures: [text, sourceUrl] segments render as <Src> links. */
+export type FaqSegment = string | [string, string];
+export type GuideFaqItem = { question: string; answer: FaqSegment[] };
+const plain = (segs: FaqSegment[]) => segs.map((x) => (typeof x === 'string' ? x : x[0])).join('');
+
+/** Visible FAQ and matching FAQPage JSON-LD from one source, so they can't drift apart. */
+export function GuideFaq({ slug, items }: { slug: string; items: GuideFaqItem[] }) {
+  const url = `${SITE_URL}/blog/${slug}`;
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    '@id': `${url}#faq`,
+    mainEntity: items.map((it) => ({
+      '@type': 'Question',
+      name: it.question,
+      acceptedAnswer: { '@type': 'Answer', text: plain(it.answer) },
+    })),
+  };
+  return (
+    <section className="cp-faq" aria-labelledby="guide-faq">
+      <JsonLd data={schema} />
+      <h2 id="guide-faq">Frequently Asked Questions</h2>
+      {items.map((it) => (
+        <details key={it.question}>
+          <summary>
+            <h3>{it.question}</h3>
+            <i className="ri-add-line" aria-hidden="true" />
+          </summary>
+          <p>
+            {it.answer.map((seg, i) => (typeof seg === 'string' ? seg : <Src key={i} href={seg[1]}>{seg[0]}</Src>))}
+          </p>
+        </details>
+      ))}
+    </section>
   );
 }

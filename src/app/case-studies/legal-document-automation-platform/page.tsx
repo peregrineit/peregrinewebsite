@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/legal-document-automation-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Legal Document Automation Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Legal Document Automation for Contract Generation & E-Signature',
     description: 'Legal document automation processing 15K+ documents/month with 40% faster turnaround and SOC2 compliance.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/legal-document-automation-platform' },
 };
@@ -157,7 +155,7 @@ export default function LegalDocumentAutomationPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-file-list-3-line" />
               </div>
-              <h4>Template Management</h4>
+              <h3>Template Management</h3>
               <p>
                 Hundreds of contract variants lived in Word files and shared drives. Version control
                 was non-existent — one lawyer&apos;s amendment could overwrite another&apos;s without
@@ -168,7 +166,7 @@ export default function LegalDocumentAutomationPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-bookmark-line" />
               </div>
-              <h4>Clause Library</h4>
+              <h3>Clause Library</h3>
               <p>
                 Standard clauses (indemnification, termination, governing law) were scattered across
                 documents. There was no single source of truth — inconsistent language across
@@ -179,7 +177,7 @@ export default function LegalDocumentAutomationPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-user-add-line" />
               </div>
-              <h4>Multi-Party E-Signature</h4>
+              <h3>Multi-Party E-Signature</h3>
               <p>
                 Complex deals required 3–8 signers in specific order. Coordinating wet-ink signatures
                 via mail and courier added weeks. Email chains for e-sign links were chaotic.
@@ -189,7 +187,7 @@ export default function LegalDocumentAutomationPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-shield-check-line" />
               </div>
-              <h4>Audit Compliance</h4>
+              <h3>Audit Compliance</h3>
               <p>
                 Clients demanded SOC2 and proof of who signed what, when. Paper trails and email logs
                 didn&apos;t meet audit requirements. Document retention policies were inconsistently

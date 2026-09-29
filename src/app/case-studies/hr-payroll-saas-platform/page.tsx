@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/hr-payroll-saas-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'HR Payroll SaaS Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — HR & Payroll SaaS for Mid-Market Companies',
     description: 'HR & payroll SaaS for 85+ companies and 12K employees with multi-state tax and compliance.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/hr-payroll-saas-platform' },
 };
@@ -161,7 +159,7 @@ export default function HRPayrollSaaSPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-map-pin-line" />
               </div>
-              <h4>Multi-State Tax Rules</h4>
+              <h3>Multi-State Tax Rules</h3>
               <p>
                 Each state has different withholding rates, local tax jurisdictions, and special
                 rules (e.g., reciprocity agreements). Manual updates were error-prone — a single
@@ -172,7 +170,7 @@ export default function HRPayrollSaaSPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-heart-pulse-line" />
               </div>
-              <h4>Benefits Integration</h4>
+              <h3>Benefits Integration</h3>
               <p>
                 Health insurance, 401(k), and other benefits were administered by external
                 providers. Payroll deductions had to sync with ADP, QuickBooks, and carrier feeds.
@@ -183,7 +181,7 @@ export default function HRPayrollSaaSPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-shield-check-line" />
               </div>
-              <h4>Compliance &amp; Audit Trail</h4>
+              <h3>Compliance &amp; Audit Trail</h3>
               <p>
                 SOC 2 and payroll compliance required immutable audit logs. Who changed an
                 employee&apos;s salary? When was a pay run approved? Legacy systems had gaps that
@@ -194,7 +192,7 @@ export default function HRPayrollSaaSPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-user-settings-line" />
               </div>
-              <h4>Self-Service Portal</h4>
+              <h3>Self-Service Portal</h3>
               <p>
                 Employees called HR for pay stubs, W-2s, and tax form updates. HR spent 40% of their
                 time on repetitive requests. There was no way for employees to update W-4 or banking

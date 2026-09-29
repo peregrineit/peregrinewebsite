@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/supply-chain-visibility-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Supply Chain Visibility Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Supply Chain Visibility for Shipment Tracking & Alerts',
     description: 'Supply chain visibility platform for 2M+ shipments with 45% fewer customer inquiries.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/supply-chain-visibility-platform' },
 };
@@ -135,7 +133,7 @@ export default function SupplyChainVisibilityPlatform() {
           <div className="csd-section-label">Overview</div>
           <h2>The Client&apos;s Vision</h2>
           <p>
-            A 3PL and freight brokerage managing shipments for hundreds of shippers was drowning in
+            A 3PL and freight brokerage managing shipments for hundreds of shippers was overwhelmed by
             &ldquo;Where&apos;s my shipment?&rdquo; calls. Each carrier had a different tracking
             portal — FedEx, UPS, DHL, regional LTL carriers. Customer service manually looked up
             tracking numbers one by one.
@@ -157,7 +155,7 @@ export default function SupplyChainVisibilityPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-exchange-line" />
               </div>
-              <h4>Carrier API Integration</h4>
+              <h3>Carrier API Integration</h3>
               <p>
                 Twelve carriers, twelve different APIs — different auth, rate limits, and response
                 formats. Some offered webhooks, others required polling. Error handling and retry
@@ -168,7 +166,7 @@ export default function SupplyChainVisibilityPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-time-line" />
               </div>
-              <h4>ETA Prediction</h4>
+              <h3>ETA Prediction</h3>
               <p>
                 Carrier ETAs were often wrong — especially for cross-border or multi-leg shipments.
                 Customers wanted more accurate delivery windows. No historical data to train models.
@@ -178,7 +176,7 @@ export default function SupplyChainVisibilityPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-error-warning-line" />
               </div>
-              <h4>Exception Alerts</h4>
+              <h3>Exception Alerts</h3>
               <p>
                 Delays, damaged goods, and customs issues went unnoticed until customers called.
                 No proactive notification. Support had no single view of exceptions across carriers.
@@ -188,7 +186,7 @@ export default function SupplyChainVisibilityPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-user-line" />
               </div>
-              <h4>Multi-Tenant</h4>
+              <h3>Multi-Tenant</h3>
               <p>
                 Hundreds of shippers — each should only see their own shipments. The old system used
                 shared spreadsheets. No role-based access or data isolation.

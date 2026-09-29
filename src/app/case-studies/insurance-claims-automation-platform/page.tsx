@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/insurance-claims-automation-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Insurance Claims Automation Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Insurance Claims Automation for Claims Processing',
     description: 'Claims automation processing 45K+ claims/year with document extraction and multi-carrier rules.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/insurance-claims-automation-platform' },
 };
@@ -135,7 +133,7 @@ export default function InsuranceClaimsAutomationPlatform() {
           <div className="csd-section-label">Overview</div>
           <h2>The Client&apos;s Vision</h2>
           <p>
-            A regional health insurer processing 45K+ medical claims per year was drowning in manual
+            A regional health insurer processing 45K+ medical claims per year was falling behind on manual
             adjudication. Claims adjusters opened PDFs and EOBs one by one, typed data into
             spreadsheets, and checked carrier rules against printed policy documents. A single
             claim could take 20+ minutes. Backlogs stretched to weeks, and providers complained
@@ -162,7 +160,7 @@ export default function InsuranceClaimsAutomationPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-user-search-line" />
               </div>
-              <h4>Manual Adjudication</h4>
+              <h3>Manual Adjudication</h3>
               <p>
                 Adjusters manually read each claim form and supporting documents. Data entry was
                 error-prone — wrong CPT codes, missing modifiers, duplicate submissions. A single
@@ -173,7 +171,7 @@ export default function InsuranceClaimsAutomationPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-file-text-line" />
               </div>
-              <h4>Document Extraction</h4>
+              <h3>Document Extraction</h3>
               <p>
                 Claims arrived as PDFs, scanned images, and sometimes faxes. Extracting procedure
                 codes, dates, amounts, and patient identifiers required manual review. OCR tools
@@ -184,7 +182,7 @@ export default function InsuranceClaimsAutomationPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-bank-card-2-line" />
               </div>
-              <h4>Multi-Carrier Rules</h4>
+              <h3>Multi-Carrier Rules</h3>
               <p>
                 Different carriers and plans had different reimbursement rules, exclusions, and
                 prior-auth requirements. Rules changed frequently. There was no centralized engine
@@ -195,7 +193,7 @@ export default function InsuranceClaimsAutomationPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-file-list-3-line" />
               </div>
-              <h4>Audit Trail</h4>
+              <h3>Audit Trail</h3>
               <p>
                 Auditors and dispute resolution required a complete record: who viewed what, when
                 decisions were made, and what data was used. Legacy systems had partial logs and

@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/manufacturing-erp-system',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Manufacturing ERP Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Manufacturing ERP for Production & Inventory',
     description: 'Manufacturing ERP for 8 factories and 50K SKUs with 30% inventory reduction.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/manufacturing-erp-system' },
 };
@@ -156,7 +154,7 @@ export default function ManufacturingErpSystem() {
               <div className="csd-cs-card-icon">
                 <i className="ri-building-4-line" />
               </div>
-              <h4>Multi-Plant Sync</h4>
+              <h3>Multi-Plant Sync</h3>
               <p>
                 Each plant operated as a silo. Transfer orders between plants took days to reflect.
                 Corporate had no real-time view of total inventory or production status across the
@@ -167,7 +165,7 @@ export default function ManufacturingErpSystem() {
               <div className="csd-cs-card-icon">
                 <i className="ri-stack-line" />
               </div>
-              <h4>BOM Management</h4>
+              <h3>BOM Management</h3>
               <p>
                 Bills of materials were managed in spreadsheets. Multi-level BOMs with dozens of
                 components were error-prone. Changes propagated manually — version drift between plants
@@ -178,7 +176,7 @@ export default function ManufacturingErpSystem() {
               <div className="csd-cs-card-icon">
                 <i className="ri-tablet-line" />
               </div>
-              <h4>Shop Floor Data</h4>
+              <h3>Shop Floor Data</h3>
               <p>
                 Operators recorded production and downtime on paper. Data entry happened at end of
                 shift — by then accuracy suffered. No real-time visibility into line utilization or
@@ -189,7 +187,7 @@ export default function ManufacturingErpSystem() {
               <div className="csd-cs-card-icon">
                 <i className="ri-arrow-left-right-line" />
               </div>
-              <h4>Supply Chain Visibility</h4>
+              <h3>Supply Chain Visibility</h3>
               <p>
                 Purchasing relied on reorder points in spreadsheets. Lead times and supplier
                 performance were tracked manually. Stockouts and overstock were common — no demand

@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/proptech-investor-portal',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'PropTech Investor Portal Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — PropTech Investor Communication Portal',
     description: 'Secure investor portal with role-based access, automated watermarking, and distribution reporting for a $450M real estate portfolio.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/proptech-investor-portal' },
 };
@@ -164,7 +162,7 @@ export default function PropTechInvestorPortal() {
               <div className="csd-cs-card-icon">
                 <i className="ri-mail-line" />
               </div>
-              <h4>Email-Based IR Workflow</h4>
+              <h3>Email-Based IR Workflow</h3>
               <p>
                 Quarterly reports were emailed as PDF attachments to 280+ investors. Each investor
                 received different documents based on their fund participation. The IR team spent 60+
@@ -175,7 +173,7 @@ export default function PropTechInvestorPortal() {
               <div className="csd-cs-card-icon">
                 <i className="ri-file-lock-line" />
               </div>
-              <h4>No Document Security</h4>
+              <h3>No Document Security</h3>
               <p>
                 Sensitive financial documents (K-1s, distribution notices, PPMs) were shared via
                 Dropbox links with no access controls, no watermarking, and no audit trail. The firm
@@ -186,7 +184,7 @@ export default function PropTechInvestorPortal() {
               <div className="csd-cs-card-icon">
                 <i className="ri-team-line" />
               </div>
-              <h4>Complex Role Hierarchies</h4>
+              <h3>Complex Role Hierarchies</h3>
               <p>
                 Investors participated in different funds, co-investments, and SPVs. Each entity had
                 different access rights. Some investors had family office administrators who needed
@@ -197,7 +195,7 @@ export default function PropTechInvestorPortal() {
               <div className="csd-cs-card-icon">
                 <i className="ri-pie-chart-line" />
               </div>
-              <h4>Manual Reporting</h4>
+              <h3>Manual Reporting</h3>
               <p>
                 Distribution calculations, IRR computations, and performance metrics were done in
                 Excel. Errors crept in quarterly, and investors frequently questioned numbers —
@@ -389,7 +387,7 @@ export default function PropTechInvestorPortal() {
           <h2>The Impact</h2>
           <p>
             Within the first quarter of launch, the portal eliminated the IR team&apos;s biggest
-            bottleneck and transformed investor relations into a self-service experience.
+            bottleneck and turned investor relations into a self-service experience.
           </p>
 
           <div className="csd-results-grid">

@@ -51,7 +51,7 @@ export function StrategyCallForm() {
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
       <input type="email" name="scEmail" placeholder="Work email" required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
-      <select name="scType" required defaultValue=""
+      <select name="scType" aria-label="Project type" required defaultValue=""
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', appearance: 'none' as const, WebkitAppearance: 'none' as const }}>
         <option value="" disabled style={{ color: '#64748b' }}>Select project type...</option>
         <option value="new-build">New platform or product build</option>
@@ -59,7 +59,7 @@ export function StrategyCallForm() {
         <option value="performance">Performance / infrastructure fix</option>
         <option value="other">Other / not sure yet</option>
       </select>
-      <select name="scTimeline" required defaultValue=""
+      <select name="scTimeline" aria-label="Expected timeline" required defaultValue=""
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', appearance: 'none' as const, WebkitAppearance: 'none' as const }}>
         <option value="" disabled style={{ color: '#64748b' }}>Expected timeline...</option>
         <option value="asap">ASAP (within 2 weeks)</option>
@@ -76,7 +76,7 @@ export function StrategyCallForm() {
         style={{ width: '100%', padding: '0.75rem', borderRadius: '0.75rem', fontSize: '0.95rem', fontWeight: '600', marginTop: '0.25rem', opacity: formStatus.loading ? 0.6 : 1 }}>
         {formStatus.loading ? 'Sending...' : 'Book a Strategy Call'}
       </button>
-      <p style={{ color: '#64748b', fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>
+      <p style={{ color: '#94a3b8', fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>
         We&apos;ll review your details and reach out within 1 business day.
       </p>
     </form>
@@ -113,7 +113,7 @@ export function QuickProjectForm() {
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
       <textarea name="qpNeed" placeholder="What do you need help with?" rows={3} required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', resize: 'vertical' as const }} />
-      <select name="qpTimeline" required defaultValue=""
+      <select name="qpTimeline" aria-label="Desired timeline" required defaultValue=""
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', appearance: 'none' as const, WebkitAppearance: 'none' as const }}>
         <option value="" disabled style={{ color: '#64748b' }}>Desired timeline...</option>
         <option value="asap">ASAP (within 2 weeks)</option>
@@ -128,7 +128,7 @@ export function QuickProjectForm() {
         style={{ width: '100%', padding: '0.75rem', borderRadius: '0.75rem', fontSize: '0.95rem', fontWeight: '600', marginTop: '0.25rem', opacity: qpFormStatus.loading ? 0.6 : 1 }}>
         {qpFormStatus.loading ? 'Sending...' : 'Send Request'}
       </button>
-      <p style={{ color: '#64748b', fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>
+      <p style={{ color: '#94a3b8', fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>
         We&apos;ll scope your request and respond within 48 hours.
       </p>
     </form>

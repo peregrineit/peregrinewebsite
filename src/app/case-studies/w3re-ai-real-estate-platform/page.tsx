@@ -19,17 +19,17 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'W3|re AI Platform Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — AI-Powered Multi-Market Real Estate Platform',
     description: 'AI-native platform: 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform' },
 };
 
+// TODO(owner): reconcile the 94% AVM accuracy with '23% of listing prices off by more than 8%'
+// (the latter is the pre-project baseline?), and add a measurement window/baseline to each metric.
 export default function W3reAIRealEstatePlatform() {
   return (
     <div className="case-study-detail csd-purple">
@@ -54,7 +54,7 @@ export default function W3reAIRealEstatePlatform() {
           </h1>
 
           <p className="csd-hero-sub">
-            A mid-size brokerage operating across 4 MLS regions was drowning in data silos, losing leads to slow response times, and struggling with inaccurate pricing. Here&apos;s how we rebuilt their entire digital infrastructure with AI at the core.
+            A mid-size brokerage operating across 4 MLS regions was struggling with data silos, losing leads to slow response times, and struggling with inaccurate pricing. Here&apos;s how we rebuilt their entire digital infrastructure with AI at the core.
           </p>
 
           <div className="csd-hero-meta">
@@ -127,7 +127,7 @@ export default function W3reAIRealEstatePlatform() {
         {/* THE CHALLENGE */}
         <div className="csd-section">
           <div className="csd-section-label">The Challenge</div>
-          <h2>Five Critical Problems Bleeding Revenue</h2>
+          <h2>Five Critical Problems Costing Revenue</h2>
           <p>
             W3|re was losing an estimated $2.3M annually to operational inefficiencies, misqualified leads, and pricing errors. Their existing stack — a patchwork of 7 disconnected tools — was collapsing under scale.
           </p>
@@ -135,27 +135,27 @@ export default function W3reAIRealEstatePlatform() {
           <div className="csd-cs-grid">
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-database-2-line" /></div>
-              <h4>Fragmented MLS Data Across 4 Markets</h4>
+              <h3>Fragmented MLS Data Across 4 Markets</h3>
               <p>Each MLS used different RETS/Web API standards and schemas. Agents had no single view of cross-market inventory. Listings appeared 6–18 hours after MLS publication — by then, hot leads had moved on.</p>
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-time-line" /></div>
-              <h4>Lead Responses Took Hours</h4>
+              <h3>Lead Responses Took Hours</h3>
               <p>Inbound leads were routed to a shared inbox. During peak hours, response times stretched to 2+ hours.</p>
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-price-tag-3-line" /></div>
-              <h4>CMA Pricing Was Costing Deals</h4>
+              <h3>CMA Pricing Was Costing Deals</h3>
               <p>Agents spent 2–3 hours on each Comparative Market Analysis. 23% of listing prices were off by more than 8% from final sale price — leading to extended days-on-market.</p>
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-search-line" /></div>
-              <h4>Property Search Was a Dead End</h4>
+              <h3>Property Search Was a Dead End</h3>
               <p>Their IDX only supported rigid filter-based search. Buyers couldn&apos;t search naturally. Bounce rate on search pages was 72%.</p>
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-smartphone-line" /></div>
-              <h4>Mobile Experience Was Non-Existent</h4>
+              <h3>Mobile Experience Was Non-Existent</h3>
               <p>68% of traffic came from mobile, but the site was desktop-first. Property pages took 8+ seconds on 4G. Mobile lead conversion was 0.3% vs 2.1% on desktop.</p>
             </div>
           </div>
@@ -169,39 +169,25 @@ export default function W3reAIRealEstatePlatform() {
             We engineered a unified platform where AI is embedded into every layer — from property search to lead qualification to pricing intelligence.
           </p>
 
-          {/* Property Management Dashboard Image */}
-          <div className="csd-section" style={{ marginTop: 32 }}>
-            <h3>Property Management Dashboard</h3>
-            <div className="csd-hero-image-wrapper" style={{ marginTop: 16, borderRadius: 12, overflow: 'hidden' }}>
-              <Image
-                src="/images/case-studies/MapImage4-08072b85-2c68-4dc0-9f9f-b799097c80f7.png"
-                alt="Real Estate Property Management Dashboard with Leasing Status"
-                width={1200}
-                height={700}
-                style={{ width: '100%', height: 'auto' }}
-              />
-            </div>
-          </div>
-
           <div className="csd-cs-grid">
             <div className="csd-cs-card csd-solution">
               <div className="csd-cs-card-icon"><i className="ri-chat-voice-line" /></div>
-              <h4>Conversational Property Search Engine</h4>
+              <h3>Conversational Property Search Engine</h3>
               <p>Natural language search powered by a fine-tuned LLM. Buyers type queries like &quot;modern condo downtown Austin walkable to coffee shops, 2BR, under 500k&quot; — the system parses intent, maps to MLS fields, and returns ranked results.</p>
             </div>
             <div className="csd-cs-card csd-solution">
               <div className="csd-cs-card-icon"><i className="ri-calculator-line" /></div>
-              <h4>AI-Powered Property Valuation (AVM)</h4>
+              <h3>AI-Powered Property Valuation (AVM)</h3>
               <p>Custom Automated Valuation Model trained on 2.8M+ transactions. Agents generate instant CMAs in under 10 seconds vs. the previous 2–3 hour manual process.</p>
             </div>
             <div className="csd-cs-card csd-solution">
               <div className="csd-cs-card-icon"><i className="ri-robot-2-line" /></div>
-              <h4>24/7 AI Lead Qualification Chatbot</h4>
+              <h3>24/7 AI Lead Qualification Chatbot</h3>
               <p>AI agent handles every inbound lead within 8 seconds. Qualifies by budget, timeline, location, and pre-approval status. Handles 73% of initial conversations without human intervention.</p>
             </div>
             <div className="csd-cs-card csd-solution">
               <div className="csd-cs-card-icon"><i className="ri-flow-chart" /></div>
-              <h4>Unified Multi-MLS Data Pipeline</h4>
+              <h3>Unified Multi-MLS Data Pipeline</h3>
               <p>Real-time ETL pipeline ingests from 4 MLS systems, normalizes schemas, deduplicates cross-listed properties, and syncs within 90 seconds of MLS publication. Processes 40K+ listing updates daily.</p>
             </div>
           </div>
@@ -224,7 +210,7 @@ export default function W3reAIRealEstatePlatform() {
           {/* Real Estate Chatbot Image */}
           <div className="csd-section" style={{ marginTop: 32 }}>
             <h3>Real Estate AI Chatbot</h3>
-            <p>Conversational AI assistants for realtors to convert 3× faster with smart lead qualification.</p>
+            <p>Conversational AI assistants that qualify leads for realtors, part of the 3.8× lead-to-showing improvement reported in the results.</p>
             <div className="csd-hero-image-wrapper" style={{ marginTop: 16, borderRadius: 12, overflow: 'hidden', maxWidth: 500 }}>
               <Image
                 src="/images/case-studies/ChatBotMap-31c3fd31-92b7-4e17-bd67-721497b907a9.png"
@@ -332,6 +318,21 @@ export default function W3reAIRealEstatePlatform() {
               </div>
             </div>
           </div>
+          {/* Property Management Dashboard Image */}
+          <div className="csd-section" style={{ marginTop: 32 }}>
+            <h3>Property Management Dashboard</h3>
+            <div className="csd-hero-image-wrapper" style={{ marginTop: 16, borderRadius: 12, overflow: 'hidden' }}>
+              <Image
+                src="/images/case-studies/MapImage4-08072b85-2c68-4dc0-9f9f-b799097c80f7.png"
+                alt="Real Estate Property Management Dashboard with Leasing Status"
+                width={1200}
+                height={700}
+                style={{ width: '100%', height: 'auto' }}
+              />
+            </div>
+          </div>
+
+
         </div>
 
         {/* TECH STACK */}

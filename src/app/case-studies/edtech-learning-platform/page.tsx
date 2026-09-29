@@ -17,13 +17,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/edtech-learning-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'EdTech Learning Platform Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — EdTech Learning Platform with LMS & Video Streaming',
     description: 'How we built an EdTech platform with LMS, HLS video streaming, and course management for 12K+ enrollments and 500+ courses.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/edtech-learning-platform' },
 };
@@ -159,7 +157,7 @@ export default function EdTechLearningPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-folder-open-line" />
               </div>
-              <h4>Fragmented Content</h4>
+              <h3>Fragmented Content</h3>
               <p>
                 Course videos, PDFs, and quizzes lived across multiple storage systems. There was no
                 single source of truth — instructors spent hours manually uploading content to
@@ -170,7 +168,7 @@ export default function EdTechLearningPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-donut-chart-line" />
               </div>
-              <h4>No Progress Tracking</h4>
+              <h3>No Progress Tracking</h3>
               <p>
                 There was no way to know if a learner had completed a module, paused mid-video, or
                 dropped off. Certificates were issued manually after instructors checked spreadsheets.
@@ -181,7 +179,7 @@ export default function EdTechLearningPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-video-line" />
               </div>
-              <h4>Scaling Video Delivery</h4>
+              <h3>Scaling Video Delivery</h3>
               <p>
                 Raw MP4 uploads to S3 caused buffering during peak hours. There was no adaptive
                 bitrate — mobile users on slow connections couldn&apos;t watch smoothly. CDN
@@ -192,7 +190,7 @@ export default function EdTechLearningPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-bank-card-line" />
               </div>
-              <h4>Payment &amp; Subscription Chaos</h4>
+              <h3>Payment &amp; Subscription Chaos</h3>
               <p>
                 Some courses used Stripe, others used PayPal. Subscriptions were tracked in a custom
                 database that didn&apos;t sync with payment webhooks. Renewals failed silently, and

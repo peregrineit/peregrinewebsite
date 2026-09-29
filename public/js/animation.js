@@ -18,9 +18,13 @@ function animateText(entry) {
         observer.unobserve(textWrapper);
     }
 }
+const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 function initTxtAnimation() {
+    if (prefersReducedMotion) return;
     observer = new IntersectionObserver((entries) => entries.forEach(animateText), { threshold: 0 });
-    document.querySelectorAll('.txtanimation3').forEach((el) => observer.observe(el));
+    // The hero H1 is excluded: fading it in letter by letter left its last word
+    // faded at load and re-wrapped the hero (layout shift).
+    document.querySelectorAll('.txtanimation3:not(h1)').forEach((el) => observer.observe(el));
 }
 
 // Animate SVG Paths --------------------------------------------------------------------
@@ -118,7 +122,7 @@ class Item {
         // On touch/mobile, show deco directly (no hover on mobile)
         var isMobile = window.matchMedia('(hover: none)').matches || window.matchMedia('(max-width: 768px)').matches;
         if (this.DOM.deco && isMobile) {
-            this.DOM.deco.innerHTML = this.randomString;
+            this.DOM.deco.setAttribute('data-text', this.randomString);
             this.DOM.deco.classList.add('grid__item-img-deco--mobile-visible');
             var cx = this.rect.width > 0 ? this.rect.width / 2 : 150;
             var cy = this.rect.height > 0 ? this.rect.height / 2 : 150;
@@ -218,7 +222,7 @@ class Item {
             '--y': this.renderedStyles['y'].previous
         });
         // Set the deco element's innerHTML to the random string
-        this.DOM.deco.innerHTML = this.randomString;
+        this.DOM.deco.setAttribute('data-text', this.randomString);
         // Request the next frame
         this.loopRender();
     }
@@ -338,7 +342,8 @@ const phrases = [
 ];
 function initScrambleText() {
     const el = document.querySelector('.scramble-text');
-    if (el) {
+    // Reduced motion: keep the server-rendered text instead of cycling phrases.
+    if (el && !prefersReducedMotion) {
         const fx = new TextScramble(el);
         let counter = 0;
         const next = () => {

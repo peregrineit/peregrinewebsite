@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import GuideLayout, { Src, guideMetadata } from '../../components/GuideLayout';
+import GuideLayout, { GuideFaq, Src, guideMetadata } from '../../components/GuideLayout';
 
 const SLUG = 'mls-idx-integration-cost';
 export const metadata = guideMetadata(SLUG);
@@ -92,7 +92,9 @@ export default function Guide() {
       <p>
         The same data can cost very different amounts depending on who licenses it and why. A brokerage using its own
         back-office feed at Stellar pays per office, while a company selling a product to agents pays a vendor fee.
-        Confirm the category with each MLS before you build, because it also sets the display and refresh rules.
+        Confirm the category with each MLS before you build, because it also sets the display and refresh rules. Our guide
+        on <Link href="/blog/how-to-get-mls-data-access">how to get MLS data access for your app</Link> walks through the
+        licenses, broker sponsorship, agreements and approval steps.
       </p>
 
       <h3>RESO Web API data vendors</h3>
@@ -154,6 +156,14 @@ export default function Guide() {
         <li>Check each board&apos;s display, attribution and refresh rules, since they affect the design.</li>
         <li>Price development against the number of boards, the required freshness and the search features, not against &ldquo;one integration&rdquo;.</li>
       </ol>
+      <GuideFaq slug={SLUG} items={[
+  { question: 'What does an IDX plugin cost?', answer: ['Published plans include IDX Broker at ', ['$60, $99 or $149 per month', IDXB], ', Showcase IDX ', ['from $94.95 or $124.95 per month', SHOWCASE], ' and Buying Buddy at ', ['$49 or $77 per month', BUDDY], '. Some vendors also charge a one-time setup fee or pass MLS fees through.'] },
+  { question: 'How much do MLSs charge for data feeds?', answer: ['It depends on the MLS and on how the data is used. Stellar MLS charges ', ['$450 per office per year for broker back-office use, capped at $7,500', STELLAR], ' and ', ['$7,500 per product per year for a vendor product', STELLAR], ', while ARMLS gives each brokerage ', ['five free feeds, with additional feeds at $150 per month each', ARMLS], '.'] },
+  { question: 'Do RESO Web API data vendors add their own fees?', answer: ['Some do. Trestle charges ', ['$30 per month for broker data feeds and $100 per month for other feeds', TRESTLE], ' on top of MLS fees, while MLS Grid ', ['states that you only pay the license fee your MLS requires', MLSGRID], '.'] },
+  { question: 'Should a new integration use RETS or the RESO Web API?', answer: ['The RESO Web API. RESO describes RETS as ', ['deprecated and no longer supported', RESO], ', and NAR policy required REALTOR® association MLSs to implement the ', ['RESO Web API by June 30, 2016', NAR_790], '.'] },
+  { question: 'What does custom MLS integration development cost?', answer: ['There is no fixed price: it depends on the number of MLS boards, how current the data must be and the search features on top. For market labor rates, Clutch reports that software development companies in India typically charge ', ['$25 to $49 per hour', CLUTCH], ' and those in the United States ', ['$50 to $99 per hour', CLUTCH], '.'] },
+]} />
+
       <p className="cp-note">
         Prices were taken from the vendors&apos; and MLSs&apos; public pages on September 29, 2026. Fees change, and many
         MLSs publish different rates for brokers and vendors, so confirm current pricing with each provider.

@@ -14,7 +14,7 @@ export default function TeamGrid({ members }: { members: TeamMember[] }) {
             <span className="cp-card-meta">{m.role}</span>
             <p style={{ marginTop: 10 }}>{m.bio}</p>
             {m.credentials?.length ? <p style={{ marginTop: 8, fontSize: 14 }}>{m.credentials.join(' · ')}</p> : null}
-            {m.linkedin && <p style={{ marginTop: 10 }}><a href={m.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a></p>}
+            {m.linkedin && <p style={{ marginTop: 10 }}><a href={m.linkedin} target="_blank" rel="noopener noreferrer" className="cp-standalone-link">LinkedIn</a></p>}
           </div>
         ))}
       </div>

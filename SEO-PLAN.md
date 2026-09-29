@@ -80,6 +80,27 @@ Owner answers (2026-09-29): all slots left as brackets, so the fallbacks apply �
 - [x] 7.7 Backlog (don't write yet): MLS data access guide; RESO Web API vs RETS migration guide; brokerage CRM development page; IDX vendor vs custom build; Odoo for real estate (SERP-check first).
 Checks: all Phase 1–5 checks plus the new ones; commit per step; push the branch only.
 
+## Phase 8 — post-84 fixes
+Source: ~/Code/peregrine-it.com-audit/2026-09-30/{FULL-AUDIT-REPORT,ACTION-PLAN}.md (84/100). Branch seo/phase-8 from main. Only items that need no owner input; numbers are ACTION-PLAN numbers.
+- [x] 8.5 /index → 301 to /.
+- [x] 8.7 Cut render-blocking CSS (inline critical or merge the three stylesheets); verify with a before/after full-page screenshot diff at desktop and phone widths.
+- [x] 8.9 Hero scramble line: pin its width, show the final text under prefers-reduced-motion, stop the last H1 word fading at load.
+- [x] 8.10 CollectionPage + ItemList + BreadcrumbList on /case-studies.
+- [x] 8.11 Dated "Last updated" line on each service page; a 4–5 question FAQ on each guide, built only from the guide's own sourced content, with FAQPage schema equal to the visible text.
+- [x] 8.12 Word-level only: replace "drowning", "bleeding revenue", "transform", "seamless", "robust" with plain wording; no restructuring, no figure changes.
+- [x] 8.13 New guide "How to get MLS data access for your app" under the Phase 5 sourcing rules (every figure and requirement linked to an MLS, RESO, MLS Grid, Trestle or Bridge source); linked from the MLS service page and the MLS cost guide.
+- [x] 8.14 Heading-level skips (case studies h2→h4; /case-studies h1→h3).
+- [x] 8.15 Tap targets ≥ 44 px on mobile; hero CTA no longer wraps.
+- [x] 8.16 security.txt and an IndexNow key file; HSTS unchanged.
+- [x] 8.17 Images: shrink ai-anim.webp; serve case-studies-hero-bg.jpg through next/image; per-article OG images generated with next/og from each title.
+- [x] 8.18 Accessibility: contrast and aria-hidden-focus fixes.
+- [x] 8.19 Explicit robots.txt groups for OAI-SearchBot, Google-Extended, CCBot.
+- [x] 8.20 /industries: full-width industry card.
+- [x] 8.W W3|re safe edits: "3×" caption aligned to the 3.8× headline; "Property Management Dashboard" block moved out of the AI section. TODO(owner): reconcile 94% AVM accuracy vs "23% of prices off by more than 8%", and add measurement windows/baselines to the metrics.
+- [x] 8.6 Reminder only: **after 2026-10-14**, if the CSP Report-Only reports stay clean, switch Content-Security-Policy-Report-Only to an enforced Content-Security-Policy in next.config.ts. Not enforced in Phase 8.
+- Skipped for now: 8 (migrating homepage animations off jQuery).
+Checks: all Phase 1–7 checks plus new ones per item; commit per item; push the branch only.
+
 ---
 
 ## Implementation notes
@@ -111,3 +132,4 @@ Checks: all Phase 1–5 checks plus the new ones; commit per step; push the bran
   5. "Odoo for real estate" — hypothesis only; run the SERP first.
   6. "Odoo ERP implementation cost" (added in the second round of owner answers).
 - Phase 7: legacy scripts now load only on the homepage (components/DeferredScripts.tsx rendered by page.tsx); /js/peregrine.js was deleted after a behaviour diff — HomeEffects.tsx replaces its Lottie rendering and scroll reveals. Title template is '%s | Peregrine IT'; keep titles <= 60 and descriptions <= 160 (the check script counts them). Security headers live in next.config.ts; CSP is Report-Only until reports are clean.
+- IndexNow key: `ea7a69253145f8b82d7805ee365d26a6`, served at https://peregrine-it.com/ea7a69253145f8b82d7805ee365d26a6.txt (public/ea7a69253145f8b82d7805ee365d26a6.txt). After a deploy, submit changed URLs, e.g. `curl "https://api.indexnow.org/indexnow?url=https://peregrine-it.com/blog/how-to-get-mls-data-access&key=ea7a69253145f8b82d7805ee365d26a6"`. Nothing has been submitted automatically. security.txt lives at public/.well-known/security.txt and expires 2027-09-30; renew it before then.

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import GuideLayout, { Src, guideMetadata } from '../../components/GuideLayout';
+import GuideLayout, { GuideFaq, Src, guideMetadata } from '../../components/GuideLayout';
 
 const SLUG = 'cost-to-build-a-real-estate-platform';
 export const metadata = guideMetadata(SLUG);
@@ -73,7 +73,8 @@ export default function Guide() {
         a <Src href={STELLAR}>vendor product fee of $7,500 per product per year</Src>, and Trestle charges technology
         providers <Src href={TRESTLE}>$100 to $175 per connection per month</Src> on top of MLS fees. Our{' '}
         <Link href="/blog/mls-idx-integration-cost">MLS and IDX integration cost guide</Link> compares fees across
-        several boards and vendors.
+        several boards and vendors, and <Link href="/blog/how-to-get-mls-data-access">how to get MLS data access</Link>{' '}
+        covers the licenses and approval steps.
       </p>
 
       <h3>Maps, hosting and third-party services</h3>
@@ -108,6 +109,14 @@ export default function Guide() {
         <li>Who owns the code, the infrastructure accounts and the data?</li>
         <li>What will it cost to run and maintain in the first year after launch?</li>
       </ul>
+      <GuideFaq slug={SLUG} items={[
+  { question: 'What does a typical software project cost?', answer: ['Clutch reports an ', ['average software development project cost of $132,480.29', CLUTCH], ', with most projects between ', ['$10,000 and $49,999', CLUTCH], '. Those figures cover all kinds of software, not only real estate.'] },
+  { question: 'How much do developers cost in the US, Canada and India?', answer: ['Clutch reports typical hourly rates for software development companies of ', ['$25 to $49 in India', CLUTCH], ', ', ['$50 to $99 in the United States', CLUTCH], ' and ', ['$100 to $149 in Canada', CLUTCH], '. For employees, the U.S. Bureau of Labor Statistics gives a ', ['median annual wage of $135,980 for software developers (May 2025)', BLS], '.'] },
+  { question: 'What do maps cost for a property search site?', answer: ['Google Maps Platform includes ', ['10,000 free Dynamic Maps loads per month, then $7.00 per 1,000', GMAPS], '; Mapbox includes ', ['50,000 free web map loads per month, then $5.00 per 1,000', MAPBOX], '.'] },
+  { question: 'What recurring costs come after launch?', answer: ['MLS data fees, maps, hosting, search, email and SMS, and ongoing maintenance. MLS fees alone can be significant: Stellar MLS, for example, lists a ', ['vendor product fee of $7,500 per product per year', STELLAR], '.'] },
+  { question: 'How can we keep the first release affordable?', answer: ['Start with one MLS, use off-the-shelf services where they are not your differentiator, get the data architecture right early, ship in short increments, and check MLS display and refresh rules before design.'] },
+]} />
+
       <p className="cp-note">
         Figures were taken from the linked public sources on September 29, 2026. Rates and prices change; confirm them
         before budgeting. Project durations are from Peregrine IT Solutions&apos; published case studies.

@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/food-delivery-aggregator-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Food Delivery Aggregator Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Food Delivery Aggregator for Multi-Restaurant Marketplace',
     description: 'FoodTech aggregator with 200+ restaurants, 50K+ orders/month, and sub-3min delivery.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/food-delivery-aggregator-platform' },
 };
@@ -162,7 +160,7 @@ export default function FoodDeliveryAggregatorPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-route-line" />
               </div>
-              <h4>Order Routing</h4>
+              <h3>Order Routing</h3>
               <p>
                 Orders came in without clear assignment to the right restaurant branch. Multi-location
                 chains had to manually forward orders to the nearest kitchen. Duplicate orders
@@ -173,7 +171,7 @@ export default function FoodDeliveryAggregatorPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-user-star-line" />
               </div>
-              <h4>Driver Dispatch</h4>
+              <h3>Driver Dispatch</h3>
               <p>
                 Drivers were assigned via human dispatchers or WhatsApp. Load balancing was poor —
                 some drivers got too many orders while others sat idle. No visibility into driver
@@ -184,7 +182,7 @@ export default function FoodDeliveryAggregatorPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-store-3-line" />
               </div>
-              <h4>Restaurant Onboarding</h4>
+              <h3>Restaurant Onboarding</h3>
               <p>
                 Each restaurant had different menu formats, operating hours, and POS systems. Manual
                 data entry caused menu errors and pricing mismatches. New restaurant signup took
@@ -195,7 +193,7 @@ export default function FoodDeliveryAggregatorPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-map-pin-line" />
               </div>
-              <h4>Real-Time Tracking</h4>
+              <h3>Real-Time Tracking</h3>
               <p>
                 Customers had no live view of their order. Drivers shared location via WhatsApp, which
                 was unreliable. Restaurants couldn&apos;t anticipate pickup times, leading to food

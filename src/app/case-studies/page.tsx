@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import CaseStudiesClient from './CaseStudiesClient';
+import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../components/JsonLd';
+import { caseStudies, caseStudyUrl } from '@/data/case-studies';
 
 const title = 'Case Studies: SaaS, Proptech & Integrations';
 const description =
@@ -28,5 +30,40 @@ export const metadata: Metadata = {
 };
 
 export default function CaseStudiesPage() {
-  return <CaseStudiesClient />;
+  const schema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': `${url}#webpage`,
+        url,
+        name: title,
+        description,
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        about: ORGANIZATION_REF,
+        mainEntity: { '@id': `${url}#list` },
+      },
+      {
+        '@type': 'ItemList',
+        '@id': `${url}#list`,
+        numberOfItems: caseStudies.length,
+        itemListElement: caseStudies.map((c, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          url: caseStudyUrl(c.slug),
+          name: c.title,
+        })),
+      },
+      breadcrumbList(url, [
+        { name: 'Home', path: '' },
+        { name: 'Case Studies', path: '/case-studies' },
+      ]),
+    ],
+  };
+  return (
+    <>
+      <JsonLd data={schema} />
+      <CaseStudiesClient />
+    </>
+  );
 }

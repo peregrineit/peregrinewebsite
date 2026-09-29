@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/multi-location-clinic-management',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Healthcare Clinic Management Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Multi-Location Clinic Management System',
     description: 'How we built a HIPAA-compliant platform unifying patient records, telehealth, scheduling, and billing across 35 clinics.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/multi-location-clinic-management' },
 };
@@ -157,7 +155,7 @@ export default function MultiLocationClinicManagement() {
               <div className="csd-cs-card-icon">
                 <i className="ri-file-list-3-line" />
               </div>
-              <h4>Fragmented Patient Records</h4>
+              <h3>Fragmented Patient Records</h3>
               <p>
                 35 clinics used 4 different EHR systems. When patients visited a different location,
                 clinicians had no access to their history. Charts were faxed between offices, often
@@ -168,7 +166,7 @@ export default function MultiLocationClinicManagement() {
               <div className="csd-cs-card-icon">
                 <i className="ri-shield-check-line" />
               </div>
-              <h4>HIPAA Compliance Gaps</h4>
+              <h3>HIPAA Compliance Gaps</h3>
               <p>
                 No centralized audit logging. PHI was transmitted via unencrypted email. Access controls
                 were inconsistent — some staff had admin access to all records regardless of their role.
@@ -178,7 +176,7 @@ export default function MultiLocationClinicManagement() {
               <div className="csd-cs-card-icon">
                 <i className="ri-money-dollar-circle-line" />
               </div>
-              <h4>Insurance Billing Failures</h4>
+              <h3>Insurance Billing Failures</h3>
               <p>
                 Claims were coded manually with no validation. An 18% denial rate was costing the
                 network over $2.1M annually in rejected and delayed reimbursements.
@@ -188,7 +186,7 @@ export default function MultiLocationClinicManagement() {
               <div className="csd-cs-card-icon">
                 <i className="ri-video-chat-line" />
               </div>
-              <h4>No Telehealth Infrastructure</h4>
+              <h3>No Telehealth Infrastructure</h3>
               <p>
                 The COVID pivot exposed the lack of virtual care capability. Clinics were using consumer
                 Zoom calls with no EHR integration, no visit documentation, and no compliant recording.

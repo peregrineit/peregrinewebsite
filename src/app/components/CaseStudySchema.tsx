@@ -17,7 +17,7 @@ export default function CaseStudySchema({ slug }: { slug: string }) {
         '@id': `${url}#article`,
         headline: study.title,
         description: study.description,
-        image: `${SITE_URL}${study.image}`,
+        image: `${url}/opengraph-image`,
         url,
         mainEntityOfPage: url,
         articleSection: 'Case Studies',

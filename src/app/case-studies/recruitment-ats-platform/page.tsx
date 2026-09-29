@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/recruitment-ats-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Recruitment ATS Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Recruitment ATS for Applicant Tracking & Hiring',
     description: 'Recruitment ATS for 200+ companies and 80K+ candidates with 65% time-to-hire reduction.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/recruitment-ats-platform' },
 };
@@ -134,7 +132,7 @@ export default function RecruitmentAtsPlatform() {
           <div className="csd-section-label">Overview</div>
           <h2>The Client&apos;s Vision</h2>
           <p>
-            A staffing and recruitment SaaS serving 200+ SMB and mid-market companies was drowning in
+            A staffing and recruitment SaaS serving 200+ SMB and mid-market companies was running on
             spreadsheets and email. Recruiters manually screened resumes, copied candidate details into
             ATS fields, and coordinated interviews via back-and-forth emails. Time-to-hire averaged
             35 days.
@@ -156,7 +154,7 @@ export default function RecruitmentAtsPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-file-search-line" />
               </div>
-              <h4>Resume Parsing</h4>
+              <h3>Resume Parsing</h3>
               <p>
                 Resumes arrived as PDFs and Word files in every format imaginable. Manual data entry
                 took 10–15 minutes per candidate. Typos and inconsistent naming caused duplicate
@@ -167,7 +165,7 @@ export default function RecruitmentAtsPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-calendar-check-line" />
               </div>
-              <h4>Interview Scheduling</h4>
+              <h3>Interview Scheduling</h3>
               <p>
                 Coordinating 3–5 interview rounds across multiple calendars was a nightmare.
                 Recruiters sent Doodle polls and email chains. No-shows and double-bookings were
@@ -178,7 +176,7 @@ export default function RecruitmentAtsPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-flow-chart" />
               </div>
-              <h4>Candidate Pipeline</h4>
+              <h3>Candidate Pipeline</h3>
               <p>
                 Each company had different stages — Applied, Phone Screen, Technical, Offer, etc.
                 The old system used a single rigid pipeline. Drag-and-drop was slow. Bulk actions
@@ -189,7 +187,7 @@ export default function RecruitmentAtsPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-building-line" />
               </div>
-              <h4>Employer Branding</h4>
+              <h3>Employer Branding</h3>
               <p>
                 Career pages looked generic. Companies wanted custom domains, branded application
                 flows, and integration with their website. The old system offered only white-label

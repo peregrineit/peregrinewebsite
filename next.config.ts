@@ -33,6 +33,11 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  experimental: {
+    // Inline the CSS into each page's <head> instead of three render-blocking
+    // stylesheet requests (PSI estimated 450–900 ms on mobile).
+    inlineCss: true,
+  },
   images: {
     formats: ["image/avif", "image/webp"],
   },
@@ -52,6 +57,8 @@ const nextConfig: NextConfig = {
         destination: `/case-studies/${slug}`,
         statusCode: 301 as const,
       })),
+      // Next.js also serves the homepage at /index; send it to the canonical URL.
+      { source: "/index", destination: "/", statusCode: 301 as const },
       // Case study renamed to match the client (W3|re).
       {
         source: "/case-studies/northbridge-realty-ai-platform",

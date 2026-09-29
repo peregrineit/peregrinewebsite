@@ -83,7 +83,7 @@ export default function Footer() {
                     transform: 'translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)',
                     display: 'inline-block',
                     padding: '12px 24px',
-                    backgroundColor: '#06b6d4',
+                    backgroundColor: '#0e7490',
                     color: '#ffffff',
                     fontSize: '0.95rem',
                     fontWeight: '600',
@@ -93,7 +93,7 @@ export default function Footer() {
                     boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
                     marginTop: '0'
                   }}
-                  className="hover:bg-cyan-600"
+                  className="hover:bg-cyan-800"
                 >
                   Book a Strategy Call &rarr;
                 </a>
@@ -208,9 +208,9 @@ export default function Footer() {
                 Copyright {new Date().getFullYear()}© Peregrine-it.com | All Rights Reserved
               </div>
               <div className="flex items-center gap-4 text-sm">
-                <a href="#" style={{ color: '#374151', fontWeight: '500' }} className="hover:text-cyan-600 transition-colors">Sitemap</a>
-                <Link href="/privacy-policy" style={{ color: '#374151', fontWeight: '500' }} className="hover:text-cyan-600 transition-colors">Privacy Policy</Link>
-                <Link href="/terms-of-use" style={{ color: '#374151', fontWeight: '500' }} className="hover:text-cyan-600 transition-colors">Terms of Use</Link>
+                <a href="#" style={{ color: '#374151', fontWeight: '500' }} className="footer-legal-link hover:text-cyan-600 transition-colors">Sitemap</a>
+                <Link href="/privacy-policy" style={{ color: '#374151', fontWeight: '500' }} className="footer-legal-link hover:text-cyan-600 transition-colors">Privacy Policy</Link>
+                <Link href="/terms-of-use" style={{ color: '#374151', fontWeight: '500' }} className="footer-legal-link hover:text-cyan-600 transition-colors">Terms of Use</Link>
               </div>
             </div>
           </div>

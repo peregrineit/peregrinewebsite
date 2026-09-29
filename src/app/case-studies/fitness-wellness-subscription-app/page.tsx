@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/fitness-wellness-subscription-app',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Fitness Subscription App Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Fitness Subscription App with Workout Tracking & Live Classes',
     description: 'Fitness app with 80K+ subscribers, 2M+ workouts, and live video streaming.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/fitness-wellness-subscription-app' },
 };
@@ -162,7 +160,7 @@ export default function FitnessWellnessSubscriptionApp() {
               <div className="csd-cs-card-icon">
                 <i className="ri-video-line" />
               </div>
-              <h4>Video Streaming</h4>
+              <h3>Video Streaming</h3>
               <p>
                 On-demand videos buffered during morning and evening rush. Live classes had 5–10
                 second latency — by the time users saw the move, the instructor was already on
@@ -173,7 +171,7 @@ export default function FitnessWellnessSubscriptionApp() {
               <div className="csd-cs-card-icon">
                 <i className="ri-refresh-line" />
               </div>
-              <h4>Workout Sync</h4>
+              <h3>Workout Sync</h3>
               <p>
                 Users logged workouts on one device and switched to another — progress didn&apos;t
                 follow. No cross-device history. Recommended &ldquo;next workout&rdquo; logic
@@ -184,7 +182,7 @@ export default function FitnessWellnessSubscriptionApp() {
               <div className="csd-cs-card-icon">
                 <i className="ri-vip-crown-line" />
               </div>
-              <h4>Subscription Management</h4>
+              <h3>Subscription Management</h3>
               <p>
                 Trials, monthly, and annual plans lived in separate flows. Upgrades and
                 cancellations required support. Webhook handling was incomplete — some cancellations
@@ -195,7 +193,7 @@ export default function FitnessWellnessSubscriptionApp() {
               <div className="csd-cs-card-icon">
                 <i className="ri-cloud-off-line" />
               </div>
-              <h4>Offline Mode</h4>
+              <h3>Offline Mode</h3>
               <p>
                 Many users worked out in gyms with poor cell service or ran outdoors without
                 data. There was no way to download classes. The app was unusable without
@@ -443,7 +441,7 @@ export default function FitnessWellnessSubscriptionApp() {
             subscribers joined at least one live session per week.
           </p>
           <p>
-            Workout sync had to be seamless. Users switch between phone and tablet; progress must
+            Workout sync had to be reliable. Users switch between phone and tablet; progress must
             follow. We use last-write-wins with server timestamps — conflicts are rare (same user,
             same workout) but we handle them gracefully. The &ldquo;next workout&rdquo;
             recommendations use completed sessions to avoid repetition and encourage variety.

@@ -66,7 +66,7 @@ export default function IndustriesPage() {
       </section>
       <section className="cp-section">
         <div className="cp-container">
-          <div className="cp-grid">
+          <div className="cp-grid" style={industries.length === 1 ? { gridTemplateColumns: '1fr' } : undefined}>
             {industries.map((i) => (
               <Link key={i.href} href={i.href} className="cp-card">
                 <span className="cp-card-icon"><i className={i.icon} aria-hidden="true" /></span>
