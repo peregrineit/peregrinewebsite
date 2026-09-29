@@ -27,6 +27,8 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://peregrine-it.com/case-studies/northbridge-realty-ai-platform' },
 };
 
+// TODO(owner): confirm the real client name. The slug says "Northbridge"; the body names "W3|re"
+// (quote attributed to Marcus Chen). Changing the slug needs a 301 in next.config.ts.
 export default function NorthbridgeRealtyAIPlatform() {
   return (
     <div className="case-study-detail csd-purple">
@@ -136,7 +138,7 @@ export default function NorthbridgeRealtyAIPlatform() {
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-time-line" /></div>
               <h4>Lead Response Time Averaged 47 Minutes</h4>
-              <p>Inbound leads were routed to a shared inbox. During peak hours, response times stretched to 2+ hours. Industry data shows conversion drops 21× if response exceeds 30 minutes.</p>
+              <p>Inbound leads were routed to a shared inbox. During peak hours, response times stretched to 2+ hours.</p>
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-price-tag-3-line" /></div>
@@ -247,14 +249,14 @@ export default function NorthbridgeRealtyAIPlatform() {
             </div>
           </div>
 
-          {/* New York Real Estate Dashboard */}
+          {/* Smart assistant chatbot screenshot */}
           <div className="csd-section" style={{ marginTop: 32 }}>
             <h3>Market Intelligence & Forecasting</h3>
-            <p>Price per sqft, YOY changes, sales trends, and forecasts by borough and neighborhood.</p>
+            <p>Price per sqft, YOY changes, sales trends, and forecasts by metro area, city and ZIP code.</p>
             <div className="csd-hero-image-wrapper" style={{ marginTop: 16, borderRadius: 12, overflow: 'hidden' }}>
               <Image
                 src="/images/case-studies/MapImage66-73d94aa1-8291-487f-a984-76f1fa1ba679.png"
-                alt="New York Real Estate Dashboard"
+                alt="Smart assistant chatbot asking a home buyer about budget and timeline"
                 width={1200}
                 height={700}
                 style={{ width: '100%', height: 'auto' }}
