@@ -47,6 +47,17 @@ export const guides: Guide[] = [
     service: 'saas-development',
     caseStudy: 'proptech-investor-portal',
   },
+  {
+    slug: 'how-to-get-mls-data-access',
+    title: 'How to Get MLS Data Access for Your App',
+    metaTitle: 'How to Get MLS Data Access for Your App',
+    description:
+      'The licenses, broker sponsorship, agreements, platforms (MLS Grid, Trestle, Bridge), fees and compliance rules for getting MLS data into your app, with sources.',
+    datePublished: '2026-09-30',
+    dateModified: '2026-09-30',
+    service: 'mls-idx-integration',
+    caseStudy: 'w3re-ai-real-estate-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {

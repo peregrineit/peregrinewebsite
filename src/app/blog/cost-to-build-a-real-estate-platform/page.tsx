@@ -73,7 +73,8 @@ export default function Guide() {
         a <Src href={STELLAR}>vendor product fee of $7,500 per product per year</Src>, and Trestle charges technology
         providers <Src href={TRESTLE}>$100 to $175 per connection per month</Src> on top of MLS fees. Our{' '}
         <Link href="/blog/mls-idx-integration-cost">MLS and IDX integration cost guide</Link> compares fees across
-        several boards and vendors.
+        several boards and vendors, and <Link href="/blog/how-to-get-mls-data-access">how to get MLS data access</Link>{' '}
+        covers the licenses and approval steps.
       </p>
 
       <h3>Maps, hosting and third-party services</h3>

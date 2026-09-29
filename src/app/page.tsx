@@ -788,7 +788,7 @@ export default function Home() {
               <h2 className="heading-primary">Guides for Software Buyers</h2>
               <div className="section-sub">Costs, trade-offs and build-versus-buy decisions for real estate and SaaS teams, with every figure linked to its source.</div>
             </div>
-            <div className="tw-grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="tw-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {guides.map((g) => (
                 <Link key={g.slug} href={`/blog/${g.slug}`} className="home-guide-card">
                   <span className="home-guide-label">Guide</span>

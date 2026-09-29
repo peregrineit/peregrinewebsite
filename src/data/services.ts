@@ -245,7 +245,7 @@ export const services: Service[] = [
       { slug: 'w3re-ai-real-estate-platform', note: 'A unified pipeline for four MLS systems (NTREIS, Stellar MLS, ARMLS and REcolorado) that normalizes schemas and deduplicates cross-listed properties.' },
       { slug: 'scaling-real-estate-saas-platform', note: 'Rebuilt the MLS sync engine for US and Canadian boards with delta detection, retry logic and per-feed error isolation, feeding Elasticsearch search for agent IDX sites.' },
     ],
-    guides: ['mls-idx-integration-cost', 'cost-to-build-a-real-estate-platform'],
+    guides: ['mls-idx-integration-cost', 'how-to-get-mls-data-access', 'cost-to-build-a-real-estate-platform'],
     updated: '2026-09-30',
     faq: [
       {

@@ -92,7 +92,9 @@ export default function Guide() {
       <p>
         The same data can cost very different amounts depending on who licenses it and why. A brokerage using its own
         back-office feed at Stellar pays per office, while a company selling a product to agents pays a vendor fee.
-        Confirm the category with each MLS before you build, because it also sets the display and refresh rules.
+        Confirm the category with each MLS before you build, because it also sets the display and refresh rules. Our guide
+        on <Link href="/blog/how-to-get-mls-data-access">how to get MLS data access for your app</Link> walks through the
+        licenses, broker sponsorship, agreements and approval steps.
       </p>
 
       <h3>RESO Web API data vendors</h3>
