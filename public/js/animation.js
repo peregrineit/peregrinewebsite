@@ -240,8 +240,8 @@ jQuery(document).ready(function ($) {
     });
 });
 
-// Typing animation
-document.addEventListener('DOMContentLoaded', function () {
+// Typing animation (this script loads after DOMContentLoaded, so run it from runAnimations)
+function initTyped() {
     if (document.getElementById('typetxt-1')) {
         var typed1 = new Typed('#typetxt-1', {
             strings: ['git push', 'git pull'],
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
             loop: true,
         });
     }
-});
+}
 
 // Scramble Text
 class TextScramble {
@@ -354,6 +354,7 @@ function runAnimations() {
     initTxtAnimation();
     initGridItems();
     initScrambleText();
+    initTyped();
 }
 function scheduleAnimations() {
     setTimeout(runAnimations, 200);

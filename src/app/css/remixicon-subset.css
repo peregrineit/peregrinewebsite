@@ -1,0 +1,149 @@
+/* Remix Icon 3.5.0 (Apache-2.0), subset to the icons this site uses.
+   Regenerate when adding icons: see SEO-PLAN.md implementation notes. */
+/*
+* Remix Icon v3.5.0
+* https://remixicon.com
+* https://github.com/Remix-Design/RemixIcon
+*
+* Copyright RemixIcon.com
+* Released under the Apache License Version 2.0
+*
+* Date: 2023-07-30
+*/
+@font-face {
+  font-family: "remixicon";
+  src: url("/fonts/remixicon-subset.woff2") format("woff2");
+  font-display: swap;
+}
+
+[class^="ri-"], [class*=" ri-"] {
+  font-family: 'remixicon' !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ri-lg { font-size: 1.3333em; line-height: 0.75em; vertical-align: -.0667em; }
+.ri-xl { font-size: 1.5em; line-height: 0.6666em; vertical-align: -.075em; }
+.ri-xxs { font-size: .5em; }
+.ri-xs { font-size: .75em; }
+.ri-sm { font-size: .875em }
+.ri-1x { font-size: 1em; }
+.ri-2x { font-size: 2em; }
+.ri-3x { font-size: 3em; }
+.ri-4x { font-size: 4em; }
+.ri-5x { font-size: 5em; }
+.ri-6x { font-size: 6em; }
+.ri-7x { font-size: 7em; }
+.ri-8x { font-size: 8em; }
+.ri-9x { font-size: 9em; }
+.ri-10x { font-size: 10em; }
+.ri-fw { text-align: center; width: 1.25em; }
+.ri-add-line:before { content: "\ea13"; }
+.ri-amazon-line:before { content: "\ea2e"; }
+.ri-apps-line:before { content: "\ea44"; }
+.ri-arrow-down-line:before { content: "\ea4c"; }
+.ri-arrow-left-right-line:before { content: "\ea62"; }
+.ri-arrow-left-s-line:before { content: "\ea64"; }
+.ri-arrow-right-line:before { content: "\ea6c"; }
+.ri-bank-card-2-line:before { content: "\ea90"; }
+.ri-bank-card-line:before { content: "\ea92"; }
+.ri-bar-chart-box-line:before { content: "\ea98"; }
+.ri-book-open-line:before { content: "\eadb"; }
+.ri-bookmark-line:before { content: "\eae5"; }
+.ri-box-3-line:before { content: "\f2f5"; }
+.ri-broadcast-line:before { content: "\eaf9"; }
+.ri-building-3-line:before { content: "\eb0b"; }
+.ri-building-4-line:before { content: "\eb0d"; }
+.ri-building-line:before { content: "\eb0f"; }
+.ri-calculator-line:before { content: "\eb1f"; }
+.ri-calendar-check-line:before { content: "\eb23"; }
+.ri-calendar-event-line:before { content: "\eb25"; }
+.ri-calendar-line:before { content: "\eb27"; }
+.ri-chat-3-line:before { content: "\eb51"; }
+.ri-chat-voice-line:before { content: "\eb77"; }
+.ri-cloud-line:before { content: "\eb9d"; }
+.ri-cloud-off-line:before { content: "\eb9f"; }
+.ri-code-s-line:before { content: "\ebab"; }
+.ri-dashboard-3-line:before { content: "\ec12"; }
+.ri-database-2-line:before { content: "\ec16"; }
+.ri-database-line:before { content: "\ec18"; }
+.ri-door-lock-box-line:before { content: "\ec48"; }
+.ri-edit-line:before { content: "\ec86"; }
+.ri-error-warning-line:before { content: "\eca1"; }
+.ri-exchange-line:before { content: "\ecad"; }
+.ri-file-edit-line:before { content: "\ecdb"; }
+.ri-file-list-2-line:before { content: "\eced"; }
+.ri-file-list-3-line:before { content: "\ecef"; }
+.ri-file-lock-line:before { content: "\ecf3"; }
+.ri-file-pdf-line:before { content: "\ecfd"; }
+.ri-file-search-line:before { content: "\ed05"; }
+.ri-file-text-line:before { content: "\ed0f"; }
+.ri-film-line:before { content: "\ed21"; }
+.ri-flashlight-line:before { content: "\ed3d"; }
+.ri-flow-chart:before { content: "\ed46"; }
+.ri-folder-chart-line:before { content: "\ed5e"; }
+.ri-folder-open-line:before { content: "\ed70"; }
+.ri-funds-box-line:before { content: "\eda1"; }
+.ri-git-merge-line:before { content: "\edc1"; }
+.ri-global-line:before { content: "\edcf"; }
+.ri-hard-drive-2-line:before { content: "\edf9"; }
+.ri-heart-pulse-line:before { content: "\ee11"; }
+.ri-home-4-line:before { content: "\ee1d"; }
+.ri-hospital-line:before { content: "\ee37"; }
+.ri-leaf-line:before { content: "\eea3"; }
+.ri-line-chart-line:before { content: "\eeab"; }
+.ri-link:before { content: "\eeb2"; }
+.ri-links-line:before { content: "\eeb8"; }
+.ri-lock-line:before { content: "\eece"; }
+.ri-lock-unlock-line:before { content: "\eed2"; }
+.ri-mail-check-line:before { content: "\eeee"; }
+.ri-mail-line:before { content: "\eef6"; }
+.ri-mail-send-line:before { content: "\eefc"; }
+.ri-map-pin-line:before { content: "\ef14"; }
+.ri-money-dollar-circle-line:before { content: "\ef65"; }
+.ri-notification-3-line:before { content: "\ef94"; }
+.ri-pie-chart-line:before { content: "\effa"; }
+.ri-plug-line:before { content: "\f019"; }
+.ri-price-tag-3-line:before { content: "\f023"; }
+.ri-question-answer-line:before { content: "\f043"; }
+.ri-quill-pen-line:before { content: "\f04a"; }
+.ri-reactjs-line:before { content: "\f058"; }
+.ri-refresh-line:before { content: "\f064"; }
+.ri-refund-line:before { content: "\f068"; }
+.ri-restaurant-2-line:before { content: "\f082"; }
+.ri-robot-2-line:before { content: "\f3d9"; }
+.ri-route-line:before { content: "\f09b"; }
+.ri-run-line:before { content: "\f0a5"; }
+.ri-search-eye-line:before { content: "\f0cf"; }
+.ri-search-line:before { content: "\f0d1"; }
+.ri-server-line:before { content: "\f0e0"; }
+.ri-shield-check-line:before { content: "\f100"; }
+.ri-shopping-bag-line:before { content: "\f118"; }
+.ri-shopping-cart-line:before { content: "\f120"; }
+.ri-smartphone-line:before { content: "\f15a"; }
+.ri-stack-line:before { content: "\f181"; }
+.ri-store-2-line:before { content: "\f1a5"; }
+.ri-store-3-line:before { content: "\f1a7"; }
+.ri-tablet-line:before { content: "\f1e0"; }
+.ri-team-line:before { content: "\f1ee"; }
+.ri-ticket-2-line:before { content: "\f20b"; }
+.ri-time-line:before { content: "\f20f"; }
+.ri-timer-line:before { content: "\f215"; }
+.ri-translate-2:before { content: "\f226"; }
+.ri-truck-line:before { content: "\f231"; }
+.ri-tv-2-line:before { content: "\f235"; }
+.ri-user-3-line:before { content: "\f256"; }
+.ri-user-add-line:before { content: "\f25e"; }
+.ri-user-follow-line:before { content: "\f261"; }
+.ri-user-line:before { content: "\f264"; }
+.ri-user-search-line:before { content: "\f26c"; }
+.ri-user-settings-line:before { content: "\f26e"; }
+.ri-user-star-line:before { content: "\f276"; }
+.ri-video-add-line:before { content: "\f27c"; }
+.ri-video-chat-line:before { content: "\f27e"; }
+.ri-video-line:before { content: "\f282"; }
+.ri-vip-crown-line:before { content: "\f28e"; }
+.ri-wifi-line:before { content: "\f2c0"; }
+.ri-wifi-off-line:before { content: "\f2c2"; }
+.ri-window-line:before { content: "\f2c6"; }
