@@ -1,0 +1,29 @@
+# Peregrine IT Solutions
+
+> Peregrine IT Solutions is a software engineering firm that designs, builds and scales SaaS products, API integrations, automation and cloud infrastructure. Most of our clients are B2B companies in the United States and Canada, with a strong focus on real estate and proptech (brokerages, MLS/IDX data, investor platforms) and SaaS businesses.
+
+Engineers work directly with client teams in sprint-based delivery, with daily overlap with North American business hours.
+
+## What we do
+
+- SaaS product development: multi-tenant platforms, billing, role-based access, from MVP to scale
+- API and third-party integrations: CRMs, ERPs, payments, MLS/IDX feeds (RESO Web API, RETS)
+- AI and workflow automation: natural-language search, chatbots, lead routing, document processing
+- Cloud and DevOps: AWS/Azure infrastructure, CI/CD, performance and reliability work
+- ERP implementation and customization, including Odoo
+- Legacy modernization: incremental migration from monoliths to cloud-native services
+
+## Selected case studies
+
+- [Scaling a real estate SaaS platform](https://peregrine-it.com/case-studies/scaling-real-estate-saas-platform): re-architected a US/Canada property search product to serve millions of MLS listings with sub-second search.
+- [AI-powered multi-market real estate platform](https://peregrine-it.com/case-studies/northbridge-realty-ai-platform): unified four MLS feeds for a brokerage and added natural-language search, automated valuation and an AI lead-qualification assistant.
+- [Investor portal for a real estate developer](https://peregrine-it.com/case-studies/proptech-investor-portal): role-based portal with document management, capital call workflows and automated distribution reporting.
+- [Supply chain visibility platform](https://peregrine-it.com/case-studies/supply-chain-visibility-platform): normalized tracking data from 12 carrier APIs with ETA prediction and exception alerts.
+- [Self-storage management SaaS](https://peregrine-it.com/case-studies/self-storage-management-platform): operator platform with smart-lock integration, automated billing and live occupancy dashboards.
+- [All case studies](https://peregrine-it.com/case-studies)
+
+## Contact
+
+- Email: info@peregrine-it.com
+- Book a call: https://calendly.com/mukesh-peregrine-it/30min
+- Website: https://peregrine-it.com

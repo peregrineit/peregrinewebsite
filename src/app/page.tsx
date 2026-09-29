@@ -5,6 +5,30 @@ import Image from 'next/image';
 import Script from 'next/script'; // Ensure Script is available if we use it, though we stripped scripts
 import Link from 'next/link';
 
+// Rendered as the visible FAQ section and as FAQPage JSON-LD, so the two always match.
+const faqs = [
+  {
+    question: "When should a company hire a software development partner instead of employees?",
+    answer: "When you need to ship product fast without the 3\u20136 month hiring cycle. A development partner gives you an experienced, ready-to-deploy engineering team that scales with your roadmap. It\u2019s ideal when you need specialized skills like SaaS architecture, API integrations, or cloud infrastructure without long-term overhead.",
+  },
+  {
+    question: "How long does it take to build a SaaS platform?",
+    answer: "A production-ready MVP typically takes 8\u201314 weeks. This covers core features, authentication, billing, multi-tenancy, and deployment. We deliver working software every two weeks through sprint-based execution. More complex platforms with advanced integrations may take 4\u20136 months.",
+  },
+  {
+    question: "Can legacy systems be modernized without downtime?",
+    answer: "Yes. We use incremental migration strategies \u2014 wrapping legacy APIs, migrating data in stages, and gradually routing traffic to new services. Your existing system stays live throughout the process. We\u2019ve modernized monolithic applications into cloud-native architectures without any business disruption.",
+  },
+  {
+    question: "What industries does Peregrine IT specialize in?",
+    answer: "We work with SaaS companies, real estate technology platforms, healthcare IT, fintech, logistics, and e-commerce. Our focus is product engineering \u2014 building scalable web applications, automation systems, and platform integrations using Node.js, React, Python, AWS, Azure, and modern DevOps practices.",
+  },
+  {
+    question: "How do API integrations improve operations?",
+    answer: "APIs connect your CRM, ERP, billing, and third-party tools into a single automated workflow. This eliminates manual data entry, reduces errors, and lets you scale operations without adding headcount. We build integrations with platforms like Stripe, HubSpot, Salesforce, and custom internal systems.",
+  },
+];
+
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
@@ -44,48 +68,12 @@ const structuredData = {
     },
     {
       "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "When should a company hire a software development partner instead of employees?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "When you need to ship product fast without the 3\u20136 month hiring cycle. A development partner gives you an experienced, ready-to-deploy engineering team that scales with your roadmap. It\u2019s ideal when you need specialized skills like SaaS architecture, API integrations, or cloud infrastructure without long-term overhead.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "How long does it take to build a SaaS platform?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "A production-ready MVP typically takes 8\u201314 weeks. This covers core features, authentication, billing, multi-tenancy, and deployment. We deliver working software every two weeks through sprint-based execution. More complex platforms with advanced integrations may take 4\u20136 months.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Can legacy systems be modernized without downtime?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. We use incremental migration strategies \u2014 wrapping legacy APIs, migrating data in stages, and gradually routing traffic to new services. Your existing system stays live throughout the process. We\u2019ve modernized monolithic applications into cloud-native architectures without any business disruption.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "What industries does Peregrine IT specialize in?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "We work with SaaS companies, real estate technology platforms, healthcare IT, fintech, logistics, and e-commerce. Our focus is product engineering \u2014 building scalable web applications, automation systems, and platform integrations using Node.js, React, Python, AWS, Azure, and modern DevOps practices.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "How do API integrations improve operations?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "APIs connect your CRM, ERP, billing, and third-party tools into a single automated workflow. This eliminates manual data entry, reduces errors, and lets you scale operations without adding headcount. We build integrations with platforms like Stripe, HubSpot, Salesforce, and custom internal systems.",
-          },
-        },
-      ],
+      "@id": "https://peregrine-it.com/#faq",
+      mainEntity: faqs.map(({ question, answer }) => ({
+        "@type": "Question",
+        name: question,
+        acceptedAnswer: { "@type": "Answer", text: answer },
+      })),
     },
   ],
 };
@@ -1092,6 +1080,26 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="sec-faq" className="section !pt-10 !pb-16">
+          <div className="container">
+            <div className="content-wrap" style={{ maxWidth: '800px', margin: '0 auto' }}>
+              <p className="section-borrow">FAQ</p>
+              <h2 className="heading-primary">Frequently Asked Questions</h2>
+              <div style={{ marginTop: '2rem', width: '100%' }}>
+                {faqs.map(({ question, answer }) => (
+                  <details key={question} className="group border-b border-gray-200 py-5">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-semibold text-gray-900">
+                      <h3 style={{ fontSize: 'inherit', lineHeight: 'inherit', fontWeight: 'inherit', margin: 0 }}>{question}</h3>
+                      <i className="ri-add-line text-xl text-cyan-600 transition-transform group-open:rotate-45" aria-hidden="true" />
+                    </summary>
+                    <p className="mt-3 text-base leading-relaxed text-gray-600">{answer}</p>
+                  </details>
+                ))}
               </div>
             </div>
           </div>
