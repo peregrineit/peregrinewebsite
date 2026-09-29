@@ -140,8 +140,8 @@ export default function W3reAIRealEstatePlatform() {
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-time-line" /></div>
-              <h4>Lead Response Time Averaged 47 Minutes</h4>
-              <p>Inbound leads were routed to a shared inbox, where they waited an average of 47 minutes for a first response.</p>
+              <h4>Lead Responses Took Hours</h4>
+              <p>Inbound leads were routed to a shared inbox. During peak hours, response times stretched to 2+ hours.</p>
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-price-tag-3-line" /></div>
@@ -379,7 +379,7 @@ export default function W3reAIRealEstatePlatform() {
             <div className="csd-result-card">
               <div className="csd-result-before">Lead response</div>
               <div className="csd-result-after">8 seconds</div>
-              <div className="csd-result-label">Down from 47 minutes</div>
+              <div className="csd-result-label">Down from 2+ hours at peak times</div>
             </div>
             <div className="csd-result-card">
               <div className="csd-result-before">Days on market</div>
