@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 // nothing starts until the page is idle after `load`, as before.
 
 const SCRAMBLE_PHRASES = ['PoC and MVP Development', 'Product Design', 'Full-Stack Development', 'AI Services'];
-const SCRAMBLE_CHARS = '!<>-_\\/[]{ }—=+*^?#________';
+const SCRAMBLE_CHARS = '!<>-_\\/[]{}=+*^?#';
 const TYPED_STRINGS = ['git push', 'git pull'];
 const RANDOM_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -32,42 +32,31 @@ async function whileHidden(el: Element, signal: { stopped: boolean }) {
 const sleep = (ms: number, signal: { stopped: boolean }) =>
   new Promise<void>((resolve) => setTimeout(resolve, signal.stopped ? 0 : ms));
 
-// Hero scramble: each character flips through random symbols between a random
-// start and end frame, then settles on the next phrase (same timing as the old
-// TextScramble class).
+// Hero scramble: a 3-character window of noise sweeps left to right, so at any
+// moment the rest of the line reads as the old or the new phrase.
 function scramble(el: HTMLElement, signal: { stopped: boolean }) {
+  const WINDOW = 3;
+  const TICK = 55;
   let index = 0;
-  const setText = (to: string) => new Promise<void>((resolve) => {
-    const from = el.textContent || '';
-    const length = Math.max(from.length, to.length);
-    const queue = Array.from({ length }, (_, i) => {
-      const start = Math.floor(Math.random() * 40);
-      return { from: from[i] || '', to: to[i] || '', start, end: start + Math.floor(Math.random() * 40), char: '' };
-    });
-    let frame = 0;
-    const update = () => {
-      if (signal.stopped) return resolve();
-      let out = '';
-      let complete = 0;
-      for (const q of queue) {
-        if (frame >= q.end) { complete++; out += q.to; }
-        else if (frame >= q.start) {
-          if (!q.char || Math.random() < 0.28) q.char = pick(SCRAMBLE_CHARS);
-          out += q.char;
-        } else out += q.from;
-      }
-      el.textContent = out;
-      if (complete === queue.length) resolve();
-      else { frame++; requestAnimationFrame(update); }
-    };
-    update();
-  });
   const run = async () => {
     while (!signal.stopped) {
       await whileHidden(el, signal);
-      await setText(SCRAMBLE_PHRASES[index]);
+      const from = el.textContent || '';
+      const to = SCRAMBLE_PHRASES[index];
       index = (index + 1) % SCRAMBLE_PHRASES.length;
-      await sleep(800, signal);
+      const length = Math.max(from.length, to.length);
+      for (let head = 0; head <= length + WINDOW && !signal.stopped; head++) {
+        let out = '';
+        for (let i = 0; i < length; i++) {
+          if (i < head - WINDOW) out += to[i] || '';
+          else if (i < head) out += (to[i] || from[i] || ' ') === ' ' ? ' ' : pick(SCRAMBLE_CHARS);
+          else out += from[i] || '';
+        }
+        el.textContent = out.trimEnd();
+        await sleep(TICK, signal);
+      }
+      el.textContent = to;
+      await sleep(2000, signal);
     }
   };
   run();
