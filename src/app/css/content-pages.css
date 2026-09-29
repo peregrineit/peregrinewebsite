@@ -144,3 +144,18 @@ a.cp-card:hover { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 10px 30px
   .cp-section { padding: 40px 0; }
   .cp-grid-2 { grid-template-columns: 1fr; }
 }
+
+/* Guides (/blog) */
+.cp-byline { font-size: 14px; color: var(--cp-muted); margin-top: 8px; }
+.cp-prose h2 { font-size: 26px; margin-top: 40px; }
+.cp-prose h2:first-child { margin-top: 0; }
+.cp-prose h3 { margin-top: 28px; }
+.cp-prose ul, .cp-prose ol { margin: 0 0 16px; padding-left: 22px; }
+.cp-prose li { margin-bottom: 8px; line-height: 1.7; color: var(--cp-text); }
+.cp-prose li a, .cp-prose td a { display: inline; }
+.cp-prose table { width: 100%; border-collapse: collapse; margin: 8px 0 20px; font-size: 15px; }
+.cp-prose th, .cp-prose td { border-bottom: 1px solid var(--cp-border); padding: 10px 8px; text-align: left; vertical-align: top; }
+.cp-prose th { color: #fff; font-weight: 700; }
+.cp-prose .cp-table-wrap { overflow-x: auto; }
+.cp-src { white-space: nowrap; }
+.cp-note { font-size: 14px; color: var(--cp-muted); border-left: 3px solid var(--cp-accent-strong); padding-left: 14px; }
