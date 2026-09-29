@@ -60,8 +60,8 @@ export default function ContactPage() {
           <div className="cp-badge"><i className="ri-mail-send-line" aria-hidden="true" />Contact</div>
           <h1>Contact Peregrine IT Solutions</h1>
           <p className="cp-lead">
-            Tell us what you are building or fixing. Real engineers reply, not sales, and you talk directly with the
-            developers who would build your system.
+            Tell us what you are building or fixing. Real engineers reply, not sales, and technical questions are
+            answered by engineers.
           </p>
         </div>
       </section>

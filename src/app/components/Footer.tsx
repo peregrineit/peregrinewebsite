@@ -172,7 +172,7 @@ export default function Footer() {
                     <a href="#" id="quick-project-btn-footer-col" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Small task? Get a scoped estimate within 48 hours</a>
                     <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.6rem', lineHeight: '1.5' }}>Real engineers reply — not sales</p>
                     <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>Daily overlap with North American &amp; European business hours</p>
-                    <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>You talk directly with the developer building your system</p>
+                    <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>Technical conversations are with engineers, not sales</p>
                     <address style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.6rem', lineHeight: '1.5', fontStyle: 'normal' }}>
                       <a href={officeMapsUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#6b7280' }}>{officeAddressLine}</a>
                     </address>

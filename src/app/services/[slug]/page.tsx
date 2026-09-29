@@ -205,7 +205,7 @@ export default async function ServicePage({ params }: Props) {
         <div className="cp-container">
           <div className="cp-cta">
             <h2>Talk to an Engineer About Your Project</h2>
-            <p>Tell us what you are building or fixing. You will talk directly with the engineers who would do the work.</p>
+            <p>Tell us what you are building or fixing. Your first conversation is with an engineer, not a salesperson.</p>
             <div className="cp-buttons">
               <Link href="/contact" className="cp-btn">Contact Us <i className="ri-arrow-right-line" aria-hidden="true" /></Link>
               <Link href="/services" className="cp-btn cp-btn-secondary">All Services</Link>

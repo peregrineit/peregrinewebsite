@@ -92,8 +92,7 @@ export default function AboutPage() {
           <span className="cp-label">How we work</span>
           <h2>How We Work</h2>
           <p>
-            Every engagement starts with a technical conversation, and you talk directly with the engineers who will
-            build your system rather than with a sales team.
+            Every engagement starts with a technical conversation with an engineer rather than a sales team.
           </p>
           <p>
             Larger projects begin with a discovery sprint: we map the requirements, design the architecture and deliver

@@ -133,7 +133,7 @@ export default function RealEstateIndustryPage() {
         <div className="cp-container">
           <div className="cp-cta">
             <h2>Planning a Real Estate Platform or Integration?</h2>
-            <p>Talk directly with the engineers who would build it.</p>
+            <p>Start with a technical conversation with an engineer, not a sales team.</p>
             <div className="cp-buttons">
               <Link href="/contact" className="cp-btn">Contact Us <i className="ri-arrow-right-line" aria-hidden="true" /></Link>
               <Link href="/services/mls-idx-integration" className="cp-btn cp-btn-secondary">MLS &amp; IDX Integration</Link>
