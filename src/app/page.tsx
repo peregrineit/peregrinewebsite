@@ -43,30 +43,6 @@ const structuredData = {
       inLanguage: "en-US",
     },
     {
-      "@type": "ProfessionalService",
-      "@id": "https://peregrine-it.com/#service",
-      name: "Peregrine IT Solutions",
-      url: "https://peregrine-it.com",
-      logo: { "@id": "https://peregrine-it.com/#logo" },
-      image: "https://peregrine-it.com/images/peregrine-logo-new.png",
-      parentOrganization: { "@id": "https://peregrine-it.com/#organization" },
-      description:
-        "Peregrine IT builds scalable SaaS platforms, API integrations, automation systems and high-performance software infrastructure for startups and enterprises.",
-      serviceType: [
-        "SaaS Development",
-        "API Integration",
-        "Automation Engineering",
-        "Platform Modernization",
-        "Cloud Infrastructure",
-      ],
-      areaServed: [
-        { "@type": "Country", name: "United States" },
-        { "@type": "Country", name: "Canada" },
-        { "@type": "Place", name: "Europe" },
-        { "@type": "Country", name: "United Arab Emirates" },
-      ],
-    },
-    {
       "@type": "FAQPage",
       "@id": "https://peregrine-it.com/#faq",
       mainEntity: faqs.map(({ question, answer }) => ({

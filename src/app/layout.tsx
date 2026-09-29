@@ -137,6 +137,13 @@ const siteStructuredData = {
         email: "info@peregrine-it.com",
         availableLanguage: "English",
       },
+      knowsAbout: [
+        "SaaS Development",
+        "API Integration",
+        "Automation Engineering",
+        "Platform Modernization",
+        "Cloud Infrastructure",
+      ],
       areaServed: [
         { "@type": "Country", name: "United States" },
         { "@type": "Country", name: "Canada" },
