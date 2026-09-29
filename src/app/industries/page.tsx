@@ -6,7 +6,7 @@ import '../css/content-pages.css';
 const url = `${SITE_URL}/industries`;
 const title = 'Industries We Build Software For';
 const description =
-  'The industries Peregrine IT Solutions builds software for, starting with real estate and proptech: MLS/IDX integration, brokerage platforms and investor portals.';
+  'Industries we build software for, starting with real estate and proptech: MLS/IDX integration, brokerage platforms and investor portals.';
 
 export const metadata: Metadata = {
   title,
