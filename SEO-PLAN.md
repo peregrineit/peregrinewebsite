@@ -103,7 +103,7 @@ Checks: all Phase 1–7 checks plus new ones per item; commit per item; push the
 
 ## Phase 9 — post-88 fixes
 Branch seo/phase-9 from main, code only. Robots: owner left the choice as a bracket, so the fallback applies: keep CCBot and Google-Extended allowed.
-- [ ] 9.1 Submit all sitemap URLs to IndexNow (one request, key file) and record the response.
+- [x] 9.1 Submit all sitemap URLs to IndexNow (one request, key file) and record the response. Done 2026-09-29 20:56 UTC: POST https://api.indexnow.org/indexnow with 39 URLs + keyLocation -> HTTP 202 Accepted (key validation pending on the engine side).
 - [ ] 9.2 Homepage off jQuery: counters, typing terminal, grid hover and hero animations move to React/CSS; drop jQuery, GSAP, anime, CounterUp and Waypoints from the homepage. Verify against the Phase 3/7 behaviour map (7 Lottie, 42 reveals, counters, typing, hero) with a before/after screenshot diff and 3 cache-busted mobile Lighthouse runs. Target: main-thread work < 1.0 s, no visual change.
 - [ ] 9.3 Replace "bleeding money" and "transformative" in our own copy (client quotes untouched).
 - [ ] 9.4 Hero scramble line readable while animating.
