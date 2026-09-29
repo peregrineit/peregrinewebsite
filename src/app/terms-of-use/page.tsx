@@ -3,11 +3,11 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Terms of Use',
-  description: 'Terms governing the use of Peregrine IT website and services.',
+  description: 'The terms that govern use of the Peregrine IT Solutions website at peregrine-it.com, including acceptable use, intellectual property and liability.',
   alternates: { canonical: 'https://peregrine-it.com/terms-of-use' },
   openGraph: {
     title: 'Terms of Use | Peregrine IT Solutions',
-    description: 'Terms governing the use of Peregrine IT website and services.',
+    description: 'The terms that govern use of the Peregrine IT Solutions website at peregrine-it.com, including acceptable use, intellectual property and liability.',
     url: 'https://peregrine-it.com/terms-of-use',
     type: 'website',
     siteName: 'Peregrine IT Solutions',

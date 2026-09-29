@@ -10,10 +10,10 @@ import '../css/content-pages.css';
 const url = `${SITE_URL}/about`;
 const title = 'About Peregrine IT Solutions';
 const description =
-  'Peregrine IT Solutions is a software engineering firm that builds SaaS platforms, integrations, AI automation and cloud infrastructure for real estate, proptech and B2B companies.';
+  'Peregrine IT Solutions is a software engineering firm building SaaS platforms, integrations, AI automation and cloud infrastructure for B2B companies.';
 
 export const metadata: Metadata = {
-  title,
+  title: { absolute: title },
   description,
   alternates: { canonical: url },
   openGraph: {
@@ -92,8 +92,7 @@ export default function AboutPage() {
           <span className="cp-label">How we work</span>
           <h2>How We Work</h2>
           <p>
-            Every engagement starts with a technical conversation, and you talk directly with the engineers who will
-            build your system rather than with a sales team.
+            Every engagement starts with a technical conversation with an engineer rather than a sales team.
           </p>
           <p>
             Larger projects begin with a discovery sprint: we map the requirements, design the architecture and deliver

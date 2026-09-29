@@ -6,7 +6,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import MobileFloatingButtons from "./components/MobileFloatingButtons";
-import DeferredScripts from "./components/DeferredScripts";
 import { office } from "@/data/company";
 import { team, personId } from "@/data/team";
 
@@ -52,12 +51,12 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://peregrine-it.com"),
 
   title: {
-    default: "Peregrine IT Solutions | SaaS, API & Automation Development Company",
-    template: "%s | Peregrine IT Solutions",
+    default: "SaaS, API & Automation Development | Peregrine IT",
+    template: "%s | Peregrine IT",
   },
 
   description:
-    "Peregrine IT Solutions builds scalable SaaS platforms, API integrations, automation systems and cloud infrastructure for startups and enterprises. We design, develop and optimize high-performance software products.",
+    "Peregrine IT Solutions builds SaaS platforms, API and MLS integrations, AI automation and cloud infrastructure for real estate, proptech and B2B companies.",
 
   authors: [{ name: "Peregrine IT Solutions LLP", url: "https://peregrine-it.com" }],
   creator: "Peregrine IT Solutions LLP",
@@ -237,8 +236,6 @@ export default function RootLayout({
            `}
         </Script>
 
-        {/* jQuery, GSAP, anime, Typed, Waypoints, CounterUp, animation.js, Webflow runtime */}
-        <DeferredScripts />
       </body>
     </html>
   );

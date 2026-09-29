@@ -7,7 +7,10 @@ import Script from 'next/script'; // Ensure Script is available if we use it, th
 import Link from 'next/link';
 import CaseStudyCard from './components/CaseStudyCard';
 import BackgroundVideo from './components/BackgroundVideo';
+import DeferredScripts from './components/DeferredScripts';
+import HomeEffects from './components/HomeEffects';
 import { featuredCaseStudySlugs, getCaseStudy } from '@/data/case-studies';
+import { guides } from '@/data/guides';
 
 // Rendered as the visible FAQ section and as FAQPage JSON-LD, so the two always match.
 const faqs = [
@@ -40,7 +43,7 @@ const structuredData = {
       "@type": "WebPage",
       "@id": "https://peregrine-it.com/#webpage",
       url: "https://peregrine-it.com",
-      name: "Peregrine IT Solutions | SaaS, API & Automation Development Company",
+      name: "SaaS, API & Automation Development | Peregrine IT",
       isPartOf: { "@id": "https://peregrine-it.com/#website" },
       about: { "@id": "https://peregrine-it.com/#organization" },
       publisher: { "@id": "https://peregrine-it.com/#organization" },
@@ -96,6 +99,9 @@ export default function Home() {
 
   return (
     <div className="page-wrapper">
+      {/* Homepage-only legacy animation scripts and the Lottie/scroll-reveal replacement for the Webflow runtime */}
+      <DeferredScripts />
+      <HomeEffects />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -757,7 +763,7 @@ export default function Home() {
               <h2 className="heading-primary gradient">Platforms We&apos;ve Engineered</h2>
               <div className="section-sub" style={{ color: 'rgba(255,255,255,0.75)' }}>A few recent builds, from multi-market MLS platforms to carrier integrations. Each case study covers the problem, the architecture and the results.</div>
             </div>
-            <div className="tw-grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            <div className="tw-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {featuredCaseStudySlugs.map((slug) => (
                 <CaseStudyCard key={slug} study={getCaseStudy(slug)} />
               ))}
@@ -771,6 +777,29 @@ export default function Home() {
                     <path d="m13 17 5-5-5-5"></path>
                   </svg>
               </Link>
+            </div>
+          </div>
+        </section>
+
+        <section id="sec-blog" className="section !pt-12 !pb-12">
+          <div className="container">
+            <div className="w-layout-vflex content-wrap" style={{ marginBottom: '2rem' }}>
+              <p className="section-borrow">From the blog</p>
+              <h2 className="heading-primary">Guides for Software Buyers</h2>
+              <div className="section-sub">Costs, trade-offs and build-versus-buy decisions for real estate and SaaS teams, with every figure linked to its source.</div>
+            </div>
+            <div className="tw-grid grid-cols-1 md:grid-cols-3 gap-6">
+              {guides.map((g) => (
+                <Link key={g.slug} href={`/blog/${g.slug}`} className="home-guide-card">
+                  <span className="home-guide-label">Guide</span>
+                  <span className="home-guide-title">{g.title}</span>
+                  <span className="home-guide-desc">{g.description}</span>
+                  <span className="home-guide-more">Read the guide &rarr;</span>
+                </Link>
+              ))}
+            </div>
+            <div style={{ marginTop: '1.5rem' }}>
+              <Link href="/blog" className="home-guide-all">All guides &rarr;</Link>
             </div>
           </div>
         </section>

@@ -7,8 +7,9 @@ import Image from 'next/image';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
-  title: 'AI-Powered Multi-Market Real Estate Platform — Case Study',
-  description: 'How we built an AI-native platform for W3|re — 4 MLS integrations, 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy. NLP search, AVM, chatbot, and unified data pipeline.',
+  title: 'AI Multi-Market Real Estate Platform',
+  description:
+    'How we built an AI platform for W3|re across 4 MLS markets: natural-language search, a valuation model, a lead chatbot and a unified data pipeline.',
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
@@ -139,7 +140,7 @@ export default function W3reAIRealEstatePlatform() {
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-time-line" /></div>
-              <h4>Lead Response Time Averaged 47 Minutes</h4>
+              <h4>Lead Responses Took Hours</h4>
               <p>Inbound leads were routed to a shared inbox. During peak hours, response times stretched to 2+ hours.</p>
             </div>
             <div className="csd-cs-card csd-challenge">
@@ -171,7 +172,6 @@ export default function W3reAIRealEstatePlatform() {
           {/* Property Management Dashboard Image */}
           <div className="csd-section" style={{ marginTop: 32 }}>
             <h3>Property Management Dashboard</h3>
-            <p>Real-time overview of revenue, properties, tasks, expiring leases, and outstanding balances.</p>
             <div className="csd-hero-image-wrapper" style={{ marginTop: 16, borderRadius: 12, overflow: 'hidden' }}>
               <Image
                 src="/images/case-studies/MapImage4-08072b85-2c68-4dc0-9f9f-b799097c80f7.png"
@@ -239,7 +239,6 @@ export default function W3reAIRealEstatePlatform() {
           {/* Real Estate Analytics Dashboard */}
           <div className="csd-section" style={{ marginTop: 32 }}>
             <h3>Real Estate Analytics Dashboard</h3>
-            <p>Projects, builders, development costs, and market trends across districts.</p>
             <div className="csd-hero-image-wrapper" style={{ marginTop: 16, borderRadius: 12, overflow: 'hidden' }}>
               <Image
                 src="/images/case-studies/MapImage3-659b99b9-af15-4aa1-8d36-ed81c2de5b1f.png"
@@ -380,7 +379,7 @@ export default function W3reAIRealEstatePlatform() {
             <div className="csd-result-card">
               <div className="csd-result-before">Lead response</div>
               <div className="csd-result-after">8 seconds</div>
-              <div className="csd-result-label">Down from 47 minutes</div>
+              <div className="csd-result-label">Down from 2+ hours at peak times</div>
             </div>
             <div className="csd-result-card">
               <div className="csd-result-before">Days on market</div>

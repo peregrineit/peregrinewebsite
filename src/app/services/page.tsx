@@ -6,9 +6,9 @@ import { getCaseStudy } from '@/data/case-studies';
 import '../css/content-pages.css';
 
 const url = `${SITE_URL}/services`;
-const title = 'Software Development Services: SaaS, APIs, MLS/IDX, AI & Cloud';
+const title = 'Software Development Services';
 const description =
-  'Peregrine IT Solutions services: SaaS development, API integration, MLS/IDX integration, AI automation, cloud and DevOps, and Odoo ERP, each backed by published case studies.';
+  'SaaS development, API integration, MLS/IDX integration, AI automation, cloud and DevOps, and Odoo ERP, each backed by published case studies.';
 
 export const metadata: Metadata = {
   title,

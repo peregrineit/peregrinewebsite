@@ -9,7 +9,7 @@ import '../../css/content-pages.css';
 const url = `${SITE_URL}/industries/real-estate`;
 const title = 'Real Estate & Proptech Software Development';
 const description =
-  'Software for brokerages, agent platforms and proptech companies: MLS/IDX integration, real estate SaaS, AI search and lead qualification, investor portals, with the case studies behind each.';
+  'Software for brokerages and proptech companies: MLS/IDX integration, real estate SaaS, AI search, lead qualification and investor portals, with case studies.';
 
 export const metadata: Metadata = {
   title,
@@ -47,7 +47,7 @@ export default function RealEstateIndustryPage() {
       },
       breadcrumbList(url, [
         { name: 'Home', path: '' },
-        { name: 'Industries', path: '/industries/real-estate' },
+        { name: 'Industries', path: '/industries' },
         { name: 'Real Estate', path: '/industries/real-estate' },
       ]),
     ],
@@ -58,7 +58,7 @@ export default function RealEstateIndustryPage() {
       <section className="cp-hero">
         <div className="cp-container">
           <nav className="cp-breadcrumb" aria-label="Breadcrumb">
-            <Link href="/">Home</Link><span aria-hidden="true">›</span><span>Industries</span><span aria-hidden="true">›</span><span>Real Estate</span>
+            <Link href="/">Home</Link><span aria-hidden="true">›</span><Link href="/industries">Industries</Link><span aria-hidden="true">›</span><span>Real Estate</span>
           </nav>
           <div className="cp-badge"><i className="ri-building-line" aria-hidden="true" />Real estate &amp; proptech</div>
           <h1>Software Development for Real Estate and Proptech</h1>
@@ -133,7 +133,7 @@ export default function RealEstateIndustryPage() {
         <div className="cp-container">
           <div className="cp-cta">
             <h2>Planning a Real Estate Platform or Integration?</h2>
-            <p>Talk directly with the engineers who would build it.</p>
+            <p>Start with a technical conversation with an engineer, not a sales team.</p>
             <div className="cp-buttons">
               <Link href="/contact" className="cp-btn">Contact Us <i className="ri-arrow-right-line" aria-hidden="true" /></Link>
               <Link href="/services/mls-idx-integration" className="cp-btn cp-btn-secondary">MLS &amp; IDX Integration</Link>

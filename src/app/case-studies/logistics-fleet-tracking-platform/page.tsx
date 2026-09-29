@@ -6,11 +6,11 @@ import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
-  title: 'Real-Time Fleet Tracking Platform — Case Study',
+  title: 'Real-Time Fleet Tracking Platform',
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   description:
-    'How we built a GPS-powered fleet management system with live tracking, route optimization, driver mobile apps, and customer ETA notifications — managing 500+ vehicles across the MENA region.',
+    'How we built a GPS fleet management system with live tracking, route optimization, driver apps and customer ETA alerts for 500+ vehicles in the MENA region.',
   openGraph: {
     title: 'Case Study — Real-Time Fleet Tracking Platform | Peregrine IT Solutions',
     description: 'How we built a GPS-powered fleet management system with live tracking, route optimization, and driver apps for 500+ vehicles across the MENA region.',
