@@ -8,6 +8,9 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "GPTBot", allow: "/" },
       { userAgent: "ClaudeBot", allow: "/" },
       { userAgent: "PerplexityBot", allow: "/" },
+      { userAgent: "OAI-SearchBot", allow: "/" },
+      { userAgent: "Google-Extended", allow: "/" },
+      { userAgent: "CCBot", allow: "/" },
     ],
     sitemap: "https://peregrine-it.com/sitemap.xml",
   };
