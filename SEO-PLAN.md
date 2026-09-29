@@ -45,9 +45,9 @@ Checks: every case study has Article + BreadcrumbList that parse; homepage has �
 ## Phase 3 — Mobile performance
 - [x] 3.1 Hero video: on mobile render the poster image only (no video element, or preload="none" + poster, gated by a breakpoint). On desktop serve a self-hosted re-encoded version ≤1.5 MB (ffmpeg, same dimensions and duration) from the repo — stop pulling from webflow.
 - [x] 3.2 Images: handshake-p-800.png and anything over 150 KB → WebP/AVIF via next/image; width/height on every image; lazy-load marquee logos and everything below the fold; delete the 24 image preloads; fetchpriority="high" on the LCP element only.
-- [ ] 3.3 Scripts: jQuery/GSAP via next/script strategy="lazyOnload" (afterInteractive only if something visible depends on them — test); replace the web-font loader with next/font; self-host only the Remix icons actually used, or subset the CSS.
-- [ ] 3.4 Alt text: describe the 9 images; decorative ones get alt="".
-- [ ] 3.5 Add @vercel/speed-insights.
+- [x] 3.3 Scripts: jQuery/GSAP via next/script strategy="lazyOnload" (afterInteractive only if something visible depends on them — test); replace the web-font loader with next/font; self-host only the Remix icons actually used, or subset the CSS.
+- [x] 3.4 Alt text: describe the 9 images; decorative ones get alt="".
+- [x] 3.5 Add @vercel/speed-insights.
 Checks: clean build; zero rel="preload" as="image" for marquee logos; every <img> has width and height; mobile page weight under 2.5 MB (measure from the built app); screenshot desktop before/after and confirm no visual regression.
 
 ## Phase 4 — Service pages, about, team, contact
@@ -78,3 +78,7 @@ Start with Phase 1 now.
 - Phase 2 owner changes: case-study data lives in src/data/case-studies.ts; a shared CaseStudySchema component emits Article + BreadcrumbList; datePublished/dateModified are omitted (no real dates; do not derive from git).
 - Role-only testimonials stay as they are; no Review schema.
 - Stop a local server with `lsof -tiTCP:<port> -sTCP:LISTEN | xargs kill`; `pkill -f "next start"` does not match the next-server process.
+- Phase 3: the ~2.4 MB webflow video was the CTA background (bottom of the homepage), not the hero; the hero video's poster is the LCP element. Both videos are self-hosted in public/media and only attached at >= 768px (components/BackgroundVideo.tsx).
+- Legacy scripts (jQuery, GSAP, anime, Typed, Waypoints, CounterUp, /js/animation.js, /js/peregrine.js) load via components/DeferredScripts.tsx in dependency order after load+idle. Add new legacy scripts there, not with next/script.
+- Remix Icon is a bundled subset (src/app/css/remixicon-subset.css + public/fonts/remixicon-subset.woff2, v3.5.0). A new `ri-*` icon renders blank until the subset is regenerated: collect `grep -rhoE "ri-[a-z0-9-]+" src | sort -u`, take their codepoints from remixicon@3.5.0/fonts/remixicon.css, and run `pyftsubset remixicon.woff2 --unicodes=... --flavor=woff2`.
+- 3.5: @vercel/speed-insights was already installed and rendered in layout.tsx.
