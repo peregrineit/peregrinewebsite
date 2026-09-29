@@ -101,6 +101,18 @@ Source: ~/Code/peregrine-it.com-audit/2026-09-30/{FULL-AUDIT-REPORT,ACTION-PLAN}
 - Skipped for now: 8 (migrating homepage animations off jQuery).
 Checks: all Phase 1–7 checks plus new ones per item; commit per item; push the branch only.
 
+## Phase 9 — post-88 fixes
+Branch seo/phase-9 from main, code only. Robots: owner left the choice as a bracket, so the fallback applies: keep CCBot and Google-Extended allowed.
+- [ ] 9.1 Submit all sitemap URLs to IndexNow (one request, key file) and record the response.
+- [ ] 9.2 Homepage off jQuery: counters, typing terminal, grid hover and hero animations move to React/CSS; drop jQuery, GSAP, anime, CounterUp and Waypoints from the homepage. Verify against the Phase 3/7 behaviour map (7 Lottie, 42 reveals, counters, typing, hero) with a before/after screenshot diff and 3 cache-busted mobile Lighthouse runs. Target: main-thread work < 1.0 s, no visual change.
+- [ ] 9.3 Replace "bleeding money" and "transformative" in our own copy (client quotes untouched).
+- [ ] 9.4 Hero scramble line readable while animating.
+- [ ] 9.5 Menu close button and case-study chips >= 44 px on phones.
+- [ ] 9.6 Link /industries from the footer and from each service page.
+- [ ] 9.7 About, Privacy and Terms titles 45–60 characters, brand not repeated.
+- [ ] 9.8 Sitemap lastmod from dateModified where a page has one; omitted elsewhere.
+Checks: all Phase 1–8 checks plus new ones per item; commit per item; push the branch only.
+
 ---
 
 ## Implementation notes
