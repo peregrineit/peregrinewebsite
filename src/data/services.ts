@@ -198,15 +198,15 @@ export const services: Service[] = [
     slug: 'mls-idx-integration',
     name: 'MLS & IDX Integration',
     serviceType: 'MLS and IDX data integration',
-    title: 'MLS & IDX Integration (RESO Web API, RETS)',
+    title: 'RESO Web API & MLS Data Feed Development',
     metaDescription:
-      'MLS and IDX integration for brokerages and proptech platforms: RESO Web API and RETS feeds, multi-MLS normalization, listing search and sync.',
-    h1: 'MLS and IDX Integration for Brokerages and Proptech Platforms',
+      'RESO Web API and MLS data feed development for proptech and brokerage software: feed ingestion, multi-MLS normalization, sync and listing search.',
+    h1: 'RESO Web API and MLS Data Feed Development',
     offer: 'MLS data pipelines and IDX search for brokerage websites and proptech products.',
     intro: [
-      'MLS integration pulls listing data from a multiple listing service into your own software; IDX (Internet Data Exchange) is the set of rules that lets brokers display that data on their public websites.',
-      'It is for brokerages, franchise and agent-website platforms, and proptech companies that need listing data from one or several MLS boards in the US or Canada, kept current and searchable.',
-      'Peregrine builds the pipeline end to end: feed ingestion over the RESO Web API or RETS, normalization across boards, deduplication, a fast search layer, and the website or app on top. We also build and operate our own real estate product, RealFoyer.',
+      'RESO Web API and MLS data feed development is building the software that pulls listing data from MLS boards into your own product, keeps it current, and makes it searchable. The RESO Web API is the current standard for that data; older boards may still offer RETS.',
+      'It is for proptech companies, agent-website and brokerage platforms, and in-house brokerage teams that need MLS data from one or several boards in the US or Canada inside software they control, rather than a turnkey IDX plugin.',
+      'Peregrine builds the pipeline end to end: feed ingestion over the RESO Web API or RETS, normalization across boards, deduplication, a fast search layer, and the IDX website or app on top. We also build and operate our own real estate product, RealFoyer.',
     ],
     whatWeBuild: [
       {
@@ -244,7 +244,7 @@ export const services: Service[] = [
     guides: ['mls-idx-integration-cost', 'cost-to-build-a-real-estate-platform'],
     faq: [
       {
-        question: 'What is the difference between RETS and the RESO Web API?',
+        question: 'What is the RESO Web API, and how is it different from RETS?',
         answer: 'Both are standards for transferring MLS data. RETS is the older, XML-based standard; the RESO Web API is its modern replacement, built on RESTful web conventions and the RESO Data Dictionary for field names. Most boards now offer the Web API, and new integrations should use it wherever it is available.',
       },
       {
@@ -252,15 +252,15 @@ export const services: Service[] = [
         answer: 'IDX lets a broker display other brokers\' listings on a public website under MLS display rules. A VOW (Virtual Office Website) is a password-protected site for registered consumers that can show more data, such as some sold information, under stricter rules. Which one you need depends on your MLS and the data you want to show.',
       },
       {
-        question: 'Can you combine listings from several MLS boards?',
+        question: 'Can you build one data feed from several MLS boards?',
         answer: 'Yes. Each board is ingested separately and mapped into one schema, and properties listed on more than one board are deduplicated. Our W3|re case study combines four MLS systems this way.',
       },
       {
-        question: 'How current can listing data be?',
+        question: 'How current can MLS feed data be?',
         answer: 'It depends on the feed and on your MLS rules. Many boards allow frequent incremental updates through the Web API; RETS feeds are usually polled on a schedule. We design the sync around the refresh rate your license requires and your users expect.',
       },
       {
-        question: 'Do we need our own MLS data license?',
+        question: 'Do we need our own MLS data license before development starts?',
         answer: 'Usually the broker or the platform applies for data access with each MLS and signs its license agreement. We can help with the technical parts of the application, but the license itself is between your company and the board.',
       },
     ],
@@ -416,17 +416,17 @@ export const services: Service[] = [
     slug: 'odoo-erp',
     name: 'Odoo ERP',
     serviceType: 'Odoo ERP implementation and integration',
-    title: 'Odoo ERP Implementation & Integration',
+    title: 'Odoo Custom Modules & API Integration',
     metaDescription:
-      'Odoo implementation for growing companies: HR, CRM, Inventory and Accounting modules, custom modules, data migration and integrations.',
-    h1: 'Odoo ERP Implementation and Integration',
+      'Odoo custom module and API integration development: new modules, workflow changes and integrations with your website, e-commerce, payment and finance systems.',
+    h1: 'Odoo Custom Module and API Integration Development',
     // Capability page: the owner has no Odoo project to publish yet, so the page makes no
     // project claims and cites no case studies. Add case studies here once they exist.
     offer: 'Odoo setup for HR, CRM, Inventory and Accounting, plus custom modules and integrations.',
     intro: [
-      'Odoo is an open-source ERP suite with modules for sales, CRM, inventory, accounting, HR and more. An implementation configures those modules around your processes, migrates your data, and connects Odoo to the other systems you run.',
-      'It is for growing companies that have outgrown spreadsheets and disconnected tools but want an ERP they can extend, rather than a closed system or a fully custom build.',
-      'Peregrine implements the HR, CRM, Inventory and Accounting modules, builds custom modules where the standard ones fall short, migrates your data, and integrates Odoo with your website, e-commerce, payment and finance systems.',
+      'Odoo custom module and API integration development means extending Odoo where its standard modules stop: new fields, screens and workflows written as custom modules, and connections between Odoo and the other systems your business runs.',
+      'It is for companies using Odoo, or moving to it, whose processes or integrations go beyond what configuration alone can do, and who need developers rather than a reseller.',
+      'Peregrine builds custom Odoo modules, integrates Odoo with websites, e-commerce, payment and finance systems through its external API, and configures and migrates the HR, CRM, Inventory and Accounting modules those integrations depend on.',
     ],
     whatWeBuild: [
       {
@@ -465,7 +465,7 @@ export const services: Service[] = [
     guides: [],
     faq: [
       {
-        question: 'Which Odoo modules do you implement?',
+        question: 'Which Odoo modules do your custom modules and integrations cover?',
         answer: 'We implement Odoo\'s HR (employees, time off and attendance), CRM, Inventory and Accounting modules, and build custom modules and integrations around them. If you need other modules, we assess them during process mapping.',
       },
       {
@@ -481,8 +481,8 @@ export const services: Service[] = [
         answer: 'Yes. Odoo exposes an external API (XML-RPC and JSON-RPC), and integrations can be built for e-commerce, CRM, payments, shipping and finance systems. Where a system has no API, file-based exchange is an option.',
       },
       {
-        question: 'How long does an Odoo implementation take?',
-        answer: 'It depends on how many modules you need, how much data has to be migrated and how much customization is required. We recommend going live in phases, one module or department at a time, so each phase is small enough to test properly.',
+        question: 'How long does a custom Odoo module or integration take?',
+        answer: 'It depends on how much the module changes, how many systems the integration touches and how much data has to be migrated. We recommend delivering in phases, one module or integration at a time, so each phase is small enough to test properly.',
       },
     ],
     icon: 'ri-stack-line',
