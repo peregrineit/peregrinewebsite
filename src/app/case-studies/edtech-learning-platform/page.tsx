@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
   title: 'EdTech Learning Platform with LMS & Video Streaming — Case Study',
   description: 'How we built a full-stack EdTech platform with LMS, HLS video streaming, and course management — serving 12K+ enrollments across 500+ courses with 99.2% uptime.',
-  keywords: ['EdTech', 'LMS', 'video streaming', 'e-learning', 'course management', 'SaaS', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
@@ -29,6 +31,7 @@ export const metadata: Metadata = {
 export default function EdTechLearningPlatform() {
   return (
     <div className="case-study-detail csd-teal">
+      <CaseStudySchema slug="edtech-learning-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -86,7 +89,7 @@ export default function EdTechLearningPlatform() {
                 <i className="ri-book-open-line" style={{ fontSize: 28, color: '#2dd4bf' }} />
               </div>
               <div className="csd-placeholder-node">
-                <i className="ri-progress-3-line" style={{ fontSize: 28, color: '#2dd4bf' }} />
+                <i className="ri-donut-chart-line" style={{ fontSize: 28, color: '#2dd4bf' }} />
               </div>
               <div className="csd-placeholder-node">
                 <i className="ri-cloud-line" style={{ fontSize: 28, color: '#2dd4bf' }} />
@@ -165,7 +168,7 @@ export default function EdTechLearningPlatform() {
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon">
-                <i className="ri-progress-3-line" />
+                <i className="ri-donut-chart-line" />
               </div>
               <h4>No Progress Tracking</h4>
               <p>
@@ -304,7 +307,7 @@ export default function EdTechLearningPlatform() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL
@@ -440,6 +443,9 @@ export default function EdTechLearningPlatform() {
             after launch.
           </p>
         </div>
+
+        <CaseStudyByline />
+        <RelatedCaseStudies slug="edtech-learning-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

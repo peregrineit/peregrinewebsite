@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
   title: 'Unified Clinic Management System for a Multi-Location Healthcare Network — Case Study',
   description: 'How we built a HIPAA-compliant practice management platform — unifying patient records, telehealth, appointment scheduling, and insurance billing across 35 clinic locations.',
-  keywords: ['healthcare SaaS', 'HIPAA compliant', 'telehealth', 'practice management', 'EHR', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
@@ -29,6 +31,7 @@ export const metadata: Metadata = {
 export default function MultiLocationClinicManagement() {
   return (
     <div className="case-study-detail csd-teal">
+      <CaseStudySchema slug="multi-location-clinic-management" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -209,7 +212,7 @@ export default function MultiLocationClinicManagement() {
             <div className="csd-arch-layers">
               <div className="csd-arch-layer">
                 <div className="csd-arch-layer-icon">
-                  <i className="ri-laptop-line" />
+                  <i className="ri-macbook-line" />
                 </div>
                 <div className="csd-arch-layer-content">
                   <div className="csd-arch-layer-name">Clinician Portal &amp; Patient App</div>
@@ -295,7 +298,7 @@ export default function MultiLocationClinicManagement() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL
@@ -431,6 +434,9 @@ export default function MultiLocationClinicManagement() {
             every time.
           </p>
         </div>
+
+        <CaseStudyByline />
+        <RelatedCaseStudies slug="multi-location-clinic-management" />
 
         {/* CTA */}
         <div className="csd-cta-section">

@@ -1,19 +1,45 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { Inter, IBM_Plex_Sans_Arabic, Manrope, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import MobileFloatingButtons from "./components/MobileFloatingButtons";
+import DeferredScripts from "./components/DeferredScripts";
+import { office } from "@/data/company";
+import { team, personId } from "@/data/team";
 
 // Import CSS in order matching original HTML to preserve cascade
 import "./css/normalize.css";
 import "./css/components.css";
 import "./css/peregrine.css";
 import "./css/popup-overlay.css";
+import "./css/remixicon-subset.css";
 
 // Tailwind last as it was last in the HTML <head>
 import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap", preload: false });
+const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic", "latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-ibm-plex-arabic",
+  display: "swap", preload: false,
+});
+// preload: false on all fonts: they are declared here for every route, but only
+// the hub (Inter) and case studies (Manrope, Instrument Serif, JetBrains Mono)
+// use them, so each page downloads only what its CSS references.
+const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap", preload: false });
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-instrument-serif",
+  display: "swap", preload: false,
+});
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-jetbrains-mono", display: "swap", preload: false });
+const fontVariables = [inter, ibmPlexSansArabic, manrope, instrumentSerif, jetbrainsMono].map((f) => f.variable).join(" ");
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -32,15 +58,6 @@ export const metadata: Metadata = {
 
   description:
     "Peregrine IT Solutions builds scalable SaaS platforms, API integrations, automation systems and cloud infrastructure for startups and enterprises. We design, develop and optimize high-performance software products.",
-
-  keywords: [
-    "SaaS development company",
-    "API development services",
-    "automation software development",
-    "custom software development company",
-    "Node.js React development agency",
-    "MLS integration developers",
-  ],
 
   authors: [{ name: "Peregrine IT Solutions LLP", url: "https://peregrine-it.com" }],
   creator: "Peregrine IT Solutions LLP",
@@ -92,9 +109,7 @@ export const metadata: Metadata = {
       },
     ],
     locale: "en_US",
-    type: "article",
-    publishedTime: "2026-02-17T00:00:00.000Z",
-    modifiedTime: "2026-02-17T00:00:00.000Z",
+    type: "website",
   },
 
   twitter: {
@@ -105,11 +120,91 @@ export const metadata: Metadata = {
   },
 
   category: "technology",
+};
 
-  other: {
-    "article:author": "Peregrine IT Solutions",
-    "article:publisher": "https://peregrine-it.com",
-  },
+const SITE_URL = "https://peregrine-it.com";
+const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+
+// The single site-wide Organization node. Other JSON-LD nodes reference it by @id.
+const siteStructuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": ORGANIZATION_ID,
+      name: "Peregrine IT Solutions",
+      legalName: "Peregrine IT Solutions LLP",
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        "@id": `${SITE_URL}/#logo`,
+        url: `${SITE_URL}/favicons/favicon-512x512.png`,
+        contentUrl: `${SITE_URL}/favicons/favicon-512x512.png`,
+        width: 512,
+        height: 512,
+        caption: "Peregrine IT Solutions",
+      },
+      image: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/images/peregrine-logo-new.png`,
+        width: 1024,
+        height: 180,
+      },
+      description:
+        "Peregrine IT builds scalable SaaS platforms, API integrations, automation systems and high-performance software infrastructure for startups and enterprises.",
+      sameAs: [
+        "https://www.linkedin.com/company/peregrine-it-solutions/",
+        "https://www.facebook.com/peregrineitsolution",
+        "https://www.instagram.com/peregrineitsolution/",
+      ],
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: office.streetAddress,
+        addressLocality: office.addressLocality,
+        addressRegion: office.addressRegion,
+        ...(office.postalCode ? { postalCode: office.postalCode } : {}),
+        addressCountry: office.addressCountry,
+      },
+      founder: { "@id": personId("mukesh-swami") },
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "sales",
+        email: "info@peregrine-it.com",
+        availableLanguage: "English",
+      },
+      knowsAbout: [
+        "SaaS Development",
+        "API Integration",
+        "Automation Engineering",
+        "Platform Modernization",
+        "Cloud Infrastructure",
+      ],
+      areaServed: [
+        { "@type": "Country", name: "United States" },
+        { "@type": "Country", name: "Canada" },
+        { "@type": "Place", name: "Europe" },
+        { "@type": "Country", name: "United Arab Emirates" },
+      ],
+    },
+    ...team.map((m) => ({
+      "@type": "Person",
+      "@id": personId(m.id),
+      name: m.name,
+      jobTitle: m.role,
+      description: m.bio,
+      worksFor: { "@id": ORGANIZATION_ID },
+      ...(m.photo ? { image: `${SITE_URL}${m.photo}` } : {}),
+      ...(m.linkedin ? { sameAs: [m.linkedin] } : {}),
+    })),
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Peregrine IT Solutions",
+      inLanguage: "en-US",
+      publisher: { "@id": ORGANIZATION_ID },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -118,30 +213,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      {/* Head is handled by Metadata + manual links if needed */}
-      <head>
-        <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
-      </head>
+    <html lang="en" className={fontVariables}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteStructuredData) }}
+        />
         <Navbar />
         {children}
         <Footer />
         <MobileFloatingButtons />
         <SpeedInsights />
         <Analytics />
-
-        {/* Scripts from original HTML */}
-        <Script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" strategy="beforeInteractive" />
-        <Script id="webfont-load" strategy="afterInteractive">
-          {`
-            WebFont.load({
-              google: {
-                families: ["Inter:300,400,500,600,700", "IBM Plex Sans Arabic:300,regular,500,600,700"]
-              }
-            });
-          `}
-        </Script>
 
         {/* Helper Script from original HTML */}
         <Script id="touch-mod" strategy="afterInteractive">
@@ -154,17 +237,8 @@ export default function RootLayout({
            `}
         </Script>
 
-        {/* Main JS logic from Webflow/Original Site */}
-        {/* Loading it lazily or after interactive to ensure DOM exists */}
-        {/* Using /js/peregrine.js since we copied js folder to public/js */}
-        <Script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=66b50d9ad39e4c82098fe099" strategy="beforeInteractive" />
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" strategy="afterInteractive" />
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js" strategy="beforeInteractive" />
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.0/jquery.waypoints.min.js" strategy="afterInteractive" />
-        <Script src="https://cdn.jsdelivr.net/npm/jquery.counterup@2.1.0/jquery.counterup.min.js" strategy="afterInteractive" />
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.9/typed.js" strategy="afterInteractive" />
-        <Script src="/js/animation.js" strategy="afterInteractive" />
-        <Script src="/js/peregrine.js" strategy="lazyOnload" />
+        {/* jQuery, GSAP, anime, Typed, Waypoints, CounterUp, animation.js, Webflow runtime */}
+        <DeferredScripts />
       </body>
     </html>
   );

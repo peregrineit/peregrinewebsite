@@ -1,12 +1,13 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const navLinks = [
-  { href: '/#sec-service', label: 'Services' },
-  { href: '/#sec-process', label: 'How We Work' },
-  { href: '/#sec-testimonials', label: 'Results' },
+  { href: '/services', label: 'Services' },
   { href: '/case-studies', label: 'Case Studies' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 export default function Navbar() {
@@ -25,7 +26,7 @@ export default function Navbar() {
         <div className="flex md:hidden items-center">
           <div className="flex-1 min-w-0" />
           <Link href="/" className="flex-shrink-0" onClick={() => setMenuOpen(false)}>
-            <img src="/images/peregrine-logo-new.png" alt="Peregrine IT" className="h-9 w-auto" />
+            <Image src="/images/peregrine-logo-new.png" alt="Peregrine IT" width={205} height={36} loading="eager" className="h-9 w-auto" />
           </Link>
           <div className="flex-1 flex justify-end min-w-0">
             <button
@@ -45,7 +46,7 @@ export default function Navbar() {
         {/* Desktop: logo left, nav center, CTA right */}
         <div className="hidden md:flex items-center justify-between">
           <Link href="/" className="flex-shrink-0" onClick={() => setMenuOpen(false)}>
-            <img src="/images/peregrine-logo-new.png" alt="Peregrine IT" className="h-10 w-auto" />
+            <Image src="/images/peregrine-logo-new.png" alt="Peregrine IT" width={228} height={40} loading="eager" className="h-10 w-auto" />
           </Link>
           <div className="flex items-center gap-8">
             {navLinks.map(({ href, label }) => (

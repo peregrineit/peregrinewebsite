@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
   title: 'Legal Document Automation for Contract Generation & E-Signature — Case Study',
   description: 'How we built a legal document automation platform processing 15K+ documents/month — with contract templates, clause libraries, multi-party e-signature, and SOC2-compliant audit trails.',
-  keywords: ['legal tech', 'document automation', 'e-signature', 'contract generation', 'DocuSign', 'FinTech', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
@@ -29,6 +31,7 @@ export const metadata: Metadata = {
 export default function LegalDocumentAutomationPlatform() {
   return (
     <div className="case-study-detail csd-gold">
+      <CaseStudySchema slug="legal-document-automation-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -297,7 +300,7 @@ export default function LegalDocumentAutomationPlatform() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL
@@ -430,6 +433,9 @@ export default function LegalDocumentAutomationPlatform() {
             data was already there.
           </p>
         </div>
+
+        <CaseStudyByline />
+        <RelatedCaseStudies slug="legal-document-automation-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

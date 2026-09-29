@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
   title: 'Supply Chain Visibility for Shipment Tracking & Alerts — Case Study',
   description: 'How we built a supply chain visibility platform for 2M+ shipments across 12 carriers — with carrier API integration, ETA prediction, exception alerts, and 45% fewer customer inquiries.',
-  keywords: ['supply chain', 'logistics', 'shipment tracking', 'carrier integration', 'IoT', 'SaaS', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
@@ -29,6 +31,7 @@ export const metadata: Metadata = {
 export default function SupplyChainVisibilityPlatform() {
   return (
     <div className="case-study-detail csd-orange">
+      <CaseStudySchema slug="supply-chain-visibility-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -296,7 +299,7 @@ export default function SupplyChainVisibilityPlatform() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL
@@ -428,6 +431,9 @@ export default function SupplyChainVisibilityPlatform() {
             let each tenant tune sensitivity.
           </p>
         </div>
+
+        <CaseStudyByline />
+        <RelatedCaseStudies slug="supply-chain-visibility-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

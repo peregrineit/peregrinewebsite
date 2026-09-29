@@ -1,6 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { QuickProjectForm, StrategyCallForm } from './LeadForms';
+import { officeAddressLine, officeMapsUrl } from '@/data/company';
 
 export default function Footer() {
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
@@ -10,13 +13,6 @@ export default function Footer() {
     contact: false,
   });
 
-  const [formStatus, setFormStatus] = useState<{ loading: boolean; success: boolean; error: string }>({
-    loading: false, success: false, error: '',
-  });
-  const [qpFormStatus, setQpFormStatus] = useState<{ loading: boolean; success: boolean; error: string }>({
-    loading: false, success: false, error: '',
-  });
-
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
       ...prev,
@@ -24,93 +20,41 @@ export default function Footer() {
     }));
   };
 
-  const submitLead = async (formData: Record<string, string>, setStatus: typeof setFormStatus) => {
-    setStatus({ loading: true, success: false, error: '' });
-    try {
-      const res = await fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, pageUrl: window.location.href }),
-      });
-      const json = await res.json();
-      if (res.ok && json.success) {
-        setStatus({ loading: false, success: true, error: '' });
-      } else {
-        setStatus({ loading: false, success: false, error: json.error || 'Something went wrong.' });
-      }
-    } catch {
-      setStatus({ loading: false, success: false, error: 'Network error. Please try again.' });
-    }
-  };
 
   useEffect(() => {
     const popup = document.getElementById('contact-popup');
-    const openBtn = document.getElementById('lets-talk-btn');
-    const closeBtn = document.getElementById('close-popup');
-    const extraOpenBtns = document.querySelectorAll('[data-open-contact]');
-
-    const handleOpen = (e: any) => {
-      e.preventDefault();
-      if (popup) {
-        popup.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      }
-    };
-    const handleClose = () => {
-      if (popup) {
-        popup.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-    };
-    const handleOutsideClick = (e: any) => {
-      if (e.target === popup) handleClose();
-    };
-
-    if (openBtn) openBtn.addEventListener('click', handleOpen);
-    extraOpenBtns.forEach(btn => btn.addEventListener('click', handleOpen));
-    if (closeBtn) closeBtn.addEventListener('click', handleClose);
-    if (popup) popup.addEventListener('click', handleOutsideClick);
-
     const qpPopup = document.getElementById('quick-project-popup');
-    const qpCloseBtn = document.getElementById('close-quick-popup');
-    const qpOpenBtn = document.getElementById('quick-project-btn-footer');
-    const qpOpenBtnCol = document.getElementById('quick-project-btn-footer-col');
-    const qpOpenBtns = document.querySelectorAll('[data-open-quick-project], #quick-project-btn');
+    const open = (el: HTMLElement | null) => {
+      if (!el) return;
+      el.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    };
+    const close = (el: HTMLElement | null) => {
+      if (!el) return;
+      el.classList.remove('active');
+      document.body.style.overflow = '';
+    };
 
-    const handleQpOpen = (e: any) => {
-      e.preventDefault();
-      if (qpPopup) {
-        qpPopup.classList.add('active');
-        document.body.style.overflow = 'hidden';
+    // Delegated so buttons on pages reached by client-side navigation also work.
+    const CONTACT_TRIGGERS = '#lets-talk-btn, [data-open-contact]';
+    const QUICK_TRIGGERS = '[data-open-quick-project], #quick-project-btn, #quick-project-btn-footer, #quick-project-btn-footer-col';
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as Element | null;
+      if (!target) return;
+      if (target.closest(CONTACT_TRIGGERS)) {
+        e.preventDefault();
+        open(popup);
+      } else if (target.closest(QUICK_TRIGGERS)) {
+        e.preventDefault();
+        open(qpPopup);
+      } else if (target.closest('#close-popup') || target === popup) {
+        close(popup);
+      } else if (target.closest('#close-quick-popup') || target === qpPopup) {
+        close(qpPopup);
       }
     };
-    const handleQpClose = () => {
-      if (qpPopup) {
-        qpPopup.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-    };
-    const handleQpOutsideClick = (e: any) => {
-      if (e.target === qpPopup) handleQpClose();
-    };
-
-    if (qpOpenBtn) qpOpenBtn.addEventListener('click', handleQpOpen);
-    if (qpOpenBtnCol) qpOpenBtnCol.addEventListener('click', handleQpOpen);
-    qpOpenBtns.forEach((btn) => btn.addEventListener('click', handleQpOpen));
-    if (qpCloseBtn) qpCloseBtn.addEventListener('click', handleQpClose);
-    if (qpPopup) qpPopup.addEventListener('click', handleQpOutsideClick);
-
-    return () => {
-      if (openBtn) openBtn.removeEventListener('click', handleOpen);
-      extraOpenBtns.forEach(btn => btn.removeEventListener('click', handleOpen));
-      if (closeBtn) closeBtn.removeEventListener('click', handleClose);
-      if (popup) popup.removeEventListener('click', handleOutsideClick);
-      if (qpOpenBtn) qpOpenBtn.removeEventListener('click', handleQpOpen);
-      if (qpOpenBtnCol) qpOpenBtnCol.removeEventListener('click', handleQpOpen);
-      qpOpenBtns.forEach((btn) => btn.removeEventListener('click', handleQpOpen));
-      if (qpCloseBtn) qpCloseBtn.removeEventListener('click', handleQpClose);
-      if (qpPopup) qpPopup.removeEventListener('click', handleQpOutsideClick);
-    };
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
   }, []);
 
   return (
@@ -119,9 +63,9 @@ export default function Footer() {
         <div className="dfs-container-1" style={{ backgroundColor: '#ffffff' }}>
           <div className="dfs-wrap-1" style={{ backgroundColor: '#ffffff' }}>
             <div className="dfs-wrap-2" style={{ backgroundColor: '#f9fafb', padding: '1.5rem 2rem', gap: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <a href="#" className="dfs-wrap-3 w-inline-block" style={{ marginBottom: '0.5rem' }}><img
+              <a href="#" className="dfs-wrap-3 w-inline-block" style={{ marginBottom: '0.5rem' }}><Image
                 style={{ WebkitTransform: 'scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', MozTransform: 'scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', msTransform: 'scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', transform: 'scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)' }}
-                loading="lazy" alt="Peregrine Logo" src="/images/peregrine-logo.png" className="dfs-logo-1" /></a>
+                alt="Peregrine Logo" src="/images/peregrine-logo.png" width={1024} height={180} sizes="192px" className="dfs-logo-1" /></a>
 
               <div className="dfs-wrap-4" style={{ marginTop: '0', marginBottom: '0.75rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div
@@ -171,12 +115,13 @@ export default function Footer() {
                     </button>
                   </div>
                   <div className={`footer-section-content ${expandedSections.services ? 'expanded' : ''}`}>
-                    <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>SaaS &amp; Platform Engineering</a>
-                    <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Systems Integration &amp; APIs</a>
-                    <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Performance Optimization</a>
-                    <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Automation &amp; Internal Tools</a>
-                    <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>AI Workflow Automation</a>
-                    <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Legacy System Modernization</a>
+                    <Link href="/services/saas-development" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>SaaS Development</Link>
+                    <Link href="/services/api-integration" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>API Integration</Link>
+                    <Link href="/services/mls-idx-integration" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>MLS &amp; IDX Integration</Link>
+                    <Link href="/services/ai-automation" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>AI Automation</Link>
+                    <Link href="/services/cloud-devops" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Cloud &amp; DevOps</Link>
+                    <Link href="/services/odoo-erp" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Odoo ERP</Link>
+                    <Link href="/services" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>All Services</Link>
                   </div>
                 </div>
                 <div className="dfs-wrap-7 footer-section-item">
@@ -189,7 +134,7 @@ export default function Footer() {
                     </button>
                   </div>
                   <div className={`footer-section-content ${expandedSections.industries ? 'expanded' : ''}`}>
-                    <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Real Estate Platforms &amp; CRMs</a>
+                    <Link href="/industries/real-estate" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Real Estate Platforms &amp; CRMs</Link>
                     <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Marketplaces &amp; Portals</a>
                     <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Logistics &amp; Operations Systems</a>
                     <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Data-Heavy SaaS Products</a>
@@ -205,8 +150,10 @@ export default function Footer() {
                     </button>
                   </div>
                   <div className={`footer-section-content ${expandedSections.company ? 'expanded' : ''}`}>
-                    <a href="/#sec-service" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>About Us</a>
+                    <Link href="/about" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>About Us</Link>
                     <Link href="/case-studies" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Case Studies</Link>
+                    <Link href="/contact" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Contact</Link>
+                    <Link href="/blog" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Guides</Link>
                     <a href="https://calendly.com/mukesh-peregrine-it/30min" target="_blank" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Careers</a>
                     <a href="https://share.google.com/DOm7mkXoRAN5u1mWi" target="_blank" rel="noopener noreferrer" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Testimonials</a>
                   </div>
@@ -226,6 +173,9 @@ export default function Footer() {
                     <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.6rem', lineHeight: '1.5' }}>Real engineers reply — not sales</p>
                     <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>Daily overlap with North American &amp; European business hours</p>
                     <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>You talk directly with the developer building your system</p>
+                    <address style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.6rem', lineHeight: '1.5', fontStyle: 'normal' }}>
+                      <a href={officeMapsUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#6b7280' }}>{officeAddressLine}</a>
+                    </address>
                   </div>
                 </div>
               </div>
@@ -251,15 +201,6 @@ export default function Footer() {
           </div>
         </div>
 
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": "Peregrine IT",
-          "url": "https://peregrine-it.com",
-          "sameAs": ["https://www.linkedin.com/company/peregrine-it-solutions"],
-          "contactPoint": { "@type": "ContactPoint", "email": "info@peregrine-it.com", "contactType": "customer support" }
-        }) }} />
-
         <div className="w-full border-t border-gray-200 bg-gray-50 py-3">
           <div className="max-w-7xl mx-auto px-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-3">
@@ -283,58 +224,7 @@ export default function Footer() {
             <button id="close-popup" className="close-btn">&times;</button>
           </div>
           <div className="popup-body">
-            {formStatus.success ? (
-              <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
-                <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>&#10003;</div>
-                <p style={{ color: '#22d3ee', fontWeight: '600', fontSize: '1.05rem', margin: '0 0 0.5rem' }}>Request sent successfully!</p>
-                <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0' }}>An engineer will review and reply within 6 hours.</p>
-              </div>
-            ) : (
-            <form onSubmit={(e: any) => {
-              e.preventDefault();
-              const f = e.target;
-              submitLead({
-                name: f.scName.value,
-                email: f.scEmail.value,
-                projectType: f.scType.value,
-                budget: f.scTimeline.value,
-                message: f.scMessage.value || 'Strategy call request',
-              }, setFormStatus);
-            }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <input type="text" name="scName" placeholder="Your name" required
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
-              <input type="email" name="scEmail" placeholder="Work email" required
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
-              <select name="scType" required defaultValue=""
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', appearance: 'none' as const, WebkitAppearance: 'none' as const }}>
-                <option value="" disabled style={{ color: '#64748b' }}>Select project type...</option>
-                <option value="new-build">New platform or product build</option>
-                <option value="integration">Integration or automation</option>
-                <option value="performance">Performance / infrastructure fix</option>
-                <option value="other">Other / not sure yet</option>
-              </select>
-              <select name="scTimeline" required defaultValue=""
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', appearance: 'none' as const, WebkitAppearance: 'none' as const }}>
-                <option value="" disabled style={{ color: '#64748b' }}>Expected timeline...</option>
-                <option value="asap">ASAP (within 2 weeks)</option>
-                <option value="1-2-months">1–2 months</option>
-                <option value="2-6-months">2–6 months</option>
-                <option value="exploring">Just exploring</option>
-              </select>
-              <textarea name="scMessage" placeholder="Tell us briefly what you need" rows={2}
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', resize: 'vertical' as const }} />
-              {formStatus.error && (
-                <p style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>{formStatus.error}</p>
-              )}
-              <button type="submit" className="newsletter-btn" disabled={formStatus.loading}
-                style={{ width: '100%', padding: '0.75rem', borderRadius: '0.75rem', fontSize: '0.95rem', fontWeight: '600', marginTop: '0.25rem', opacity: formStatus.loading ? 0.6 : 1 }}>
-                {formStatus.loading ? 'Sending...' : 'Book a Strategy Call'}
-              </button>
-              <p style={{ color: '#64748b', fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>
-                We&apos;ll review your details and reach out within 1 business day.
-              </p>
-            </form>
-            )}
+            <StrategyCallForm />
           </div>
         </div>
       </div>
@@ -346,50 +236,7 @@ export default function Footer() {
             <button id="close-quick-popup" className="close-btn">&times;</button>
           </div>
           <div className="popup-body">
-            {qpFormStatus.success ? (
-              <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
-                <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>&#10003;</div>
-                <p style={{ color: '#22d3ee', fontWeight: '600', fontSize: '1.05rem', margin: '0 0 0.5rem' }}>Request sent successfully!</p>
-                <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0' }}>We&apos;ll scope your request and respond within 48 hours.</p>
-              </div>
-            ) : (
-            <form onSubmit={(e: any) => {
-              e.preventDefault();
-              const f = e.target;
-              submitLead({
-                name: f.qpName.value,
-                email: f.qpEmail.value,
-                projectType: 'Quick Project Request',
-                budget: f.qpTimeline.value,
-                message: f.qpNeed.value,
-              }, setQpFormStatus);
-            }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <input type="text" name="qpName" placeholder="Your name" required
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
-              <input type="email" name="qpEmail" placeholder="Work email" required
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
-              <textarea name="qpNeed" placeholder="What do you need help with?" rows={3} required
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', resize: 'vertical' as const }} />
-              <select name="qpTimeline" required defaultValue=""
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', appearance: 'none' as const, WebkitAppearance: 'none' as const }}>
-                <option value="" disabled style={{ color: '#64748b' }}>Desired timeline...</option>
-                <option value="asap">ASAP (within 2 weeks)</option>
-                <option value="1-2-months">1–2 months</option>
-                <option value="2-6-months">2–6 months</option>
-                <option value="exploring">Just exploring</option>
-              </select>
-              {qpFormStatus.error && (
-                <p style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>{qpFormStatus.error}</p>
-              )}
-              <button type="submit" className="newsletter-btn" disabled={qpFormStatus.loading}
-                style={{ width: '100%', padding: '0.75rem', borderRadius: '0.75rem', fontSize: '0.95rem', fontWeight: '600', marginTop: '0.25rem', opacity: qpFormStatus.loading ? 0.6 : 1 }}>
-                {qpFormStatus.loading ? 'Sending...' : 'Send Request'}
-              </button>
-              <p style={{ color: '#64748b', fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>
-                We&apos;ll scope your request and respond within 48 hours.
-              </p>
-            </form>
-            )}
+            <QuickProjectForm />
           </div>
         </div>
       </div>

@@ -1,4 +1,7 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
@@ -6,7 +9,6 @@ export const metadata: Metadata = {
   title: 'Building a Self-Storage Management Platform — Case Study',
   description:
     'How we engineered a full-stack SaaS platform for self-storage operators — with smart lock integration, automated billing, and real-time occupancy dashboards serving 150+ facilities.',
-  keywords: ['self-storage SaaS', 'IoT access control', 'PropTech', 'smart locks', 'automated billing', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
@@ -30,6 +32,7 @@ export const metadata: Metadata = {
 export default function SelfStorageManagementPlatform() {
   return (
     <div className="case-study-detail csd-purple">
+      <CaseStudySchema slug="self-storage-management-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -300,7 +303,7 @@ export default function SelfStorageManagementPlatform() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL
@@ -430,6 +433,9 @@ export default function SelfStorageManagementPlatform() {
             managers only when human intervention is actually needed.
           </p>
         </div>
+
+        <CaseStudyByline />
+        <RelatedCaseStudies slug="self-storage-management-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

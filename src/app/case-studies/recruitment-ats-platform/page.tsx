@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
   title: 'Recruitment ATS for Applicant Tracking & Hiring — Case Study',
   description: 'How we built a recruitment ATS platform for 200+ companies and 80K+ candidates — with resume parsing, interview scheduling, candidate pipelines, and 65% time-to-hire reduction.',
-  keywords: ['recruitment ATS', 'applicant tracking', 'HR tech', 'hiring', 'SaaS', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
@@ -29,6 +31,7 @@ export const metadata: Metadata = {
 export default function RecruitmentAtsPlatform() {
   return (
     <div className="case-study-detail csd-teal">
+      <CaseStudySchema slug="recruitment-ats-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -89,7 +92,7 @@ export default function RecruitmentAtsPlatform() {
                 <i className="ri-calendar-check-line" style={{ fontSize: 28, color: '#2dd4bf' }} />
               </div>
               <div className="csd-placeholder-node">
-                <i className="ri-flow-chart-line" style={{ fontSize: 28, color: '#2dd4bf' }} />
+                <i className="ri-flow-chart" style={{ fontSize: 28, color: '#2dd4bf' }} />
               </div>
               <div className="csd-placeholder-node">
                 <i className="ri-building-line" style={{ fontSize: 28, color: '#2dd4bf' }} />
@@ -172,7 +175,7 @@ export default function RecruitmentAtsPlatform() {
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon">
-                <i className="ri-flow-chart-line" />
+                <i className="ri-flow-chart" />
               </div>
               <h4>Candidate Pipeline</h4>
               <p>
@@ -297,7 +300,7 @@ export default function RecruitmentAtsPlatform() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL
@@ -428,6 +431,9 @@ export default function RecruitmentAtsPlatform() {
             interview records. No-shows are tracked and flagged for follow-up.
           </p>
         </div>
+
+        <CaseStudyByline />
+        <RelatedCaseStudies slug="recruitment-ats-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

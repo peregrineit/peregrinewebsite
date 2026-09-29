@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
   title: 'Event Ticketing Platform with Real-Time Availability — Case Study',
   description: 'How we built an event ticketing platform for 500+ events and 120K tickets — with scalable checkout, fraud prevention, refund workflows, and 99.5% availability accuracy.',
-  keywords: ['event ticketing', 'event tech', 'FinTech', 'Stripe', 'real-time', 'SaaS', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
@@ -29,6 +31,7 @@ export const metadata: Metadata = {
 export default function EventTicketingPlatform() {
   return (
     <div className="case-study-detail csd-green-accent">
+      <CaseStudySchema slug="event-ticketing-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -297,7 +300,7 @@ export default function EventTicketingPlatform() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL
@@ -428,6 +431,9 @@ export default function EventTicketingPlatform() {
             checkout UI adapts to the map type.
           </p>
         </div>
+
+        <CaseStudyByline />
+        <RelatedCaseStudies slug="event-ticketing-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

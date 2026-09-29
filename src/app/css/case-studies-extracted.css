@@ -1,6 +1,6 @@
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font-inter), sans-serif;
     }
 
     /* Case studies hero title: override global h1 styles */

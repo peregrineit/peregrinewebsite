@@ -1,105 +1,59 @@
 
 'use client';
 import React, { useEffect } from 'react';
+import { preload } from 'react-dom';
 import Image from 'next/image';
 import Script from 'next/script'; // Ensure Script is available if we use it, though we stripped scripts
 import Link from 'next/link';
+import CaseStudyCard from './components/CaseStudyCard';
+import BackgroundVideo from './components/BackgroundVideo';
+import { featuredCaseStudySlugs, getCaseStudy } from '@/data/case-studies';
+
+// Rendered as the visible FAQ section and as FAQPage JSON-LD, so the two always match.
+const faqs = [
+  {
+    question: "When should a company hire a software development partner instead of employees?",
+    answer: "When you need to ship product fast without the 3\u20136 month hiring cycle. A development partner gives you an experienced, ready-to-deploy engineering team that scales with your roadmap. It\u2019s ideal when you need specialized skills like SaaS architecture, API integrations, or cloud infrastructure without long-term overhead.",
+  },
+  {
+    question: "How long does it take to build a SaaS platform?",
+    answer: "A production-ready MVP typically takes 8\u201314 weeks. This covers core features, authentication, billing, multi-tenancy, and deployment. We deliver working software every two weeks through sprint-based execution. More complex platforms with advanced integrations may take 4\u20136 months.",
+  },
+  {
+    question: "Can legacy systems be modernized without downtime?",
+    answer: "Yes. We use incremental migration strategies \u2014 wrapping legacy APIs, migrating data in stages, and gradually routing traffic to new services. Your existing system stays live throughout the process. We\u2019ve modernized monolithic applications into cloud-native architectures without any business disruption.",
+  },
+  {
+    question: "What industries does Peregrine IT specialize in?",
+    answer: "We work with SaaS companies, real estate technology platforms, healthcare IT, fintech, logistics, and e-commerce. Our focus is product engineering \u2014 building scalable web applications, automation systems, and platform integrations using Node.js, React, Python, AWS, Azure, and modern DevOps practices.",
+  },
+  {
+    question: "How do API integrations improve operations?",
+    answer: "APIs connect your CRM, ERP, billing, and third-party tools into a single automated workflow. This eliminates manual data entry, reduces errors, and lets you scale operations without adding headcount. We build integrations with platforms like Stripe, HubSpot, Salesforce, and custom internal systems.",
+  },
+];
 
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Organization",
-      name: "Peregrine IT Solutions",
+      "@type": "WebPage",
+      "@id": "https://peregrine-it.com/#webpage",
       url: "https://peregrine-it.com",
-      logo: "https://peregrine-it.com/og.png",
-      description:
-        "Peregrine IT builds scalable SaaS platforms, API integrations, automation systems and high-performance software infrastructure for startups and enterprises.",
-      sameAs: [],
-      contactPoint: {
-        "@type": "ContactPoint",
-        contactType: "sales",
-        email: "info@peregrine-it.com",
-        availableLanguage: "English",
-      },
-      areaServed: [
-        { "@type": "Country", name: "United States" },
-        { "@type": "Country", name: "Canada" },
-        { "@type": "Place", name: "Europe" },
-        { "@type": "Country", name: "United Arab Emirates" },
-      ],
-    },
-    {
-      "@type": "ProfessionalService",
-      name: "Peregrine IT Solutions",
-      url: "https://peregrine-it.com",
-      logo: "https://peregrine-it.com/og.png",
-      description:
-        "Peregrine IT builds scalable SaaS platforms, API integrations, automation systems and high-performance software infrastructure for startups and enterprises.",
-      serviceType: [
-        "SaaS Development",
-        "API Integration",
-        "Automation Engineering",
-        "Platform Modernization",
-        "Cloud Infrastructure",
-      ],
-      areaServed: [
-        { "@type": "Country", name: "United States" },
-        { "@type": "Country", name: "Canada" },
-        { "@type": "Place", name: "Europe" },
-        { "@type": "Country", name: "United Arab Emirates" },
-      ],
-      contactPoint: {
-        "@type": "ContactPoint",
-        contactType: "sales",
-        email: "info@peregrine-it.com",
-        availableLanguage: "English",
-      },
+      name: "Peregrine IT Solutions | SaaS, API & Automation Development Company",
+      isPartOf: { "@id": "https://peregrine-it.com/#website" },
+      about: { "@id": "https://peregrine-it.com/#organization" },
+      publisher: { "@id": "https://peregrine-it.com/#organization" },
+      inLanguage: "en-US",
     },
     {
       "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "When should a company hire a software development partner instead of employees?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "When you need to ship product fast without the 3\u20136 month hiring cycle. A development partner gives you an experienced, ready-to-deploy engineering team that scales with your roadmap. It\u2019s ideal when you need specialized skills like SaaS architecture, API integrations, or cloud infrastructure without long-term overhead.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "How long does it take to build a SaaS platform?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "A production-ready MVP typically takes 8\u201314 weeks. This covers core features, authentication, billing, multi-tenancy, and deployment. We deliver working software every two weeks through sprint-based execution. More complex platforms with advanced integrations may take 4\u20136 months.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "Can legacy systems be modernized without downtime?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Yes. We use incremental migration strategies \u2014 wrapping legacy APIs, migrating data in stages, and gradually routing traffic to new services. Your existing system stays live throughout the process. We\u2019ve modernized monolithic applications into cloud-native architectures without any business disruption.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "What industries does Peregrine IT specialize in?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "We work with SaaS companies, real estate technology platforms, healthcare IT, fintech, logistics, and e-commerce. Our focus is product engineering \u2014 building scalable web applications, automation systems, and platform integrations using Node.js, React, Python, AWS, Azure, and modern DevOps practices.",
-          },
-        },
-        {
-          "@type": "Question",
-          name: "How do API integrations improve operations?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "APIs connect your CRM, ERP, billing, and third-party tools into a single automated workflow. This eliminates manual data entry, reduces errors, and lets you scale operations without adding headcount. We build integrations with platforms like Stripe, HubSpot, Salesforce, and custom internal systems.",
-          },
-        },
-      ],
+      "@id": "https://peregrine-it.com/#faq",
+      mainEntity: faqs.map(({ question, answer }) => ({
+        "@type": "Question",
+        name: question,
+        acceptedAnswer: { "@type": "Answer", text: answer },
+      })),
     },
   ],
 };
@@ -110,6 +64,8 @@ import './css/marquee-fix.css'; // Fix for oversized decorative elements in tech
 import './css/lean-animation.css'; // Animation for LEAN Principles vertical scrolling text
 
 export default function Home() {
+  // The hero video's poster is the LCP element (mobile and desktop).
+  preload('/media/hero-lines-poster.webp', { as: 'image', fetchPriority: 'high' });
 
   useEffect(() => {
     // Category filter logic (specific to case-studies)
@@ -156,13 +112,13 @@ export default function Home() {
           <path d="M 0 -10 L 0 0 C 0 0 0 0 0 0 C 400 0 800 27.58 1200 27.58 L 1200 0 L 1200 -10 Z"></path>
         </svg>
           <div className="hero-content-container">
-            <div className="hero-title txtanimation3">
+            <h1 className="hero-title txtanimation3">
               We Build the{' '}
               <span style={{ display: 'inline-block', padding: '4px 16px', border: '2px solid #06b6d4', color: '#22d3ee !important', borderRadius: '8px', fontWeight: 'bold', margin: '0 4px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} className="highlighted-word">Systems</span>{' '}
               Behind{' '}
               <span style={{ display: 'inline-block', padding: '4px 16px', border: '2px solid #9333ea', color: '#a855f7 !important', borderRadius: '8px', fontWeight: 'bold', margin: '0 4px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} className="highlighted-word">Scalable</span>{' '}
               Products
-            </div>
+            </h1>
             <div data-w-id="b9726cc1-f3ba-3db9-8b83-e79b6286cef0"
               style={{ WebkitTransform: 'translate3d(0, -16px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', MozTransform: 'translate3d(0, -16px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', msTransform: 'translate3d(0, -16px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', transform: 'translate3d(0, -16px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)' }}
               className="hero-sub">We architect, build, and scale the platforms, integrations, and infrastructure that ambitious companies depend on.</div>
@@ -196,69 +152,61 @@ export default function Home() {
           </div>
           <div className="marquee gap-8">
             <div className="marquee-content scroll gap-8">
-              <img loading="eager" src="/images/n8n.svg" alt="n8n" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/odoo.svg" alt="Odoo" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/nextjs.svg" alt="Next.js" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/react.svg" alt="React" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/docker.svg" alt="Docker" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/aws.svg" alt="AWS" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/supabase.svg" alt="Supabase" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/python.svg" alt="Python" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/typescript.svg" alt="TypeScript" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/tailwindcss.svg" alt="Tailwind CSS" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/n8n.svg" alt="n8n" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/odoo.svg" alt="Odoo" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/nextjs.svg" alt="Next.js" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/react.svg" alt="React" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/docker.svg" alt="Docker" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="305" height="180" src="/images/aws.svg" alt="AWS" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/supabase.svg" alt="Supabase" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/python.svg" alt="Python" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/typescript.svg" alt="TypeScript" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/tailwindcss.svg" alt="Tailwind CSS" className="marquee-image h-[45px] w-auto" />
 
-              <img loading="eager" src="/images/js.svg" alt="JavaScript" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/swift.svg" alt="Swift" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/CSS.svg" alt="CSS" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="630" height="630" src="/images/js.svg" alt="JavaScript" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="256" height="256" src="/images/swift.svg" alt="Swift" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="124" height="142" src="/images/CSS.svg" alt="CSS" className="marquee-image h-[45px] w-auto" />
 
             </div>
             <div className="marquee-content scroll gap-8" aria-hidden="true">
-              <img loading="eager" src="/images/n8n.svg" alt="n8n" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/odoo.svg" alt="Odoo" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/nextjs.svg" alt="Next.js" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/react.svg" alt="React" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/docker.svg" alt="Docker" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/aws.svg" alt="AWS" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/supabase.svg" alt="Supabase" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/python.svg" alt="Python" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/typescript.svg" alt="TypeScript" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/tailwindcss.svg" alt="Tailwind CSS" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/n8n.svg" alt="n8n" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/odoo.svg" alt="Odoo" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/nextjs.svg" alt="Next.js" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/react.svg" alt="React" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/docker.svg" alt="Docker" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="305" height="180" src="/images/aws.svg" alt="AWS" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/supabase.svg" alt="Supabase" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/python.svg" alt="Python" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/typescript.svg" alt="TypeScript" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="24" height="24" src="/images/tailwindcss.svg" alt="Tailwind CSS" className="marquee-image h-[45px] w-auto" />
 
-              <img loading="eager" src="/images/js.svg" alt="JavaScript" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/swift.svg" alt="Swift" className="marquee-image h-[45px] w-auto" />
-              <img loading="eager" src="/images/CSS.svg" alt="CSS" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="630" height="630" src="/images/js.svg" alt="JavaScript" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="256" height="256" src="/images/swift.svg" alt="Swift" className="marquee-image h-[45px] w-auto" />
+              <img loading="lazy" width="124" height="142" src="/images/CSS.svg" alt="CSS" className="marquee-image h-[45px] w-auto" />
 
             </div>
             <div className="w-embed">
 
             </div>
           </div>
-          <div
-            data-poster-url="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66c8bf45926796e0b4248dbd_hero-LINESupdated-poster-00001.jpg"
-            data-video-urls="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66c8bf45926796e0b4248dbd_hero-LINESupdated-transcode.mp4,https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66c8bf45926796e0b4248dbd_hero-LINESupdated-transcode.webm"
-            data-autoplay="true" data-loop="true" data-wf-ignore="true"
-            className="hero-video w-background-video w-background-video-atom"><video
-              id="a03dd132-464c-ac5b-6de7-ef4113ef23f2-video" autoPlay loop
-              style={{ backgroundImage: 'url(\'https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66c8bf45926796e0b4248dbd_hero-LINESupdated-poster-00001.jpg\')' }}
-              muted playsInline data-wf-ignore="true" data-object-fit="cover">
-              <source
-                src="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66c8bf45926796e0b4248dbd_hero-LINESupdated-transcode.mp4"
-                data-wf-ignore="true" />
-              <source
-                src="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66c8bf45926796e0b4248dbd_hero-LINESupdated-transcode.webm"
-                data-wf-ignore="true" />
-            </video></div>
+          <BackgroundVideo
+            className="hero-video w-background-video w-background-video-atom"
+            videoId="a03dd132-464c-ac5b-6de7-ef4113ef23f2-video"
+            poster="/media/hero-lines-poster.webp"
+            sources={[
+              { src: '/media/hero-lines.webm', type: 'video/webm' },
+              { src: '/media/hero-lines.mp4', type: 'video/mp4' },
+            ]}
+          />
         </section>
         <section id="sec-service" className="section dark !pt-12 !pb-16"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"
           fill="currentColor" className="section-divider-bae_divider_1723820093757">
           <path d="M 0, -10 V 7.23 C 0,65.52 268.63,112.77 600,112.77 S 1200,65.52 1200,7.23 V -10 Z"></path>
         </svg>
           <div className="container">
-            <div className="header-title-img-wrap"><img src="/images/lap-mock.png" loading="lazy" width="462"
-              sizes="(max-width: 767px) 93vw, 500px" alt=""
-              srcSet="/images/lap-mock-p-500.png 500w, /images/lap-mock.png 800w" className="img-main" />
+            <div className="header-title-img-wrap"><Image src="/images/lap-mock.png" width={1248} height={832} sizes="(max-width: 767px) 93vw, 500px" alt="Laptop displaying a Peregrine AI product dashboard with analytics panels" className="img-main" />
               <div className="w-layout-vflex content-wrap">
-                <h1 className="heading-primary gradient">Built for Scale. Architected for Complexity.</h1>
+                <h2 className="heading-primary gradient">Built for Scale. Architected for Complexity.</h2>
                 <div className="section-sub">From early-stage platforms to enterprise infrastructure — we architect, build, and scale the systems that power your business.</div>
                 <a href="#sec-CTA" className="cta-primary dark w-inline-block">
                   <div className="cta-label">Get a Free Consultation</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -429,9 +377,9 @@ export default function Home() {
               </div>
               <div id="w-node-_11afe82e-c384-13e8-e364-3e6e558d1844-098fe091" className="grid__item">
                 <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about Cloud Performance & DevOps">
-                  <div id="w-node-_11afe82e-c384-13e8-e364-3e6e558d1846-098fe091" className="iconx_component---nnofle"><img
-                    src="/images/updateicon.svg" loading="lazy" data-w-id="20085b6b-40e9-5543-2650-533d1fdece93" alt=""
-                    className="image-6" /><img src="/images/lap.svg" loading="lazy" alt="" className="image-7" /></div>
+                  <div id="w-node-_11afe82e-c384-13e8-e364-3e6e558d1846-098fe091" className="iconx_component---nnofle"><img loading="lazy" width="24" height="21"
+                    src="/images/updateicon.svg" data-w-id="20085b6b-40e9-5543-2650-533d1fdece93" alt=""
+                    className="image-6" /><img loading="lazy" width="96" height="96" src="/images/lap.svg" alt="" className="image-7" /></div>
                   <div className="grid__item-img-deco"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
@@ -468,8 +416,7 @@ export default function Home() {
               </div>
               <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520b-098fe091" className="grid__item">
                 <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about AI & Intelligent Automation">
-                  <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520d-098fe091" className="iconx_component"><img
-                    src="/images/ai-gif.gif" loading="lazy" alt="" className="image-5" /></div>
+                  <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520d-098fe091" className="iconx_component"><Image src="/images/ai-anim.webp" width={140} height={140} unoptimized alt="" className="image-5" /></div>
                   <div className="grid__item-img-deco"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
@@ -563,10 +510,10 @@ export default function Home() {
         <section id="sec-process" className="section !pt-10 !pb-10">
           <div className="container">
             <div className="img-benefits-wrap">
-              <div className="image-block"><img
+              <div className="image-block"><Image
                 sizes="(max-width: 479px) 90vw, (max-width: 767px) 88vw, (max-width: 963px) 83vw, (max-width: 991px) 800px, (max-width: 1439px) 40vw, 540px"
-                srcSet="/images/handshake-p-500.png 500w, /images/handshake-p-800.png 800w, /images/handshake-p-1080.png 1080w, /images/handshake.png 1174w"
-                alt="How We Work" src="/images/handshake.png" className="expand-team" />
+                src="/images/handshake.png" width={1248} height={832}
+                alt="Two business professionals shaking hands in front of a digital data backdrop" className="expand-team" />
                 <div data-svg-animation-time="6000" data-svg="animated" id="w-node-_4ad2958e-ecc9-8cd6-1e6f-2264af434729-098fe091"
                   className="loc-outline-svg-copy w-embed"><svg width="100%" height="100%" viewBox="0 0 100 80" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -655,21 +602,21 @@ export default function Home() {
               {/* Row 1 */}
               <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="testimonial-category">Performance Optimization</span>
-                <a href="https://www.easyagentpro.com" target="_blank" rel="noopener noreferrer"><img src="/logos/easyagentpro.webp" alt="Easy Agent PRO" className="testimonial-logo logo-dark-bg" /></a>
+                <a href="https://www.easyagentpro.com" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="625" height="128" src="/logos/easyagentpro.webp" alt="Easy Agent PRO" className="testimonial-logo logo-dark-bg" /></a>
                 <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;We brought them in to fix performance bottlenecks across our all-in-one CRM. They optimized page loads, fixed the lead ingestion pipeline so leads flow directly into marketing sequences, and tightened up the overall system architecture. Agents on our platform started capturing more leads simply because the forms and pages stopped lagging. The full optimization was completed in a single sprint cycle.&rdquo;</p>
                 <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Josh Keeton</p>
                 <p style={{ color: '#64748b', fontSize: '0.8rem' }}>CEO, Easy Agent PRO</p>
               </div>
               <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="testimonial-category">Lead Automation System</span>
-                <a href="https://www.brokerlinx.com" target="_blank" rel="noopener noreferrer"><img src="/logos/brokerlinx.jpg" alt="BrokerLinx" className="testimonial-logo" /></a>
+                <a href="https://www.brokerlinx.com" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="1127" height="801" src="/logos/brokerlinx.jpg" alt="BrokerLinx" className="testimonial-logo" /></a>
                 <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;We were drowning in inbound leads with no structured way to route or follow up on them. The team built a custom automation layer on top of our CRM — auto-assigning leads, triggering follow-up sequences, and giving agents mobile access to their pipeline. Response time dropped from hours to minutes. They delivered two weeks ahead of schedule and came in under budget.&rdquo;</p>
                 <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>William Betancourt</p>
                 <p style={{ color: '#64748b', fontSize: '0.8rem' }}>Founder, BrokerLinx</p>
               </div>
               <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="testimonial-category">SaaS Platform Rebuild</span>
-                <a href="https://www.kypiq.com" target="_blank" rel="noopener noreferrer"><img src="/logos/kypiq.png" alt="Kypiq" className="testimonial-logo" /></a>
+                <a href="https://www.kypiq.com" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="256" height="94" src="/logos/kypiq.png" alt="Kypiq" className="testimonial-logo" /></a>
                 <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;Our legacy self-storage platform required manual intervention for most access and billing tasks. Peregrine rebuilt it as a fully automated 24/7-access system — eliminating the manual workflow entirely and cutting operational costs by roughly 40%. Page load times dropped to under a second, and we shipped the full rebuild in about 10 weeks.&rdquo;</p>
                 <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Iván Palacios</p>
                 <p style={{ color: '#64748b', fontSize: '0.8rem' }}>CEO, Kypiq</p>
@@ -678,21 +625,21 @@ export default function Home() {
               {/* Row 2 */}
               <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="testimonial-category">High-Traffic Streaming Platform</span>
-                <a href="https://www.torrins.com" target="_blank" rel="noopener noreferrer"><img src="/logos/torrins-logo.svg" alt="Torrins" className="testimonial-logo logo-dark-bg" /></a>
+                <a href="https://www.torrins.com" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="152" height="29" src="/logos/torrins-logo.svg" alt="Torrins" className="testimonial-logo logo-dark-bg" /></a>
                 <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;We needed our video streaming infrastructure to handle thousands of concurrent users without buffering or session drops. They re-architected the streaming pipeline and course portal — lesson load times went from several seconds to near-instant. We also added automated enrollment workflows and personalized learning paths, which removed most of the admin overhead our team was spending 15+ hours a week on.&rdquo;</p>
                 <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Manpreet Singh</p>
                 <p style={{ color: '#64748b', fontSize: '0.8rem' }}>Co-Founder, Torrins</p>
               </div>
               <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="testimonial-category">Portal + CRM Integration</span>
-                <a href="https://www.bahiainternationalrealty.com" target="_blank" rel="noopener noreferrer"><img src="/logos/bahia-realty.png" alt="Bahia International Realty" className="testimonial-logo" /></a>
+                <a href="https://www.bahiainternationalrealty.com" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="140" height="118" src="/logos/bahia-realty.png" alt="Bahia International Realty" className="testimonial-logo" /></a>
                 <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;We needed a property portal that could serve both international and local buyers, connected to our CRM and marketing stack. They built a fast-loading listing site with automated client-to-listing matching, which cut the manual search-and-send process our agents were doing daily. Operational costs dropped, and our agents reclaimed several hours per week. The system has been stable since launch with no unplanned downtime.&rdquo;</p>
                 <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Raul Aleman</p>
                 <p style={{ color: '#64748b', fontSize: '0.8rem' }}>Broker/Owner, Bahia International Realty</p>
               </div>
               <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="testimonial-category">High-Load Infrastructure</span>
-                <a href="https://www.searchrealty.ca" target="_blank" rel="noopener noreferrer"><img src="/logos/search-realty.png" alt="Search Realty" className="testimonial-logo" /></a>
+                <a href="https://www.searchrealty.ca" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="650" height="180" src="/logos/search-realty.png" alt="Search Realty" className="testimonial-logo" /></a>
                 <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;Our Leads on Demand product needed a backend that could handle large traffic spikes without dropping requests or slowing down. They built a scalable infrastructure layer integrated with our CRM — lead capture and nurture now happen in real time with zero delay. Conversion rates improved measurably because prospects aren’t waiting on slow pages. The platform has been handling peak loads cleanly since launch.&rdquo;</p>
                 <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Sterling Wong</p>
                 <p style={{ color: '#64748b', fontSize: '0.8rem' }}>Founder & CEO, Search Realty</p>
@@ -702,7 +649,7 @@ export default function Home() {
             {/* Featured Testimonial — Deepak Kumar (full width) */}
             <div className="testimonial-card-featured" style={{ background: 'linear-gradient(135deg, rgba(6,182,212,0.06) 0%, rgba(59,130,246,0.06) 100%)', border: '1px solid rgba(6,182,212,0.15)', borderRadius: '16px', padding: '2.5rem', marginBottom: '2.5rem', textAlign: 'center', maxWidth: '800px', margin: '0 auto 2.5rem auto' }}>
               <span className="testimonial-category">CRM Feature Expansion</span>
-              <a href="https://www.mmnovatech.com" target="_blank" rel="noopener noreferrer"><img src="/logos/mmnovatech.png" alt="MM Nova Tech" className="testimonial-logo-featured" /></a>
+              <a href="https://www.mmnovatech.com" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="568" height="150" src="/logos/mmnovatech.png" alt="MM Nova Tech" className="testimonial-logo-featured" /></a>
               <p style={{ color: '#1e293b', fontSize: '1.1rem', lineHeight: '1.7', marginBottom: '1.25rem', fontStyle: 'italic' }}>&ldquo;We’re a SaaS company ourselves, so we had high standards for the team working on our platform. They integrated AI-driven lead scoring, email automation, and analytics dashboards directly into our CRM. System response times improved noticeably, and we can now support 3x the concurrent users on the same infrastructure. Development wrapped faster than our internal estimates, and their support team resolves issues same-day.&rdquo;</p>
               <p style={{ color: '#0e7490', fontSize: '0.95rem', fontWeight: '600' }}>Deepak Kumar</p>
               <p style={{ color: '#64748b', fontSize: '0.85rem' }}>CEO, MM Nova Tech</p>
@@ -717,8 +664,8 @@ export default function Home() {
                 </div>
                 <div className="title-capped">SYSTEMS SHIPPED</div>
               </div>
-              <div className="arrow-wrap"><img alt=""
-                src="https://uploads-ssl.webflow.com/66b5198d80cc88d19051afb7/66b5198e80cc88d19051b065_arrow-right.svg"
+              <div className="arrow-wrap"><img loading="lazy" width="150" height="46" alt=""
+                src="/images/arrow-right.svg"
                 className="arrow-image shimmer-mask right-to-left" /></div>
               <div data-w-id="79529fbb-72fb-fe78-0c63-ba7c689cb95c" style={{}} className="circle-div">
                 <div className="stat-wrap">
@@ -727,8 +674,8 @@ export default function Home() {
                 </div>
                 <div className="title-capped">AVG. YEARS PER CLIENT</div>
               </div>
-              <div className="arrow-wrap"><img alt=""
-                src="https://uploads-ssl.webflow.com/66b5198d80cc88d19051afb7/66b5198e80cc88d19051b065_arrow-right.svg"
+              <div className="arrow-wrap"><img loading="lazy" width="150" height="46" alt=""
+                src="/images/arrow-right.svg"
                 className="arrow-image shimmer-mask right-to-left" /></div>
               <div data-w-id="79529fbb-72fb-fe78-0c63-ba7c689cb965" style={{}} className="circle-div">
                 <div className="stat-wrap">
@@ -737,8 +684,8 @@ export default function Home() {
                 </div>
                 <div className="title-capped">ON-TIME DELIVERY RATE</div>
               </div>
-              <div className="arrow-wrap"><img alt=""
-                src="https://uploads-ssl.webflow.com/66b5198d80cc88d19051afb7/66b5198e80cc88d19051b065_arrow-right.svg"
+              <div className="arrow-wrap"><img loading="lazy" width="150" height="46" alt=""
+                src="/images/arrow-right.svg"
                 className="arrow-image shimmer-mask right-to-left" /></div>
               <div data-w-id="bc979d55-ba31-04d1-c194-ff8614ee6322" style={{}} className="circle-div">
                 <div className="stat-wrap">
@@ -799,8 +746,33 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="bg-fill-absolo"><img src="/images/vector-lines.svg" loading="lazy"
+          <div className="bg-fill-absolo"><img loading="lazy" width="7448" height="940" src="/images/vector-lines.svg"
             data-w-id="57343fd2-dcb9-6528-f601-e6d78e1463d1" alt="" className="image-9" /></div>
+        </section>
+
+        <section id="sec-work" className="section dark !pt-12 !pb-16">
+          <div className="container">
+            <div className="w-layout-vflex content-wrap" style={{ marginBottom: '2.5rem' }}>
+              <p className="section-borrow">Selected Work</p>
+              <h2 className="heading-primary gradient">Platforms We&apos;ve Engineered</h2>
+              <div className="section-sub" style={{ color: 'rgba(255,255,255,0.75)' }}>A few recent builds, from multi-market MLS platforms to carrier integrations. Each case study covers the problem, the architecture and the results.</div>
+            </div>
+            <div className="tw-grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+              {featuredCaseStudySlugs.map((slug) => (
+                <CaseStudyCard key={slug} study={getCaseStudy(slug)} />
+              ))}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2.5rem' }}>
+              <Link href="/case-studies" className="cta-primary dark w-inline-block" style={{ width: 'auto' }}>
+                <div className="cta-label">View All Case Studies</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                    className="svg-icon-button">
+                    <path d="m6 17 5-5-5-5"></path>
+                    <path d="m13 17 5-5-5-5"></path>
+                  </svg>
+              </Link>
+            </div>
+          </div>
         </section>
 
         <section id="sec-logistics" data-w-id="4b456ef1-02bf-a753-30c8-fef45a56495c" className="section !pb-10">
@@ -808,10 +780,9 @@ export default function Home() {
             <div className="beyond-codegird">
               <div className="home-services-grid-left">
                 <div className="sticky-content">
-                  <div className="heading-primary">Deep Industry Expertise</div><img src="/images/handshake.png" loading="lazy"
-                    sizes="(max-width: 479px) 89vw, (max-width: 767px) 315.3671875px, (max-width: 991px) 453.3359375px, (max-width: 1439px) 41vw, 453.3359375px"
-                    srcSet="/images/handshake-p-500.png 500w, /images/handshake-p-800.png 800w, /images/handshake-p-1080.png 1080w, /images/handshake.png 1174w"
-                    alt="" className="img-main faded-bottom" />
+                  <div className="heading-primary">Deep Industry Expertise</div><Image src="/images/handshake.png" width={1248} height={832}
+                    sizes="(max-width: 479px) 89vw, (max-width: 767px) 316px, (max-width: 991px) 454px, (max-width: 1439px) 41vw, 454px"
+                    alt="Two business professionals shaking hands in front of a digital data backdrop" className="img-main faded-bottom" />
                 </div>
                 <div className="home-services-about">
                   <div>
@@ -990,7 +961,7 @@ export default function Home() {
                 data-src="documents/AgLEFuYsGE.json" data-loop="1" data-direction="1" data-autoplay="1"
                 data-is-ix2-target="0" data-renderer="svg" data-default-duration="4" data-duration="0"></div>
               <div className="w-layout-vflex content-wrap">
-                <h1 className="heading-primary gradient">Technologies We Work With</h1>
+                <h2 className="heading-primary gradient">Technologies We Work With</h2>
                 <p className="section-sub">Our engineering teams work across the full modern stack — from frontend frameworks to cloud infrastructure.</p>
               </div>
             </div>
@@ -1069,36 +1040,36 @@ export default function Home() {
                   <div id="w-node-b0216bc3-24d3-4254-e998-f8437df35531-098fe091" className="div-block-4">
                     <div className="marquee">
                       <div className="marquee-content scroll">
-                        <img loading="eager" src="/images/n8n.svg" alt="n8n" className="marquee-image" />
-                        <img loading="eager" src="/images/odoo.svg" alt="Odoo" className="marquee-image" />
-                        <img loading="eager" src="/images/nextjs.svg" alt="Next.js" className="marquee-image" />
-                        <img loading="eager" src="/images/react.svg" alt="React" className="marquee-image" />
-                        <img loading="eager" src="/images/docker.svg" alt="Docker" className="marquee-image" />
-                        <img loading="eager" src="/images/aws.svg" alt="AWS" className="marquee-image" />
-                        <img loading="eager" src="/images/supabase.svg" alt="Supabase" className="marquee-image" />
-                        <img loading="eager" src="/images/python.svg" alt="Python" className="marquee-image" />
-                        <img loading="eager" src="/images/typescript.svg" alt="TypeScript" className="marquee-image" />
-                        <img loading="eager" src="/images/tailwindcss.svg" alt="Tailwind CSS" className="marquee-image" />
-                        <img loading="eager" src="/images/js.svg" alt="JavaScript" className="marquee-image" />
-                        <img loading="eager" src="/images/swift.svg" alt="Swift" className="marquee-image" />
-                        <img loading="eager" src="/images/CSS.svg" alt="CSS" className="marquee-image" />
-                        <img loading="eager" src="/images/my-sql.svg" alt="MySQL" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/n8n.svg" alt="n8n" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/odoo.svg" alt="Odoo" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/nextjs.svg" alt="Next.js" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/react.svg" alt="React" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/docker.svg" alt="Docker" className="marquee-image" />
+                        <img loading="lazy" width="305" height="180" src="/images/aws.svg" alt="AWS" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/supabase.svg" alt="Supabase" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/python.svg" alt="Python" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/typescript.svg" alt="TypeScript" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/tailwindcss.svg" alt="Tailwind CSS" className="marquee-image" />
+                        <img loading="lazy" width="630" height="630" src="/images/js.svg" alt="JavaScript" className="marquee-image" />
+                        <img loading="lazy" width="256" height="256" src="/images/swift.svg" alt="Swift" className="marquee-image" />
+                        <img loading="lazy" width="124" height="142" src="/images/CSS.svg" alt="CSS" className="marquee-image" />
+                        <img loading="lazy" width="48" height="26" src="/images/my-sql.svg" alt="MySQL" className="marquee-image" />
                       </div>
                       <div className="marquee-content scroll">
-                        <img loading="eager" src="/images/n8n.svg" alt="n8n" className="marquee-image" />
-                        <img loading="eager" src="/images/odoo.svg" alt="Odoo" className="marquee-image" />
-                        <img loading="eager" src="/images/nextjs.svg" alt="Next.js" className="marquee-image" />
-                        <img loading="eager" src="/images/react.svg" alt="React" className="marquee-image" />
-                        <img loading="eager" src="/images/docker.svg" alt="Docker" className="marquee-image" />
-                        <img loading="eager" src="/images/aws.svg" alt="AWS" className="marquee-image" />
-                        <img loading="eager" src="/images/supabase.svg" alt="Supabase" className="marquee-image" />
-                        <img loading="eager" src="/images/python.svg" alt="Python" className="marquee-image" />
-                        <img loading="eager" src="/images/typescript.svg" alt="TypeScript" className="marquee-image" />
-                        <img loading="eager" src="/images/tailwindcss.svg" alt="Tailwind CSS" className="marquee-image" />
-                        <img loading="eager" src="/images/js.svg" alt="JavaScript" className="marquee-image" />
-                        <img loading="eager" src="/images/swift.svg" alt="Swift" className="marquee-image" />
-                        <img loading="eager" src="/images/CSS.svg" alt="CSS" className="marquee-image" />
-                        <img loading="eager" src="/images/my-sql.svg" alt="MySQL" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/n8n.svg" alt="n8n" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/odoo.svg" alt="Odoo" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/nextjs.svg" alt="Next.js" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/react.svg" alt="React" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/docker.svg" alt="Docker" className="marquee-image" />
+                        <img loading="lazy" width="305" height="180" src="/images/aws.svg" alt="AWS" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/supabase.svg" alt="Supabase" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/python.svg" alt="Python" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/typescript.svg" alt="TypeScript" className="marquee-image" />
+                        <img loading="lazy" width="24" height="24" src="/images/tailwindcss.svg" alt="Tailwind CSS" className="marquee-image" />
+                        <img loading="lazy" width="630" height="630" src="/images/js.svg" alt="JavaScript" className="marquee-image" />
+                        <img loading="lazy" width="256" height="256" src="/images/swift.svg" alt="Swift" className="marquee-image" />
+                        <img loading="lazy" width="124" height="142" src="/images/CSS.svg" alt="CSS" className="marquee-image" />
+                        <img loading="lazy" width="48" height="26" src="/images/my-sql.svg" alt="MySQL" className="marquee-image" />
                       </div>
                       <div className="w-embed">
 
@@ -1111,26 +1082,40 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="sec-CTA" className="section dark vh">
-          <div
-            data-poster-url="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66be2d194558cc6e063b5dd6_hb-Shutterstock%201093083365-Fast%201080p30-poster-00001.jpg"
-            data-video-urls="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66be2d194558cc6e063b5dd6_hb-Shutterstock%201093083365-Fast%201080p30-transcode.mp4,https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66be2d194558cc6e063b5dd6_hb-Shutterstock%201093083365-Fast%201080p30-transcode.webm"
-            data-autoplay="true" data-loop="true" data-wf-ignore="true"
-            className="cta-video w-background-video w-background-video-atom"><video
-              id="f042f04d-36ab-c84d-8adf-8bcc37730517-video" autoPlay loop
-              style={{ backgroundImage: 'url(\'https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66be2d194558cc6e063b5dd6_hb-Shutterstock%201093083365-Fast%201080p30-poster-00001.jpg\')' }}
-              muted playsInline data-wf-ignore="true" data-object-fit="cover">
-              <source
-                src="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66be2d194558cc6e063b5dd6_hb-Shutterstock%201093083365-Fast%201080p30-transcode.mp4"
-                data-wf-ignore="true" />
-              <source
-                src="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66be2d194558cc6e063b5dd6_hb-Shutterstock%201093083365-Fast%201080p30-transcode.webm"
-                data-wf-ignore="true" />
-            </video></div>
+        <section id="sec-faq" className="section !pt-10 !pb-16">
           <div className="container">
-            <div className="w-layout-vflex flex-block-4-copy"><img src="/images/peregrine-logo-new.png" loading="lazy"
-              width="300" alt="Peregrine IT Logo" className="Peregrine-white" />
-              <h1 className="cta">Let’s Talk About Your Project</h1>
+            <div className="content-wrap" style={{ maxWidth: '800px', margin: '0 auto' }}>
+              <p className="section-borrow">FAQ</p>
+              <h2 className="heading-primary">Frequently Asked Questions</h2>
+              <div style={{ marginTop: '2rem', width: '100%' }}>
+                {faqs.map(({ question, answer }) => (
+                  <details key={question} className="group border-b border-gray-200 py-5">
+                    <summary className="cursor-pointer list-none text-lg font-semibold text-gray-900" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
+                      <h3 style={{ fontSize: 'inherit', lineHeight: 'inherit', fontWeight: 'inherit', margin: 0 }}>{question}</h3>
+                      <i className="ri-add-line text-xl text-cyan-600 transition-transform group-open:rotate-45" aria-hidden="true" />
+                    </summary>
+                    <p className="mt-3 text-base leading-relaxed text-gray-600">{answer}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="sec-CTA" className="section dark vh">
+          <BackgroundVideo
+            className="cta-video w-background-video w-background-video-atom"
+            videoId="f042f04d-36ab-c84d-8adf-8bcc37730517-video"
+            poster="/media/cta-background-poster.webp"
+            sources={[
+              { src: '/media/cta-background.webm', type: 'video/webm' },
+              { src: '/media/cta-background.mp4', type: 'video/mp4' },
+            ]}
+          />
+          <div className="container">
+            <div className="w-layout-vflex flex-block-4-copy"><img loading="lazy" width="300" height="53" src="/images/peregrine-logo-new.png"
+              alt="Peregrine IT Logo" className="Peregrine-white" />
+              <h2 className="cta">Let’s Talk About Your Project</h2>
               <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '1.1rem', maxWidth: '600px', textAlign: 'center', marginTop: '-0.5rem', marginBottom: '2rem' }}>Tell us about your goals and constraints — we’ll recommend the right way to work together.</p>
               <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center', width: '100%', maxWidth: '800px' }}>
                 <div style={{ flex: '1 1 340px', background: 'rgba(255,255,255,0.08)', borderRadius: '12px', padding: '2rem', textAlign: 'center', border: '1px solid rgba(255,255,255,0.12)' }}>

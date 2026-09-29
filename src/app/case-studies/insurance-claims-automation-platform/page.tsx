@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
   title: 'Insurance Claims Automation for Claims Processing — Case Study',
   description: 'How we built an InsurTech claims automation platform processing 45K+ claims/year — 60% faster processing, HIPAA compliant, with document extraction, multi-carrier rules, and full audit trail.',
-  keywords: ['InsurTech', 'claims automation', 'FinTech', 'document extraction', 'HIPAA', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
@@ -29,6 +31,7 @@ export const metadata: Metadata = {
 export default function InsuranceClaimsAutomationPlatform() {
   return (
     <div className="case-study-detail">
+      <CaseStudySchema slug="insurance-claims-automation-platform" />
       {/* ═══ HERO — Default (no accent) ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -307,7 +310,7 @@ export default function InsuranceClaimsAutomationPlatform() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL
@@ -446,6 +449,9 @@ export default function InsuranceClaimsAutomationPlatform() {
             the client could show exactly what data was used and when decisions were made.
           </p>
         </div>
+
+        <CaseStudyByline />
+        <RelatedCaseStudies slug="insurance-claims-automation-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

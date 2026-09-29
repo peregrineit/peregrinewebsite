@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
   title: 'Food Delivery Aggregator for Multi-Restaurant Marketplace — Case Study',
   description: 'How we built a FoodTech aggregator platform with 200+ restaurants, 50K+ orders/month, real-time driver dispatch, and sub-3min average delivery — powering a regional multi-restaurant marketplace.',
-  keywords: ['food delivery', 'FoodTech', 'restaurant aggregator', 'driver app', 'e-commerce', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
@@ -29,6 +31,7 @@ export const metadata: Metadata = {
 export default function FoodDeliveryAggregatorPlatform() {
   return (
     <div className="case-study-detail csd-orange">
+      <CaseStudySchema slug="food-delivery-aggregator-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -309,7 +312,7 @@ export default function FoodDeliveryAggregatorPlatform() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL
@@ -318,7 +321,7 @@ export default function FoodDeliveryAggregatorPlatform() {
               <span className="csd-tech-icon"><i className="ri-flashlight-line" /></span> Redis
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-firebase-fill" /></span> Firebase
+              <span className="csd-tech-icon"><i className="ri-fire-fill" /></span> Firebase
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-bank-card-line" /></span> Stripe
@@ -442,6 +445,9 @@ export default function FoodDeliveryAggregatorPlatform() {
             a week, which was critical for scaling from 50 to 200+ partners.
           </p>
         </div>
+
+        <CaseStudyByline />
+        <RelatedCaseStudies slug="food-delivery-aggregator-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

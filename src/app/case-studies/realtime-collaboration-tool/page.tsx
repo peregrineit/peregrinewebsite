@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
   title: 'Real-Time Collaboration Tool for Documents & Chat — Case Study',
   description: 'How we built a real-time collaboration platform for 5K+ workspaces and 25K users — with operational transform, presence, permissions, and offline sync achieving <100ms sync latency.',
-  keywords: ['real-time collaboration', 'document editing', 'SaaS', 'WebSocket', 'CRDT', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
@@ -29,6 +31,7 @@ export const metadata: Metadata = {
 export default function RealtimeCollaborationTool() {
   return (
     <div className="case-study-detail csd-purple">
+      <CaseStudySchema slug="realtime-collaboration-tool" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -96,7 +99,7 @@ export default function RealtimeCollaborationTool() {
                 <i className="ri-wifi-off-line" style={{ fontSize: 28, color: '#a78bfa' }} />
               </div>
               <div className="csd-placeholder-node">
-                <i className="ri-cloud-sync-line" style={{ fontSize: 28, color: '#a78bfa' }} />
+                <i className="ri-refresh-line" style={{ fontSize: 28, color: '#a78bfa' }} />
               </div>
             </div>
             <p>OT &middot; Presence &middot; Offline Sync</p>
@@ -267,7 +270,7 @@ export default function RealtimeCollaborationTool() {
 
               <div className="csd-arch-layer">
                 <div className="csd-arch-layer-icon">
-                  <i className="ri-cloud-sync-line" />
+                  <i className="ri-refresh-line" />
                 </div>
                 <div className="csd-arch-layer-content">
                   <div className="csd-arch-layer-name">CRDT Sync &amp; Offline Queue</div>
@@ -298,7 +301,7 @@ export default function RealtimeCollaborationTool() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL
@@ -431,6 +434,9 @@ export default function RealtimeCollaborationTool() {
             and disconnect affected clients so they re-auth.
           </p>
         </div>
+
+        <CaseStudyByline />
+        <RelatedCaseStudies slug="realtime-collaboration-tool" />
 
         {/* CTA */}
         <div className="csd-cta-section">

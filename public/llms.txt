@@ -1,0 +1,43 @@
+# Peregrine IT Solutions
+
+> Peregrine IT Solutions is a software engineering firm that designs, builds and scales SaaS products, API integrations, automation and cloud infrastructure. Most of our clients are B2B companies in the United States and Canada, with a strong focus on real estate and proptech (brokerages, MLS/IDX data, investor platforms) and SaaS businesses.
+
+Engineers work directly with client teams in sprint-based delivery, with daily overlap with North American business hours.
+
+## Services
+
+- [SaaS development](https://peregrine-it.com/services/saas-development): multi-tenant platforms, billing and role-based access, from a new build to scaling an existing MVP
+- [API integration](https://peregrine-it.com/services/api-integration): integration layers for CRMs, ERPs, payroll, e-signature and carrier APIs, with retries and reconciliation
+- [MLS & IDX integration](https://peregrine-it.com/services/mls-idx-integration): RESO Web API and RETS feeds, multi-MLS normalization and IDX search
+- [AI automation](https://peregrine-it.com/services/ai-automation): natural-language search, lead qualification assistants, document extraction and predictive models
+- [Cloud & DevOps](https://peregrine-it.com/services/cloud-devops): AWS architecture, CI/CD, caching and CDN, load testing and monitoring
+- [Odoo ERP](https://peregrine-it.com/services/odoo-erp): Odoo HR, CRM, Inventory and Accounting implementation, custom modules, data migration and integrations
+- [All services](https://peregrine-it.com/services)
+
+## Guides
+
+- [MLS/IDX integration cost (2026)](https://peregrine-it.com/blog/mls-idx-integration-cost): IDX vendor subscriptions, MLS data license fees, RESO Web API vendors and development cost drivers, with sourced figures
+- [Custom SaaS vs off-the-shelf CRM for brokerages](https://peregrine-it.com/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages): published CRM pricing and when a custom platform makes sense
+- [Cost to build a real estate platform](https://peregrine-it.com/blog/cost-to-build-a-real-estate-platform): labor rates in the US, Canada and India, MLS data, maps and hosting costs
+- [Real estate and proptech work](https://peregrine-it.com/industries/real-estate): services and case studies for brokerages and proptech companies
+
+## Selected case studies
+
+- [Scaling a real estate SaaS platform](https://peregrine-it.com/case-studies/scaling-real-estate-saas-platform): re-architected a US/Canada property search product to serve millions of MLS listings with sub-second search.
+- [AI-powered multi-market real estate platform](https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform): unified four MLS feeds for a brokerage and added natural-language search, automated valuation and an AI lead-qualification assistant.
+- [Investor portal for a real estate developer](https://peregrine-it.com/case-studies/proptech-investor-portal): role-based portal with document management, capital call workflows and automated distribution reporting.
+- [Supply chain visibility platform](https://peregrine-it.com/case-studies/supply-chain-visibility-platform): normalized tracking data from 12 carrier APIs with ETA prediction and exception alerts.
+- [Self-storage management SaaS](https://peregrine-it.com/case-studies/self-storage-management-platform): operator platform with smart-lock integration, automated billing and live occupancy dashboards.
+- [All case studies](https://peregrine-it.com/case-studies)
+
+## Company
+
+- [About Peregrine IT Solutions](https://peregrine-it.com/about): founded and led by Mukesh Swami, Founder & CEO
+
+## Contact
+
+- [Contact page](https://peregrine-it.com/contact)
+- Email: info@peregrine-it.com
+- Office: Suite 115, H-160, BSI Business Park, Sector 63, Noida, Uttar Pradesh, India (working in overlap with US and Canadian hours)
+- Book a call: https://calendly.com/mukesh-peregrine-it/30min
+- Website: https://peregrine-it.com

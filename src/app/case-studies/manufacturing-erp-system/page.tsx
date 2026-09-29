@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
   title: 'Manufacturing ERP for Production & Inventory — Case Study',
   description: 'How we built a manufacturing ERP system spanning 8 factories and 50K SKUs — with multi-plant sync, BOM management, shop floor data capture, and 30% inventory reduction.',
-  keywords: ['manufacturing ERP', 'industrial', 'inventory', 'BOM', 'IoT', 'SAP', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
@@ -29,6 +31,7 @@ export const metadata: Metadata = {
 export default function ManufacturingErpSystem() {
   return (
     <div className="case-study-detail">
+      <CaseStudySchema slug="manufacturing-erp-system" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -80,7 +83,7 @@ export default function ManufacturingErpSystem() {
           <div className="csd-hero-image-placeholder">
             <div className="csd-icon-grid">
               <div className="csd-placeholder-node">
-                <i className="ri-factory-line" style={{ fontSize: 28, color: '#3b7dff' }} />
+                <i className="ri-building-4-line" style={{ fontSize: 28, color: '#3b7dff' }} />
               </div>
               <div className="csd-placeholder-node">
                 <i className="ri-stack-line" style={{ fontSize: 28, color: '#3b7dff' }} />
@@ -150,7 +153,7 @@ export default function ManufacturingErpSystem() {
           <div className="csd-cs-grid">
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon">
-                <i className="ri-factory-line" />
+                <i className="ri-building-4-line" />
               </div>
               <h4>Multi-Plant Sync</h4>
               <p>
@@ -296,7 +299,7 @@ export default function ManufacturingErpSystem() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL
@@ -311,7 +314,7 @@ export default function ManufacturingErpSystem() {
               <span className="csd-tech-icon"><i className="ri-exchange-line" /></span> SAP Integration
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-factory-line" /></span> Multi-Plant
+              <span className="csd-tech-icon"><i className="ri-building-4-line" /></span> Multi-Plant
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-bar-chart-box-line" /></span> Analytics
@@ -430,6 +433,9 @@ export default function ManufacturingErpSystem() {
             treat SAP as source of truth for orders, our system for production and inventory.
           </p>
         </div>
+
+        <CaseStudyByline />
+        <RelatedCaseStudies slug="manufacturing-erp-system" />
 
         {/* CTA */}
         <div className="csd-cta-section">

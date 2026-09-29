@@ -574,7 +574,7 @@ img {
 
 .body.arb {
   direction: rtl;
-  font-family: IBM Plex Sans Arabic, sans-serif;
+  font-family: var(--font-ibm-plex-arabic), sans-serif;
 }
 
 .button-white {
@@ -1169,7 +1169,7 @@ img {
 
 .hero-title.txtanimation3-noanim.ar-title {
   text-align: center;
-  font-family: IBM Plex Sans Arabic, sans-serif;
+  font-family: var(--font-ibm-plex-arabic), sans-serif;
   font-size: 48px;
   line-height: 140%;
 }
@@ -1450,7 +1450,7 @@ img {
 
 .loader_inside {
   z-index: 0;
-  background-image: radial-gradient(circle farthest-side at 50% 50%, #fff, var(--c--500) 63%, var(--a--900)), url('https://d3e54v103j8qbb.cloudfront.net/img/background-image.svg');
+  background-image: radial-gradient(circle farthest-side at 50% 50%, #fff, var(--c--500) 63%, var(--a--900)), url('/images/loader-background.svg');
   background-position: 0 0, 50%;
   background-repeat: repeat, repeat;
   background-size: auto, auto;
@@ -2039,7 +2039,7 @@ img {
 }
 
 .cta.ar-cta {
-  font-family: IBM Plex Sans Arabic, sans-serif;
+  font-family: var(--font-ibm-plex-arabic), sans-serif;
   line-height: 1.6;
 }
 
@@ -2315,7 +2315,7 @@ img {
 
 .footer-section.ar {
   direction: rtl;
-  font-family: IBM Plex Sans Arabic, sans-serif;
+  font-family: var(--font-ibm-plex-arabic), sans-serif;
 }
 
 .dfs-wrap-8 {
@@ -2497,7 +2497,7 @@ img {
 
 .navmenu-section.arabic {
   direction: rtl;
-  font-family: IBM Plex Sans Arabic, sans-serif;
+  font-family: var(--font-ibm-plex-arabic), sans-serif;
 }
 
 .menu-link-copy {
@@ -2555,7 +2555,7 @@ img {
 }
 
 .hero-link.ar {
-  font-family: IBM Plex Sans Arabic, sans-serif;
+  font-family: var(--font-ibm-plex-arabic), sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 100%;
@@ -2649,7 +2649,7 @@ img {
 }
 
 .ar-title {
-  font-family: IBM Plex Sans Arabic, sans-serif;
+  font-family: var(--font-ibm-plex-arabic), sans-serif;
 }
 
 .phone-link {

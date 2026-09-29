@@ -1,4 +1,7 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import Image from 'next/image';
 import '../../css/case-study-detail.css';
@@ -6,14 +9,13 @@ import '../../css/case-study-detail.css';
 export const metadata: Metadata = {
   title: 'AI-Powered Multi-Market Real Estate Platform — Case Study',
   description: 'How we built an AI-native platform for W3|re — 4 MLS integrations, 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy. NLP search, AVM, chatbot, and unified data pipeline.',
-  keywords: ['AI real estate', 'PropTech', 'MLS integration', 'property valuation', 'NLP search', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — AI-Powered Multi-Market Real Estate Platform | Peregrine IT Solutions',
     description: 'How we built an AI-native platform for W3|re — 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy.',
     type: 'article',
-    url: 'https://peregrine-it.com/case-studies/northbridge-realty-ai-platform',
+    url: 'https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
     images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'W3|re AI Platform Case Study — Peregrine IT Solutions' }],
@@ -24,12 +26,13 @@ export const metadata: Metadata = {
     description: 'AI-native platform: 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy.',
     images: ['https://peregrine-it.com/ogimage.png'],
   },
-  alternates: { canonical: 'https://peregrine-it.com/case-studies/northbridge-realty-ai-platform' },
+  alternates: { canonical: 'https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform' },
 };
 
-export default function NorthbridgeRealtyAIPlatform() {
+export default function W3reAIRealEstatePlatform() {
   return (
     <div className="case-study-detail csd-purple">
+      <CaseStudySchema slug="w3re-ai-real-estate-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -80,9 +83,10 @@ export default function NorthbridgeRealtyAIPlatform() {
           <Image
             src="/images/case-studies/Image7-e7e8a93c-2e0c-4711-85a8-0dfbba6cd59a.png"
             alt="The Emergence of AI in Property Valuation"
-            fill
+            width={750}
+            height={500}
             sizes="(max-width: 960px) 100vw, 960px"
-            style={{ objectFit: 'cover' }}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
             priority
           />
         </div>
@@ -136,7 +140,7 @@ export default function NorthbridgeRealtyAIPlatform() {
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-time-line" /></div>
               <h4>Lead Response Time Averaged 47 Minutes</h4>
-              <p>Inbound leads were routed to a shared inbox. During peak hours, response times stretched to 2+ hours. Industry data shows conversion drops 21× if response exceeds 30 minutes.</p>
+              <p>Inbound leads were routed to a shared inbox. During peak hours, response times stretched to 2+ hours.</p>
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-price-tag-3-line" /></div>
@@ -247,14 +251,14 @@ export default function NorthbridgeRealtyAIPlatform() {
             </div>
           </div>
 
-          {/* New York Real Estate Dashboard */}
+          {/* Smart assistant chatbot screenshot */}
           <div className="csd-section" style={{ marginTop: 32 }}>
             <h3>Market Intelligence & Forecasting</h3>
-            <p>Price per sqft, YOY changes, sales trends, and forecasts by borough and neighborhood.</p>
+            <p>Price per sqft, YOY changes, sales trends, and forecasts by metro area, city and ZIP code.</p>
             <div className="csd-hero-image-wrapper" style={{ marginTop: 16, borderRadius: 12, overflow: 'hidden' }}>
               <Image
                 src="/images/case-studies/MapImage66-73d94aa1-8291-487f-a984-76f1fa1ba679.png"
-                alt="New York Real Estate Dashboard"
+                alt="Smart assistant chatbot asking a home buyer about budget and timeline"
                 width={1200}
                 height={700}
                 style={{ width: '100%', height: 'auto' }}
@@ -398,6 +402,9 @@ export default function NorthbridgeRealtyAIPlatform() {
           </div>
           <div className="csd-quote-author">— Marcus Chen, Managing Broker & Co-Founder, W3|re</div>
         </div>
+
+        <CaseStudyByline />
+        <RelatedCaseStudies slug="w3re-ai-real-estate-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

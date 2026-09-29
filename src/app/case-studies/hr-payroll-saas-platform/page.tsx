@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
   title: 'HR & Payroll SaaS for Mid-Market Companies — Case Study',
   description: 'How we built an HR &amp; payroll SaaS platform for mid-market companies — 85+ companies, 12K employees, 99.9% payroll accuracy, with multi-state tax, benefits integration, and compliance.',
-  keywords: ['HR SaaS', 'payroll', 'FinTech', 'HR Tech', 'benefits', 'compliance', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
@@ -29,6 +31,7 @@ export const metadata: Metadata = {
 export default function HRPayrollSaaSPlatform() {
   return (
     <div className="case-study-detail csd-purple">
+      <CaseStudySchema slug="hr-payroll-saas-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -306,7 +309,7 @@ export default function HRPayrollSaaSPlatform() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL
@@ -442,6 +445,9 @@ export default function HRPayrollSaaSPlatform() {
             retention for 7 years was implemented with lifecycle policies and encrypted storage.
           </p>
         </div>
+
+        <CaseStudyByline />
+        <RelatedCaseStudies slug="hr-payroll-saas-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">
