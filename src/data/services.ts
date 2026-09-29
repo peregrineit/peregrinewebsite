@@ -1,9 +1,9 @@
 // Service pages (/services and /services/[slug]) are generated from this file.
 // The FAQ arrays feed both the visible FAQ and the FAQPage JSON-LD, so they always match.
 //
-// TODO(owner): confirm this list of six services and the one-line `offer` for each.
+// Owner confirmed the six services, including Odoo ERP (2026-09-29).
 // TODO(owner): engagement model and prices. No prices are published and no Offer
-//   schema is emitted until the owner supplies them (see `engagement` below).
+//   schema is emitted until the owner supplies real Peregrine prices (see `engagement`).
 
 export interface Service {
   slug: string;
@@ -15,7 +15,7 @@ export interface Service {
   title: string;
   metaDescription: string;
   h1: string;
-  /** One line on what Peregrine delivers (hub card). TODO(owner): confirm wording. */
+  /** One line on what Peregrine delivers (hub card). */
   offer: string;
   /** Answer-first intro: what it is, who it's for, what Peregrine delivers. */
   intro: string[];
@@ -412,9 +412,9 @@ export const services: Service[] = [
     metaDescription:
       'Odoo ERP implementation, customization and integration for growing companies: module setup, data migration, custom modules and connections to your other systems.',
     h1: 'Odoo ERP Implementation and Integration',
-    // TODO(owner): confirm Odoo is an offered service and add an Odoo case study. The
-    // cited case studies below are custom ERP / operations builds, not Odoo projects,
-    // and the page says so.
+    // Owner confirmed Odoo is offered. TODO(owner): add an Odoo project summary or case
+    // study. The cited case studies below are custom ERP / operations builds, not Odoo
+    // projects, and the page says so.
     offer: 'Odoo setup, custom modules and integrations with the rest of your stack.',
     intro: [
       'Odoo is an open-source ERP suite with modules for sales, inventory, manufacturing, accounting, HR and more. An implementation configures those modules around your processes, migrates your data, and connects Odoo to the other systems you run.',
