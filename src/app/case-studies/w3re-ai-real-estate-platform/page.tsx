@@ -28,6 +28,8 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform' },
 };
 
+// TODO(owner): reconcile the 94% AVM accuracy with '23% of listing prices off by more than 8%'
+// (the latter is the pre-project baseline?), and add a measurement window/baseline to each metric.
 export default function W3reAIRealEstatePlatform() {
   return (
     <div className="case-study-detail csd-purple">
@@ -167,20 +169,6 @@ export default function W3reAIRealEstatePlatform() {
             We engineered a unified platform where AI is embedded into every layer — from property search to lead qualification to pricing intelligence.
           </p>
 
-          {/* Property Management Dashboard Image */}
-          <div className="csd-section" style={{ marginTop: 32 }}>
-            <h3>Property Management Dashboard</h3>
-            <div className="csd-hero-image-wrapper" style={{ marginTop: 16, borderRadius: 12, overflow: 'hidden' }}>
-              <Image
-                src="/images/case-studies/MapImage4-08072b85-2c68-4dc0-9f9f-b799097c80f7.png"
-                alt="Real Estate Property Management Dashboard with Leasing Status"
-                width={1200}
-                height={700}
-                style={{ width: '100%', height: 'auto' }}
-              />
-            </div>
-          </div>
-
           <div className="csd-cs-grid">
             <div className="csd-cs-card csd-solution">
               <div className="csd-cs-card-icon"><i className="ri-chat-voice-line" /></div>
@@ -222,7 +210,7 @@ export default function W3reAIRealEstatePlatform() {
           {/* Real Estate Chatbot Image */}
           <div className="csd-section" style={{ marginTop: 32 }}>
             <h3>Real Estate AI Chatbot</h3>
-            <p>Conversational AI assistants for realtors to convert 3× faster with smart lead qualification.</p>
+            <p>Conversational AI assistants that qualify leads for realtors, part of the 3.8× lead-to-showing improvement reported in the results.</p>
             <div className="csd-hero-image-wrapper" style={{ marginTop: 16, borderRadius: 12, overflow: 'hidden', maxWidth: 500 }}>
               <Image
                 src="/images/case-studies/ChatBotMap-31c3fd31-92b7-4e17-bd67-721497b907a9.png"
@@ -330,6 +318,21 @@ export default function W3reAIRealEstatePlatform() {
               </div>
             </div>
           </div>
+          {/* Property Management Dashboard Image */}
+          <div className="csd-section" style={{ marginTop: 32 }}>
+            <h3>Property Management Dashboard</h3>
+            <div className="csd-hero-image-wrapper" style={{ marginTop: 16, borderRadius: 12, overflow: 'hidden' }}>
+              <Image
+                src="/images/case-studies/MapImage4-08072b85-2c68-4dc0-9f9f-b799097c80f7.png"
+                alt="Real Estate Property Management Dashboard with Leasing Status"
+                width={1200}
+                height={700}
+                style={{ width: '100%', height: 'auto' }}
+              />
+            </div>
+          </div>
+
+
         </div>
 
         {/* TECH STACK */}
