@@ -11,7 +11,7 @@ Engineers work directly with client teams in sprint-based delivery, with daily o
 - [MLS & IDX integration](https://peregrine-it.com/services/mls-idx-integration): RESO Web API and RETS feeds, multi-MLS normalization and IDX search
 - [AI automation](https://peregrine-it.com/services/ai-automation): natural-language search, lead qualification assistants, document extraction and predictive models
 - [Cloud & DevOps](https://peregrine-it.com/services/cloud-devops): AWS architecture, CI/CD, caching and CDN, load testing and monitoring
-- [Odoo ERP](https://peregrine-it.com/services/odoo-erp): Odoo configuration, custom modules, data migration and integrations
+- [Odoo ERP](https://peregrine-it.com/services/odoo-erp): Odoo HR, CRM, Inventory and Accounting implementation, custom modules, data migration and integrations
 - [All services](https://peregrine-it.com/services)
 
 ## Guides
@@ -32,11 +32,12 @@ Engineers work directly with client teams in sprint-based delivery, with daily o
 
 ## Company
 
-- [About Peregrine IT Solutions](https://peregrine-it.com/about)
+- [About Peregrine IT Solutions](https://peregrine-it.com/about): founded and led by Mukesh Swami, Founder & CEO
 
 ## Contact
 
 - [Contact page](https://peregrine-it.com/contact)
 - Email: info@peregrine-it.com
+- Office: Suite 115, H-160, BSI Business Park, Sector 63, Noida, Uttar Pradesh, India (working in overlap with US and Canadian hours)
 - Book a call: https://calendly.com/mukesh-peregrine-it/30min
 - Website: https://peregrine-it.com

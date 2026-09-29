@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../components/JsonLd';
 import { QuickProjectForm, StrategyCallForm } from '../components/LeadForms';
+import { officeAddressLine, officeMapsUrl } from '@/data/company';
 import '../css/content-pages.css';
 
 const url = `${SITE_URL}/contact`;
@@ -95,6 +96,14 @@ export default function ContactPage() {
               <span className="cp-card-icon"><i className="ri-calendar-line" aria-hidden="true" /></span>
               <h3>Book a strategy call</h3>
               <p>A 30-minute technical discovery call. <a href={CALENDLY} target="_blank" rel="noopener noreferrer">Pick a time</a></p>
+            </div>
+            <div className="cp-card">
+              <span className="cp-card-icon"><i className="ri-map-pin-line" aria-hidden="true" /></span>
+              <h3>Office</h3>
+              <div style={{ color: 'var(--cp-muted)', fontSize: 15 }}>
+                <address style={{ fontStyle: 'normal', marginBottom: 6 }}>{officeAddressLine}</address>
+                <a href={officeMapsUrl} target="_blank" rel="noopener noreferrer">View on Google Maps</a>
+              </div>
             </div>
             <div className="cp-card">
               <span className="cp-card-icon"><i className="ri-time-line" aria-hidden="true" /></span>

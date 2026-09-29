@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { QuickProjectForm, StrategyCallForm } from './LeadForms';
+import { officeAddressLine, officeMapsUrl } from '@/data/company';
 
 export default function Footer() {
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
@@ -172,6 +173,9 @@ export default function Footer() {
                     <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.6rem', lineHeight: '1.5' }}>Real engineers reply — not sales</p>
                     <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>Daily overlap with North American &amp; European business hours</p>
                     <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>You talk directly with the developer building your system</p>
+                    <address style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.6rem', lineHeight: '1.5', fontStyle: 'normal' }}>
+                      <a href={officeMapsUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#6b7280' }}>{officeAddressLine}</a>
+                    </address>
                   </div>
                 </div>
               </div>
