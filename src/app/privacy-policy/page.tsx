@@ -1,5 +1,23 @@
-'use client';
-import React from 'react';
+import type { Metadata } from 'next';
+
+const title = 'Privacy Policy';
+const description =
+  'How Peregrine IT Solutions collects, uses and protects information submitted through peregrine-it.com, and the choices you have about your data.';
+const url = 'https://peregrine-it.com/privacy-policy';
+
+export const metadata: Metadata = {
+  title,
+  description,
+  alternates: { canonical: url },
+  openGraph: {
+    title: `${title} | Peregrine IT Solutions`,
+    description,
+    url,
+    type: 'website',
+    siteName: 'Peregrine IT Solutions',
+    locale: 'en_US',
+  },
+};
 
 export default function PrivacyPolicy() {
   return (
