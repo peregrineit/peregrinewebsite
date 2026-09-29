@@ -30,12 +30,16 @@ You are working in the Next.js repo for peregrine-it.com at ~/Code/peregrinewebs
 - [x] 1.4 Northbridge: the real client name is TODO(owner) — do not guess. Meanwhile remove or source the 21× line, replace "borough and neighborhood" with market-appropriate wording, and reconcile the hub card stats with the body (remove from the card if absent). Then scan all 20 case studies: slug/title vs names in body, unattributed statistics, leftover placeholder names. Fix only what is unambiguous; report the rest.
 - [x] 1.5 Headings: hero becomes the single <h1>; the three section <h1>s become <h2>. Keep the rendered look identical (move classes).
 - [x] 1.6 Sitemap (src/app/sitemap.ts or equivalent): add privacy/terms, drop changefreq/priority, lastmod from real content dates if case studies have them, else omit. Add public/llms.txt in your own words: what Peregrine does, who it's for, services (link once they exist), 5 strongest case studies, contact. robots.ts: explicit Allow for GPTBot, ClaudeBot, PerplexityBot, keeping existing disallows. FAQ: render the five FAQPage questions as a visible section, or drop the schema — schema must match visible text.
+- [x] 1.7 (added) Remove meta keywords from layout.tsx and all 19 case studies.
+- [x] 1.8 (added) Remove ProfessionalService; fold serviceType into Organization.knowsAbout; WebPage.about → org.
+- [x] 1.9 (added) Ignore public/case-studies/*.html; no untracked export covers a new client.
+- [ ] 1.10 (added) Northbridge client name — waiting on owner: keep "W3|re" (rename slug + 301) or switch body/quote to "Northbridge Realty" (the untracked HTML export says "NorthBridge Realty Group").
 Checks: every sitemap URL returns 200 with a self-canonical; exactly one <h1> on the homepage; all JSON-LD parses; exactly one Organization node per page; logo URL returns 200; /llms.txt returns 200; "og.png" appears nowhere.
 
 ## Phase 2 — Case studies
 - [ ] 2.1 In the case-study route emit Article (headline, description, image, datePublished/dateModified from front matter if present else TODO(owner), author and publisher → {"@id": "https://peregrine-it.com/#organization"}) plus BreadcrumbList (Home › Case Studies › title).
 - [ ] 2.2 Homepage: a "Selected work" section linking the hub and 3–4 featured case studies (pick the ones with the richest technical detail). Each case study: "Related case studies" with 2–3 links by shared industry or stack.
-- [ ] 2.3 Confirm whether the 20th case study is intentionally excluded from the sitemap; report.
+- [x] 2.3 Confirm whether the 20th case study is intentionally excluded from the sitemap; report.
 Checks: every case study has Article + BreadcrumbList that parse; homepage has ≥4 links into /case-studies/*; no case study is an orphan.
 
 ## Phase 3 — Mobile performance
@@ -70,3 +74,7 @@ Start with Phase 1 now.
 - Repo reality vs audit (verified 2026-09-29): case studies are 19 static routes under `src/app/case-studies/<slug>/page.tsx` (no `[slug]` route, no front matter); all 19 are in the sitemap. The "20th" is likely the untracked `public/case-studies/*.html` exports or a miscount — see 2.3.
 - The site-wide Organization JSON-LD lived in `src/app/components/Footer.tsx`, not layout.tsx.
 - Homepage, /case-studies and /privacy-policy are client components (`'use client'`), so their metadata lives in a sibling server `layout.tsx`.
+- 2.3 closed by owner: there are 19 case studies.
+- Phase 2 owner changes: case-study data lives in src/data/case-studies.ts; a shared CaseStudySchema component emits Article + BreadcrumbList; datePublished/dateModified are omitted (no real dates; do not derive from git).
+- Role-only testimonials stay as they are; no Review schema.
+- Stop a local server with `lsof -tiTCP:<port> -sTCP:LISTEN | xargs kill`; `pkill -f "next start"` does not match the next-server process.
