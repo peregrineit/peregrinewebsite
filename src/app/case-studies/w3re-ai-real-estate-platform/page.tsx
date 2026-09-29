@@ -145,7 +145,7 @@ export default function W3reAIRealEstatePlatform() {
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-price-tag-3-line" /></div>
               <h4>CMA Pricing Was Costing Deals</h4>
-              <p>Agents spent 2–3 hours on each Comparative Market Analysis. 23% of listing prices were off by more than 8% from final sale price — leading to extended days-on-market.</p>
+              <p>Agents spent 2–3 hours on each Comparative Market Analysis. 23% of listing prices were off by more than 8% from final sale price, which extended days-on-market.</p>
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-search-line" /></div>

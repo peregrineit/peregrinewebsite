@@ -208,7 +208,7 @@ export default function ScalingRealEstateSaas() {
           <p>
             We designed a three-layer data architecture that separates concerns cleanly: MongoDB as
             the source of truth, Elasticsearch for fast search, and Redis as a high-speed cache layer
-            sitting on top. Each layer does what it&apos;s best at — nothing more.
+            sitting on top. Each layer does what it&apos;s suited for — nothing more.
           </p>
 
           <div className="csd-arch-block">

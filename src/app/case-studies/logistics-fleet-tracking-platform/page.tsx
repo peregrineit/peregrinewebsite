@@ -189,7 +189,7 @@ export default function LogisticsFleetTrackingPlatform() {
               <h4>No Driver App</h4>
               <p>
                 Drivers had no digital proof of delivery, no turn-by-turn navigation, and no way to
-                report issues. Everything was communicated verbally, leading to constant disputes
+                report issues. Everything was communicated verbally, which caused constant disputes
                 over delivery times and conditions.
               </p>
             </div>
