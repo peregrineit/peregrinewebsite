@@ -43,7 +43,7 @@ Checks: every sitemap URL returns 200 with a self-canonical; exactly one <h1> on
 Checks: every case study has Article + BreadcrumbList that parse; homepage has ≥4 links into /case-studies/*; no case study is an orphan.
 
 ## Phase 3 — Mobile performance
-- [ ] 3.1 Hero video: on mobile render the poster image only (no video element, or preload="none" + poster, gated by a breakpoint). On desktop serve a self-hosted re-encoded version ≤1.5 MB (ffmpeg, same dimensions and duration) from the repo — stop pulling from webflow.
+- [x] 3.1 Hero video: on mobile render the poster image only (no video element, or preload="none" + poster, gated by a breakpoint). On desktop serve a self-hosted re-encoded version ≤1.5 MB (ffmpeg, same dimensions and duration) from the repo — stop pulling from webflow.
 - [ ] 3.2 Images: handshake-p-800.png and anything over 150 KB → WebP/AVIF via next/image; width/height on every image; lazy-load marquee logos and everything below the fold; delete the 24 image preloads; fetchpriority="high" on the LCP element only.
 - [ ] 3.3 Scripts: jQuery/GSAP via next/script strategy="lazyOnload" (afterInteractive only if something visible depends on them — test); replace the web-font loader with next/font; self-host only the Remix icons actually used, or subset the CSS.
 - [ ] 3.4 Alt text: describe the 9 images; decorative ones get alt="".
