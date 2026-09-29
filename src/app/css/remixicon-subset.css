@@ -97,6 +97,7 @@
 .ri-leaf-line:before { content: "\eea3"; }
 .ri-line-chart-line:before { content: "\eeab"; }
 .ri-link:before { content: "\eeb2"; }
+.ri-linkedin-box-line:before { content: "\eeb4"; }
 .ri-links-line:before { content: "\eeb8"; }
 .ri-lock-line:before { content: "\eece"; }
 .ri-lock-unlock-line:before { content: "\eed2"; }
@@ -134,6 +135,7 @@
 .ri-ticket-2-line:before { content: "\f20b"; }
 .ri-time-line:before { content: "\f20f"; }
 .ri-timer-line:before { content: "\f215"; }
+.ri-tools-line:before { content: "\f21b"; }
 .ri-translate-2:before { content: "\f226"; }
 .ri-truck-line:before { content: "\f231"; }
 .ri-tv-2-line:before { content: "\f235"; }

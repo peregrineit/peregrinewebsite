@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { services } from "@/data/services";
 
 const SITE_URL = "https://peregrine-it.com";
 
@@ -29,6 +30,10 @@ const caseStudySlugs = [
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: SITE_URL },
+    { url: `${SITE_URL}/services` },
+    ...services.map((s) => ({ url: `${SITE_URL}/services/${s.slug}` })),
+    { url: `${SITE_URL}/about` },
+    { url: `${SITE_URL}/contact` },
     { url: `${SITE_URL}/case-studies` },
     ...caseStudySlugs.map((slug) => ({ url: `${SITE_URL}/case-studies/${slug}` })),
     // Legal pages carry a visible "Last updated" date.
