@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import CaseStudySchema from '../../components/CaseStudySchema';
 import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import Image from 'next/image';
 import '../../css/case-study-detail.css';
@@ -402,6 +403,7 @@ export default function W3reAIRealEstatePlatform() {
           <div className="csd-quote-author">— Marcus Chen, Managing Broker & Co-Founder, W3|re</div>
         </div>
 
+        <CaseStudyByline />
         <RelatedCaseStudies slug="w3re-ai-real-estate-platform" />
 
         {/* CTA */}

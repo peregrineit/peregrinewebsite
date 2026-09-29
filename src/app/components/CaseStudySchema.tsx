@@ -1,4 +1,5 @@
 import { SITE_URL, caseStudyUrl, getCaseStudy } from '@/data/case-studies';
+import { getCaseStudyAuthor, personId } from '@/data/team';
 
 const ORGANIZATION = { '@id': `${SITE_URL}/#organization` };
 
@@ -7,6 +8,7 @@ const ORGANIZATION = { '@id': `${SITE_URL}/#organization` };
 export default function CaseStudySchema({ slug }: { slug: string }) {
   const study = getCaseStudy(slug);
   const url = caseStudyUrl(slug);
+  const author = getCaseStudyAuthor();
   const data = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -22,7 +24,7 @@ export default function CaseStudySchema({ slug }: { slug: string }) {
         about: study.industry,
         inLanguage: 'en-US',
         isPartOf: { '@id': `${SITE_URL}/#website` },
-        author: ORGANIZATION,
+        author: author ? { '@id': personId(author.id) } : ORGANIZATION,
         publisher: ORGANIZATION,
       },
       {

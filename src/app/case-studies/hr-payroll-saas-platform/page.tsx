@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import CaseStudySchema from '../../components/CaseStudySchema';
 import RelatedCaseStudies from '../../components/RelatedCaseStudies';
+import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
@@ -445,6 +446,7 @@ export default function HRPayrollSaaSPlatform() {
           </p>
         </div>
 
+        <CaseStudyByline />
         <RelatedCaseStudies slug="hr-payroll-saas-platform" />
 
         {/* CTA */}
