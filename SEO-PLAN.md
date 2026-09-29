@@ -59,12 +59,12 @@ Checks: clean build; zero rel="preload" as="image" for marquee logos; every <img
 Checks: all new routes 200, self-canonical, unique titles; every service page links to ≥2 case studies and is in the nav; FAQ schema text equals visible text; no page contains "best", "leading" or "#1".
 
 ## Phase 5 — Guides
-- [ ] 5.1 Create /blog with Article schema, author byline, dates. Draft three: "MLS/IDX integration cost (2026)", "Custom SaaS vs off-the-shelf CRM for brokerages", "Cost to build a real estate platform". Every figure must link to a source or be labelled as Peregrine's own rates (TODO(owner)). Link each guide to a service page and a case study.
-- [ ] 5.2 /industries/real-estate linking service pages ↔ real-estate case studies.
+- [x] 5.1 Create /blog with Article schema, author byline, dates. Draft three: "MLS/IDX integration cost (2026)", "Custom SaaS vs off-the-shelf CRM for brokerages", "Cost to build a real estate platform". Every figure must link to a source or be labelled as Peregrine's own rates (TODO(owner)). Link each guide to a service page and a case study.
+- [x] 5.2 /industries/real-estate linking service pages ↔ real-estate case studies.
 Checks: no unsourced numbers; Article schema parses; pages in sitemap and llms.txt.
 
 ## Phase 6 — Off-page (report only; I'll do these by hand)
-- [ ] Write SEO-OFFPAGE.md: Search Console + Bing Webmaster setup and sitemap submission; the 7 testimonial clients to ask for a "Built by Peregrine" link (list them from the site); the 7 outbound client links to check for reciprocation; Clutch / GoodFirms / The Manifest / DesignRush profiles with the exact name and description to use (consistent with the schema); make the "Peregrine IT Solutions LLP" mention on realfoyer.com a link; a 4-week re-audit reminder. If the /seo audit skill is installed, run it against the Vercel preview URL for the branch and report the score against the 58/100 baseline.
+- [x] Write SEO-OFFPAGE.md: Search Console + Bing Webmaster setup and sitemap submission; the 7 testimonial clients to ask for a "Built by Peregrine" link (list them from the site); the 7 outbound client links to check for reciprocation; Clutch / GoodFirms / The Manifest / DesignRush profiles with the exact name and description to use (consistent with the schema); make the "Peregrine IT Solutions LLP" mention on realfoyer.com a link; a 4-week re-audit reminder. If the /seo audit skill is installed, run it against the Vercel preview URL for the branch and report the score against the 58/100 baseline.
 
 Start with Phase 1 now.
 
@@ -87,3 +87,5 @@ Start with Phase 1 now.
 - Lead forms live in components/LeadForms.tsx (Footer popups + /contact). Popup triggers are delegated (any `[data-open-contact]` / `[data-open-quick-project]` works on any page).
 - Owner answers (2026-09-29): keep all six services including Odoo. The owner asked to fill the remaining answers from web data about small Indian IT firms; that can't supply Peregrine's own prices, team, certifications or contract terms, so the conservative defaults stay: no prices or Offer schema, ownership FAQ withheld, no team/byline author, no certifications, no location line on /about. Market figures from the web are used only in the Phase 5 guides, linked to their sources.
 - Superlative check ("best", "leading", "#1") covers titles, H1s and JSON-LD only (owner decision); body copy is not checked.
+- Phase 5: guides live in src/app/blog/<slug>/page.tsx with metadata in src/data/guides.ts. Every figure is wrapped in <Src> (a.cp-src) linking its third-party source, or in a link to the Peregrine case study it comes from; sources were checked 2026-09-29 and dates are stated on each page. No Peregrine prices (none supplied). Re-verify prices before updating dateModified.
+- Phase 6: SEO-OFFPAGE.md written. The /seo audit against a Vercel preview needs the branch pushed (a preview deploy); not done without the owner's go-ahead.
