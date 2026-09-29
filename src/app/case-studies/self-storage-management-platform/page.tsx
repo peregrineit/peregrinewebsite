@@ -6,9 +6,9 @@ import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
-  title: 'Building a Self-Storage Management Platform — Case Study',
+  title: 'Self-Storage Management SaaS Platform',
   description:
-    'How we engineered a full-stack SaaS platform for self-storage operators — with smart lock integration, automated billing, and real-time occupancy dashboards serving 150+ facilities.',
+    'How we built a SaaS platform for self-storage operators with smart-lock integration, automated billing and live occupancy dashboards for 150+ facilities.',
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

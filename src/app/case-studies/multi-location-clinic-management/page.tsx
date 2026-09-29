@@ -6,8 +6,9 @@ import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
-  title: 'Unified Clinic Management System for a Multi-Location Healthcare Network — Case Study',
-  description: 'How we built a HIPAA-compliant practice management platform — unifying patient records, telehealth, appointment scheduling, and insurance billing across 35 clinic locations.',
+  title: 'Multi-Location Clinic Management System',
+  description:
+    'How we built a HIPAA-compliant practice management platform unifying patient records, telehealth, scheduling and insurance billing across 35 clinics.',
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

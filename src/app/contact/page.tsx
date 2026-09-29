@@ -8,10 +8,10 @@ import '../css/content-pages.css';
 const url = `${SITE_URL}/contact`;
 const title = 'Contact Peregrine IT Solutions';
 const description =
-  'Contact Peregrine IT Solutions about a SaaS, integration, MLS/IDX, AI automation or cloud project. Book a technical discovery call or send a quick project request.';
+  'Contact Peregrine IT Solutions about a SaaS, integration, MLS/IDX, AI or cloud project. Book a technical discovery call or send a quick project request.';
 
 export const metadata: Metadata = {
-  title,
+  title: { absolute: title },
   description,
   alternates: { canonical: url },
   openGraph: {

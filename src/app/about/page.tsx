@@ -10,10 +10,10 @@ import '../css/content-pages.css';
 const url = `${SITE_URL}/about`;
 const title = 'About Peregrine IT Solutions';
 const description =
-  'Peregrine IT Solutions is a software engineering firm that builds SaaS platforms, integrations, AI automation and cloud infrastructure for real estate, proptech and B2B companies.';
+  'Peregrine IT Solutions is a software engineering firm building SaaS platforms, integrations, AI automation and cloud infrastructure for B2B companies.';
 
 export const metadata: Metadata = {
-  title,
+  title: { absolute: title },
   description,
   alternates: { canonical: url },
   openGraph: {

@@ -19,7 +19,7 @@ export const guides: Guide[] = [
     title: 'MLS and IDX Integration Cost in 2026: What Brokerages and Proptech Teams Pay',
     metaTitle: 'MLS/IDX Integration Cost (2026)',
     description:
-      'What MLS and IDX integration costs in 2026: IDX vendor subscriptions, MLS data license fees, RESO Web API aggregators and custom development, with every figure linked to its source.',
+      'What MLS and IDX integration costs in 2026: IDX vendor plans, MLS data license fees, RESO Web API vendors and development, with every figure sourced.',
     datePublished: '2026-09-29',
     dateModified: '2026-09-29',
     service: 'mls-idx-integration',
@@ -28,9 +28,9 @@ export const guides: Guide[] = [
   {
     slug: 'custom-saas-vs-off-the-shelf-crm-for-brokerages',
     title: 'Custom SaaS vs Off-the-Shelf CRM for Brokerages',
-    metaTitle: 'Custom SaaS vs Off-the-Shelf CRM for Brokerages',
+    metaTitle: 'Custom SaaS vs Off-the-Shelf Brokerage CRM',
     description:
-      'When a brokerage should subscribe to a real estate CRM and when a custom platform makes sense, with published CRM pricing and the costs and trade-offs of building.',
+      'When a brokerage should subscribe to a real estate CRM and when a custom platform makes sense, with published CRM pricing and the trade-offs of building.',
     datePublished: '2026-09-29',
     dateModified: '2026-09-29',
     service: 'saas-development',
@@ -41,7 +41,7 @@ export const guides: Guide[] = [
     title: 'What It Costs to Build a Real Estate Platform',
     metaTitle: 'Cost to Build a Real Estate Platform',
     description:
-      'The cost drivers of building a real estate platform: developer rates in the US and India, MLS data fees, maps and hosting, with every figure linked to its source.',
+      'What drives the cost of a real estate platform: developer rates in the US, Canada and India, MLS data fees, maps and hosting, with every figure sourced.',
     datePublished: '2026-09-29',
     dateModified: '2026-09-29',
     service: 'saas-development',

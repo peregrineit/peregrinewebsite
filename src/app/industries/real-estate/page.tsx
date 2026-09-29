@@ -9,7 +9,7 @@ import '../../css/content-pages.css';
 const url = `${SITE_URL}/industries/real-estate`;
 const title = 'Real Estate & Proptech Software Development';
 const description =
-  'Software for brokerages, agent platforms and proptech companies: MLS/IDX integration, real estate SaaS, AI search and lead qualification, investor portals, with the case studies behind each.';
+  'Software for brokerages and proptech companies: MLS/IDX integration, real estate SaaS, AI search, lead qualification and investor portals, with case studies.';
 
 export const metadata: Metadata = {
   title,

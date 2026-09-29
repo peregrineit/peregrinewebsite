@@ -6,8 +6,9 @@ import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
-  title: 'Supply Chain Visibility for Shipment Tracking & Alerts — Case Study',
-  description: 'How we built a supply chain visibility platform for 2M+ shipments across 12 carriers — with carrier API integration, ETA prediction, exception alerts, and 45% fewer customer inquiries.',
+  title: 'Supply Chain Visibility & Shipment Tracking',
+  description:
+    'How we built a supply chain visibility platform tracking 2M+ shipments across 12 carriers, with ETA prediction, exception alerts and 45% fewer inquiries.',
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

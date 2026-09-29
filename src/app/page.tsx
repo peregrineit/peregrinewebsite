@@ -42,7 +42,7 @@ const structuredData = {
       "@type": "WebPage",
       "@id": "https://peregrine-it.com/#webpage",
       url: "https://peregrine-it.com",
-      name: "Peregrine IT Solutions | SaaS, API & Automation Development Company",
+      name: "SaaS, API & Automation Development | Peregrine IT",
       isPartOf: { "@id": "https://peregrine-it.com/#website" },
       about: { "@id": "https://peregrine-it.com/#organization" },
       publisher: { "@id": "https://peregrine-it.com/#organization" },

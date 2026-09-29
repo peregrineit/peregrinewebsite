@@ -40,7 +40,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "scaling-real-estate-saas-platform",
     title: "Scaling a Real Estate SaaS Platform from 5 Agents to 200+",
-    description: "How we re-architected a property search platform across the US and Canada — handling millions of MLS listings with sub-second response times. From 5 agents to 200+.",
+    description: "How we re-architected a US and Canadian property search platform to handle millions of MLS listings with sub-second search, growing from 5 agents to 200+.",
     image: "/ogimage.png",
     industry: "Real Estate / PropTech",
     stack: ["Next.js", "Node.js", "MongoDB", "Elasticsearch", "Redis", "AWS (SES, S3)", "Linode / VPS", "MLS / RETS API"],
@@ -61,7 +61,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "w3re-ai-real-estate-platform",
     title: "AI-Powered Multi-Market Real Estate Platform",
-    description: "How we built an AI-native platform for W3|re — 4 MLS integrations, 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy. NLP search, AVM, chatbot, and unified data pipeline.",
+    description: "How we built an AI platform for W3|re across 4 MLS markets: natural-language search, a valuation model, a lead chatbot and a unified data pipeline.",
     image: "/images/case-studies/Image7-e7e8a93c-2e0c-4711-85a8-0dfbba6cd59a.png",
     industry: "Real Estate / PropTech",
     stack: ["Next.js", "React Native", "Node.js", "Python", "PostgreSQL", "Redis", "Apache Kafka", "TensorFlow", "XGBoost", "LangChain", "Pinecone", "Mapbox GL", "AWS EKS", "SageMaker"],
@@ -81,7 +81,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "self-storage-management-platform",
     title: "Self-Storage Management Platform with IoT-Powered Access Control",
-    description: "How we engineered a full-stack SaaS platform for self-storage operators — with smart lock integration, automated billing, and real-time occupancy dashboards serving 150+ facilities.",
+    description: "How we built a SaaS platform for self-storage operators with smart-lock integration, automated billing and live occupancy dashboards for 150+ facilities.",
     image: "/ogimage.png",
     industry: "Self-Storage / Property Management",
     stack: ["React Native", "Next.js", "Node.js", "PostgreSQL", "Redis", "MQTT / IoT", "Stripe", "AWS"],
@@ -102,7 +102,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "logistics-fleet-tracking-platform",
     title: "Real-Time Fleet Tracking Platform for a Regional Logistics Company",
-    description: "How we built a GPS-powered fleet management system with live tracking, route optimization, driver mobile apps, and customer ETA notifications — managing 500+ vehicles across the MENA region.",
+    description: "How we built a GPS fleet management system with live tracking, route optimization, driver apps and customer ETA alerts for 500+ vehicles in the MENA region.",
     image: "/ogimage.png",
     industry: "Logistics / Transportation",
     stack: ["React Native", "Next.js", "Node.js", "TimescaleDB", "Redis", "MQTT", "Google Maps API", "AWS"],
@@ -122,7 +122,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "multi-location-clinic-management",
     title: "Unified Clinic Management System for a Multi-Location Healthcare Network",
-    description: "How we built a HIPAA-compliant practice management platform — unifying patient records, telehealth, appointment scheduling, and insurance billing across 35 clinic locations.",
+    description: "How we built a HIPAA-compliant practice management platform unifying patient records, telehealth, scheduling and insurance billing across 35 clinics.",
     image: "/ogimage.png",
     industry: "Healthcare / HealthTech",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "WebRTC", "AWS (HIPAA BAA)", "Stripe", "HL7 FHIR"],
@@ -142,7 +142,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "multi-vendor-ecommerce-marketplace",
     title: "Multi-Vendor E-Commerce Marketplace with Split Payments & Bilingual UX",
-    description: "How we engineered a marketplace platform for 400+ vendors in the Gulf region — with automated split payments, vendor self-service onboarding, real-time inventory sync, and full Arabic/English bilingual support.",
+    description: "How we built a bilingual Arabic/English marketplace for 400+ Gulf vendors with automated split payments, vendor onboarding and real-time inventory sync.",
     image: "/ogimage.png",
     industry: "E-Commerce / Marketplace",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Elasticsearch", "Stripe Connect", "Redis", "AWS", "React Native"],
@@ -162,7 +162,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "proptech-investor-portal",
     title: "Investor Communication Portal for a Real Estate Development Firm",
-    description: "How we built a secure, role-based portal for real estate investors — with document management, project milestone tracking, capital call workflows, and automated distribution reporting across a $450M portfolio.",
+    description: "How we built a role-based investor portal with document management, milestone tracking, capital calls and distribution reporting for a $450M portfolio.",
     image: "/ogimage.png",
     industry: "Real Estate / Investment",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "AWS S3", "DocuSign API", "Stripe", "Chart.js"],
@@ -202,7 +202,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "food-delivery-aggregator-platform",
     title: "Food Delivery Aggregator for Multi-Restaurant Marketplace",
-    description: "How we built a FoodTech aggregator platform with 200+ restaurants, 50K+ orders/month, real-time driver dispatch, and sub-3min average delivery — powering a regional multi-restaurant marketplace.",
+    description: "How we built a multi-restaurant food delivery platform with 200+ restaurants, 50K+ orders a month and real-time driver dispatch.",
     image: "/ogimage.png",
     industry: "FoodTech / E-Commerce",
     stack: ["React Native", "Next.js", "Node.js", "PostgreSQL", "Redis", "Firebase", "Stripe", "Geo Services"],
@@ -222,7 +222,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "hr-payroll-saas-platform",
     title: "HR & Payroll SaaS for Mid-Market Companies",
-    description: "How we built an HR &amp; payroll SaaS platform for mid-market companies — 85+ companies, 12K employees, 99.9% payroll accuracy, with multi-state tax, benefits integration, and compliance.",
+    description: "How we built an HR and payroll SaaS for 85+ mid-market companies and 12K employees, with multi-state tax, benefits integration and 99.9% payroll accuracy.",
     image: "/ogimage.png",
     industry: "HR Tech / FinTech",
     stack: ["Next.js", "Node.js", "PostgreSQL", "ADP API", "QuickBooks API", "DocuSign", "SOC 2", "AWS"],
@@ -242,7 +242,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "insurance-claims-automation-platform",
     title: "Insurance Claims Automation for Claims Processing",
-    description: "How we built an InsurTech claims automation platform processing 45K+ claims/year — 60% faster processing, HIPAA compliant, with document extraction, multi-carrier rules, and full audit trail.",
+    description: "How we built a claims automation platform processing 45K+ claims a year, with document extraction, multi-carrier rules and a full audit trail.",
     image: "/ogimage.png",
     industry: "InsurTech / FinTech",
     stack: ["Next.js", "Node.js", "PostgreSQL", "AWS Textract", "HL7 FHIR", "HIPAA", "AWS", "Encryption"],
@@ -262,7 +262,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "restaurant-pos-ordering-system",
     title: "Restaurant POS & Online Ordering for QSR Chains",
-    description: "How we built a restaurant POS and online ordering platform for QSR chains — 120+ locations, 25K daily orders, 98% uptime, with offline-first POS, kitchen display, and multi-location sync.",
+    description: "How we built a POS and online ordering platform for QSR chains across 120+ locations, with offline-first POS, kitchen display and multi-location sync.",
     image: "/ogimage.png",
     industry: "Hospitality / FoodTech",
     stack: ["React Native", "Next.js", "Node.js", "PostgreSQL", "Redis", "Stripe", "WebSocket", "SQLite"],
@@ -282,7 +282,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "legal-document-automation-platform",
     title: "Legal Document Automation for Contract Generation & E-Signature",
-    description: "How we built a legal document automation platform processing 15K+ documents/month — with contract templates, clause libraries, multi-party e-signature, and SOC2-compliant audit trails.",
+    description: "How we built a legal document automation platform for 15K+ documents a month, with contract templates, clause libraries and multi-party e-signature.",
     image: "/ogimage.png",
     industry: "Legal Tech / FinTech",
     stack: ["Next.js", "Node.js", "PostgreSQL", "DocuSign", "AWS S3", "Redis", "SOC2", "PDF Generation"],
@@ -302,7 +302,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "manufacturing-erp-system",
     title: "Manufacturing ERP for Production & Inventory",
-    description: "How we built a manufacturing ERP system spanning 8 factories and 50K SKUs — with multi-plant sync, BOM management, shop floor data capture, and 30% inventory reduction.",
+    description: "How we built a manufacturing ERP for 8 factories and 50K SKUs with multi-plant sync, BOM management, shop-floor data capture and 30% lower inventory.",
     image: "/ogimage.png",
     industry: "Manufacturing / Industrial",
     stack: ["Next.js", "Node.js", "PostgreSQL", "MQTT", "Redis", "SAP Integration", "Multi-Plant", "Analytics"],
@@ -322,7 +322,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "recruitment-ats-platform",
     title: "Recruitment ATS for Applicant Tracking & Hiring",
-    description: "How we built a recruitment ATS platform for 200+ companies and 80K+ candidates — with resume parsing, interview scheduling, candidate pipelines, and 65% time-to-hire reduction.",
+    description: "How we built a recruitment ATS for 200+ companies and 80K+ candidates, with resume parsing, interview scheduling and a 65% cut in time-to-hire.",
     image: "/ogimage.png",
     industry: "HR Tech / SaaS",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Elasticsearch", "SendGrid", "Calendly API", "Resume Parsing", "Multi-Tenant"],
@@ -342,7 +342,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "event-ticketing-platform",
     title: "Event Ticketing Platform with Real-Time Availability",
-    description: "How we built an event ticketing platform for 500+ events and 120K tickets — with scalable checkout, fraud prevention, refund workflows, and 99.5% availability accuracy.",
+    description: "How we built an event ticketing platform for 500+ events and 120K tickets, with scalable checkout, fraud prevention and refund workflows.",
     image: "/ogimage.png",
     industry: "Events / E-Commerce",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "Stripe", "Twilio", "Fraud Prevention", "Multi-Venue"],
@@ -362,7 +362,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "supply-chain-visibility-platform",
     title: "Supply Chain Visibility for Shipment Tracking & Alerts",
-    description: "How we built a supply chain visibility platform for 2M+ shipments across 12 carriers — with carrier API integration, ETA prediction, exception alerts, and 45% fewer customer inquiries.",
+    description: "How we built a supply chain visibility platform tracking 2M+ shipments across 12 carriers, with ETA prediction, exception alerts and 45% fewer inquiries.",
     image: "/ogimage.png",
     industry: "Logistics / Supply Chain",
     stack: ["Next.js", "Node.js", "PostgreSQL", "TimescaleDB", "Redis", "AWS", "Carrier APIs", "Multi-Tenant"],
@@ -382,7 +382,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "realtime-collaboration-tool",
     title: "Real-Time Collaboration Tool for Documents & Chat",
-    description: "How we built a real-time collaboration platform for 5K+ workspaces and 25K users — with operational transform, presence, permissions, and offline sync achieving <100ms sync latency.",
+    description: "How we built a real-time collaboration platform for 5K+ workspaces and 25K users, with presence, permissions, offline sync and sub-100ms sync latency.",
     image: "/ogimage.png",
     industry: "SaaS / Productivity",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "WebSocket", "CRDT", "Yjs", "Presence"],
@@ -402,7 +402,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "fitness-wellness-subscription-app",
     title: "Fitness Subscription App with Workout Tracking & Live Classes",
-    description: "How we built a fitness subscription app with 80K+ subscribers, 2M+ workouts logged, 4.8 app rating — featuring video streaming, workout sync, subscription management, and offline mode.",
+    description: "How we built a fitness subscription app with 80K+ subscribers and 2M+ workouts logged, featuring video streaming, workout sync and offline mode.",
     image: "/ogimage.png",
     industry: "Health & Wellness",
     stack: ["React Native", "Node.js", "PostgreSQL", "AWS", "Stripe", "Agora/Twilio", "HLS", "SQLite"],

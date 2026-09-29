@@ -6,13 +6,14 @@ import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
-  title: 'HR & Payroll SaaS for Mid-Market Companies — Case Study',
-  description: 'How we built an HR &amp; payroll SaaS platform for mid-market companies — 85+ companies, 12K employees, 99.9% payroll accuracy, with multi-state tax, benefits integration, and compliance.',
+  title: 'HR & Payroll SaaS for Mid-Market Companies',
+  description:
+    'How we built an HR and payroll SaaS for 85+ mid-market companies and 12K employees, with multi-state tax, benefits integration and 99.9% payroll accuracy.',
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — HR & Payroll SaaS for Mid-Market Companies | Peregrine IT Solutions',
-    description: 'How we built an HR &amp; payroll SaaS for 85+ companies and 12K employees with 99.9% payroll accuracy.',
+    description: 'How we built an HR & payroll SaaS for 85+ companies and 12K employees with 99.9% payroll accuracy.',
     type: 'article',
     url: 'https://peregrine-it.com/case-studies/hr-payroll-saas-platform',
     siteName: 'Peregrine IT Solutions',
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — HR & Payroll SaaS for Mid-Market Companies',
-    description: 'HR &amp; payroll SaaS for 85+ companies and 12K employees with multi-state tax and compliance.',
+    description: 'HR & payroll SaaS for 85+ companies and 12K employees with multi-state tax and compliance.',
     images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/hr-payroll-saas-platform' },

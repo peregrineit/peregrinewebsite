@@ -6,8 +6,9 @@ import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
-  title: 'Multi-Vendor E-Commerce Marketplace — Case Study',
-  description: 'How we engineered a marketplace platform for 400+ vendors in the Gulf region — with automated split payments, vendor self-service onboarding, real-time inventory sync, and full Arabic/English bilingual support.',
+  title: 'Multi-Vendor E-Commerce Marketplace',
+  description:
+    'How we built a bilingual Arabic/English marketplace for 400+ Gulf vendors with automated split payments, vendor onboarding and real-time inventory sync.',
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

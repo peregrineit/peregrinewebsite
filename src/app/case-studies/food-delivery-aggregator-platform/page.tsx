@@ -6,8 +6,9 @@ import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
 export const metadata: Metadata = {
-  title: 'Food Delivery Aggregator for Multi-Restaurant Marketplace — Case Study',
-  description: 'How we built a FoodTech aggregator platform with 200+ restaurants, 50K+ orders/month, real-time driver dispatch, and sub-3min average delivery — powering a regional multi-restaurant marketplace.',
+  title: 'Multi-Restaurant Food Delivery Platform',
+  description:
+    'How we built a multi-restaurant food delivery platform with 200+ restaurants, 50K+ orders a month and real-time driver dispatch.',
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

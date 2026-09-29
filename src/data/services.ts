@@ -49,9 +49,9 @@ export const services: Service[] = [
     slug: 'saas-development',
     name: 'SaaS Development',
     serviceType: 'SaaS application development',
-    title: 'SaaS Development Company for Real Estate & Proptech',
+    title: 'SaaS Development for Real Estate & Proptech',
     metaDescription:
-      'Multi-tenant SaaS development for real estate, proptech and B2B companies: architecture, billing, integrations and scaling, with case studies showing how the platforms were built.',
+      'Multi-tenant SaaS development for real estate, proptech and B2B companies: architecture, billing, integrations and scaling, backed by published case studies.',
     h1: 'SaaS Development for Real Estate, Proptech and B2B Products',
     offer: 'Multi-tenant SaaS platforms, from MVP architecture to scaling an existing product.',
     intro: [
@@ -122,9 +122,9 @@ export const services: Service[] = [
     slug: 'api-integration',
     name: 'API Integration',
     serviceType: 'API integration and development',
-    title: 'API Integration Services for CRMs, ERPs & Carrier APIs',
+    title: 'API Integration for CRMs, ERPs & Carriers',
     metaDescription:
-      'API integration services that connect CRMs, ERPs, payment, e-signature and carrier APIs into reliable automated workflows, with case studies covering 12 carrier APIs, ADP, QuickBooks and DocuSign.',
+      'API integration connecting CRMs, ERPs, payroll, e-signature and carrier APIs into reliable workflows, with case studies on 12 carrier APIs and DocuSign.',
     h1: 'API Integration Services That Connect Your Systems',
     offer: 'Reliable integrations between your product, your vendors and your internal systems.',
     intro: [
@@ -194,9 +194,9 @@ export const services: Service[] = [
     slug: 'mls-idx-integration',
     name: 'MLS & IDX Integration',
     serviceType: 'MLS and IDX data integration',
-    title: 'MLS & IDX Integration Developers (RESO Web API, RETS)',
+    title: 'MLS & IDX Integration (RESO Web API, RETS)',
     metaDescription:
-      'MLS and IDX integration for brokerages and proptech platforms: RESO Web API and RETS feeds, multi-MLS normalization, listing search and sync, with case studies covering four MLS markets.',
+      'MLS and IDX integration for brokerages and proptech platforms: RESO Web API and RETS feeds, multi-MLS normalization, listing search and sync.',
     h1: 'MLS and IDX Integration for Brokerages and Proptech Platforms',
     offer: 'MLS data pipelines and IDX search for brokerage websites and proptech products.',
     intro: [
@@ -265,9 +265,9 @@ export const services: Service[] = [
     slug: 'ai-automation',
     name: 'AI Automation',
     serviceType: 'AI and workflow automation',
-    title: 'AI Automation & LLM Integration for Real Estate and B2B',
+    title: 'AI Automation & LLM Integration',
     metaDescription:
-      'AI automation for real estate and B2B operations: LLM search and assistants, document extraction, lead qualification and workflow automation, with case studies showing how each system was built.',
+      'AI automation for real estate and B2B teams: LLM search and assistants, document extraction, lead qualification and workflow automation.',
     h1: 'AI Automation for Real Estate and B2B Operations',
     offer: 'AI features and automated workflows scoped to a specific business problem.',
     intro: [
@@ -337,9 +337,9 @@ export const services: Service[] = [
     slug: 'cloud-devops',
     name: 'Cloud & DevOps',
     serviceType: 'Cloud infrastructure and DevOps',
-    title: 'Cloud & DevOps Services for SaaS Platforms (AWS, CI/CD)',
+    title: 'Cloud & DevOps for SaaS Platforms',
     metaDescription:
-      'Cloud architecture and DevOps for SaaS platforms: AWS infrastructure, CI/CD pipelines, caching and CDN, load testing and monitoring, with case studies showing each setup.',
+      'Cloud architecture and DevOps for SaaS platforms: AWS infrastructure, CI/CD, caching and CDN, load testing and monitoring, with case studies.',
     h1: 'Cloud Infrastructure and DevOps for Growing SaaS Platforms',
     offer: 'Cloud architecture, CI/CD and performance work for platforms that need to scale.',
     intro: [
@@ -409,9 +409,9 @@ export const services: Service[] = [
     slug: 'odoo-erp',
     name: 'Odoo ERP',
     serviceType: 'Odoo ERP implementation and integration',
-    title: 'Odoo ERP Implementation & Integration Services',
+    title: 'Odoo ERP Implementation & Integration',
     metaDescription:
-      'Odoo ERP implementation for growing companies: HR, CRM, Inventory and Accounting modules, configuration, custom modules, data migration and integrations with your other systems.',
+      'Odoo implementation for growing companies: HR, CRM, Inventory and Accounting modules, custom modules, data migration and integrations.',
     h1: 'Odoo ERP Implementation and Integration',
     // Capability page: the owner has no Odoo project to publish yet, so the page makes no
     // project claims and cites no case studies. Add case studies here once they exist.

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import CaseStudiesClient from './CaseStudiesClient';
 
-const title = 'Case Studies: SaaS, Proptech & Integration Projects';
+const title = 'Case Studies: SaaS, Proptech & Integrations';
 const description =
-  'Selected Peregrine IT Solutions projects: real estate SaaS, MLS integrations, AI automation, marketplaces, ERP and logistics platforms, with the architecture and results behind each.';
+  'Peregrine IT Solutions projects in real estate SaaS, MLS integration, AI automation, marketplaces, ERP and logistics, with the architecture and results.';
 const url = 'https://peregrine-it.com/case-studies';
 
 export const metadata: Metadata = {

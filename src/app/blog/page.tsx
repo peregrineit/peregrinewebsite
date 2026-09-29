@@ -5,9 +5,9 @@ import { formatDate, guides } from '@/data/guides';
 import '../css/content-pages.css';
 
 const url = `${SITE_URL}/blog`;
-const title = 'Guides for Real Estate and SaaS Software Buyers';
+const title = 'Guides for Real Estate & SaaS Buyers';
 const description =
-  'Practical guides on MLS/IDX integration cost, custom SaaS versus off-the-shelf CRMs, and what it costs to build a real estate platform, with every figure linked to its source.';
+  'Guides on MLS/IDX integration cost, custom SaaS versus off-the-shelf CRMs and the cost to build a real estate platform, with every figure sourced.';
 
 export const metadata: Metadata = {
   title,
