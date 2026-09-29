@@ -1450,7 +1450,7 @@ img {
 
 .loader_inside {
   z-index: 0;
-  background-image: radial-gradient(circle farthest-side at 50% 50%, #fff, var(--c--500) 63%, var(--a--900)), url('https://d3e54v103j8qbb.cloudfront.net/img/background-image.svg');
+  background-image: radial-gradient(circle farthest-side at 50% 50%, #fff, var(--c--500) 63%, var(--a--900)), url('/images/loader-background.svg');
   background-position: 0 0, 50%;
   background-repeat: repeat, repeat;
   background-size: auto, auto;

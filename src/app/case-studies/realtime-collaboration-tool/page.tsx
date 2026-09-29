@@ -98,7 +98,7 @@ export default function RealtimeCollaborationTool() {
                 <i className="ri-wifi-off-line" style={{ fontSize: 28, color: '#a78bfa' }} />
               </div>
               <div className="csd-placeholder-node">
-                <i className="ri-cloud-sync-line" style={{ fontSize: 28, color: '#a78bfa' }} />
+                <i className="ri-refresh-line" style={{ fontSize: 28, color: '#a78bfa' }} />
               </div>
             </div>
             <p>OT &middot; Presence &middot; Offline Sync</p>
@@ -269,7 +269,7 @@ export default function RealtimeCollaborationTool() {
 
               <div className="csd-arch-layer">
                 <div className="csd-arch-layer-icon">
-                  <i className="ri-cloud-sync-line" />
+                  <i className="ri-refresh-line" />
                 </div>
                 <div className="csd-arch-layer-content">
                   <div className="csd-arch-layer-name">CRDT Sync &amp; Offline Queue</div>
@@ -300,7 +300,7 @@ export default function RealtimeCollaborationTool() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL

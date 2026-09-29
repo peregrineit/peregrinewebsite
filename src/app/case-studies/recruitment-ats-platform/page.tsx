@@ -91,7 +91,7 @@ export default function RecruitmentAtsPlatform() {
                 <i className="ri-calendar-check-line" style={{ fontSize: 28, color: '#2dd4bf' }} />
               </div>
               <div className="csd-placeholder-node">
-                <i className="ri-flow-chart-line" style={{ fontSize: 28, color: '#2dd4bf' }} />
+                <i className="ri-flow-chart" style={{ fontSize: 28, color: '#2dd4bf' }} />
               </div>
               <div className="csd-placeholder-node">
                 <i className="ri-building-line" style={{ fontSize: 28, color: '#2dd4bf' }} />
@@ -174,7 +174,7 @@ export default function RecruitmentAtsPlatform() {
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon">
-                <i className="ri-flow-chart-line" />
+                <i className="ri-flow-chart" />
               </div>
               <h4>Candidate Pipeline</h4>
               <p>
@@ -299,7 +299,7 @@ export default function RecruitmentAtsPlatform() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL

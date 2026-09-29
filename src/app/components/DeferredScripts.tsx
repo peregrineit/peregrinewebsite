@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 // so they load once the page is idle after `load`, in dependency order
 // (jQuery before its plugins and the Webflow runtime).
 const SCRIPT_GROUPS: string[][] = [
-  ['https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=66b50d9ad39e4c82098fe099'],
+  ['/js/jquery-3.5.1.min.js'],
   [
     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js',

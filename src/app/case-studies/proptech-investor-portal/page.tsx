@@ -221,7 +221,7 @@ export default function PropTechInvestorPortal() {
             <div className="csd-arch-layers">
               <div className="csd-arch-layer">
                 <div className="csd-arch-layer-icon">
-                  <i className="ri-laptop-line" />
+                  <i className="ri-macbook-line" />
                 </div>
                 <div className="csd-arch-layer-content">
                   <div className="csd-arch-layer-name">Investor Portal (Next.js)</div>
@@ -309,7 +309,7 @@ export default function PropTechInvestorPortal() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL

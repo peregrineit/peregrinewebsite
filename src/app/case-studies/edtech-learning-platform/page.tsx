@@ -88,7 +88,7 @@ export default function EdTechLearningPlatform() {
                 <i className="ri-book-open-line" style={{ fontSize: 28, color: '#2dd4bf' }} />
               </div>
               <div className="csd-placeholder-node">
-                <i className="ri-progress-3-line" style={{ fontSize: 28, color: '#2dd4bf' }} />
+                <i className="ri-donut-chart-line" style={{ fontSize: 28, color: '#2dd4bf' }} />
               </div>
               <div className="csd-placeholder-node">
                 <i className="ri-cloud-line" style={{ fontSize: 28, color: '#2dd4bf' }} />
@@ -167,7 +167,7 @@ export default function EdTechLearningPlatform() {
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon">
-                <i className="ri-progress-3-line" />
+                <i className="ri-donut-chart-line" />
               </div>
               <h4>No Progress Tracking</h4>
               <p>
@@ -306,7 +306,7 @@ export default function EdTechLearningPlatform() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL

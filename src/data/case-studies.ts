@@ -181,7 +181,7 @@ export const caseStudies: CaseStudy[] = [
     card: {
       category: "saas mobile",
       theme: "teal",
-      icons: ["ri-video-line", "ri-book-open-line", "ri-progress-3-line"],
+      icons: ["ri-video-line", "ri-book-open-line", "ri-donut-chart-line"],
       flow: "LMS → HLS Video → 12K+ enrollments",
       industryIcon: "ri-book-open-line",
       duration: "9 month project",
@@ -295,9 +295,9 @@ export const caseStudies: CaseStudy[] = [
     card: {
       category: "saas iot",
       theme: "cyan",
-      icons: ["ri-factory-line", "ri-stack-line", "ri-bar-chart-box-line"],
+      icons: ["ri-building-4-line", "ri-stack-line", "ri-bar-chart-box-line"],
       flow: "8 Factories · 50K SKUs · SAP",
-      industryIcon: "ri-factory-line",
+      industryIcon: "ri-building-4-line",
       duration: "12 month project",
       summary: "How we built a manufacturing ERP spanning 8 factories and 50K SKUs with MQTT shop floor data and 30% inventory reduction.",
       badges: ["30% reduction", "Real-time"],

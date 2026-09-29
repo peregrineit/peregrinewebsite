@@ -309,7 +309,7 @@ export default function InsuranceClaimsAutomationPlatform() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL

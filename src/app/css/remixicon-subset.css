@@ -68,6 +68,7 @@
 .ri-dashboard-3-line:before { content: "\ec12"; }
 .ri-database-2-line:before { content: "\ec16"; }
 .ri-database-line:before { content: "\ec18"; }
+.ri-donut-chart-line:before { content: "\ec42"; }
 .ri-door-lock-box-line:before { content: "\ec48"; }
 .ri-edit-line:before { content: "\ec86"; }
 .ri-error-warning-line:before { content: "\eca1"; }
@@ -80,6 +81,7 @@
 .ri-file-search-line:before { content: "\ed05"; }
 .ri-file-text-line:before { content: "\ed0f"; }
 .ri-film-line:before { content: "\ed21"; }
+.ri-fire-fill:before { content: "\ed32"; }
 .ri-flashlight-line:before { content: "\ed3d"; }
 .ri-flow-chart:before { content: "\ed46"; }
 .ri-folder-chart-line:before { content: "\ed5e"; }
@@ -91,12 +93,14 @@
 .ri-heart-pulse-line:before { content: "\ee11"; }
 .ri-home-4-line:before { content: "\ee1d"; }
 .ri-hospital-line:before { content: "\ee37"; }
+.ri-javascript-line:before { content: "\f33b"; }
 .ri-leaf-line:before { content: "\eea3"; }
 .ri-line-chart-line:before { content: "\eeab"; }
 .ri-link:before { content: "\eeb2"; }
 .ri-links-line:before { content: "\eeb8"; }
 .ri-lock-line:before { content: "\eece"; }
 .ri-lock-unlock-line:before { content: "\eed2"; }
+.ri-macbook-line:before { content: "\eee8"; }
 .ri-mail-check-line:before { content: "\eeee"; }
 .ri-mail-line:before { content: "\eef6"; }
 .ri-mail-send-line:before { content: "\eefc"; }

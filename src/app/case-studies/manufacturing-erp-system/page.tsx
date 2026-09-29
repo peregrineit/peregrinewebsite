@@ -82,7 +82,7 @@ export default function ManufacturingErpSystem() {
           <div className="csd-hero-image-placeholder">
             <div className="csd-icon-grid">
               <div className="csd-placeholder-node">
-                <i className="ri-factory-line" style={{ fontSize: 28, color: '#3b7dff' }} />
+                <i className="ri-building-4-line" style={{ fontSize: 28, color: '#3b7dff' }} />
               </div>
               <div className="csd-placeholder-node">
                 <i className="ri-stack-line" style={{ fontSize: 28, color: '#3b7dff' }} />
@@ -152,7 +152,7 @@ export default function ManufacturingErpSystem() {
           <div className="csd-cs-grid">
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon">
-                <i className="ri-factory-line" />
+                <i className="ri-building-4-line" />
               </div>
               <h4>Multi-Plant Sync</h4>
               <p>
@@ -298,7 +298,7 @@ export default function ManufacturingErpSystem() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL
@@ -313,7 +313,7 @@ export default function ManufacturingErpSystem() {
               <span className="csd-tech-icon"><i className="ri-exchange-line" /></span> SAP Integration
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-factory-line" /></span> Multi-Plant
+              <span className="csd-tech-icon"><i className="ri-building-4-line" /></span> Multi-Plant
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-bar-chart-box-line" /></span> Analytics

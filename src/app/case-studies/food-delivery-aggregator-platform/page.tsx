@@ -311,7 +311,7 @@ export default function FoodDeliveryAggregatorPlatform() {
               <span className="csd-tech-icon"><i className="ri-reactjs-line" /></span> Next.js
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-nodejs-line" /></span> Node.js
+              <span className="csd-tech-icon"><i className="ri-javascript-line" /></span> Node.js
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-database-2-line" /></span> PostgreSQL
@@ -320,7 +320,7 @@ export default function FoodDeliveryAggregatorPlatform() {
               <span className="csd-tech-icon"><i className="ri-flashlight-line" /></span> Redis
             </div>
             <div className="csd-tech-tag">
-              <span className="csd-tech-icon"><i className="ri-firebase-fill" /></span> Firebase
+              <span className="csd-tech-icon"><i className="ri-fire-fill" /></span> Firebase
             </div>
             <div className="csd-tech-tag">
               <span className="csd-tech-icon"><i className="ri-bank-card-line" /></span> Stripe
