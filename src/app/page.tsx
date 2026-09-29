@@ -1093,7 +1093,7 @@ export default function Home() {
               <div style={{ marginTop: '2rem', width: '100%' }}>
                 {faqs.map(({ question, answer }) => (
                   <details key={question} className="group border-b border-gray-200 py-5">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-semibold text-gray-900">
+                    <summary className="cursor-pointer list-none text-lg font-semibold text-gray-900" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
                       <h3 style={{ fontSize: 'inherit', lineHeight: 'inherit', fontWeight: 'inherit', margin: 0 }}>{question}</h3>
                       <i className="ri-add-line text-xl text-cyan-600 transition-transform group-open:rotate-45" aria-hidden="true" />
                     </summary>
