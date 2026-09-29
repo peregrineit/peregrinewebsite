@@ -197,8 +197,8 @@ export default function FoodDeliveryAggregatorPlatform() {
               <h4>Real-Time Tracking</h4>
               <p>
                 Customers had no live view of their order. Drivers shared location via WhatsApp, which
-                was unreliable. Restaurants couldn&apos;t anticipate pickup times, so food
-                sat too long or drivers waited.
+                was unreliable. Restaurants couldn&apos;t anticipate pickup times, leading to food
+                sitting too long or drivers waiting.
               </p>
             </div>
           </div>
