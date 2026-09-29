@@ -6,7 +6,6 @@ export const metadata: Metadata = {
   title: 'Scaling a Real Estate SaaS Platform — Case Study',
   description:
     'How we re-architected a property search platform across the US and Canada — handling millions of MLS listings with sub-second response times. From 5 agents to 200+.',
-  keywords: ['real estate SaaS', 'PropTech', 'MLS integration', 'property search', 'Elasticsearch', 'Next.js', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

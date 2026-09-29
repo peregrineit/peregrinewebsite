@@ -33,15 +33,6 @@ export const metadata: Metadata = {
   description:
     "Peregrine IT Solutions builds scalable SaaS platforms, API integrations, automation systems and cloud infrastructure for startups and enterprises. We design, develop and optimize high-performance software products.",
 
-  keywords: [
-    "SaaS development company",
-    "API development services",
-    "automation software development",
-    "custom software development company",
-    "Node.js React development agency",
-    "MLS integration developers",
-  ],
-
   authors: [{ name: "Peregrine IT Solutions LLP", url: "https://peregrine-it.com" }],
   creator: "Peregrine IT Solutions LLP",
   publisher: "Peregrine IT Solutions LLP",

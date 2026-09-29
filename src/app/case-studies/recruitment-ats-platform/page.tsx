@@ -5,7 +5,6 @@ import '../../css/case-study-detail.css';
 export const metadata: Metadata = {
   title: 'Recruitment ATS for Applicant Tracking & Hiring — Case Study',
   description: 'How we built a recruitment ATS platform for 200+ companies and 80K+ candidates — with resume parsing, interview scheduling, candidate pipelines, and 65% time-to-hire reduction.',
-  keywords: ['recruitment ATS', 'applicant tracking', 'HR tech', 'hiring', 'SaaS', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

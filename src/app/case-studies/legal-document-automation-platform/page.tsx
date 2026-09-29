@@ -5,7 +5,6 @@ import '../../css/case-study-detail.css';
 export const metadata: Metadata = {
   title: 'Legal Document Automation for Contract Generation & E-Signature — Case Study',
   description: 'How we built a legal document automation platform processing 15K+ documents/month — with contract templates, clause libraries, multi-party e-signature, and SOC2-compliant audit trails.',
-  keywords: ['legal tech', 'document automation', 'e-signature', 'contract generation', 'DocuSign', 'FinTech', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

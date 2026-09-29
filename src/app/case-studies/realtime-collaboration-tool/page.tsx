@@ -5,7 +5,6 @@ import '../../css/case-study-detail.css';
 export const metadata: Metadata = {
   title: 'Real-Time Collaboration Tool for Documents & Chat — Case Study',
   description: 'How we built a real-time collaboration platform for 5K+ workspaces and 25K users — with operational transform, presence, permissions, and offline sync achieving <100ms sync latency.',
-  keywords: ['real-time collaboration', 'document editing', 'SaaS', 'WebSocket', 'CRDT', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

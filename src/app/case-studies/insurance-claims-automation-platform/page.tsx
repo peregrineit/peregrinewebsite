@@ -5,7 +5,6 @@ import '../../css/case-study-detail.css';
 export const metadata: Metadata = {
   title: 'Insurance Claims Automation for Claims Processing — Case Study',
   description: 'How we built an InsurTech claims automation platform processing 45K+ claims/year — 60% faster processing, HIPAA compliant, with document extraction, multi-carrier rules, and full audit trail.',
-  keywords: ['InsurTech', 'claims automation', 'FinTech', 'document extraction', 'HIPAA', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

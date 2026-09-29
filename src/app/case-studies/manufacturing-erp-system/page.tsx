@@ -5,7 +5,6 @@ import '../../css/case-study-detail.css';
 export const metadata: Metadata = {
   title: 'Manufacturing ERP for Production & Inventory — Case Study',
   description: 'How we built a manufacturing ERP system spanning 8 factories and 50K SKUs — with multi-plant sync, BOM management, shop floor data capture, and 30% inventory reduction.',
-  keywords: ['manufacturing ERP', 'industrial', 'inventory', 'BOM', 'IoT', 'SAP', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

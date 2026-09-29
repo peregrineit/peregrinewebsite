@@ -5,7 +5,6 @@ import '../../css/case-study-detail.css';
 export const metadata: Metadata = {
   title: 'Restaurant POS & Online Ordering for QSR Chains — Case Study',
   description: 'How we built a restaurant POS and online ordering platform for QSR chains — 120+ locations, 25K daily orders, 98% uptime, with offline-first POS, kitchen display, and multi-location sync.',
-  keywords: ['restaurant POS', 'FoodTech', 'online ordering', 'QSR', 'kitchen display', 'SaaS', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

@@ -6,7 +6,6 @@ export const metadata: Metadata = {
   title: 'Building a Self-Storage Management Platform — Case Study',
   description:
     'How we engineered a full-stack SaaS platform for self-storage operators — with smart lock integration, automated billing, and real-time occupancy dashboards serving 150+ facilities.',
-  keywords: ['self-storage SaaS', 'IoT access control', 'PropTech', 'smart locks', 'automated billing', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

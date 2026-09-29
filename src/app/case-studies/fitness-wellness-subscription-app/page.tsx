@@ -5,7 +5,6 @@ import '../../css/case-study-detail.css';
 export const metadata: Metadata = {
   title: 'Fitness Subscription App with Workout Tracking & Live Classes — Case Study',
   description: 'How we built a fitness subscription app with 80K+ subscribers, 2M+ workouts logged, 4.8 app rating — featuring video streaming, workout sync, subscription management, and offline mode.',
-  keywords: ['fitness app', 'wellness', 'subscription', 'mobile app', 'video streaming', 'SaaS', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

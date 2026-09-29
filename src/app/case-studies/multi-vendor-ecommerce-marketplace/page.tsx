@@ -5,7 +5,6 @@ import '../../css/case-study-detail.css';
 export const metadata: Metadata = {
   title: 'Multi-Vendor E-Commerce Marketplace — Case Study',
   description: 'How we engineered a marketplace platform for 400+ vendors in the Gulf region — with automated split payments, vendor self-service onboarding, real-time inventory sync, and full Arabic/English bilingual support.',
-  keywords: ['multi-vendor marketplace', 'e-commerce', 'split payments', 'Stripe Connect', 'bilingual', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

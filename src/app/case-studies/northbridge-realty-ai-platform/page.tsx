@@ -6,7 +6,6 @@ import '../../css/case-study-detail.css';
 export const metadata: Metadata = {
   title: 'AI-Powered Multi-Market Real Estate Platform — Case Study',
   description: 'How we built an AI-native platform for W3|re — 4 MLS integrations, 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy. NLP search, AVM, chatbot, and unified data pipeline.',
-  keywords: ['AI real estate', 'PropTech', 'MLS integration', 'property valuation', 'NLP search', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

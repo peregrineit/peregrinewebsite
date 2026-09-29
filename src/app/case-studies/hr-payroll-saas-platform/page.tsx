@@ -5,7 +5,6 @@ import '../../css/case-study-detail.css';
 export const metadata: Metadata = {
   title: 'HR & Payroll SaaS for Mid-Market Companies — Case Study',
   description: 'How we built an HR &amp; payroll SaaS platform for mid-market companies — 85+ companies, 12K employees, 99.9% payroll accuracy, with multi-state tax, benefits integration, and compliance.',
-  keywords: ['HR SaaS', 'payroll', 'FinTech', 'HR Tech', 'benefits', 'compliance', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

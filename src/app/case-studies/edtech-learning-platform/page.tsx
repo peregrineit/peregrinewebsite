@@ -5,7 +5,6 @@ import '../../css/case-study-detail.css';
 export const metadata: Metadata = {
   title: 'EdTech Learning Platform with LMS & Video Streaming — Case Study',
   description: 'How we built a full-stack EdTech platform with LMS, HLS video streaming, and course management — serving 12K+ enrollments across 500+ courses with 99.2% uptime.',
-  keywords: ['EdTech', 'LMS', 'video streaming', 'e-learning', 'course management', 'SaaS', 'case study'],
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
