@@ -7,6 +7,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import MobileFloatingButtons from "./components/MobileFloatingButtons";
 import DeferredScripts from "./components/DeferredScripts";
+import { office } from "@/data/company";
+import { team, personId } from "@/data/team";
 
 // Import CSS in order matching original HTML to preserve cascade
 import "./css/normalize.css";
@@ -155,6 +157,15 @@ const siteStructuredData = {
         "https://www.facebook.com/peregrineitsolution",
         "https://www.instagram.com/peregrineitsolution/",
       ],
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: office.streetAddress,
+        addressLocality: office.addressLocality,
+        addressRegion: office.addressRegion,
+        ...(office.postalCode ? { postalCode: office.postalCode } : {}),
+        addressCountry: office.addressCountry,
+      },
+      founder: { "@id": personId("mukesh-swami") },
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "sales",
@@ -175,6 +186,16 @@ const siteStructuredData = {
         { "@type": "Country", name: "United Arab Emirates" },
       ],
     },
+    ...team.map((m) => ({
+      "@type": "Person",
+      "@id": personId(m.id),
+      name: m.name,
+      jobTitle: m.role,
+      description: m.bio,
+      worksFor: { "@id": ORGANIZATION_ID },
+      ...(m.photo ? { image: `${SITE_URL}${m.photo}` } : {}),
+      ...(m.linkedin ? { sameAs: [m.linkedin] } : {}),
+    })),
     {
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,

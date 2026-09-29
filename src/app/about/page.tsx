@@ -101,7 +101,7 @@ export default function AboutPage() {
             so working software is visible early and priorities can change at each checkpoint.
           </p>
           <p>
-            Our working hours overlap every day with North American and European business hours.
+            Based in Noida, India, working in overlap with US and Canadian hours.
           </p>
         </div>
       </section>
@@ -128,8 +128,8 @@ export default function AboutPage() {
       {team.length > 0 && (
         <section className="cp-section">
           <div className="cp-container">
-            <span className="cp-label">Team</span>
-            <h2>The Team</h2>
+            <span className="cp-label">Leadership</span>
+            <h2>{team.length === 1 ? 'Founder' : 'The Team'}</h2>
             <TeamGrid members={team} />
           </div>
         </section>
