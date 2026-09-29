@@ -33,6 +33,11 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  experimental: {
+    // Inline the CSS into each page's <head> instead of three render-blocking
+    // stylesheet requests (PSI estimated 450–900 ms on mobile).
+    inlineCss: true,
+  },
   images: {
     formats: ["image/avif", "image/webp"],
   },
