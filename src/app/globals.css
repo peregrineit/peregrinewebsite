@@ -21,6 +21,26 @@ h2.cta {
     color: #fff;
 }
 
+/* Case-study cards: peregrine.css sets unlayered h3/p sizes that beat Tailwind's
+   layered utilities, so restore the sizes the card's classes ask for. */
+.article-card h3 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+}
+
+.article-card p.text-sm {
+    font-size: 0.875rem;
+    line-height: 1.625;
+}
+
+.article-card p.text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
 /* Highlighted words styling - override animations */
 .hero-title .highlighted-word {
     display: inline-block !important;

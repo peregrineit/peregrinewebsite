@@ -71,7 +71,8 @@ export default function CaseStudyCard({ study }: { study: CaseStudy }) {
             <p className={`${i.flow} text-xs font-mono tracking-wider`}>{card.flow}</p>
           </div>
         </div>
-        <div className="absolute top-4 left-4">
+        {/* Inline offsets: the Webflow stylesheet defines its own .top-4 (a centered flex row). */}
+        <div className="absolute" style={{ top: '1rem', left: '1rem' }}>
           <span className={`px-3 py-1 ${t.badge} text-white rounded-full text-xs font-semibold backdrop-blur-sm`}>Case Study</span>
         </div>
       </div>
