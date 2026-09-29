@@ -76,9 +76,11 @@ export default function ServicesPage() {
                 <span className="cp-card-icon"><i className={s.icon} aria-hidden="true" /></span>
                 <h2 style={{ fontSize: 22, margin: 0 }}>{s.name}</h2>
                 <p>{s.offer}</p>
-                <p style={{ fontSize: 14 }}>
-                  Case studies: {s.caseStudies.map((c) => getCaseStudy(c.slug).title).join(' · ')}
-                </p>
+                {s.caseStudies.length > 0 && (
+                  <p style={{ fontSize: 14 }}>
+                    Case studies: {s.caseStudies.map((c) => getCaseStudy(c.slug).title).join(' · ')}
+                  </p>
+                )}
                 <span className="cp-card-more">View service <i className="ri-arrow-right-line" aria-hidden="true" /></span>
               </Link>
             ))}

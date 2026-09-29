@@ -1,7 +1,8 @@
 // Service pages (/services and /services/[slug]) are generated from this file.
 // The FAQ arrays feed both the visible FAQ and the FAQPage JSON-LD, so they always match.
 //
-// Owner confirmed the six services, including Odoo ERP (2026-09-29).
+// Owner confirmed the six services, including Odoo ERP (2026-09-29). Odoo is a
+// capability page with no project claims until an Odoo case study exists.
 // TODO(owner): engagement model and prices. No prices are published and no Offer
 //   schema is emitted until the owner supplies real Peregrine prices (see `engagement`).
 
@@ -410,54 +411,54 @@ export const services: Service[] = [
     serviceType: 'Odoo ERP implementation and integration',
     title: 'Odoo ERP Implementation & Integration Services',
     metaDescription:
-      'Odoo ERP implementation, customization and integration for growing companies: module setup, data migration, custom modules and connections to your other systems.',
+      'Odoo ERP implementation for growing companies: HR, CRM, Inventory and Accounting modules, configuration, custom modules, data migration and integrations with your other systems.',
     h1: 'Odoo ERP Implementation and Integration',
-    // Owner confirmed Odoo is offered. TODO(owner): add an Odoo project summary or case
-    // study. The cited case studies below are custom ERP / operations builds, not Odoo
-    // projects, and the page says so.
-    offer: 'Odoo setup, custom modules and integrations with the rest of your stack.',
+    // Capability page: the owner has no Odoo project to publish yet, so the page makes no
+    // project claims and cites no case studies. Add case studies here once they exist.
+    offer: 'Odoo setup for HR, CRM, Inventory and Accounting, plus custom modules and integrations.',
     intro: [
-      'Odoo is an open-source ERP suite with modules for sales, inventory, manufacturing, accounting, HR and more. An implementation configures those modules around your processes, migrates your data, and connects Odoo to the other systems you run.',
+      'Odoo is an open-source ERP suite with modules for sales, CRM, inventory, accounting, HR and more. An implementation configures those modules around your processes, migrates your data, and connects Odoo to the other systems you run.',
       'It is for growing companies that have outgrown spreadsheets and disconnected tools but want an ERP they can extend, rather than a closed system or a fully custom build.',
-      'Peregrine handles setup and configuration, custom modules where standard ones fall short, data migration, and integrations between Odoo and your website, CRM, e-commerce or finance systems.',
+      'Peregrine implements the HR, CRM, Inventory and Accounting modules, builds custom modules where the standard ones fall short, migrates your data, and integrates Odoo with your website, e-commerce, payment and finance systems.',
     ],
     whatWeBuild: [
       {
-        title: 'Implementation and configuration',
-        body: 'Module selection and configuration around how your company actually works, including warehouses, product variants, approval flows, user roles and reports.',
+        title: 'HR (Employees, Time Off, Attendance)',
+        body: 'Employee records, departments and reporting lines, leave types and approval flows, and attendance tracking, configured around your policies so HR requests stop living in email and spreadsheets.',
       },
       {
-        title: 'Custom modules',
-        body: 'Python modules that add the fields, workflows and screens your business needs without modifying Odoo\'s core, so upgrades stay manageable.',
+        title: 'CRM',
+        body: 'Lead and opportunity pipelines with stages that match your sales process, activity scheduling, lead assignment rules and reporting, connected to your website forms so new leads arrive in Odoo automatically.',
+      },
+      {
+        title: 'Inventory',
+        body: 'Warehouses and locations, product variants, reordering rules, receipts and deliveries, and multi-step routes, so stock levels in Odoo match what is on the shelf.',
+      },
+      {
+        title: 'Accounting',
+        body: 'Chart of accounts, customer invoices and vendor bills, payment and bank reconciliation, and financial reports, linked to the sales and inventory flows that create the entries.',
+      },
+      {
+        title: 'Custom modules and integrations',
+        body: 'Python modules that add the fields, workflows and screens you need without modifying Odoo\'s core, and integrations with e-commerce stores, payment providers, shipping carriers and existing finance systems through Odoo\'s external API.',
       },
       {
         title: 'Data migration',
-        body: 'Cleaning and importing customers, products, bills of materials, open orders and balances from spreadsheets or legacy systems, with test migrations before cut-over.',
-      },
-      {
-        title: 'Integrations',
-        body: 'Connections between Odoo and e-commerce stores, CRMs, payment providers, shipping carriers and existing finance systems through Odoo\'s external API.',
-      },
-      {
-        title: 'Operations dashboards',
-        body: 'Reporting on inventory, production and sales across locations, built on Odoo data or in a separate dashboard where that serves better.',
+        body: 'Cleaning and importing customers, products, employees, open orders and opening balances from spreadsheets or legacy systems, with trial migrations before the cut-over date.',
       },
     ],
     process: [
-      { title: 'Process mapping', body: 'We map how orders, stock, production and finance move through the company today and decide which Odoo modules fit.' },
-      { title: 'Configure and extend', body: 'Configuration first, custom modules only where configuration cannot meet the need.' },
+      { title: 'Process mapping', body: 'We map how leads, orders, stock, people and money move through the company today and decide which Odoo modules and settings fit.' },
+      { title: 'Configure and extend', body: 'Configuration first, custom modules only where configuration cannot meet the need, so upgrades stay manageable.' },
       { title: 'Migrate and test', body: 'Trial migrations and user testing with real scenarios before the cut-over date.' },
-      { title: 'Go live and support', body: 'Phased go-live, often one location or department first, with training and documentation.' },
+      { title: 'Go live and support', body: 'Phased go-live, one module or department at a time, with training and documentation for your team.' },
     ],
     stack: ['Odoo', 'Python', 'PostgreSQL', 'XML-RPC / JSON-RPC APIs', 'REST integrations', 'Next.js dashboards'],
-    caseStudies: [
-      { slug: 'manufacturing-erp-system', note: 'A custom manufacturing ERP (not Odoo) for eight plants with versioned bills of materials, shop-floor data capture and SAP integration; it shows the multi-plant inventory and BOM problems an ERP project has to solve.' },
-      { slug: 'supply-chain-visibility-platform', note: 'An operations platform (not Odoo) that unified shipment tracking from 12 carriers, the kind of integration an ERP rollout often needs alongside it.' },
-    ],
+    caseStudies: [],
     faq: [
       {
-        question: 'Is Odoo a good fit for a growing company?',
-        answer: 'Odoo suits companies that want one system for sales, inventory, manufacturing and accounting and expect to customize it over time. Companies with very specialized processes or heavy existing investment in another ERP may be better served by integrating rather than replacing.',
+        question: 'Which Odoo modules do you implement?',
+        answer: 'We implement Odoo\'s HR (employees, time off and attendance), CRM, Inventory and Accounting modules, and build custom modules and integrations around them. If you need other modules, we assess them during process mapping.',
       },
       {
         question: 'What is the difference between Odoo Community and Odoo Enterprise?',
@@ -471,10 +472,9 @@ export const services: Service[] = [
         question: 'Can Odoo connect to our existing systems?',
         answer: 'Yes. Odoo exposes an external API (XML-RPC and JSON-RPC), and integrations can be built for e-commerce, CRM, payments, shipping and finance systems. Where a system has no API, file-based exchange is an option.',
       },
-      // TODO(owner): add an FAQ describing Peregrine's Odoo project experience, or link an Odoo case study.
       {
         question: 'How long does an Odoo implementation take?',
-        answer: 'It depends on how many modules you need, how much data has to be migrated and how much customization is required. We recommend going live in phases, one department or location at a time, so each phase is small enough to test properly.',
+        answer: 'It depends on how many modules you need, how much data has to be migrated and how much customization is required. We recommend going live in phases, one module or department at a time, so each phase is small enough to test properly.',
       },
     ],
     icon: 'ri-stack-line',

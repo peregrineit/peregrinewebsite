@@ -109,24 +109,26 @@ export default async function ServicePage({ params }: Props) {
         </div>
       </section>
 
-      <section className="cp-section">
-        <div className="cp-container">
-          <span className="cp-label">Case studies</span>
-          <h2>Work We Can Point To</h2>
-          <p className="cp-muted">Rather than make claims, here is published work that shows how we approach {service.name} projects.</p>
-          <div className="cp-grid">
-            {cited.map(({ slug: csSlug, note, study }) => (
-              <Link key={csSlug} href={`/case-studies/${csSlug}`} className="cp-card">
-                <span className="cp-card-meta">{study.industry}</span>
-                <h3>{study.title}</h3>
-                <p>{note}</p>
-                <span className="cp-card-more">Read the case study <i className="ri-arrow-right-line" aria-hidden="true" /></span>
-              </Link>
-            ))}
+      {cited.length > 0 && (
+        <section className="cp-section">
+          <div className="cp-container">
+            <span className="cp-label">Case studies</span>
+            <h2>Work We Can Point To</h2>
+            <p className="cp-muted">Rather than make claims, here is published work that shows how we approach {service.name} projects.</p>
+            <div className="cp-grid">
+              {cited.map(({ slug: csSlug, note, study }) => (
+                <Link key={csSlug} href={`/case-studies/${csSlug}`} className="cp-card">
+                  <span className="cp-card-meta">{study.industry}</span>
+                  <h3>{study.title}</h3>
+                  <p>{note}</p>
+                  <span className="cp-card-more">Read the case study <i className="ri-arrow-right-line" aria-hidden="true" /></span>
+                </Link>
+              ))}
+            </div>
+            <p style={{ marginTop: 20 }}><Link href="/case-studies">Browse all case studies</Link></p>
           </div>
-          <p style={{ marginTop: 20 }}><Link href="/case-studies">Browse all case studies</Link></p>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className="cp-section">
         <div className="cp-container">

@@ -307,7 +307,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Manufacturing / Industrial",
     stack: ["Next.js", "Node.js", "PostgreSQL", "MQTT", "Redis", "SAP Integration", "Multi-Plant", "Analytics"],
     related: ["supply-chain-visibility-platform", "self-storage-management-platform", "logistics-fleet-tracking-platform"],
-    service: "odoo-erp",
+    service: "api-integration",
     card: {
       category: "saas iot",
       theme: "cyan",
