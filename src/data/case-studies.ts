@@ -42,7 +42,7 @@ export const caseStudies: CaseStudy[] = [
     image: "/ogimage.png",
     industry: "Real Estate / PropTech",
     stack: ["Next.js", "Node.js", "MongoDB", "Elasticsearch", "Redis", "AWS (SES, S3)", "Linode / VPS", "MLS / RETS API"],
-    related: ["northbridge-realty-ai-platform", "proptech-investor-portal", "self-storage-management-platform"],
+    related: ["w3re-ai-real-estate-platform", "proptech-investor-portal", "self-storage-management-platform"],
     card: {
       category: "proptech saas",
       theme: "cyan",
@@ -56,7 +56,7 @@ export const caseStudies: CaseStudy[] = [
     },
   },
   {
-    slug: "northbridge-realty-ai-platform",
+    slug: "w3re-ai-real-estate-platform",
     title: "AI-Powered Multi-Market Real Estate Platform",
     description: "How we built an AI-native platform for W3|re — 4 MLS integrations, 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy. NLP search, AVM, chatbot, and unified data pipeline.",
     image: "/images/case-studies/Image7-e7e8a93c-2e0c-4711-85a8-0dfbba6cd59a.png",
@@ -158,7 +158,7 @@ export const caseStudies: CaseStudy[] = [
     image: "/ogimage.png",
     industry: "Real Estate / Investment",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "AWS S3", "DocuSign API", "Stripe", "Chart.js"],
-    related: ["northbridge-realty-ai-platform", "scaling-real-estate-saas-platform", "legal-document-automation-platform"],
+    related: ["w3re-ai-real-estate-platform", "scaling-real-estate-saas-platform", "legal-document-automation-platform"],
     card: {
       category: "proptech fintech saas",
       theme: "amber",
@@ -402,7 +402,7 @@ export const caseStudies: CaseStudy[] = [
 
 /** Featured on the homepage "Selected work" section. */
 export const featuredCaseStudySlugs = [
-  "northbridge-realty-ai-platform",
+  "w3re-ai-real-estate-platform",
   "scaling-real-estate-saas-platform",
   "proptech-investor-portal",
   "supply-chain-visibility-platform",

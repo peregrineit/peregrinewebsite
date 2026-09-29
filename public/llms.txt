@@ -16,7 +16,7 @@ Engineers work directly with client teams in sprint-based delivery, with daily o
 ## Selected case studies
 
 - [Scaling a real estate SaaS platform](https://peregrine-it.com/case-studies/scaling-real-estate-saas-platform): re-architected a US/Canada property search product to serve millions of MLS listings with sub-second search.
-- [AI-powered multi-market real estate platform](https://peregrine-it.com/case-studies/northbridge-realty-ai-platform): unified four MLS feeds for a brokerage and added natural-language search, automated valuation and an AI lead-qualification assistant.
+- [AI-powered multi-market real estate platform](https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform): unified four MLS feeds for a brokerage and added natural-language search, automated valuation and an AI lead-qualification assistant.
 - [Investor portal for a real estate developer](https://peregrine-it.com/case-studies/proptech-investor-portal): role-based portal with document management, capital call workflows and automated distribution reporting.
 - [Supply chain visibility platform](https://peregrine-it.com/case-studies/supply-chain-visibility-platform): normalized tracking data from 12 carrier APIs with ETA prediction and exception alerts.
 - [Self-storage management SaaS](https://peregrine-it.com/case-studies/self-storage-management-platform): operator platform with smart-lock integration, automated billing and live occupancy dashboards.

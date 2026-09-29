@@ -33,7 +33,7 @@ You are working in the Next.js repo for peregrine-it.com at ~/Code/peregrinewebs
 - [x] 1.7 (added) Remove meta keywords from layout.tsx and all 19 case studies.
 - [x] 1.8 (added) Remove ProfessionalService; fold serviceType into Organization.knowsAbout; WebPage.about → org.
 - [x] 1.9 (added) Ignore public/case-studies/*.html; no untracked export covers a new client.
-- [ ] 1.10 (added) Northbridge client name — waiting on owner: keep "W3|re" (rename slug + 301) or switch body/quote to "Northbridge Realty" (the untracked HTML export says "NorthBridge Realty Group").
+- [x] 1.10 (added) Northbridge client name: owner confirmed W3|re. Slug renamed to /case-studies/w3re-ai-real-estate-platform with a 301 from /case-studies/northbridge-realty-ai-platform.
 Checks: every sitemap URL returns 200 with a self-canonical; exactly one <h1> on the homepage; all JSON-LD parses; exactly one Organization node per page; logo URL returns 200; /llms.txt returns 200; "og.png" appears nowhere.
 
 ## Phase 2 — Case studies

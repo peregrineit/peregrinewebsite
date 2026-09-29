@@ -6,7 +6,7 @@ const SITE_URL = "https://peregrine-it.com";
 // omitted rather than stamped with the build time.
 const caseStudySlugs = [
   "scaling-real-estate-saas-platform",
-  "northbridge-realty-ai-platform",
+  "w3re-ai-real-estate-platform",
   "self-storage-management-platform",
   "logistics-fleet-tracking-platform",
   "multi-location-clinic-management",

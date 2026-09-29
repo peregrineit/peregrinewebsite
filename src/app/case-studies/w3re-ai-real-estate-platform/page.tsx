@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title: 'Case Study — AI-Powered Multi-Market Real Estate Platform | Peregrine IT Solutions',
     description: 'How we built an AI-native platform for W3|re — 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy.',
     type: 'article',
-    url: 'https://peregrine-it.com/case-studies/northbridge-realty-ai-platform',
+    url: 'https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
     images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'W3|re AI Platform Case Study — Peregrine IT Solutions' }],
@@ -25,15 +25,13 @@ export const metadata: Metadata = {
     description: 'AI-native platform: 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy.',
     images: ['https://peregrine-it.com/ogimage.png'],
   },
-  alternates: { canonical: 'https://peregrine-it.com/case-studies/northbridge-realty-ai-platform' },
+  alternates: { canonical: 'https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform' },
 };
 
-// TODO(owner): confirm the real client name. The slug says "Northbridge"; the body names "W3|re"
-// (quote attributed to Marcus Chen). Changing the slug needs a 301 in next.config.ts.
-export default function NorthbridgeRealtyAIPlatform() {
+export default function W3reAIRealEstatePlatform() {
   return (
     <div className="case-study-detail csd-purple">
-      <CaseStudySchema slug="northbridge-realty-ai-platform" />
+      <CaseStudySchema slug="w3re-ai-real-estate-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -403,7 +401,7 @@ export default function NorthbridgeRealtyAIPlatform() {
           <div className="csd-quote-author">— Marcus Chen, Managing Broker & Co-Founder, W3|re</div>
         </div>
 
-        <RelatedCaseStudies slug="northbridge-realty-ai-platform" />
+        <RelatedCaseStudies slug="w3re-ai-real-estate-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">
