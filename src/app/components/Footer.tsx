@@ -152,6 +152,7 @@ export default function Footer() {
                   <div className={`footer-section-content ${expandedSections.company ? 'expanded' : ''}`}>
                     <Link href="/about" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>About Us</Link>
                     <Link href="/case-studies" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Case Studies</Link>
+                    <Link href="/industries" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Industries</Link>
                     <Link href="/contact" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Contact</Link>
                     <Link href="/blog" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Guides</Link>
                     <a href="https://calendly.com/mukesh-peregrine-it/30min" target="_blank" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Careers</a>

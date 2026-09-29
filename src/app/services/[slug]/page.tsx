@@ -118,6 +118,7 @@ export default async function ServicePage({ params }: Props) {
               </div>
             ))}
           </div>
+          <p style={{ marginTop: 20 }}><Link href="/industries" className="cp-standalone-link">Industries we build for</Link></p>
         </div>
       </section>
 
