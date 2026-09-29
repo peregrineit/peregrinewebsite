@@ -4,6 +4,8 @@ import React, { useEffect } from 'react';
 import Image from 'next/image';
 import Script from 'next/script'; // Ensure Script is available if we use it, though we stripped scripts
 import Link from 'next/link';
+import CaseStudyCard from './components/CaseStudyCard';
+import { featuredCaseStudySlugs, getCaseStudy } from '@/data/case-studies';
 
 // Rendered as the visible FAQ section and as FAQPage JSON-LD, so the two always match.
 const faqs = [
@@ -751,6 +753,31 @@ export default function Home() {
           </div>
           <div className="bg-fill-absolo"><img src="/images/vector-lines.svg" loading="lazy"
             data-w-id="57343fd2-dcb9-6528-f601-e6d78e1463d1" alt="" className="image-9" /></div>
+        </section>
+
+        <section id="sec-work" className="section dark !pt-12 !pb-16">
+          <div className="container">
+            <div className="w-layout-vflex content-wrap" style={{ marginBottom: '2.5rem' }}>
+              <p className="section-borrow">Selected Work</p>
+              <h2 className="heading-primary gradient">Platforms We&apos;ve Engineered</h2>
+              <div className="section-sub" style={{ color: 'rgba(255,255,255,0.75)' }}>A few recent builds, from multi-market MLS platforms to carrier integrations. Each case study covers the problem, the architecture and the results.</div>
+            </div>
+            <div className="tw-grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+              {featuredCaseStudySlugs.map((slug) => (
+                <CaseStudyCard key={slug} study={getCaseStudy(slug)} />
+              ))}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2.5rem' }}>
+              <Link href="/case-studies" className="cta-primary dark w-inline-block" style={{ width: 'auto' }}>
+                <div className="cta-label">View All Case Studies</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                    className="svg-icon-button">
+                    <path d="m6 17 5-5-5-5"></path>
+                    <path d="m13 17 5-5-5-5"></path>
+                  </svg>
+              </Link>
+            </div>
+          </div>
         </section>
 
         <section id="sec-logistics" data-w-id="4b456ef1-02bf-a753-30c8-fef45a56495c" className="section !pb-10">
