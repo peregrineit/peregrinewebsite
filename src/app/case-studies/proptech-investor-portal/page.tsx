@@ -437,7 +437,7 @@ export default function PropTechInvestorPortal() {
             enough to handle any participation structure without custom code.
           </p>
           <p>
-            Automated watermarking sounds like a small feature, but it was transformative for document
+            Automated watermarking sounds like a small feature, but it closed a real gap in document
             security. The firm had experienced a confidential PPM leak the year before with no way to
             trace the source. Now every document access is logged, every download is watermarked, and
             the audit trail gives the compliance team complete visibility into document distribution.
