@@ -156,7 +156,7 @@ export default function RealtimeCollaborationTool() {
               <div className="csd-cs-card-icon">
                 <i className="ri-file-edit-line" />
               </div>
-              <h4>Operational Transform</h4>
+              <h3>Operational Transform</h3>
               <p>
                 When two users edit the same paragraph simultaneously, changes had to merge
                 correctly. Plain last-write-wins caused overwrites. OT or CRDT was required for
@@ -167,7 +167,7 @@ export default function RealtimeCollaborationTool() {
               <div className="csd-cs-card-icon">
                 <i className="ri-user-follow-line" />
               </div>
-              <h4>Presence</h4>
+              <h3>Presence</h3>
               <p>
                 Users needed to see who else was viewing a document and where their cursors were.
                 High-frequency updates (cursor position) couldn&apos;t flood the server. Throttling
@@ -178,7 +178,7 @@ export default function RealtimeCollaborationTool() {
               <div className="csd-cs-card-icon">
                 <i className="ri-lock-line" />
               </div>
-              <h4>Permissions</h4>
+              <h3>Permissions</h3>
               <p>
                 Workspaces had folders and documents with inherited permissions. View, edit, comment,
                 and admin levels. Sharing links with expiry. Permissions had to be checked on every
@@ -189,7 +189,7 @@ export default function RealtimeCollaborationTool() {
               <div className="csd-cs-card-icon">
                 <i className="ri-wifi-off-line" />
               </div>
-              <h4>Offline Sync</h4>
+              <h3>Offline Sync</h3>
               <p>
                 Users on trains or unreliable networks needed to keep working. Local edits had to be
                 queued and merged when reconnected. Divergent edits required conflict resolution —

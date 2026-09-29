@@ -164,7 +164,7 @@ export default function PropTechInvestorPortal() {
               <div className="csd-cs-card-icon">
                 <i className="ri-mail-line" />
               </div>
-              <h4>Email-Based IR Workflow</h4>
+              <h3>Email-Based IR Workflow</h3>
               <p>
                 Quarterly reports were emailed as PDF attachments to 280+ investors. Each investor
                 received different documents based on their fund participation. The IR team spent 60+
@@ -175,7 +175,7 @@ export default function PropTechInvestorPortal() {
               <div className="csd-cs-card-icon">
                 <i className="ri-file-lock-line" />
               </div>
-              <h4>No Document Security</h4>
+              <h3>No Document Security</h3>
               <p>
                 Sensitive financial documents (K-1s, distribution notices, PPMs) were shared via
                 Dropbox links with no access controls, no watermarking, and no audit trail. The firm
@@ -186,7 +186,7 @@ export default function PropTechInvestorPortal() {
               <div className="csd-cs-card-icon">
                 <i className="ri-team-line" />
               </div>
-              <h4>Complex Role Hierarchies</h4>
+              <h3>Complex Role Hierarchies</h3>
               <p>
                 Investors participated in different funds, co-investments, and SPVs. Each entity had
                 different access rights. Some investors had family office administrators who needed
@@ -197,7 +197,7 @@ export default function PropTechInvestorPortal() {
               <div className="csd-cs-card-icon">
                 <i className="ri-pie-chart-line" />
               </div>
-              <h4>Manual Reporting</h4>
+              <h3>Manual Reporting</h3>
               <p>
                 Distribution calculations, IRR computations, and performance metrics were done in
                 Excel. Errors crept in quarterly, and investors frequently questioned numbers —

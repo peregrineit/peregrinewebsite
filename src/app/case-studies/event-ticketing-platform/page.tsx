@@ -156,7 +156,7 @@ export default function EventTicketingPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-shopping-cart-line" />
               </div>
-              <h4>Scalable Checkout</h4>
+              <h3>Scalable Checkout</h3>
               <p>
                 During flash sales, thousands of users added tickets to cart simultaneously. The old
                 system reserved inventory at add-to-cart but didn&apos;t handle race conditions.
@@ -167,7 +167,7 @@ export default function EventTicketingPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-shield-check-line" />
               </div>
-              <h4>Fraud Prevention</h4>
+              <h3>Fraud Prevention</h3>
               <p>
                 Bots and scalpers were buying tickets in bulk. Chargebacks and disputed transactions
                 cost the business. No velocity checks or device fingerprinting — fraud went
@@ -178,7 +178,7 @@ export default function EventTicketingPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-refund-line" />
               </div>
-              <h4>Refund Workflow</h4>
+              <h3>Refund Workflow</h3>
               <p>
                 Refund requests were manually processed via email. No self-service portal.
                 Cancelled events required batch refunds — the old system couldn&apos;t handle
@@ -189,7 +189,7 @@ export default function EventTicketingPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-building-4-line" />
               </div>
-              <h4>Multi-Venue Support</h4>
+              <h3>Multi-Venue Support</h3>
               <p>
                 Different venues had different seat maps — some general admission, others reserved.
                 The old system assumed a single venue model. Supporting multiple layouts and pricing

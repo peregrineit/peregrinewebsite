@@ -164,7 +164,7 @@ export default function LogisticsFleetTrackingPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-map-pin-line" />
               </div>
-              <h4>No Fleet Visibility</h4>
+              <h3>No Fleet Visibility</h3>
               <p>
                 Dispatchers relied on phone calls to locate trucks. During peak hours, a single
                 dispatcher would make 80+ calls per shift just to get location updates. Route
@@ -175,7 +175,7 @@ export default function LogisticsFleetTrackingPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-route-line" />
               </div>
-              <h4>Manual Route Planning</h4>
+              <h3>Manual Route Planning</h3>
               <p>
                 Routes were planned on paper maps and WhatsApp. Drivers followed familiar roads
                 rather than optimal paths, resulting in 30%+ excess fuel consumption and frequent
@@ -186,7 +186,7 @@ export default function LogisticsFleetTrackingPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-smartphone-line" />
               </div>
-              <h4>No Driver App</h4>
+              <h3>No Driver App</h3>
               <p>
                 Drivers had no digital proof of delivery, no turn-by-turn navigation, and no way to
                 report issues. Everything was communicated verbally, leading to constant disputes
@@ -197,7 +197,7 @@ export default function LogisticsFleetTrackingPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-time-line" />
               </div>
-              <h4>Customer Blind Spot</h4>
+              <h3>Customer Blind Spot</h3>
               <p>
                 Customers had no tracking visibility. They would call the operations center
                 repeatedly asking &ldquo;Where is my delivery?&rdquo; — consuming 3 full-time staff

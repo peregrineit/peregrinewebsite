@@ -162,7 +162,7 @@ export default function InsuranceClaimsAutomationPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-user-search-line" />
               </div>
-              <h4>Manual Adjudication</h4>
+              <h3>Manual Adjudication</h3>
               <p>
                 Adjusters manually read each claim form and supporting documents. Data entry was
                 error-prone — wrong CPT codes, missing modifiers, duplicate submissions. A single
@@ -173,7 +173,7 @@ export default function InsuranceClaimsAutomationPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-file-text-line" />
               </div>
-              <h4>Document Extraction</h4>
+              <h3>Document Extraction</h3>
               <p>
                 Claims arrived as PDFs, scanned images, and sometimes faxes. Extracting procedure
                 codes, dates, amounts, and patient identifiers required manual review. OCR tools
@@ -184,7 +184,7 @@ export default function InsuranceClaimsAutomationPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-bank-card-2-line" />
               </div>
-              <h4>Multi-Carrier Rules</h4>
+              <h3>Multi-Carrier Rules</h3>
               <p>
                 Different carriers and plans had different reimbursement rules, exclusions, and
                 prior-auth requirements. Rules changed frequently. There was no centralized engine
@@ -195,7 +195,7 @@ export default function InsuranceClaimsAutomationPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-file-list-3-line" />
               </div>
-              <h4>Audit Trail</h4>
+              <h3>Audit Trail</h3>
               <p>
                 Auditors and dispute resolution required a complete record: who viewed what, when
                 decisions were made, and what data was used. Legacy systems had partial logs and

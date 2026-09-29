@@ -156,7 +156,7 @@ export default function RecruitmentAtsPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-file-search-line" />
               </div>
-              <h4>Resume Parsing</h4>
+              <h3>Resume Parsing</h3>
               <p>
                 Resumes arrived as PDFs and Word files in every format imaginable. Manual data entry
                 took 10–15 minutes per candidate. Typos and inconsistent naming caused duplicate
@@ -167,7 +167,7 @@ export default function RecruitmentAtsPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-calendar-check-line" />
               </div>
-              <h4>Interview Scheduling</h4>
+              <h3>Interview Scheduling</h3>
               <p>
                 Coordinating 3–5 interview rounds across multiple calendars was a nightmare.
                 Recruiters sent Doodle polls and email chains. No-shows and double-bookings were
@@ -178,7 +178,7 @@ export default function RecruitmentAtsPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-flow-chart" />
               </div>
-              <h4>Candidate Pipeline</h4>
+              <h3>Candidate Pipeline</h3>
               <p>
                 Each company had different stages — Applied, Phone Screen, Technical, Offer, etc.
                 The old system used a single rigid pipeline. Drag-and-drop was slow. Bulk actions
@@ -189,7 +189,7 @@ export default function RecruitmentAtsPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-building-line" />
               </div>
-              <h4>Employer Branding</h4>
+              <h3>Employer Branding</h3>
               <p>
                 Career pages looked generic. Companies wanted custom domains, branded application
                 flows, and integration with their website. The old system offered only white-label

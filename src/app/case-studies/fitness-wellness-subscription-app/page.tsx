@@ -162,7 +162,7 @@ export default function FitnessWellnessSubscriptionApp() {
               <div className="csd-cs-card-icon">
                 <i className="ri-video-line" />
               </div>
-              <h4>Video Streaming</h4>
+              <h3>Video Streaming</h3>
               <p>
                 On-demand videos buffered during morning and evening rush. Live classes had 5–10
                 second latency — by the time users saw the move, the instructor was already on
@@ -173,7 +173,7 @@ export default function FitnessWellnessSubscriptionApp() {
               <div className="csd-cs-card-icon">
                 <i className="ri-refresh-line" />
               </div>
-              <h4>Workout Sync</h4>
+              <h3>Workout Sync</h3>
               <p>
                 Users logged workouts on one device and switched to another — progress didn&apos;t
                 follow. No cross-device history. Recommended &ldquo;next workout&rdquo; logic
@@ -184,7 +184,7 @@ export default function FitnessWellnessSubscriptionApp() {
               <div className="csd-cs-card-icon">
                 <i className="ri-vip-crown-line" />
               </div>
-              <h4>Subscription Management</h4>
+              <h3>Subscription Management</h3>
               <p>
                 Trials, monthly, and annual plans lived in separate flows. Upgrades and
                 cancellations required support. Webhook handling was incomplete — some cancellations
@@ -195,7 +195,7 @@ export default function FitnessWellnessSubscriptionApp() {
               <div className="csd-cs-card-icon">
                 <i className="ri-cloud-off-line" />
               </div>
-              <h4>Offline Mode</h4>
+              <h3>Offline Mode</h3>
               <p>
                 Many users worked out in gyms with poor cell service or ran outdoors without
                 data. There was no way to download classes. The app was unusable without

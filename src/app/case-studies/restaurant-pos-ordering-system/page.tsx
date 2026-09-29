@@ -162,7 +162,7 @@ export default function RestaurantPOSOrderingSystem() {
               <div className="csd-cs-card-icon">
                 <i className="ri-wifi-off-line" />
               </div>
-              <h4>Offline-First POS</h4>
+              <h3>Offline-First POS</h3>
               <p>
                 Restaurant internet is unreliable — strip malls, food courts, and rural locations
                 often have outages. Legacy POS required constant connectivity. When the network
@@ -173,7 +173,7 @@ export default function RestaurantPOSOrderingSystem() {
               <div className="csd-cs-card-icon">
                 <i className="ri-tv-2-line" />
               </div>
-              <h4>Kitchen Display</h4>
+              <h3>Kitchen Display</h3>
               <p>
                 Paper tickets were hard to read during rush. Modifiers and special requests got
                 missed. There was no way to prioritize or bump orders. Cooks had to manually
@@ -184,7 +184,7 @@ export default function RestaurantPOSOrderingSystem() {
               <div className="csd-cs-card-icon">
                 <i className="ri-refresh-line" />
               </div>
-              <h4>Multi-Location Sync</h4>
+              <h3>Multi-Location Sync</h3>
               <p>
                 Menu changes, pricing updates, and promotions had to be pushed to all 120 locations.
                 There was no central source of truth — some locations ran outdated menus. Online
@@ -195,7 +195,7 @@ export default function RestaurantPOSOrderingSystem() {
               <div className="csd-cs-card-icon">
                 <i className="ri-money-dollar-circle-line" />
               </div>
-              <h4>Payment Reconciliation</h4>
+              <h3>Payment Reconciliation</h3>
               <p>
                 In-store POS, online orders, and third-party delivery had different payment flows.
                 Reconciling daily sales took managers an hour per location. Discrepancies between

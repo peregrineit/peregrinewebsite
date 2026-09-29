@@ -156,7 +156,7 @@ export default function SelfStorageManagementPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-lock-unlock-line" />
               </div>
-              <h4>Fragmented Access Control</h4>
+              <h3>Fragmented Access Control</h3>
               <p>
                 Each facility used a different gate access vendor. Some had keypads, others had Bluetooth
                 locks, and a few still used physical keys. There was no centralized way to grant, revoke,
@@ -167,7 +167,7 @@ export default function SelfStorageManagementPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-money-dollar-circle-line" />
               </div>
-              <h4>Manual Billing Chaos</h4>
+              <h3>Manual Billing Chaos</h3>
               <p>
                 Invoices were generated in one system, payments tracked in another, and late fees
                 calculated in spreadsheets. Autopay failures went unnoticed for days, costing the
@@ -178,7 +178,7 @@ export default function SelfStorageManagementPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-bar-chart-box-line" />
               </div>
-              <h4>No Real-Time Occupancy Data</h4>
+              <h3>No Real-Time Occupancy Data</h3>
               <p>
                 Occupancy rates were updated weekly via manual reports. Corporate had no way to spot
                 underperforming facilities or adjust pricing dynamically based on demand.
@@ -188,7 +188,7 @@ export default function SelfStorageManagementPlatform() {
               <div className="csd-cs-card-icon">
                 <i className="ri-stack-line" />
               </div>
-              <h4>Disconnected Tech Stack</h4>
+              <h3>Disconnected Tech Stack</h3>
               <p>
                 The reservation system, billing engine, and access control software were three separate
                 vendors with no API integration. Data lived in silos, and syncing required nightly CSV

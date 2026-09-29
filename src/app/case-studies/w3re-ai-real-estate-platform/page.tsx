@@ -135,27 +135,27 @@ export default function W3reAIRealEstatePlatform() {
           <div className="csd-cs-grid">
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-database-2-line" /></div>
-              <h4>Fragmented MLS Data Across 4 Markets</h4>
+              <h3>Fragmented MLS Data Across 4 Markets</h3>
               <p>Each MLS used different RETS/Web API standards and schemas. Agents had no single view of cross-market inventory. Listings appeared 6–18 hours after MLS publication — by then, hot leads had moved on.</p>
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-time-line" /></div>
-              <h4>Lead Responses Took Hours</h4>
+              <h3>Lead Responses Took Hours</h3>
               <p>Inbound leads were routed to a shared inbox. During peak hours, response times stretched to 2+ hours.</p>
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-price-tag-3-line" /></div>
-              <h4>CMA Pricing Was Costing Deals</h4>
+              <h3>CMA Pricing Was Costing Deals</h3>
               <p>Agents spent 2–3 hours on each Comparative Market Analysis. 23% of listing prices were off by more than 8% from final sale price — leading to extended days-on-market.</p>
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-search-line" /></div>
-              <h4>Property Search Was a Dead End</h4>
+              <h3>Property Search Was a Dead End</h3>
               <p>Their IDX only supported rigid filter-based search. Buyers couldn&apos;t search naturally. Bounce rate on search pages was 72%.</p>
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-smartphone-line" /></div>
-              <h4>Mobile Experience Was Non-Existent</h4>
+              <h3>Mobile Experience Was Non-Existent</h3>
               <p>68% of traffic came from mobile, but the site was desktop-first. Property pages took 8+ seconds on 4G. Mobile lead conversion was 0.3% vs 2.1% on desktop.</p>
             </div>
           </div>
@@ -186,22 +186,22 @@ export default function W3reAIRealEstatePlatform() {
           <div className="csd-cs-grid">
             <div className="csd-cs-card csd-solution">
               <div className="csd-cs-card-icon"><i className="ri-chat-voice-line" /></div>
-              <h4>Conversational Property Search Engine</h4>
+              <h3>Conversational Property Search Engine</h3>
               <p>Natural language search powered by a fine-tuned LLM. Buyers type queries like &quot;modern condo downtown Austin walkable to coffee shops, 2BR, under 500k&quot; — the system parses intent, maps to MLS fields, and returns ranked results.</p>
             </div>
             <div className="csd-cs-card csd-solution">
               <div className="csd-cs-card-icon"><i className="ri-calculator-line" /></div>
-              <h4>AI-Powered Property Valuation (AVM)</h4>
+              <h3>AI-Powered Property Valuation (AVM)</h3>
               <p>Custom Automated Valuation Model trained on 2.8M+ transactions. Agents generate instant CMAs in under 10 seconds vs. the previous 2–3 hour manual process.</p>
             </div>
             <div className="csd-cs-card csd-solution">
               <div className="csd-cs-card-icon"><i className="ri-robot-2-line" /></div>
-              <h4>24/7 AI Lead Qualification Chatbot</h4>
+              <h3>24/7 AI Lead Qualification Chatbot</h3>
               <p>AI agent handles every inbound lead within 8 seconds. Qualifies by budget, timeline, location, and pre-approval status. Handles 73% of initial conversations without human intervention.</p>
             </div>
             <div className="csd-cs-card csd-solution">
               <div className="csd-cs-card-icon"><i className="ri-flow-chart" /></div>
-              <h4>Unified Multi-MLS Data Pipeline</h4>
+              <h3>Unified Multi-MLS Data Pipeline</h3>
               <p>Real-time ETL pipeline ingests from 4 MLS systems, normalizes schemas, deduplicates cross-listed properties, and syncs within 90 seconds of MLS publication. Processes 40K+ listing updates daily.</p>
             </div>
           </div>

@@ -121,6 +121,8 @@ export default function CaseStudies() {
 
           <section className="pt-6 sm:pt-8 pb-12 sm:pb-20 bg-slate-900">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
+              {/* Visually hidden: gives the card h3s a parent h2 (outline h1 > h2 > h3). */}
+              <h2 className="sr-only">All case studies</h2>
               <div id="articles-grid" className="tw-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 {caseStudies.map((study) => (
                   <CaseStudyCard key={study.slug} study={study} />

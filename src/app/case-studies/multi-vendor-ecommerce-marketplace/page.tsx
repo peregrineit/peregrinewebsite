@@ -159,7 +159,7 @@ export default function MultiVendorEcommerceMarketplace() {
               <div className="csd-cs-card-icon">
                 <i className="ri-bank-card-line" />
               </div>
-              <h4>Complex Split Payments</h4>
+              <h3>Complex Split Payments</h3>
               <p>
                 Every order could contain products from multiple vendors. The platform needed to
                 automatically split payments — deducting marketplace commission, calculating VAT per
@@ -170,7 +170,7 @@ export default function MultiVendorEcommerceMarketplace() {
               <div className="csd-cs-card-icon">
                 <i className="ri-translate-2" />
               </div>
-              <h4>True Bilingual RTL/LTR Support</h4>
+              <h3>True Bilingual RTL/LTR Support</h3>
               <p>
                 Arabic isn&apos;t just right-to-left text — it requires mirrored layouts, different
                 number formats, and culturally appropriate imagery. The entire UI needed to work
@@ -181,7 +181,7 @@ export default function MultiVendorEcommerceMarketplace() {
               <div className="csd-cs-card-icon">
                 <i className="ri-box-3-line" />
               </div>
-              <h4>Vendor Inventory Chaos</h4>
+              <h3>Vendor Inventory Chaos</h3>
               <p>
                 Vendors managed inventory in spreadsheets, WhatsApp, and legacy POS systems. The
                 platform needed real-time stock sync to prevent overselling — a common problem in the
@@ -192,7 +192,7 @@ export default function MultiVendorEcommerceMarketplace() {
               <div className="csd-cs-card-icon">
                 <i className="ri-user-add-line" />
               </div>
-              <h4>Vendor Onboarding Friction</h4>
+              <h3>Vendor Onboarding Friction</h3>
               <p>
                 The client needed 400+ vendors onboarded within 3 months of launch. The onboarding
                 flow had to handle commercial registration validation, bank account verification,
