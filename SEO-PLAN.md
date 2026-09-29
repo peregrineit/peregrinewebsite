@@ -37,8 +37,8 @@ You are working in the Next.js repo for peregrine-it.com at ~/Code/peregrinewebs
 Checks: every sitemap URL returns 200 with a self-canonical; exactly one <h1> on the homepage; all JSON-LD parses; exactly one Organization node per page; logo URL returns 200; /llms.txt returns 200; "og.png" appears nowhere.
 
 ## Phase 2 — Case studies
-- [ ] 2.1 In the case-study route emit Article (headline, description, image, datePublished/dateModified from front matter if present else TODO(owner), author and publisher → {"@id": "https://peregrine-it.com/#organization"}) plus BreadcrumbList (Home › Case Studies › title).
-- [ ] 2.2 Homepage: a "Selected work" section linking the hub and 3–4 featured case studies (pick the ones with the richest technical detail). Each case study: "Related case studies" with 2–3 links by shared industry or stack.
+- [x] 2.1 In the case-study route emit Article (headline, description, image, datePublished/dateModified from front matter if present else TODO(owner), author and publisher → {"@id": "https://peregrine-it.com/#organization"}) plus BreadcrumbList (Home › Case Studies › title).
+- [x] 2.2 Homepage: a "Selected work" section linking the hub and 3–4 featured case studies (pick the ones with the richest technical detail). Each case study: "Related case studies" with 2–3 links by shared industry or stack.
 - [x] 2.3 Confirm whether the 20th case study is intentionally excluded from the sitemap; report.
 Checks: every case study has Article + BreadcrumbList that parse; homepage has ≥4 links into /case-studies/*; no case study is an orphan.
 
