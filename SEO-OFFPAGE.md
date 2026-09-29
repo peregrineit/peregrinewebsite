@@ -9,6 +9,8 @@ Use the same name, description and URL everywhere, matching the Organization sch
 - **Legal name:** Peregrine IT Solutions LLP
 - **Website:** https://peregrine-it.com
 - **Email:** info@peregrine-it.com
+- **Headquarters / office:** Suite 115, H-160, BSI Business Park, Sector 63, Noida, Uttar Pradesh, India (add the PIN code everywhere once confirmed; no phone number is published)
+- **Founder:** Mukesh Swami, Founder & CEO — https://www.linkedin.com/in/mukeshswami/
 - **Short description (≤160 characters):**
   Peregrine IT Solutions builds SaaS platforms, API and MLS/IDX integrations, AI automation and cloud infrastructure for real estate, proptech and B2B companies.
 - **Long description:**
@@ -16,7 +18,7 @@ Use the same name, description and URL everywhere, matching the Organization sch
 - **Services (use these names):** SaaS Development · API Integration · MLS & IDX Integration · AI Automation · Cloud & DevOps · Odoo ERP
 - **Social:** LinkedIn https://www.linkedin.com/company/peregrine-it-solutions/ · Facebook https://www.facebook.com/peregrineitsolution · Instagram https://www.instagram.com/peregrineitsolution/
 
-Do not add claims to directory profiles that the site doesn't make (awards, certifications, "best"/"leading"/"#1", unsourced statistics, office addresses you don't have).
+Do not add claims to directory profiles that the site doesn't make (awards, certifications, "best"/"leading"/"#1", unsourced statistics, or any office other than the Noida address above).
 
 ---
 
@@ -34,6 +36,17 @@ Do not add claims to directory profiles that the site doesn't make (awards, cert
 1. Go to https://www.bing.com/webmasters and choose **Import from Google Search Console**. This copies the verified site and sitemaps.
 2. If importing isn't possible, add the site manually, verify it with a DNS CNAME or meta tag, and submit `https://peregrine-it.com/sitemap.xml`.
 3. Optional: enable IndexNow in Bing Webmaster Tools so new pages are submitted as soon as they're published.
+
+## 2a. Google Business Profile (Noida office)
+
+1. Create a profile at https://business.google.com for **Peregrine IT Solutions** at the Noida office address above.
+2. Primary category: **Software company**. Website: https://peregrine-it.com. Use the short description from the top of this file; don't add a phone number unless you decide to publish one on the site too.
+3. Complete Google's verification (postcard, phone or video, whichever Google offers).
+4. Once verified, copy the profile's Google Maps URL and add it to the Organization node in `src/app/layout.tsx`:
+   - `hasMap: "<Maps URL>"`
+   - append the profile URL to `sameAs`.
+   Then redeploy.
+5. Ask the testimonial clients in section 3 for a Google review as well.
 
 ## 3. Ask the seven testimonial clients for a "Built by Peregrine" link
 
@@ -73,15 +86,26 @@ Create or claim a profile on each directory, using the name, descriptions and se
 - [ ] **GoodFirms** — https://www.goodfirms.co. Choose Software Development, Web Development and Artificial Intelligence.
 - [ ] **DesignRush** — https://www.designrush.com. Choose Software Development and Web Development.
 
-Directory fields only the owner can fill in: minimum project size, hourly rate range, team size, founding year and headquarters location. Make sure these match whatever you decide to publish on the site; the site currently publishes no prices.
+Set the **headquarters** field on every directory to the Noida office address above, exactly as written. Directory fields only the owner can fill in: minimum project size, hourly rate range, team size and founding year. Make sure these match whatever you decide to publish on the site; the site currently publishes no prices.
 
 Use real portfolio items only: link the published case studies on peregrine-it.com rather than writing new claims.
+
+- [ ] **When each profile goes live, append its URL to `sameAs` on the Organization node in `src/app/layout.tsx`** (Clutch, GoodFirms, The Manifest, DesignRush, Google Business Profile), then redeploy. Keep the list to profiles you control.
 
 ## 6. RealFoyer
 
 realfoyer.com is Peregrine's own product. Make its "Peregrine IT Solutions LLP" mention a link to `https://peregrine-it.com`. Use the anchor text "Peregrine IT Solutions" or "Built by Peregrine IT Solutions".
 
-## 7. Re-audit in four weeks
+## 7. Keep the guides' figures current (quarterly)
+
+The three guides at /blog cite vendor and MLS prices that change. Every quarter (next: **late December 2026**):
+
+- [ ] Open every source link in each guide (`grep -o "https://[^']*" src/app/blog/*/page.tsx`) and check each figure against the live page.
+- [ ] Update any figure that changed. Remove any that are no longer published.
+- [ ] Bump `dateModified` for that guide in `src/data/guides.ts`, and the "checked on" date in the guide's note.
+- [ ] Redeploy. The sitemap's `lastmod` and the Article schema pick up the new date.
+
+## 8. Re-audit in four weeks
 
 - [ ] **On or after 2026-10-27**, re-run the SEO audit against production (baseline 58/100) and compare it with the Phase 5 run.
 - [ ] Before that, check:
@@ -95,6 +119,7 @@ realfoyer.com is Peregrine's own product. Make its "Peregrine IT Solutions LLP" 
 `grep -rn "TODO(owner)" src` lists them. At the time of writing:
 - prices and engagement model (no Offer schema until real prices exist);
 - code and hosting ownership FAQ;
-- an Odoo project summary or case study;
-- team members, byline author and certifications;
+- an Odoo case study once a project can be published (the Odoo page is currently a capability page);
+- the PIN code for the Noida office and the founder photo (`public/images/team/mukesh-swami.jpg`);
+- additional team members and certifications;
 - any vendor-partnership disclosure in the CRM guide.
