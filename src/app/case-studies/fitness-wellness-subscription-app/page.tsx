@@ -443,7 +443,7 @@ export default function FitnessWellnessSubscriptionApp() {
             subscribers joined at least one live session per week.
           </p>
           <p>
-            Workout sync had to be seamless. Users switch between phone and tablet; progress must
+            Workout sync had to be reliable. Users switch between phone and tablet; progress must
             follow. We use last-write-wins with server timestamps — conflicts are rare (same user,
             same workout) but we handle them gracefully. The &ldquo;next workout&rdquo;
             recommendations use completed sessions to avoid repetition and encourage variety.

@@ -135,7 +135,7 @@ export default function InsuranceClaimsAutomationPlatform() {
           <div className="csd-section-label">Overview</div>
           <h2>The Client&apos;s Vision</h2>
           <p>
-            A regional health insurer processing 45K+ medical claims per year was drowning in manual
+            A regional health insurer processing 45K+ medical claims per year was falling behind on manual
             adjudication. Claims adjusters opened PDFs and EOBs one by one, typed data into
             spreadsheets, and checked carrier rules against printed policy documents. A single
             claim could take 20+ minutes. Backlogs stretched to weeks, and providers complained

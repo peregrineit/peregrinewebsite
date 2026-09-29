@@ -134,7 +134,7 @@ export default function RecruitmentAtsPlatform() {
           <div className="csd-section-label">Overview</div>
           <h2>The Client&apos;s Vision</h2>
           <p>
-            A staffing and recruitment SaaS serving 200+ SMB and mid-market companies was drowning in
+            A staffing and recruitment SaaS serving 200+ SMB and mid-market companies was running on
             spreadsheets and email. Recruiters manually screened resumes, copied candidate details into
             ATS fields, and coordinated interviews via back-and-forth emails. Time-to-hire averaged
             35 days.

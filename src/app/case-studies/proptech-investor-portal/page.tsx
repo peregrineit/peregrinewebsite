@@ -389,7 +389,7 @@ export default function PropTechInvestorPortal() {
           <h2>The Impact</h2>
           <p>
             Within the first quarter of launch, the portal eliminated the IR team&apos;s biggest
-            bottleneck and transformed investor relations into a self-service experience.
+            bottleneck and turned investor relations into a self-service experience.
           </p>
 
           <div className="csd-results-grid">

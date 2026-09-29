@@ -54,7 +54,7 @@ export default function W3reAIRealEstatePlatform() {
           </h1>
 
           <p className="csd-hero-sub">
-            A mid-size brokerage operating across 4 MLS regions was drowning in data silos, losing leads to slow response times, and struggling with inaccurate pricing. Here&apos;s how we rebuilt their entire digital infrastructure with AI at the core.
+            A mid-size brokerage operating across 4 MLS regions was struggling with data silos, losing leads to slow response times, and struggling with inaccurate pricing. Here&apos;s how we rebuilt their entire digital infrastructure with AI at the core.
           </p>
 
           <div className="csd-hero-meta">
@@ -127,7 +127,7 @@ export default function W3reAIRealEstatePlatform() {
         {/* THE CHALLENGE */}
         <div className="csd-section">
           <div className="csd-section-label">The Challenge</div>
-          <h2>Five Critical Problems Bleeding Revenue</h2>
+          <h2>Five Critical Problems Costing Revenue</h2>
           <p>
             W3|re was losing an estimated $2.3M annually to operational inefficiencies, misqualified leads, and pricing errors. Their existing stack — a patchwork of 7 disconnected tools — was collapsing under scale.
           </p>

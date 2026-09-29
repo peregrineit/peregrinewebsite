@@ -135,7 +135,7 @@ export default function SupplyChainVisibilityPlatform() {
           <div className="csd-section-label">Overview</div>
           <h2>The Client&apos;s Vision</h2>
           <p>
-            A 3PL and freight brokerage managing shipments for hundreds of shippers was drowning in
+            A 3PL and freight brokerage managing shipments for hundreds of shippers was overwhelmed by
             &ldquo;Where&apos;s my shipment?&rdquo; calls. Each carrier had a different tracking
             portal — FedEx, UPS, DHL, regional LTL carriers. Customer service manually looked up
             tracking numbers one by one.

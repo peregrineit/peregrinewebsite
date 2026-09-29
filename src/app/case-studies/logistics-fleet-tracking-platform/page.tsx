@@ -386,7 +386,7 @@ export default function LogisticsFleetTrackingPlatform() {
           <div className="csd-section-label">Results</div>
           <h2>The Impact</h2>
           <p>
-            Within weeks of going live, the platform transformed fleet operations across all three
+            Within weeks of going live, the platform changed how fleet operations ran across all three
             countries — eliminating manual processes and delivering measurable ROI.
           </p>
 
@@ -431,7 +431,7 @@ export default function LogisticsFleetTrackingPlatform() {
           <p>
             Fleet management systems fail when they treat GPS tracking as the product. Tracking is
             table stakes — the real value is in what you do with the data. Route optimization,
-            geofencing alerts, and predictive ETAs are what transform a tracking dashboard into an
+            geofencing alerts, and predictive ETAs are what turn a tracking dashboard into an
             operational command center.
           </p>
           <p>
