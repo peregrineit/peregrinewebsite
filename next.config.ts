@@ -52,6 +52,8 @@ const nextConfig: NextConfig = {
         destination: `/case-studies/${slug}`,
         statusCode: 301 as const,
       })),
+      // Next.js also serves the homepage at /index; send it to the canonical URL.
+      { source: "/index", destination: "/", statusCode: 301 as const },
       // Case study renamed to match the client (W3|re).
       {
         source: "/case-studies/northbridge-realty-ai-platform",
