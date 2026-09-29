@@ -79,7 +79,9 @@ export default function Navbar() {
             type="button"
             aria-label="Close menu"
             onClick={() => setMenuOpen(false)}
-            className="absolute top-4 right-4 p-2 text-slate-600 hover:text-slate-900 rounded-lg">
+            // Inline size: peregrine.css stretches buttons to full width; 44x44 is the tap-target minimum.
+            style={{ width: 44, height: 44, padding: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            className="absolute top-3 right-3 text-slate-600 hover:text-slate-900 rounded-lg">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>

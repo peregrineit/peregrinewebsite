@@ -1000,4 +1000,7 @@
 .case-study-detail .csd-related-service a {
   color: var(--csd-accent);
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
