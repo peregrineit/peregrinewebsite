@@ -68,6 +68,18 @@ Checks: no unsourced numbers; Article schema parses; pages in sitemap and llms.t
 
 Start with Phase 1 now.
 
+## Phase 7 — Re-audit fixes
+Source: ~/Code/peregrine-it.com-audit/RE-AUDIT-2026-09-29.md (score 74/100, up from 58). Branch seo/phase-7 from main.
+Owner answers (2026-09-29): all slots left as brackets, so the fallbacks apply — W3|re: keep the Results figure (47 min → 8 s) and rewrite the Challenge sentence to match it, no new numbers; Odoo: not an official partner; engineers: none named yet, so no copy promises named engineers.
+- [ ] 7.1 Legacy scripts: load /js/peregrine.js, jQuery, animation.js, CounterUp and Waypoints only on the homepage route. Diff homepage behaviour with peregrine.js removed against the Phase 3 behaviour map; remove it if nothing depends on it, else extract the parts used. Checks: no /js/* request on any non-homepage page; homepage mobile Lighthouse median of 3 runs: Speed Index < 3.0 s, TBT < 200 ms. If Speed Index stays > 3.0 s, report whether the hero letter animation is the remaining cause and stop there.
+- [ ] 7.2 Titles ≤ 60 chars on all pages: suffix "| Peregrine IT", drop "— Case Study", brand never named twice. Descriptions ≤ 160 chars. Fix the &amp;amp; double-encoding on the HR/payroll case study. Checks: 0 titles > 60, 0 descriptions > 160.
+- [ ] 7.3 Internal links: each service page links its matching guide (mls-idx-integration ↔ mls-idx-integration-cost first); homepage "From the blog" block (three guides) and a "Selected work" block of 6 case studies; every blog post ≥ 6 inbound links; every case study ≥ 3.
+- [ ] 7.4 Retarget /services/mls-idx-integration to "RESO Web API & MLS data feed development" and /services/odoo-erp to "Odoo custom module and API integration development" (not a partner): title, H1, intro and FAQ wording only; keep the body.
+- [ ] 7.5 W3|re case study: remove the "districts" caption and the "expiring leases / outstanding balances" caption; reconcile the response-time contradiction (fallback above).
+- [ ] 7.6 Small fixes: /industries hub with the one industry card and a correct BreadcrumbList; footer copyright from the current year; 404 page robots meta consistent and no canonical; security headers in next.config (nosniff, frame-ancestors 'self', Referrer-Policy strict-origin-when-cross-origin, Permissions-Policy, CSP Report-Only); fixed bottom CTA bar: bottom padding at phone widths and hidden on /contact.
+- [ ] 7.7 Backlog (don't write yet): MLS data access guide; RESO Web API vs RETS migration guide; brokerage CRM development page; IDX vendor vs custom build; Odoo for real estate (SERP-check first).
+Checks: all Phase 1–5 checks plus the new ones; commit per step; push the branch only.
+
 ---
 
 ## Implementation notes
