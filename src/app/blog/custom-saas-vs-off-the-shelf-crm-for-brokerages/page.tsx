@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import GuideLayout, { Src, guideMetadata } from '../../components/GuideLayout';
+import GuideLayout, { GuideFaq, Src, guideMetadata } from '../../components/GuideLayout';
 
 const SLUG = 'custom-saas-vs-off-the-shelf-crm-for-brokerages';
 export const metadata = guideMetadata(SLUG);
@@ -123,6 +123,14 @@ export default function Guide() {
         <li>Can you export all of your data, and does your plan include API access?</li>
         <li>Who will maintain a custom platform after launch?</li>
       </ol>
+      <GuideFaq slug={SLUG} items={[
+  { question: 'How many real estate agents use a CRM?', answer: ['In NAR\'s 2026 technology report, ', ['46% of agents', NAR_2026], ' reported using a CRM.'] },
+  { question: 'What does Follow Up Boss cost?', answer: ['Its pricing page lists ', ['$69 per user per month on Grow, $499 per month for Pro with 10 users, and $1,000 per month for Platform with 30 users', FUB], ', billed monthly, with lower prices when billed annually.'] },
+  { question: 'Which brokerage CRMs don\'t publish their prices?', answer: ['', ['Lofty', LOFTY], ', ', ['BoldTrail', BOLD], ' and ', ['CINC', CINC], ' ask you to request a quote instead of listing prices on their pricing pages.'] },
+  { question: 'When does a custom brokerage platform make sense?', answer: ['When the software is part of what you sell to agents, when you need data or workflows no CRM supports (such as multi-MLS search or custom commission logic), when you pay for overlapping tools and reconcile them by hand, or when you want to own your data in a schema you control.'] },
+  { question: 'Can we keep an off-the-shelf CRM and still add custom features?', answer: ['Yes. Custom services such as lead routing, reporting or an agent portal can sit around a subscription CRM and connect through its API. Follow Up Boss, for example, invites customers to ', ['build their own integration with its open API', FUB_API], '.'] },
+]} />
+
       <p className="cp-note">
         Prices were taken from the vendors&apos; public pricing pages on September 29, 2026 and exclude taxes and
         optional add-ons unless stated.

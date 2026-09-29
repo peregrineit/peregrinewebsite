@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../../components/JsonLd';
 import { engagement, getService, services } from '@/data/services';
 import { getCaseStudy } from '@/data/case-studies';
-import { getGuide } from '@/data/guides';
+import { formatDate, getGuide } from '@/data/guides';
 import '../../css/content-pages.css';
 
 export const dynamicParams = false;
@@ -61,6 +61,15 @@ export default async function ServicePage({ params }: Props) {
         ],
       },
       {
+        '@type': 'WebPage',
+        '@id': `${url}#webpage`,
+        url,
+        name: service.title,
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        mainEntity: { '@id': `${url}#service` },
+        dateModified: service.updated,
+      },
+      {
         '@type': 'FAQPage',
         '@id': `${url}#faq`,
         mainEntity: service.faq.map(({ question, answer }) => ({
@@ -93,6 +102,7 @@ export default async function ServicePage({ params }: Props) {
           {service.intro.map((p, i) => (
             <p key={i} className={i === 0 ? 'cp-lead' : 'cp-lead-muted'}>{p}</p>
           ))}
+          <p className="cp-byline">Last updated <time dateTime={service.updated}>{formatDate(service.updated)}</time></p>
         </div>
       </section>
 
