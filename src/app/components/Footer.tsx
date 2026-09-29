@@ -83,7 +83,7 @@ export default function Footer() {
                     transform: 'translate3d(0, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)',
                     display: 'inline-block',
                     padding: '12px 24px',
-                    backgroundColor: '#06b6d4',
+                    backgroundColor: '#0e7490',
                     color: '#ffffff',
                     fontSize: '0.95rem',
                     fontWeight: '600',
@@ -93,7 +93,7 @@ export default function Footer() {
                     boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
                     marginTop: '0'
                   }}
-                  className="hover:bg-cyan-600"
+                  className="hover:bg-cyan-800"
                 >
                   Book a Strategy Call &rarr;
                 </a>

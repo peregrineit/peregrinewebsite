@@ -122,7 +122,7 @@ class Item {
         // On touch/mobile, show deco directly (no hover on mobile)
         var isMobile = window.matchMedia('(hover: none)').matches || window.matchMedia('(max-width: 768px)').matches;
         if (this.DOM.deco && isMobile) {
-            this.DOM.deco.innerHTML = this.randomString;
+            this.DOM.deco.setAttribute('data-text', this.randomString);
             this.DOM.deco.classList.add('grid__item-img-deco--mobile-visible');
             var cx = this.rect.width > 0 ? this.rect.width / 2 : 150;
             var cy = this.rect.height > 0 ? this.rect.height / 2 : 150;
@@ -222,7 +222,7 @@ class Item {
             '--y': this.renderedStyles['y'].previous
         });
         // Set the deco element's innerHTML to the random string
-        this.DOM.deco.innerHTML = this.randomString;
+        this.DOM.deco.setAttribute('data-text', this.randomString);
         // Request the next frame
         this.loopRender();
     }

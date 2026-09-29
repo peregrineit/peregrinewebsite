@@ -242,7 +242,7 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  <div className="grid__item-img-deco"></div>
+                  <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
                 <p className="card-title">Product Architecture & Prototyping</p>
@@ -286,7 +286,7 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  <div className="grid__item-img-deco"></div>
+                  <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
                 <p className="card-title">SaaS & Platform Engineering</p>
@@ -338,7 +338,7 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  <div className="grid__item-img-deco"></div>
+                  <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
                 <p className="card-title">Systems Integration & Data Pipelines</p>
@@ -386,7 +386,7 @@ export default function Home() {
                   <div id="w-node-_11afe82e-c384-13e8-e364-3e6e558d1846-098fe091" className="iconx_component---nnofle"><img loading="lazy" width="24" height="21"
                     src="/images/updateicon.svg" data-w-id="20085b6b-40e9-5543-2650-533d1fdece93" alt=""
                     className="image-6" /><img loading="lazy" width="96" height="96" src="/images/lap.svg" alt="" className="image-7" /></div>
-                  <div className="grid__item-img-deco"></div>
+                  <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
                 <p className="card-title">Cloud Performance & DevOps</p>
@@ -423,7 +423,7 @@ export default function Home() {
               <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520b-098fe091" className="grid__item">
                 <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about AI & Intelligent Automation">
                   <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520d-098fe091" className="iconx_component"><Image src="/images/ai-anim.webp" width={96} height={96} unoptimized alt="" className="image-5" /></div>
-                  <div className="grid__item-img-deco"></div>
+                  <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
                 <p className="card-title">AI & Intelligent Automation</p>
@@ -476,7 +476,7 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  <div className="grid__item-img-deco"></div>
+                  <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
                 <p className="card-title">Workflow Automation & Internal Tools</p>
