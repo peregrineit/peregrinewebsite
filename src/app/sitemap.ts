@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { services } from "@/data/services";
+import { guides } from "@/data/guides";
 
 const SITE_URL = "https://peregrine-it.com";
 
@@ -32,6 +33,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: SITE_URL },
     { url: `${SITE_URL}/services` },
     ...services.map((s) => ({ url: `${SITE_URL}/services/${s.slug}` })),
+    { url: `${SITE_URL}/industries/real-estate` },
+    { url: `${SITE_URL}/blog` },
+    ...guides.map((g) => ({ url: `${SITE_URL}/blog/${g.slug}`, lastModified: g.dateModified })),
     { url: `${SITE_URL}/about` },
     { url: `${SITE_URL}/contact` },
     { url: `${SITE_URL}/case-studies` },
