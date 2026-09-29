@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../../components/JsonLd';
 import { engagement, getService, services } from '@/data/services';
 import { getCaseStudy } from '@/data/case-studies';
+import { getGuide } from '@/data/guides';
 import '../../css/content-pages.css';
 
 export const dynamicParams = false;
@@ -41,6 +42,7 @@ export default async function ServicePage({ params }: Props) {
   const service = getService(slug);
   const url = `${SITE_URL}/services/${slug}`;
   const cited = service.caseStudies.map((c) => ({ ...c, study: getCaseStudy(c.slug) }));
+  const guides = service.guides.map(getGuide);
 
   const schema = {
     '@context': 'https://schema.org',
@@ -126,6 +128,25 @@ export default async function ServicePage({ params }: Props) {
               ))}
             </div>
             <p style={{ marginTop: 20 }}><Link href="/case-studies">Browse all case studies</Link></p>
+          </div>
+        </section>
+      )}
+
+      {guides.length > 0 && (
+        <section className="cp-section">
+          <div className="cp-container">
+            <span className="cp-label">Guides</span>
+            <h2>Read Before You Budget</h2>
+            <div className="cp-grid">
+              {guides.map((g) => (
+                <Link key={g.slug} href={`/blog/${g.slug}`} className="cp-card">
+                  <span className="cp-card-meta">Guide</span>
+                  <h3>{g.title}</h3>
+                  <p>{g.description}</p>
+                  <span className="cp-card-more">Read the guide <i className="ri-arrow-right-line" aria-hidden="true" /></span>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
       )}

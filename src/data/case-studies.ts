@@ -266,7 +266,7 @@ export const caseStudies: CaseStudy[] = [
     image: "/ogimage.png",
     industry: "Hospitality / FoodTech",
     stack: ["React Native", "Next.js", "Node.js", "PostgreSQL", "Redis", "Stripe", "WebSocket", "SQLite"],
-    related: ["food-delivery-aggregator-platform", "multi-vendor-ecommerce-marketplace"],
+    related: ["food-delivery-aggregator-platform", "multi-vendor-ecommerce-marketplace", "event-ticketing-platform"],
     service: "saas-development",
     card: {
       category: "ecommerce saas mobile",
@@ -427,6 +427,8 @@ export const featuredCaseStudySlugs = [
   "scaling-real-estate-saas-platform",
   "proptech-investor-portal",
   "supply-chain-visibility-platform",
+  "self-storage-management-platform",
+  "hr-payroll-saas-platform",
 ];
 
 export function getCaseStudy(slug: string): CaseStudy {

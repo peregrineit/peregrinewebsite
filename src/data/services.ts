@@ -25,6 +25,8 @@ export interface Service {
   stack: string[];
   /** Case studies cited on the page, with what each one shows for this service. */
   caseStudies: { slug: string; note: string }[];
+  /** Guides (src/data/guides.ts) linked from the page, most relevant first. */
+  guides: string[];
   faq: { question: string; answer: string }[];
   icon: string;
 }
@@ -93,6 +95,7 @@ export const services: Service[] = [
       { slug: 'self-storage-management-platform', note: 'A multi-tenant SaaS for self-storage operators combining reservations, Stripe billing and smart-lock access control behind one event-driven backend.' },
       { slug: 'recruitment-ats-platform', note: 'A multi-tenant applicant tracking system with per-company pipelines, branded career pages, resume parsing and Elasticsearch candidate search.' },
     ],
+    guides: ['cost-to-build-a-real-estate-platform', 'custom-saas-vs-off-the-shelf-crm-for-brokerages'],
     faq: [
       {
         question: 'What does multi-tenant mean for a SaaS product?',
@@ -166,6 +169,7 @@ export const services: Service[] = [
       { slug: 'hr-payroll-saas-platform', note: 'Payroll integrations with ADP and QuickBooks for deductions and ledger export, plus DocuSign for I-9 and W-4 forms, with reconciliation webhooks.' },
       { slug: 'legal-document-automation-platform', note: 'DocuSign integration for multi-party signing with webhook handlers for envelope events and retries that keep in-flight documents moving during outages.' },
     ],
+    guides: ['custom-saas-vs-off-the-shelf-crm-for-brokerages'],
     faq: [
       {
         question: 'Should we use a no-code tool like Zapier or build a custom integration?',
@@ -237,6 +241,7 @@ export const services: Service[] = [
       { slug: 'w3re-ai-real-estate-platform', note: 'A unified pipeline for four MLS systems (NTREIS, Stellar MLS, ARMLS and REcolorado) that normalizes schemas and deduplicates cross-listed properties.' },
       { slug: 'scaling-real-estate-saas-platform', note: 'Rebuilt the MLS sync engine for US and Canadian boards with delta detection, retry logic and per-feed error isolation, feeding Elasticsearch search for agent IDX sites.' },
     ],
+    guides: ['mls-idx-integration-cost', 'cost-to-build-a-real-estate-platform'],
     faq: [
       {
         question: 'What is the difference between RETS and the RESO Web API?',
@@ -309,6 +314,7 @@ export const services: Service[] = [
       { slug: 'insurance-claims-automation-platform', note: 'Claims document extraction with AWS Textract, custom validators and confidence thresholds that route uncertain extractions to human review.' },
       { slug: 'recruitment-ats-platform', note: 'Resume parsing that extracts structured candidate data from PDFs and Word files and makes it searchable with Elasticsearch.' },
     ],
+    guides: [],
     faq: [
       {
         question: 'Where does AI automation actually help?',
@@ -381,6 +387,7 @@ export const services: Service[] = [
       { slug: 'edtech-learning-platform', note: 'An event-driven video pipeline: uploads to S3 trigger Lambda and AWS MediaConvert jobs that produce HLS, delivered through CloudFront with signed URLs.' },
       { slug: 'self-storage-management-platform', note: 'An event-driven backend on AWS that was load-tested against simulated traffic for 45,000 units before a phased rollout.' },
     ],
+    guides: ['cost-to-build-a-real-estate-platform'],
     faq: [
       {
         question: 'Our platform is slow. Is more hosting the answer?',
@@ -455,6 +462,7 @@ export const services: Service[] = [
     ],
     stack: ['Odoo', 'Python', 'PostgreSQL', 'XML-RPC / JSON-RPC APIs', 'REST integrations', 'Next.js dashboards'],
     caseStudies: [],
+    guides: [],
     faq: [
       {
         question: 'Which Odoo modules do you implement?',
