@@ -981,3 +981,14 @@
     grid-template-columns: 1fr;
   }
 }
+
+.case-study-detail .csd-related-service {
+  font-size: 15px;
+  color: var(--csd-subtle);
+  margin: -8px 0 0;
+}
+
+.case-study-detail .csd-related-service a {
+  color: var(--csd-accent);
+  font-weight: 600;
+}

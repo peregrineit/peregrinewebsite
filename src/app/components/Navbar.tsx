@@ -4,10 +4,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const navLinks = [
-  { href: '/#sec-service', label: 'Services' },
-  { href: '/#sec-process', label: 'How We Work' },
-  { href: '/#sec-testimonials', label: 'Results' },
+  { href: '/services', label: 'Services' },
   { href: '/case-studies', label: 'Case Studies' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 export default function Navbar() {
