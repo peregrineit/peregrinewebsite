@@ -16,6 +16,11 @@ h1.hero-title {
     letter-spacing: inherit;
 }
 
+/* The CTA heading was an <h1>; keep the h1 color peregrine.css gave it. */
+h2.cta {
+    color: #fff;
+}
+
 /* Highlighted words styling - override animations */
 .hero-title .highlighted-word {
     display: inline-block !important;
