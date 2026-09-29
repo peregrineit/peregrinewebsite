@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
@@ -28,6 +30,7 @@ export const metadata: Metadata = {
 export default function RecruitmentAtsPlatform() {
   return (
     <div className="case-study-detail csd-teal">
+      <CaseStudySchema slug="recruitment-ats-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -427,6 +430,8 @@ export default function RecruitmentAtsPlatform() {
             interview records. No-shows are tracked and flagged for follow-up.
           </p>
         </div>
+
+        <RelatedCaseStudies slug="recruitment-ats-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

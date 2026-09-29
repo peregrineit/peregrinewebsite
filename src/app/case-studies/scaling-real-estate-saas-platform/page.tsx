@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
@@ -30,6 +32,7 @@ export const metadata: Metadata = {
 export default function ScalingRealEstateSaas() {
   return (
     <div className="case-study-detail">
+      <CaseStudySchema slug="scaling-real-estate-saas-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -435,6 +438,8 @@ export default function ScalingRealEstateSaas() {
             impacts US agent websites, and staging changes never touch production data.
           </p>
         </div>
+
+        <RelatedCaseStudies slug="scaling-real-estate-saas-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

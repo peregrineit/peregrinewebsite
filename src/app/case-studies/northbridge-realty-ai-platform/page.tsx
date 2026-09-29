@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
 import Link from 'next/link';
 import Image from 'next/image';
 import '../../css/case-study-detail.css';
@@ -31,6 +33,7 @@ export const metadata: Metadata = {
 export default function NorthbridgeRealtyAIPlatform() {
   return (
     <div className="case-study-detail csd-purple">
+      <CaseStudySchema slug="northbridge-realty-ai-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -399,6 +402,8 @@ export default function NorthbridgeRealtyAIPlatform() {
           </div>
           <div className="csd-quote-author">— Marcus Chen, Managing Broker & Co-Founder, W3|re</div>
         </div>
+
+        <RelatedCaseStudies slug="northbridge-realty-ai-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

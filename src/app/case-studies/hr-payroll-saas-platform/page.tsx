@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
@@ -28,6 +30,7 @@ export const metadata: Metadata = {
 export default function HRPayrollSaaSPlatform() {
   return (
     <div className="case-study-detail csd-purple">
+      <CaseStudySchema slug="hr-payroll-saas-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -441,6 +444,8 @@ export default function HRPayrollSaaSPlatform() {
             retention for 7 years was implemented with lifecycle policies and encrypted storage.
           </p>
         </div>
+
+        <RelatedCaseStudies slug="hr-payroll-saas-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

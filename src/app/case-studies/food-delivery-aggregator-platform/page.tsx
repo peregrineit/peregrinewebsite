@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
@@ -28,6 +30,7 @@ export const metadata: Metadata = {
 export default function FoodDeliveryAggregatorPlatform() {
   return (
     <div className="case-study-detail csd-orange">
+      <CaseStudySchema slug="food-delivery-aggregator-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -441,6 +444,8 @@ export default function FoodDeliveryAggregatorPlatform() {
             a week, which was critical for scaling from 50 to 200+ partners.
           </p>
         </div>
+
+        <RelatedCaseStudies slug="food-delivery-aggregator-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

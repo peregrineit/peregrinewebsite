@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
@@ -28,6 +30,7 @@ export const metadata: Metadata = {
 export default function InsuranceClaimsAutomationPlatform() {
   return (
     <div className="case-study-detail">
+      <CaseStudySchema slug="insurance-claims-automation-platform" />
       {/* ═══ HERO — Default (no accent) ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -445,6 +448,8 @@ export default function InsuranceClaimsAutomationPlatform() {
             the client could show exactly what data was used and when decisions were made.
           </p>
         </div>
+
+        <RelatedCaseStudies slug="insurance-claims-automation-platform" />
 
         {/* CTA */}
         <div className="csd-cta-section">

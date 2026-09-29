@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import CaseStudySchema from '../../components/CaseStudySchema';
+import RelatedCaseStudies from '../../components/RelatedCaseStudies';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 
@@ -28,6 +30,7 @@ export const metadata: Metadata = {
 export default function MultiVendorEcommerceMarketplace() {
   return (
     <div className="case-study-detail csd-green-accent">
+      <CaseStudySchema slug="multi-vendor-ecommerce-marketplace" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
         <div className="csd-back-nav" style={{ maxWidth: 960, margin: '0 auto', paddingBottom: 24 }}>
@@ -439,6 +442,8 @@ export default function MultiVendorEcommerceMarketplace() {
             with zero manual review needed for 85% of applications.
           </p>
         </div>
+
+        <RelatedCaseStudies slug="multi-vendor-ecommerce-marketplace" />
 
         {/* CTA */}
         <div className="csd-cta-section">
