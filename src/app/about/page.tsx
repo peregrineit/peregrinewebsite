@@ -114,7 +114,7 @@ export default function AboutPage() {
             They span real estate and proptech, logistics and supply chain, healthcare, HR and payroll, insurance,
             legal, education, e-commerce and marketplaces, hospitality, events and manufacturing.
           </p>
-          <p><Link href="/case-studies">Read the case studies</Link></p>
+          <p><Link href="/case-studies" className="cp-standalone-link">Read the case studies</Link></p>
           <p>
             We also build and operate our own real estate product,{' '}
             <a href="https://realfoyer.com/" target="_blank" rel="noopener">RealFoyer</a>, which combines IDX websites, a

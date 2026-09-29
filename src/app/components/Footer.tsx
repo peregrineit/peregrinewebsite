@@ -208,9 +208,9 @@ export default function Footer() {
                 Copyright {new Date().getFullYear()}© Peregrine-it.com | All Rights Reserved
               </div>
               <div className="flex items-center gap-4 text-sm">
-                <a href="#" style={{ color: '#374151', fontWeight: '500' }} className="hover:text-cyan-600 transition-colors">Sitemap</a>
-                <Link href="/privacy-policy" style={{ color: '#374151', fontWeight: '500' }} className="hover:text-cyan-600 transition-colors">Privacy Policy</Link>
-                <Link href="/terms-of-use" style={{ color: '#374151', fontWeight: '500' }} className="hover:text-cyan-600 transition-colors">Terms of Use</Link>
+                <a href="#" style={{ color: '#374151', fontWeight: '500' }} className="footer-legal-link hover:text-cyan-600 transition-colors">Sitemap</a>
+                <Link href="/privacy-policy" style={{ color: '#374151', fontWeight: '500' }} className="footer-legal-link hover:text-cyan-600 transition-colors">Privacy Policy</Link>
+                <Link href="/terms-of-use" style={{ color: '#374151', fontWeight: '500' }} className="footer-legal-link hover:text-cyan-600 transition-colors">Terms of Use</Link>
               </div>
             </div>
           </div>

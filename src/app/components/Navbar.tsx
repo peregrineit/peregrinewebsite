@@ -25,7 +25,7 @@ export default function Navbar() {
         {/* Mobile: logo centered, hamburger right */}
         <div className="flex md:hidden items-center">
           <div className="flex-1 min-w-0" />
-          <Link href="/" className="flex-shrink-0" onClick={() => setMenuOpen(false)}>
+          <Link href="/" className="flex-shrink-0 nav-logo-link" onClick={() => setMenuOpen(false)}>
             <Image src="/images/peregrine-logo-new.png" alt="Peregrine IT" width={205} height={36} loading="eager" className="h-9 w-auto" />
           </Link>
           <div className="flex-1 flex justify-end min-w-0">
@@ -45,7 +45,7 @@ export default function Navbar() {
 
         {/* Desktop: logo left, nav center, CTA right */}
         <div className="hidden md:flex items-center justify-between">
-          <Link href="/" className="flex-shrink-0" onClick={() => setMenuOpen(false)}>
+          <Link href="/" className="flex-shrink-0 nav-logo-link" onClick={() => setMenuOpen(false)}>
             <Image src="/images/peregrine-logo-new.png" alt="Peregrine IT" width={228} height={40} loading="eager" className="h-10 w-auto" />
           </Link>
           <div className="flex items-center gap-8">
@@ -86,7 +86,7 @@ export default function Navbar() {
           <nav className="flex flex-col gap-6">
             {navLinks.map(({ href, label }) => (
               <Link key={href} href={href}
-                className="font-medium text-slate-800 hover:text-cyan-600 py-1 !no-underline"
+                className="mobile-nav-link font-medium text-slate-800 hover:text-cyan-600 py-1 !no-underline"
                 onClick={() => setMenuOpen(false)}>
                 {label}
               </Link>

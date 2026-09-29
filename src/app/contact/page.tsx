@@ -90,7 +90,7 @@ export default function ContactPage() {
             <div className="cp-card">
               <span className="cp-card-icon"><i className="ri-mail-line" aria-hidden="true" /></span>
               <h3>Email</h3>
-              <p><a href="mailto:info@peregrine-it.com">info@peregrine-it.com</a></p>
+              <p><a href="mailto:info@peregrine-it.com" className="cp-standalone-link">info@peregrine-it.com</a></p>
             </div>
             <div className="cp-card">
               <span className="cp-card-icon"><i className="ri-calendar-line" aria-hidden="true" /></span>
@@ -102,7 +102,7 @@ export default function ContactPage() {
               <h3>Office</h3>
               <div style={{ color: 'var(--cp-muted)', fontSize: 15 }}>
                 <address style={{ fontStyle: 'normal', marginBottom: 6 }}>{officeAddressLine}</address>
-                <a href={officeMapsUrl} target="_blank" rel="noopener noreferrer">View on Google Maps</a>
+                <a href={officeMapsUrl} target="_blank" rel="noopener noreferrer" className="cp-standalone-link">View on Google Maps</a>
               </div>
             </div>
             <div className="cp-card">
@@ -114,11 +114,11 @@ export default function ContactPage() {
               <span className="cp-card-icon"><i className="ri-linkedin-box-line" aria-hidden="true" /></span>
               <h3>Social</h3>
               <p>
-                <a href="https://www.linkedin.com/company/peregrine-it-solutions/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="https://www.linkedin.com/company/peregrine-it-solutions/" target="_blank" rel="noopener noreferrer" className="cp-standalone-link">LinkedIn</a>
                 {' · '}
-                <a href="https://www.facebook.com/peregrineitsolution" target="_blank" rel="noopener noreferrer">Facebook</a>
+                <a href="https://www.facebook.com/peregrineitsolution" target="_blank" rel="noopener noreferrer" className="cp-standalone-link">Facebook</a>
                 {' · '}
-                <a href="https://www.instagram.com/peregrineitsolution/" target="_blank" rel="noopener noreferrer">Instagram</a>
+                <a href="https://www.instagram.com/peregrineitsolution/" target="_blank" rel="noopener noreferrer" className="cp-standalone-link">Instagram</a>
               </p>
             </div>
           </div>

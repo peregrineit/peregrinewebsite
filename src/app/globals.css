@@ -441,3 +441,57 @@ div.footer-section .paragraph-40,
 div.footer-section .paragraph-41 {
     color: #6b7280 !important;
 }
+/* Hero CTA: keep "Book a Strategy Call" on one line (peregrine.css fixes .cta-primary at 200px). */
+.hero-cta-container .cta-primary {
+    width: auto;
+    white-space: nowrap;
+}
+
+/* Tap targets of at least 44x44px on phones (WCAG 2.5.5 / Lighthouse). Inline links
+   inside running text are exempt and left alone. */
+@media (max-width: 767px) {
+    .dfs-link-1, .dfs-link-1-cta, #quick-project-btn-footer {
+        display: flex !important;
+        align-items: center;
+        min-height: 44px;
+    }
+    .social-link, .footer-accordion-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
+    }
+    .footer-legal-link, .dfs-wrap-3, .nav-logo-link, .hero-link, .home-guide-all,
+    .case-study-detail .csd-back-link, .cp-breadcrumb a, a:has(> img.testimonial-logo),
+    a:has(> img.testimonial-logo-featured) {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+    .cp-breadcrumb a {
+        min-width: 44px;
+    }
+    .cp-page a.cp-standalone-link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+    address > a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+    .mobile-nav-link {
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+    }
+    form input, form select, form textarea, details > summary {
+        min-height: 44px;
+    }
+    .cp-prose td a.cp-src {
+        display: inline-block;
+        padding: 12px 0;
+    }
+}
