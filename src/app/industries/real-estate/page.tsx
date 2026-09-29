@@ -47,7 +47,7 @@ export default function RealEstateIndustryPage() {
       },
       breadcrumbList(url, [
         { name: 'Home', path: '' },
-        { name: 'Industries', path: '/industries/real-estate' },
+        { name: 'Industries', path: '/industries' },
         { name: 'Real Estate', path: '/industries/real-estate' },
       ]),
     ],
@@ -58,7 +58,7 @@ export default function RealEstateIndustryPage() {
       <section className="cp-hero">
         <div className="cp-container">
           <nav className="cp-breadcrumb" aria-label="Breadcrumb">
-            <Link href="/">Home</Link><span aria-hidden="true">›</span><span>Industries</span><span aria-hidden="true">›</span><span>Real Estate</span>
+            <Link href="/">Home</Link><span aria-hidden="true">›</span><Link href="/industries">Industries</Link><span aria-hidden="true">›</span><span>Real Estate</span>
           </nav>
           <div className="cp-badge"><i className="ri-building-line" aria-hidden="true" />Real estate &amp; proptech</div>
           <h1>Software Development for Real Estate and Proptech</h1>
