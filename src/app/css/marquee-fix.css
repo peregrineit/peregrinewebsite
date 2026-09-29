@@ -39,3 +39,25 @@
     max-height: 48px;
     width: auto;
 }
+/* Tech marquee logos are lazy-loaded; give them a height so the width/height
+   attributes reserve their box before the SVG loads (it rendered at 48px). */
+#sec-tech .marquee-image {
+    height: 48px;
+}
+
+#sec-tech .marquee-image[src$="my-sql.svg"] {
+    height: 26px;
+}
+
+/* "How We Work" image: next/image has a fixed width attribute, so size it the way
+   its old srcset "sizes" did. */
+img.expand-team {
+    width: 540px;
+    height: auto;
+}
+
+@media (max-width: 1439px) { img.expand-team { width: 40vw; } }
+@media (max-width: 991px) { img.expand-team { width: 800px; } }
+@media (max-width: 963px) { img.expand-team { width: 83vw; } }
+@media (max-width: 767px) { img.expand-team { width: 88vw; } }
+@media (max-width: 479px) { img.expand-team { width: 90vw; } }

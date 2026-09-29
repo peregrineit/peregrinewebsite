@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
@@ -119,9 +120,9 @@ export default function Footer() {
         <div className="dfs-container-1" style={{ backgroundColor: '#ffffff' }}>
           <div className="dfs-wrap-1" style={{ backgroundColor: '#ffffff' }}>
             <div className="dfs-wrap-2" style={{ backgroundColor: '#f9fafb', padding: '1.5rem 2rem', gap: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <a href="#" className="dfs-wrap-3 w-inline-block" style={{ marginBottom: '0.5rem' }}><img
+              <a href="#" className="dfs-wrap-3 w-inline-block" style={{ marginBottom: '0.5rem' }}><Image
                 style={{ WebkitTransform: 'scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', MozTransform: 'scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', msTransform: 'scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', transform: 'scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)' }}
-                loading="lazy" alt="Peregrine Logo" src="/images/peregrine-logo.png" className="dfs-logo-1" /></a>
+                alt="Peregrine Logo" src="/images/peregrine-logo.png" width={1024} height={180} sizes="192px" className="dfs-logo-1" /></a>
 
               <div className="dfs-wrap-4" style={{ marginTop: '0', marginBottom: '0.75rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div

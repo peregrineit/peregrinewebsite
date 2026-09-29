@@ -82,9 +82,10 @@ export default function W3reAIRealEstatePlatform() {
           <Image
             src="/images/case-studies/Image7-e7e8a93c-2e0c-4711-85a8-0dfbba6cd59a.png"
             alt="The Emergence of AI in Property Valuation"
-            fill
+            width={750}
+            height={500}
             sizes="(max-width: 960px) 100vw, 960px"
-            style={{ objectFit: 'cover' }}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
             priority
           />
         </div>
