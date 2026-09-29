@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Script from 'next/script'; // Ensure Script is available if we use it, though we stripped scripts
 import Link from 'next/link';
 import CaseStudyCard from './components/CaseStudyCard';
+import BackgroundVideo from './components/BackgroundVideo';
 import { featuredCaseStudySlugs, getCaseStudy } from '@/data/case-studies';
 
 // Rendered as the visible FAQ section and as FAQPage JSON-LD, so the two always match.
@@ -185,21 +186,15 @@ export default function Home() {
 
             </div>
           </div>
-          <div
-            data-poster-url="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66c8bf45926796e0b4248dbd_hero-LINESupdated-poster-00001.jpg"
-            data-video-urls="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66c8bf45926796e0b4248dbd_hero-LINESupdated-transcode.mp4,https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66c8bf45926796e0b4248dbd_hero-LINESupdated-transcode.webm"
-            data-autoplay="true" data-loop="true" data-wf-ignore="true"
-            className="hero-video w-background-video w-background-video-atom"><video
-              id="a03dd132-464c-ac5b-6de7-ef4113ef23f2-video" autoPlay loop
-              style={{ backgroundImage: 'url(\'https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66c8bf45926796e0b4248dbd_hero-LINESupdated-poster-00001.jpg\')' }}
-              muted playsInline data-wf-ignore="true" data-object-fit="cover">
-              <source
-                src="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66c8bf45926796e0b4248dbd_hero-LINESupdated-transcode.mp4"
-                data-wf-ignore="true" />
-              <source
-                src="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66c8bf45926796e0b4248dbd_hero-LINESupdated-transcode.webm"
-                data-wf-ignore="true" />
-            </video></div>
+          <BackgroundVideo
+            className="hero-video w-background-video w-background-video-atom"
+            videoId="a03dd132-464c-ac5b-6de7-ef4113ef23f2-video"
+            poster="/media/hero-lines-poster.webp"
+            sources={[
+              { src: '/media/hero-lines.webm', type: 'video/webm' },
+              { src: '/media/hero-lines.mp4', type: 'video/mp4' },
+            ]}
+          />
         </section>
         <section id="sec-service" className="section dark !pt-12 !pb-16"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"
           fill="currentColor" className="section-divider-bae_divider_1723820093757">
@@ -670,7 +665,7 @@ export default function Home() {
                 <div className="title-capped">SYSTEMS SHIPPED</div>
               </div>
               <div className="arrow-wrap"><img alt=""
-                src="https://uploads-ssl.webflow.com/66b5198d80cc88d19051afb7/66b5198e80cc88d19051b065_arrow-right.svg"
+                src="/images/arrow-right.svg"
                 className="arrow-image shimmer-mask right-to-left" /></div>
               <div data-w-id="79529fbb-72fb-fe78-0c63-ba7c689cb95c" style={{}} className="circle-div">
                 <div className="stat-wrap">
@@ -680,7 +675,7 @@ export default function Home() {
                 <div className="title-capped">AVG. YEARS PER CLIENT</div>
               </div>
               <div className="arrow-wrap"><img alt=""
-                src="https://uploads-ssl.webflow.com/66b5198d80cc88d19051afb7/66b5198e80cc88d19051b065_arrow-right.svg"
+                src="/images/arrow-right.svg"
                 className="arrow-image shimmer-mask right-to-left" /></div>
               <div data-w-id="79529fbb-72fb-fe78-0c63-ba7c689cb965" style={{}} className="circle-div">
                 <div className="stat-wrap">
@@ -690,7 +685,7 @@ export default function Home() {
                 <div className="title-capped">ON-TIME DELIVERY RATE</div>
               </div>
               <div className="arrow-wrap"><img alt=""
-                src="https://uploads-ssl.webflow.com/66b5198d80cc88d19051afb7/66b5198e80cc88d19051b065_arrow-right.svg"
+                src="/images/arrow-right.svg"
                 className="arrow-image shimmer-mask right-to-left" /></div>
               <div data-w-id="bc979d55-ba31-04d1-c194-ff8614ee6322" style={{}} className="circle-div">
                 <div className="stat-wrap">
@@ -1109,21 +1104,15 @@ export default function Home() {
         </section>
 
         <section id="sec-CTA" className="section dark vh">
-          <div
-            data-poster-url="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66be2d194558cc6e063b5dd6_hb-Shutterstock%201093083365-Fast%201080p30-poster-00001.jpg"
-            data-video-urls="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66be2d194558cc6e063b5dd6_hb-Shutterstock%201093083365-Fast%201080p30-transcode.mp4,https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66be2d194558cc6e063b5dd6_hb-Shutterstock%201093083365-Fast%201080p30-transcode.webm"
-            data-autoplay="true" data-loop="true" data-wf-ignore="true"
-            className="cta-video w-background-video w-background-video-atom"><video
-              id="f042f04d-36ab-c84d-8adf-8bcc37730517-video" autoPlay loop
-              style={{ backgroundImage: 'url(\'https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66be2d194558cc6e063b5dd6_hb-Shutterstock%201093083365-Fast%201080p30-poster-00001.jpg\')' }}
-              muted playsInline data-wf-ignore="true" data-object-fit="cover">
-              <source
-                src="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66be2d194558cc6e063b5dd6_hb-Shutterstock%201093083365-Fast%201080p30-transcode.mp4"
-                data-wf-ignore="true" />
-              <source
-                src="https://uploads-ssl.webflow.com/66b50d9ad39e4c82098fe099%2F66be2d194558cc6e063b5dd6_hb-Shutterstock%201093083365-Fast%201080p30-transcode.webm"
-                data-wf-ignore="true" />
-            </video></div>
+          <BackgroundVideo
+            className="cta-video w-background-video w-background-video-atom"
+            videoId="f042f04d-36ab-c84d-8adf-8bcc37730517-video"
+            poster="/media/cta-background-poster.webp"
+            sources={[
+              { src: '/media/cta-background.webm', type: 'video/webm' },
+              { src: '/media/cta-background.mp4', type: 'video/mp4' },
+            ]}
+          />
           <div className="container">
             <div className="w-layout-vflex flex-block-4-copy"><img src="/images/peregrine-logo-new.png" loading="lazy"
               width="300" alt="Peregrine IT Logo" className="Peregrine-white" />
