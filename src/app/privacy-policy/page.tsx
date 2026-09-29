@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-const title = 'Privacy Policy';
+const title = 'Privacy Policy: What We Collect and Why';
 const description =
   'How Peregrine IT Solutions collects, uses and protects information submitted through peregrine-it.com, and the choices you have about your data.';
 const url = 'https://peregrine-it.com/privacy-policy';
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description,
   alternates: { canonical: url },
   openGraph: {
-    title: `${title} | Peregrine IT Solutions`,
+    title: `${title} | Peregrine IT`,
     description,
     url,
     type: 'website',

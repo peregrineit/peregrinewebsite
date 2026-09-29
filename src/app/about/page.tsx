@@ -9,15 +9,16 @@ import '../css/content-pages.css';
 
 const url = `${SITE_URL}/about`;
 const title = 'About Peregrine IT Solutions';
+const pageTitle = 'About Peregrine IT Solutions, a Software Engineering Firm';
 const description =
   'Peregrine IT Solutions is a software engineering firm building SaaS platforms, integrations, AI automation and cloud infrastructure for B2B companies.';
 
 export const metadata: Metadata = {
-  title: { absolute: title },
+  title: { absolute: pageTitle },
   description,
   alternates: { canonical: url },
   openGraph: {
-    title: `${title}`,
+    title: pageTitle,
     description,
     url,
     type: 'website',
