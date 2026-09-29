@@ -6,7 +6,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import MobileFloatingButtons from "./components/MobileFloatingButtons";
-import DeferredScripts from "./components/DeferredScripts";
 import { office } from "@/data/company";
 import { team, personId } from "@/data/team";
 
@@ -237,8 +236,6 @@ export default function RootLayout({
            `}
         </Script>
 
-        {/* jQuery, GSAP, anime, Typed, Waypoints, CounterUp, animation.js, Webflow runtime */}
-        <DeferredScripts />
       </body>
     </html>
   );

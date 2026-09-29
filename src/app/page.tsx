@@ -7,6 +7,8 @@ import Script from 'next/script'; // Ensure Script is available if we use it, th
 import Link from 'next/link';
 import CaseStudyCard from './components/CaseStudyCard';
 import BackgroundVideo from './components/BackgroundVideo';
+import DeferredScripts from './components/DeferredScripts';
+import HomeEffects from './components/HomeEffects';
 import { featuredCaseStudySlugs, getCaseStudy } from '@/data/case-studies';
 
 // Rendered as the visible FAQ section and as FAQPage JSON-LD, so the two always match.
@@ -96,6 +98,9 @@ export default function Home() {
 
   return (
     <div className="page-wrapper">
+      {/* Homepage-only legacy animation scripts and the Lottie/scroll-reveal replacement for the Webflow runtime */}
+      <DeferredScripts />
+      <HomeEffects />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
