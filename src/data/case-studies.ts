@@ -16,6 +16,8 @@ export interface CaseStudy {
   stack: string[];
   /** Slugs of 2–3 case studies sharing an industry or stack. */
   related: string[];
+  /** Primary service page (src/data/services.ts) this case study is linked to. */
+  service: string;
   /** Presentation for the /case-studies hub card. */
   card: {
     category: string;
@@ -43,6 +45,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Real Estate / PropTech",
     stack: ["Next.js", "Node.js", "MongoDB", "Elasticsearch", "Redis", "AWS (SES, S3)", "Linode / VPS", "MLS / RETS API"],
     related: ["w3re-ai-real-estate-platform", "proptech-investor-portal", "self-storage-management-platform"],
+    service: "saas-development",
     card: {
       category: "proptech saas",
       theme: "cyan",
@@ -63,6 +66,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Real Estate / PropTech",
     stack: ["Next.js", "React Native", "Node.js", "Python", "PostgreSQL", "Redis", "Apache Kafka", "TensorFlow", "XGBoost", "LangChain", "Pinecone", "Mapbox GL", "AWS EKS", "SageMaker"],
     related: ["scaling-real-estate-saas-platform", "proptech-investor-portal", "self-storage-management-platform"],
+    service: "ai-automation",
     card: {
       category: "proptech saas",
       theme: "purple",
@@ -82,6 +86,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Self-Storage / Property Management",
     stack: ["React Native", "Next.js", "Node.js", "PostgreSQL", "Redis", "MQTT / IoT", "Stripe", "AWS"],
     related: ["logistics-fleet-tracking-platform", "manufacturing-erp-system", "proptech-investor-portal"],
+    service: "saas-development",
     card: {
       category: "proptech saas iot mobile",
       theme: "purple",
@@ -102,6 +107,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Logistics / Transportation",
     stack: ["React Native", "Next.js", "Node.js", "TimescaleDB", "Redis", "MQTT", "Google Maps API", "AWS"],
     related: ["supply-chain-visibility-platform", "food-delivery-aggregator-platform", "self-storage-management-platform"],
+    service: "api-integration",
     card: {
       category: "logistics saas mobile iot",
       theme: "orange",
@@ -121,6 +127,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Healthcare / HealthTech",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "WebRTC", "AWS (HIPAA BAA)", "Stripe", "HL7 FHIR"],
     related: ["insurance-claims-automation-platform", "fitness-wellness-subscription-app"],
+    service: "saas-development",
     card: {
       category: "healthcare saas",
       theme: "teal",
@@ -140,6 +147,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "E-Commerce / Marketplace",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Elasticsearch", "Stripe Connect", "Redis", "AWS", "React Native"],
     related: ["food-delivery-aggregator-platform", "event-ticketing-platform", "restaurant-pos-ordering-system"],
+    service: "saas-development",
     card: {
       category: "ecommerce saas",
       theme: "green",
@@ -159,6 +167,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Real Estate / Investment",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "AWS S3", "DocuSign API", "Stripe", "Chart.js"],
     related: ["w3re-ai-real-estate-platform", "scaling-real-estate-saas-platform", "legal-document-automation-platform"],
+    service: "saas-development",
     card: {
       category: "proptech fintech saas",
       theme: "amber",
@@ -178,6 +187,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Education / EdTech",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "AWS MediaConvert", "Stripe", "AWS", "CloudFront"],
     related: ["fitness-wellness-subscription-app", "realtime-collaboration-tool"],
+    service: "cloud-devops",
     card: {
       category: "saas mobile",
       theme: "teal",
@@ -197,6 +207,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "FoodTech / E-Commerce",
     stack: ["React Native", "Next.js", "Node.js", "PostgreSQL", "Redis", "Firebase", "Stripe", "Geo Services"],
     related: ["restaurant-pos-ordering-system", "multi-vendor-ecommerce-marketplace", "logistics-fleet-tracking-platform"],
+    service: "saas-development",
     card: {
       category: "ecommerce mobile saas logistics",
       theme: "orange",
@@ -216,6 +227,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "HR Tech / FinTech",
     stack: ["Next.js", "Node.js", "PostgreSQL", "ADP API", "QuickBooks API", "DocuSign", "SOC 2", "AWS"],
     related: ["recruitment-ats-platform", "legal-document-automation-platform"],
+    service: "api-integration",
     card: {
       category: "saas fintech",
       theme: "purple",
@@ -235,6 +247,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "InsurTech / FinTech",
     stack: ["Next.js", "Node.js", "PostgreSQL", "AWS Textract", "HL7 FHIR", "HIPAA", "AWS", "Encryption"],
     related: ["multi-location-clinic-management", "legal-document-automation-platform", "hr-payroll-saas-platform"],
+    service: "ai-automation",
     card: {
       category: "fintech saas healthcare",
       theme: "cyan",
@@ -254,6 +267,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Hospitality / FoodTech",
     stack: ["React Native", "Next.js", "Node.js", "PostgreSQL", "Redis", "Stripe", "WebSocket", "SQLite"],
     related: ["food-delivery-aggregator-platform", "multi-vendor-ecommerce-marketplace"],
+    service: "saas-development",
     card: {
       category: "ecommerce saas mobile",
       theme: "green",
@@ -273,6 +287,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Legal Tech / FinTech",
     stack: ["Next.js", "Node.js", "PostgreSQL", "DocuSign", "AWS S3", "Redis", "SOC2", "PDF Generation"],
     related: ["hr-payroll-saas-platform", "proptech-investor-portal", "insurance-claims-automation-platform"],
+    service: "api-integration",
     card: {
       category: "fintech saas",
       theme: "amber",
@@ -292,6 +307,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Manufacturing / Industrial",
     stack: ["Next.js", "Node.js", "PostgreSQL", "MQTT", "Redis", "SAP Integration", "Multi-Plant", "Analytics"],
     related: ["supply-chain-visibility-platform", "self-storage-management-platform", "logistics-fleet-tracking-platform"],
+    service: "odoo-erp",
     card: {
       category: "saas iot",
       theme: "cyan",
@@ -311,6 +327,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "HR Tech / SaaS",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Elasticsearch", "SendGrid", "Calendly API", "Resume Parsing", "Multi-Tenant"],
     related: ["hr-payroll-saas-platform", "realtime-collaboration-tool"],
+    service: "saas-development",
     card: {
       category: "saas",
       theme: "teal",
@@ -330,6 +347,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Events / E-Commerce",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "Stripe", "Twilio", "Fraud Prevention", "Multi-Venue"],
     related: ["multi-vendor-ecommerce-marketplace", "restaurant-pos-ordering-system"],
+    service: "saas-development",
     card: {
       category: "ecommerce saas",
       theme: "green",
@@ -349,6 +367,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Logistics / Supply Chain",
     stack: ["Next.js", "Node.js", "PostgreSQL", "TimescaleDB", "Redis", "AWS", "Carrier APIs", "Multi-Tenant"],
     related: ["logistics-fleet-tracking-platform", "manufacturing-erp-system"],
+    service: "api-integration",
     card: {
       category: "logistics saas",
       theme: "orange",
@@ -368,6 +387,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "SaaS / Productivity",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "WebSocket", "CRDT", "Yjs", "Presence"],
     related: ["recruitment-ats-platform", "edtech-learning-platform"],
+    service: "saas-development",
     card: {
       category: "saas mobile",
       theme: "purple",
@@ -387,6 +407,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Health & Wellness",
     stack: ["React Native", "Node.js", "PostgreSQL", "AWS", "Stripe", "Agora/Twilio", "HLS", "SQLite"],
     related: ["edtech-learning-platform", "multi-location-clinic-management"],
+    service: "saas-development",
     card: {
       category: "mobile saas healthcare",
       theme: "purple",
