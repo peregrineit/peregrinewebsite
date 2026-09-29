@@ -12,7 +12,18 @@ const structuredData = {
       "@type": "Organization",
       name: "Peregrine IT Solutions",
       url: "https://peregrine-it.com",
-      logo: "https://peregrine-it.com/og.png",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://peregrine-it.com/favicons/favicon-512x512.png",
+        width: 512,
+        height: 512,
+      },
+      image: {
+        "@type": "ImageObject",
+        url: "https://peregrine-it.com/images/peregrine-logo-new.png",
+        width: 1024,
+        height: 180,
+      },
       description:
         "Peregrine IT builds scalable SaaS platforms, API integrations, automation systems and high-performance software infrastructure for startups and enterprises.",
       sameAs: [],
@@ -33,7 +44,18 @@ const structuredData = {
       "@type": "ProfessionalService",
       name: "Peregrine IT Solutions",
       url: "https://peregrine-it.com",
-      logo: "https://peregrine-it.com/og.png",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://peregrine-it.com/favicons/favicon-512x512.png",
+        width: 512,
+        height: 512,
+      },
+      image: {
+        "@type": "ImageObject",
+        url: "https://peregrine-it.com/images/peregrine-logo-new.png",
+        width: 1024,
+        height: 180,
+      },
       description:
         "Peregrine IT builds scalable SaaS platforms, API integrations, automation systems and high-performance software infrastructure for startups and enterprises.",
       serviceType: [
