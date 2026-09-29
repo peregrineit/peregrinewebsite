@@ -251,15 +251,6 @@ export default function Footer() {
           </div>
         </div>
 
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": "Peregrine IT",
-          "url": "https://peregrine-it.com",
-          "sameAs": ["https://www.linkedin.com/company/peregrine-it-solutions"],
-          "contactPoint": { "@type": "ContactPoint", "email": "info@peregrine-it.com", "contactType": "customer support" }
-        }) }} />
-
         <div className="w-full border-t border-gray-200 bg-gray-50 py-3">
           <div className="max-w-7xl mx-auto px-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-3">

@@ -9,53 +9,23 @@ const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Organization",
-      name: "Peregrine IT Solutions",
+      "@type": "WebPage",
+      "@id": "https://peregrine-it.com/#webpage",
       url: "https://peregrine-it.com",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://peregrine-it.com/favicons/favicon-512x512.png",
-        width: 512,
-        height: 512,
-      },
-      image: {
-        "@type": "ImageObject",
-        url: "https://peregrine-it.com/images/peregrine-logo-new.png",
-        width: 1024,
-        height: 180,
-      },
-      description:
-        "Peregrine IT builds scalable SaaS platforms, API integrations, automation systems and high-performance software infrastructure for startups and enterprises.",
-      sameAs: [],
-      contactPoint: {
-        "@type": "ContactPoint",
-        contactType: "sales",
-        email: "info@peregrine-it.com",
-        availableLanguage: "English",
-      },
-      areaServed: [
-        { "@type": "Country", name: "United States" },
-        { "@type": "Country", name: "Canada" },
-        { "@type": "Place", name: "Europe" },
-        { "@type": "Country", name: "United Arab Emirates" },
-      ],
+      name: "Peregrine IT Solutions | SaaS, API & Automation Development Company",
+      isPartOf: { "@id": "https://peregrine-it.com/#website" },
+      about: { "@id": "https://peregrine-it.com/#organization" },
+      publisher: { "@id": "https://peregrine-it.com/#organization" },
+      inLanguage: "en-US",
     },
     {
       "@type": "ProfessionalService",
+      "@id": "https://peregrine-it.com/#service",
       name: "Peregrine IT Solutions",
       url: "https://peregrine-it.com",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://peregrine-it.com/favicons/favicon-512x512.png",
-        width: 512,
-        height: 512,
-      },
-      image: {
-        "@type": "ImageObject",
-        url: "https://peregrine-it.com/images/peregrine-logo-new.png",
-        width: 1024,
-        height: 180,
-      },
+      logo: { "@id": "https://peregrine-it.com/#logo" },
+      image: "https://peregrine-it.com/images/peregrine-logo-new.png",
+      parentOrganization: { "@id": "https://peregrine-it.com/#organization" },
       description:
         "Peregrine IT builds scalable SaaS platforms, API integrations, automation systems and high-performance software infrastructure for startups and enterprises.",
       serviceType: [
@@ -71,12 +41,6 @@ const structuredData = {
         { "@type": "Place", name: "Europe" },
         { "@type": "Country", name: "United Arab Emirates" },
       ],
-      contactPoint: {
-        "@type": "ContactPoint",
-        contactType: "sales",
-        email: "info@peregrine-it.com",
-        availableLanguage: "English",
-      },
     },
     {
       "@type": "FAQPage",

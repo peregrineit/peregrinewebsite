@@ -92,9 +92,7 @@ export const metadata: Metadata = {
       },
     ],
     locale: "en_US",
-    type: "article",
-    publishedTime: "2026-02-17T00:00:00.000Z",
-    modifiedTime: "2026-02-17T00:00:00.000Z",
+    type: "website",
   },
 
   twitter: {
@@ -105,11 +103,65 @@ export const metadata: Metadata = {
   },
 
   category: "technology",
+};
 
-  other: {
-    "article:author": "Peregrine IT Solutions",
-    "article:publisher": "https://peregrine-it.com",
-  },
+const SITE_URL = "https://peregrine-it.com";
+const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+
+// The single site-wide Organization node. Other JSON-LD nodes reference it by @id.
+const siteStructuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": ORGANIZATION_ID,
+      name: "Peregrine IT Solutions",
+      legalName: "Peregrine IT Solutions LLP",
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        "@id": `${SITE_URL}/#logo`,
+        url: `${SITE_URL}/favicons/favicon-512x512.png`,
+        contentUrl: `${SITE_URL}/favicons/favicon-512x512.png`,
+        width: 512,
+        height: 512,
+        caption: "Peregrine IT Solutions",
+      },
+      image: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/images/peregrine-logo-new.png`,
+        width: 1024,
+        height: 180,
+      },
+      description:
+        "Peregrine IT builds scalable SaaS platforms, API integrations, automation systems and high-performance software infrastructure for startups and enterprises.",
+      sameAs: [
+        "https://www.linkedin.com/company/peregrine-it-solutions/",
+        "https://www.facebook.com/peregrineitsolution",
+        "https://www.instagram.com/peregrineitsolution/",
+      ],
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "sales",
+        email: "info@peregrine-it.com",
+        availableLanguage: "English",
+      },
+      areaServed: [
+        { "@type": "Country", name: "United States" },
+        { "@type": "Country", name: "Canada" },
+        { "@type": "Place", name: "Europe" },
+        { "@type": "Country", name: "United Arab Emirates" },
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Peregrine IT Solutions",
+      inLanguage: "en-US",
+      publisher: { "@id": ORGANIZATION_ID },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -124,6 +176,10 @@ export default function RootLayout({
         <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
       </head>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteStructuredData) }}
+        />
         <Navbar />
         {children}
         <Footer />
