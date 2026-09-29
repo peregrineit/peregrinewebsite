@@ -157,5 +157,5 @@ a.cp-card:hover { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 10px 30px
 .cp-prose th, .cp-prose td { border-bottom: 1px solid var(--cp-border); padding: 10px 8px; text-align: left; vertical-align: top; }
 .cp-prose th { color: #fff; font-weight: 700; }
 .cp-prose .cp-table-wrap { overflow-x: auto; }
-.cp-src { white-space: nowrap; }
+.cp-src { overflow-wrap: anywhere; }
 .cp-note { font-size: 14px; color: var(--cp-muted); border-left: 3px solid var(--cp-accent-strong); padding-left: 14px; }
