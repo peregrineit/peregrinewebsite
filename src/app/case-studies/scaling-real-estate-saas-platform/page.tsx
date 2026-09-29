@@ -19,13 +19,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/scaling-real-estate-saas-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Real Estate SaaS Platform Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Scaling a Real Estate SaaS Platform',
     description: 'From 5 agents to 200+. How we rebuilt a real estate SaaS platform to handle millions of MLS listings with sub-second search.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/scaling-real-estate-saas-platform' },
 };

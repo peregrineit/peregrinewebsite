@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/legal-document-automation-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Legal Document Automation Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Legal Document Automation for Contract Generation & E-Signature',
     description: 'Legal document automation processing 15K+ documents/month with 40% faster turnaround and SOC2 compliance.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/legal-document-automation-platform' },
 };

@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/multi-vendor-ecommerce-marketplace',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Multi-Vendor E-Commerce Marketplace Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Multi-Vendor E-Commerce Marketplace',
     description: 'Marketplace platform for 400+ vendors in the Gulf region with split payments, vendor onboarding, and bilingual Arabic/English support.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/multi-vendor-ecommerce-marketplace' },
 };

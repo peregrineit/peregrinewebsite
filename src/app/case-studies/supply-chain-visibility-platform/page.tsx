@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/supply-chain-visibility-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Supply Chain Visibility Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Supply Chain Visibility for Shipment Tracking & Alerts',
     description: 'Supply chain visibility platform for 2M+ shipments with 45% fewer customer inquiries.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/supply-chain-visibility-platform' },
 };

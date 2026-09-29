@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/multi-location-clinic-management',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Healthcare Clinic Management Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Multi-Location Clinic Management System',
     description: 'How we built a HIPAA-compliant platform unifying patient records, telehealth, scheduling, and billing across 35 clinics.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/multi-location-clinic-management' },
 };

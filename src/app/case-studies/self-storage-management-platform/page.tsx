@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/self-storage-management-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Self-Storage Management Platform Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Self-Storage Management Platform with IoT Access Control',
     description: 'How we built a unified SaaS platform with IoT-powered access control, automated billing, and real-time dashboards for 150+ self-storage facilities.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/self-storage-management-platform' },
 };

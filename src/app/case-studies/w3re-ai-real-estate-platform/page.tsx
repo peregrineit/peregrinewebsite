@@ -19,13 +19,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'W3|re AI Platform Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — AI-Powered Multi-Market Real Estate Platform',
     description: 'AI-native platform: 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform' },
 };

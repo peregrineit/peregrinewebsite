@@ -1,6 +1,7 @@
 
 'use client';
 import React, { useEffect } from 'react';
+import Image from 'next/image';
 import CaseStudyCard from '../components/CaseStudyCard';
 import { caseStudies } from '@/data/case-studies';
 
@@ -47,8 +48,8 @@ export default function CaseStudies() {
         <div className="bg-slate-900">
           <div className="relative">
             <div className="absolute inset-0 z-0">
-              <img alt="" className="w-full h-full object-cover object-top"
-                src="/images/case-studies-hero-bg.jpg" width="1024" height="571" fetchPriority="high" />
+              <Image alt="" className="w-full h-full object-cover object-top"
+                src="/images/case-studies-hero-bg.jpg" width={1024} height={571} sizes="100vw" priority fetchPriority="high" />
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-slate-900"></div>
             </div>
 

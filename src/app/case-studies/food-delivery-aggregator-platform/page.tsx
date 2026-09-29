@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/food-delivery-aggregator-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Food Delivery Aggregator Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Food Delivery Aggregator for Multi-Restaurant Marketplace',
     description: 'FoodTech aggregator with 200+ restaurants, 50K+ orders/month, and sub-3min delivery.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/food-delivery-aggregator-platform' },
 };

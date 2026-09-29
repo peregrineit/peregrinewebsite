@@ -18,13 +18,11 @@ export const metadata: Metadata = {
     url: 'https://peregrine-it.com/case-studies/logistics-fleet-tracking-platform',
     siteName: 'Peregrine IT Solutions',
     locale: 'en_US',
-    images: [{ url: 'https://peregrine-it.com/ogimage.png', width: 1200, height: 630, alt: 'Fleet Tracking Platform Case Study — Peregrine IT Solutions' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Real-Time Fleet Tracking Platform',
     description: 'GPS-powered fleet management with live tracking, route optimization, and driver apps for 500+ vehicles across the MENA region.',
-    images: ['https://peregrine-it.com/ogimage.png'],
   },
   alternates: {
     canonical: 'https://peregrine-it.com/case-studies/logistics-fleet-tracking-platform',

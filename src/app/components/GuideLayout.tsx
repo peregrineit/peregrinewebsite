@@ -23,7 +23,7 @@ export function guideMetadata(slug: string): Metadata {
       modifiedTime: g.dateModified,
       siteName: 'Peregrine IT Solutions',
       locale: 'en_US',
-      images: [{ url: '/ogimage.png', width: 1200, height: 630, alt: g.title }],
+      // og:image / twitter:image come from the route's opengraph-image.tsx (next/og).
     },
   };
 }
@@ -47,7 +47,7 @@ export default function GuideLayout({ slug, children }: { slug: string; children
         '@id': `${url}#article`,
         headline: g.title,
         description: g.description,
-        image: `${SITE_URL}/ogimage.png`,
+        image: `${url}/opengraph-image`,
         url,
         mainEntityOfPage: url,
         datePublished: g.datePublished,

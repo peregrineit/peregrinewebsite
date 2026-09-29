@@ -422,7 +422,7 @@ export default function Home() {
               </div>
               <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520b-098fe091" className="grid__item">
                 <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about AI & Intelligent Automation">
-                  <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520d-098fe091" className="iconx_component"><Image src="/images/ai-anim.webp" width={140} height={140} unoptimized alt="" className="image-5" /></div>
+                  <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520d-098fe091" className="iconx_component"><Image src="/images/ai-anim.webp" width={96} height={96} unoptimized alt="" className="image-5" /></div>
                   <div className="grid__item-img-deco"></div>
                   <div className="grid__item-img-overlay"></div>
                 </a>
