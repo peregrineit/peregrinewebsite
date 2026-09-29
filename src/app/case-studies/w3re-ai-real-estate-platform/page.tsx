@@ -141,7 +141,7 @@ export default function W3reAIRealEstatePlatform() {
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-time-line" /></div>
               <h4>Lead Response Time Averaged 47 Minutes</h4>
-              <p>Inbound leads were routed to a shared inbox. During peak hours, response times stretched to 2+ hours.</p>
+              <p>Inbound leads were routed to a shared inbox, where they waited an average of 47 minutes for a first response.</p>
             </div>
             <div className="csd-cs-card csd-challenge">
               <div className="csd-cs-card-icon"><i className="ri-price-tag-3-line" /></div>
@@ -172,7 +172,6 @@ export default function W3reAIRealEstatePlatform() {
           {/* Property Management Dashboard Image */}
           <div className="csd-section" style={{ marginTop: 32 }}>
             <h3>Property Management Dashboard</h3>
-            <p>Real-time overview of revenue, properties, tasks, expiring leases, and outstanding balances.</p>
             <div className="csd-hero-image-wrapper" style={{ marginTop: 16, borderRadius: 12, overflow: 'hidden' }}>
               <Image
                 src="/images/case-studies/MapImage4-08072b85-2c68-4dc0-9f9f-b799097c80f7.png"
@@ -240,7 +239,6 @@ export default function W3reAIRealEstatePlatform() {
           {/* Real Estate Analytics Dashboard */}
           <div className="csd-section" style={{ marginTop: 32 }}>
             <h3>Real Estate Analytics Dashboard</h3>
-            <p>Projects, builders, development costs, and market trends across districts.</p>
             <div className="csd-hero-image-wrapper" style={{ marginTop: 16, borderRadius: 12, overflow: 'hidden' }}>
               <Image
                 src="/images/case-studies/MapImage3-659b99b9-af15-4aa1-8d36-ed81c2de5b1f.png"
