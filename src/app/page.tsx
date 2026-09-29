@@ -142,13 +142,13 @@ export default function Home() {
           <path d="M 0 -10 L 0 0 C 0 0 0 0 0 0 C 400 0 800 27.58 1200 27.58 L 1200 0 L 1200 -10 Z"></path>
         </svg>
           <div className="hero-content-container">
-            <div className="hero-title txtanimation3">
+            <h1 className="hero-title txtanimation3">
               We Build the{' '}
               <span style={{ display: 'inline-block', padding: '4px 16px', border: '2px solid #06b6d4', color: '#22d3ee !important', borderRadius: '8px', fontWeight: 'bold', margin: '0 4px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} className="highlighted-word">Systems</span>{' '}
               Behind{' '}
               <span style={{ display: 'inline-block', padding: '4px 16px', border: '2px solid #9333ea', color: '#a855f7 !important', borderRadius: '8px', fontWeight: 'bold', margin: '0 4px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} className="highlighted-word">Scalable</span>{' '}
               Products
-            </div>
+            </h1>
             <div data-w-id="b9726cc1-f3ba-3db9-8b83-e79b6286cef0"
               style={{ WebkitTransform: 'translate3d(0, -16px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', MozTransform: 'translate3d(0, -16px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', msTransform: 'translate3d(0, -16px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)', transform: 'translate3d(0, -16px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)' }}
               className="hero-sub">We architect, build, and scale the platforms, integrations, and infrastructure that ambitious companies depend on.</div>
@@ -244,7 +244,7 @@ export default function Home() {
               sizes="(max-width: 767px) 93vw, 500px" alt=""
               srcSet="/images/lap-mock-p-500.png 500w, /images/lap-mock.png 800w" className="img-main" />
               <div className="w-layout-vflex content-wrap">
-                <h1 className="heading-primary gradient">Built for Scale. Architected for Complexity.</h1>
+                <h2 className="heading-primary gradient">Built for Scale. Architected for Complexity.</h2>
                 <div className="section-sub">From early-stage platforms to enterprise infrastructure — we architect, build, and scale the systems that power your business.</div>
                 <a href="#sec-CTA" className="cta-primary dark w-inline-block">
                   <div className="cta-label">Get a Free Consultation</div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -976,7 +976,7 @@ export default function Home() {
                 data-src="documents/AgLEFuYsGE.json" data-loop="1" data-direction="1" data-autoplay="1"
                 data-is-ix2-target="0" data-renderer="svg" data-default-duration="4" data-duration="0"></div>
               <div className="w-layout-vflex content-wrap">
-                <h1 className="heading-primary gradient">Technologies We Work With</h1>
+                <h2 className="heading-primary gradient">Technologies We Work With</h2>
                 <p className="section-sub">Our engineering teams work across the full modern stack — from frontend frameworks to cloud infrastructure.</p>
               </div>
             </div>
@@ -1116,7 +1116,7 @@ export default function Home() {
           <div className="container">
             <div className="w-layout-vflex flex-block-4-copy"><img src="/images/peregrine-logo-new.png" loading="lazy"
               width="300" alt="Peregrine IT Logo" className="Peregrine-white" />
-              <h1 className="cta">Let’s Talk About Your Project</h1>
+              <h2 className="cta">Let’s Talk About Your Project</h2>
               <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '1.1rem', maxWidth: '600px', textAlign: 'center', marginTop: '-0.5rem', marginBottom: '2rem' }}>Tell us about your goals and constraints — we’ll recommend the right way to work together.</p>
               <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center', width: '100%', maxWidth: '800px' }}>
                 <div style={{ flex: '1 1 340px', background: 'rgba(255,255,255,0.08)', borderRadius: '12px', padding: '2rem', textAlign: 'center', border: '1px solid rgba(255,255,255,0.12)' }}>

@@ -9,6 +9,13 @@ html, body {
     display: grid;
 }
 
+/* Hero title is an <h1>; keep the color and letter-spacing it had as a <div>
+   (peregrine.css sets both on the bare h1 selector). */
+h1.hero-title {
+    color: inherit;
+    letter-spacing: inherit;
+}
+
 /* Highlighted words styling - override animations */
 .hero-title .highlighted-word {
     display: inline-block !important;
