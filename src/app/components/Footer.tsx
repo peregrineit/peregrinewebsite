@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { QuickProjectForm, StrategyCallForm } from './LeadForms';
 
 export default function Footer() {
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
@@ -11,13 +12,6 @@ export default function Footer() {
     contact: false,
   });
 
-  const [formStatus, setFormStatus] = useState<{ loading: boolean; success: boolean; error: string }>({
-    loading: false, success: false, error: '',
-  });
-  const [qpFormStatus, setQpFormStatus] = useState<{ loading: boolean; success: boolean; error: string }>({
-    loading: false, success: false, error: '',
-  });
-
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
       ...prev,
@@ -25,93 +19,41 @@ export default function Footer() {
     }));
   };
 
-  const submitLead = async (formData: Record<string, string>, setStatus: typeof setFormStatus) => {
-    setStatus({ loading: true, success: false, error: '' });
-    try {
-      const res = await fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, pageUrl: window.location.href }),
-      });
-      const json = await res.json();
-      if (res.ok && json.success) {
-        setStatus({ loading: false, success: true, error: '' });
-      } else {
-        setStatus({ loading: false, success: false, error: json.error || 'Something went wrong.' });
-      }
-    } catch {
-      setStatus({ loading: false, success: false, error: 'Network error. Please try again.' });
-    }
-  };
 
   useEffect(() => {
     const popup = document.getElementById('contact-popup');
-    const openBtn = document.getElementById('lets-talk-btn');
-    const closeBtn = document.getElementById('close-popup');
-    const extraOpenBtns = document.querySelectorAll('[data-open-contact]');
-
-    const handleOpen = (e: any) => {
-      e.preventDefault();
-      if (popup) {
-        popup.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      }
-    };
-    const handleClose = () => {
-      if (popup) {
-        popup.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-    };
-    const handleOutsideClick = (e: any) => {
-      if (e.target === popup) handleClose();
-    };
-
-    if (openBtn) openBtn.addEventListener('click', handleOpen);
-    extraOpenBtns.forEach(btn => btn.addEventListener('click', handleOpen));
-    if (closeBtn) closeBtn.addEventListener('click', handleClose);
-    if (popup) popup.addEventListener('click', handleOutsideClick);
-
     const qpPopup = document.getElementById('quick-project-popup');
-    const qpCloseBtn = document.getElementById('close-quick-popup');
-    const qpOpenBtn = document.getElementById('quick-project-btn-footer');
-    const qpOpenBtnCol = document.getElementById('quick-project-btn-footer-col');
-    const qpOpenBtns = document.querySelectorAll('[data-open-quick-project], #quick-project-btn');
+    const open = (el: HTMLElement | null) => {
+      if (!el) return;
+      el.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    };
+    const close = (el: HTMLElement | null) => {
+      if (!el) return;
+      el.classList.remove('active');
+      document.body.style.overflow = '';
+    };
 
-    const handleQpOpen = (e: any) => {
-      e.preventDefault();
-      if (qpPopup) {
-        qpPopup.classList.add('active');
-        document.body.style.overflow = 'hidden';
+    // Delegated so buttons on pages reached by client-side navigation also work.
+    const CONTACT_TRIGGERS = '#lets-talk-btn, [data-open-contact]';
+    const QUICK_TRIGGERS = '[data-open-quick-project], #quick-project-btn, #quick-project-btn-footer, #quick-project-btn-footer-col';
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as Element | null;
+      if (!target) return;
+      if (target.closest(CONTACT_TRIGGERS)) {
+        e.preventDefault();
+        open(popup);
+      } else if (target.closest(QUICK_TRIGGERS)) {
+        e.preventDefault();
+        open(qpPopup);
+      } else if (target.closest('#close-popup') || target === popup) {
+        close(popup);
+      } else if (target.closest('#close-quick-popup') || target === qpPopup) {
+        close(qpPopup);
       }
     };
-    const handleQpClose = () => {
-      if (qpPopup) {
-        qpPopup.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-    };
-    const handleQpOutsideClick = (e: any) => {
-      if (e.target === qpPopup) handleQpClose();
-    };
-
-    if (qpOpenBtn) qpOpenBtn.addEventListener('click', handleQpOpen);
-    if (qpOpenBtnCol) qpOpenBtnCol.addEventListener('click', handleQpOpen);
-    qpOpenBtns.forEach((btn) => btn.addEventListener('click', handleQpOpen));
-    if (qpCloseBtn) qpCloseBtn.addEventListener('click', handleQpClose);
-    if (qpPopup) qpPopup.addEventListener('click', handleQpOutsideClick);
-
-    return () => {
-      if (openBtn) openBtn.removeEventListener('click', handleOpen);
-      extraOpenBtns.forEach(btn => btn.removeEventListener('click', handleOpen));
-      if (closeBtn) closeBtn.removeEventListener('click', handleClose);
-      if (popup) popup.removeEventListener('click', handleOutsideClick);
-      if (qpOpenBtn) qpOpenBtn.removeEventListener('click', handleQpOpen);
-      if (qpOpenBtnCol) qpOpenBtnCol.removeEventListener('click', handleQpOpen);
-      qpOpenBtns.forEach((btn) => btn.removeEventListener('click', handleQpOpen));
-      if (qpCloseBtn) qpCloseBtn.removeEventListener('click', handleQpClose);
-      if (qpPopup) qpPopup.removeEventListener('click', handleQpOutsideClick);
-    };
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
   }, []);
 
   return (
@@ -275,58 +217,7 @@ export default function Footer() {
             <button id="close-popup" className="close-btn">&times;</button>
           </div>
           <div className="popup-body">
-            {formStatus.success ? (
-              <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
-                <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>&#10003;</div>
-                <p style={{ color: '#22d3ee', fontWeight: '600', fontSize: '1.05rem', margin: '0 0 0.5rem' }}>Request sent successfully!</p>
-                <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0' }}>An engineer will review and reply within 6 hours.</p>
-              </div>
-            ) : (
-            <form onSubmit={(e: any) => {
-              e.preventDefault();
-              const f = e.target;
-              submitLead({
-                name: f.scName.value,
-                email: f.scEmail.value,
-                projectType: f.scType.value,
-                budget: f.scTimeline.value,
-                message: f.scMessage.value || 'Strategy call request',
-              }, setFormStatus);
-            }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <input type="text" name="scName" placeholder="Your name" required
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
-              <input type="email" name="scEmail" placeholder="Work email" required
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
-              <select name="scType" required defaultValue=""
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', appearance: 'none' as const, WebkitAppearance: 'none' as const }}>
-                <option value="" disabled style={{ color: '#64748b' }}>Select project type...</option>
-                <option value="new-build">New platform or product build</option>
-                <option value="integration">Integration or automation</option>
-                <option value="performance">Performance / infrastructure fix</option>
-                <option value="other">Other / not sure yet</option>
-              </select>
-              <select name="scTimeline" required defaultValue=""
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', appearance: 'none' as const, WebkitAppearance: 'none' as const }}>
-                <option value="" disabled style={{ color: '#64748b' }}>Expected timeline...</option>
-                <option value="asap">ASAP (within 2 weeks)</option>
-                <option value="1-2-months">1–2 months</option>
-                <option value="2-6-months">2–6 months</option>
-                <option value="exploring">Just exploring</option>
-              </select>
-              <textarea name="scMessage" placeholder="Tell us briefly what you need" rows={2}
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', resize: 'vertical' as const }} />
-              {formStatus.error && (
-                <p style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>{formStatus.error}</p>
-              )}
-              <button type="submit" className="newsletter-btn" disabled={formStatus.loading}
-                style={{ width: '100%', padding: '0.75rem', borderRadius: '0.75rem', fontSize: '0.95rem', fontWeight: '600', marginTop: '0.25rem', opacity: formStatus.loading ? 0.6 : 1 }}>
-                {formStatus.loading ? 'Sending...' : 'Book a Strategy Call'}
-              </button>
-              <p style={{ color: '#64748b', fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>
-                We&apos;ll review your details and reach out within 1 business day.
-              </p>
-            </form>
-            )}
+            <StrategyCallForm />
           </div>
         </div>
       </div>
@@ -338,50 +229,7 @@ export default function Footer() {
             <button id="close-quick-popup" className="close-btn">&times;</button>
           </div>
           <div className="popup-body">
-            {qpFormStatus.success ? (
-              <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
-                <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>&#10003;</div>
-                <p style={{ color: '#22d3ee', fontWeight: '600', fontSize: '1.05rem', margin: '0 0 0.5rem' }}>Request sent successfully!</p>
-                <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0' }}>We&apos;ll scope your request and respond within 48 hours.</p>
-              </div>
-            ) : (
-            <form onSubmit={(e: any) => {
-              e.preventDefault();
-              const f = e.target;
-              submitLead({
-                name: f.qpName.value,
-                email: f.qpEmail.value,
-                projectType: 'Quick Project Request',
-                budget: f.qpTimeline.value,
-                message: f.qpNeed.value,
-              }, setQpFormStatus);
-            }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <input type="text" name="qpName" placeholder="Your name" required
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
-              <input type="email" name="qpEmail" placeholder="Work email" required
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
-              <textarea name="qpNeed" placeholder="What do you need help with?" rows={3} required
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', resize: 'vertical' as const }} />
-              <select name="qpTimeline" required defaultValue=""
-                style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', appearance: 'none' as const, WebkitAppearance: 'none' as const }}>
-                <option value="" disabled style={{ color: '#64748b' }}>Desired timeline...</option>
-                <option value="asap">ASAP (within 2 weeks)</option>
-                <option value="1-2-months">1–2 months</option>
-                <option value="2-6-months">2–6 months</option>
-                <option value="exploring">Just exploring</option>
-              </select>
-              {qpFormStatus.error && (
-                <p style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>{qpFormStatus.error}</p>
-              )}
-              <button type="submit" className="newsletter-btn" disabled={qpFormStatus.loading}
-                style={{ width: '100%', padding: '0.75rem', borderRadius: '0.75rem', fontSize: '0.95rem', fontWeight: '600', marginTop: '0.25rem', opacity: qpFormStatus.loading ? 0.6 : 1 }}>
-                {qpFormStatus.loading ? 'Sending...' : 'Send Request'}
-              </button>
-              <p style={{ color: '#64748b', fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>
-                We&apos;ll scope your request and respond within 48 hours.
-              </p>
-            </form>
-            )}
+            <QuickProjectForm />
           </div>
         </div>
       </div>

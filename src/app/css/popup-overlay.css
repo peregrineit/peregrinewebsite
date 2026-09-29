@@ -81,3 +81,20 @@
   flex-direction: column;
   gap: 1rem;
 }
+
+/* Lead form submit button. Previously only defined in the homepage and
+   /case-studies stylesheets, so the popup button was unstyled elsewhere. */
+.newsletter-btn {
+  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  color: white;
+  border: none;
+  padding: 0 1.25rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.newsletter-btn:hover {
+  opacity: 0.9;
+}
