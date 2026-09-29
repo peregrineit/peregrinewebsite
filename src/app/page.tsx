@@ -204,7 +204,7 @@ export default function Home() {
           <path d="M 0, -10 V 7.23 C 0,65.52 268.63,112.77 600,112.77 S 1200,65.52 1200,7.23 V -10 Z"></path>
         </svg>
           <div className="container">
-            <div className="header-title-img-wrap"><Image src="/images/lap-mock.png" width={1248} height={832} sizes="(max-width: 767px) 93vw, 500px" alt="" className="img-main" />
+            <div className="header-title-img-wrap"><Image src="/images/lap-mock.png" width={1248} height={832} sizes="(max-width: 767px) 93vw, 500px" alt="Laptop displaying a Peregrine AI product dashboard with analytics panels" className="img-main" />
               <div className="w-layout-vflex content-wrap">
                 <h2 className="heading-primary gradient">Built for Scale. Architected for Complexity.</h2>
                 <div className="section-sub">From early-stage platforms to enterprise infrastructure — we architect, build, and scale the systems that power your business.</div>
@@ -513,7 +513,7 @@ export default function Home() {
               <div className="image-block"><Image
                 sizes="(max-width: 479px) 90vw, (max-width: 767px) 88vw, (max-width: 963px) 83vw, (max-width: 991px) 800px, (max-width: 1439px) 40vw, 540px"
                 src="/images/handshake.png" width={1248} height={832}
-                alt="How We Work" className="expand-team" />
+                alt="Two business professionals shaking hands in front of a digital data backdrop" className="expand-team" />
                 <div data-svg-animation-time="6000" data-svg="animated" id="w-node-_4ad2958e-ecc9-8cd6-1e6f-2264af434729-098fe091"
                   className="loc-outline-svg-copy w-embed"><svg width="100%" height="100%" viewBox="0 0 100 80" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -782,7 +782,7 @@ export default function Home() {
                 <div className="sticky-content">
                   <div className="heading-primary">Deep Industry Expertise</div><Image src="/images/handshake.png" width={1248} height={832}
                     sizes="(max-width: 479px) 89vw, (max-width: 767px) 316px, (max-width: 991px) 454px, (max-width: 1439px) 41vw, 454px"
-                    alt="" className="img-main faded-bottom" />
+                    alt="Two business professionals shaking hands in front of a digital data backdrop" className="img-main faded-bottom" />
                 </div>
                 <div className="home-services-about">
                   <div>

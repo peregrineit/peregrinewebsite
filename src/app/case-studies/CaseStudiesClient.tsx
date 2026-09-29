@@ -47,7 +47,7 @@ export default function CaseStudies() {
         <div className="bg-slate-900">
           <div className="relative">
             <div className="absolute inset-0 z-0">
-              <img alt="Hero Background" className="w-full h-full object-cover object-top"
+              <img alt="" className="w-full h-full object-cover object-top"
                 src="/images/case-studies-hero-bg.jpg" width="1024" height="571" fetchPriority="high" />
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-slate-900"></div>
             </div>
