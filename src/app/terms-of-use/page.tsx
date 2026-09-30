@@ -1,12 +1,15 @@
 import type { Metadata } from 'next';
+import JsonLd, { ORGANIZATION_REF, SITE_URL } from '../components/JsonLd';
+import { formatDate } from '@/data/guides';
+import { termsOfUseUpdated } from '@/data/legal';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Terms of Use',
+  title: 'Terms of Use: Acceptable Use and Liability',
   description: 'The terms that govern use of the Peregrine IT Solutions website at peregrine-it.com, including acceptable use, intellectual property and liability.',
   alternates: { canonical: 'https://peregrine-it.com/terms-of-use' },
   openGraph: {
-    title: 'Terms of Use | Peregrine IT Solutions',
+    title: 'Terms of Use: Acceptable Use and Liability | Peregrine IT',
     description: 'The terms that govern use of the Peregrine IT Solutions website at peregrine-it.com, including acceptable use, intellectual property and liability.',
     url: 'https://peregrine-it.com/terms-of-use',
     type: 'website',
@@ -24,10 +27,21 @@ const liStyle = { marginBottom: '0.35rem' };
 const capsStyle = { fontSize: '0.92rem', lineHeight: '1.7' as const, marginTop: '0.75rem' };
 
 export default function TermsOfUse() {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${SITE_URL}/terms-of-use#webpage`,
+    url: `${SITE_URL}/terms-of-use`,
+    name: 'Terms of Use',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    publisher: ORGANIZATION_REF,
+    dateModified: termsOfUseUpdated,
+  };
   return (
     <main style={{ maxWidth: '780px', margin: '0 auto', padding: '7rem 2rem 5rem' }}>
       <h1 style={{ fontSize: '2.25rem', fontWeight: '700', color: '#111827', marginBottom: '0.5rem' }}>Terms of Use</h1>
-      <p style={{ color: '#9ca3af', fontSize: '0.9rem', marginBottom: '2.5rem' }}>Last Updated: February 15, 2026</p>
+      <JsonLd data={schema} />
+      <p style={{ color: '#9ca3af', fontSize: '0.9rem', marginBottom: '2.5rem' }}>Last Updated: <time dateTime={termsOfUseUpdated}>{formatDate(termsOfUseUpdated)}</time></p>
 
       <div style={{ color: '#374151', fontSize: '1rem', lineHeight: '1.8' }}>
 

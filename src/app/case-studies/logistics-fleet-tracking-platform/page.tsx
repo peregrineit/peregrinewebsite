@@ -154,7 +154,7 @@ export default function LogisticsFleetTrackingPlatform() {
           <h2>What Was Breaking</h2>
           <p>
             When we assessed the client&apos;s operations across three countries, we identified four
-            critical breakdowns that were bleeding money and losing customers.
+            critical breakdowns that were costing money and losing customers.
           </p>
 
           <div className="csd-cs-grid">

@@ -102,6 +102,12 @@ img.expand-team {
     width: 100%;
     text-align: center;
 }
+/* The line is always one line tall; containing it means each animation frame
+   re-lays out only this box, not the whole page. */
+.hero-cta-container .scramble-text {
+    height: 1lh;
+    contain: strict;
+}
 
 /* Section label on the dark 'Selected work' background: the default blue (#1d4ed8)
    is too dark there (2.8:1). */
@@ -113,4 +119,9 @@ img.expand-team {
    it isn't part of the link's text (the link is named by its aria-label). */
 .grid__item-img-deco::before {
     content: attr(data-text);
+}
+
+/* Service-card spotlight fades in and out on hover (was a GSAP tween: 0.5s, power3). */
+.grid__item-img-deco--fade {
+    transition: opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }

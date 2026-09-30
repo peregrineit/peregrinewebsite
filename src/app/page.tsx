@@ -7,7 +7,7 @@ import Script from 'next/script'; // Ensure Script is available if we use it, th
 import Link from 'next/link';
 import CaseStudyCard from './components/CaseStudyCard';
 import BackgroundVideo from './components/BackgroundVideo';
-import DeferredScripts from './components/DeferredScripts';
+import HomeAnimations from './components/HomeAnimations';
 import HomeEffects from './components/HomeEffects';
 import { featuredCaseStudySlugs, getCaseStudy } from '@/data/case-studies';
 import { guides } from '@/data/guides';
@@ -100,7 +100,7 @@ export default function Home() {
   return (
     <div className="page-wrapper">
       {/* Homepage-only legacy animation scripts and the Lottie/scroll-reveal replacement for the Webflow runtime */}
-      <DeferredScripts />
+      <HomeAnimations />
       <HomeEffects />
       <script
         type="application/ld+json"

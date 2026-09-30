@@ -418,7 +418,7 @@ export default function RecruitmentAtsPlatform() {
             corrections over time.
           </p>
           <p>
-            Elasticsearch made candidate search transformative. Recruiters can find &ldquo;React
+            Elasticsearch changed how recruiters search for candidates. They can find &ldquo;React
             developers with 5+ years in fintech&rdquo; in seconds. We use synonym expansion for
             skills (e.g., &ldquo;JS&rdquo; maps to &ldquo;JavaScript&rdquo;) and faceted filters for
             location and salary. Index updates are near real-time.

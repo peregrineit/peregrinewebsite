@@ -101,6 +101,19 @@ Source: ~/Code/peregrine-it.com-audit/2026-09-30/{FULL-AUDIT-REPORT,ACTION-PLAN}
 - Skipped for now: 8 (migrating homepage animations off jQuery).
 Checks: all Phase 1–7 checks plus new ones per item; commit per item; push the branch only.
 
+## Phase 9 — post-88 fixes
+Branch seo/phase-9 from main, code only. Robots: owner left the choice as a bracket, so the fallback applies: keep CCBot and Google-Extended allowed.
+- [x] 9.1 Submit all sitemap URLs to IndexNow (one request, key file) and record the response. Done 2026-09-29 20:56 UTC: POST https://api.indexnow.org/indexnow with 39 URLs + keyLocation -> HTTP 202 Accepted (key validation pending on the engine side).
+- [x] 9.2 Homepage off jQuery: counters, typing terminal, grid hover and hero animations move to React/CSS; drop jQuery, GSAP, anime, CounterUp and Waypoints from the homepage. Verify against the Phase 3/7 behaviour map (7 Lottie, 42 reveals, counters, typing, hero) with a before/after screenshot diff and 3 cache-busted mobile Lighthouse runs. Target: main-thread work < 1.0 s, no visual change.
+  Result (local, interleaved A/B vs main, 3 cache-busted mobile runs, median): main-thread 1.89 s -> 1.59 s, style & layout 363 -> 254 ms, script evaluation 379 -> 272 ms, TBT 53 -> 15 ms, CLS 0. Behaviour map identical (7/7 Lottie, 42 reveals, counters 50/3/97/4.7, typing, card hover). Screenshot diff: only the random card backdrop text differs. **Target < 1.0 s not met**: what remains is the document itself (~1.0 s: 500 KB HTML with ~174 KB inlined CSS, continuous CSS animations) and the React runtime (~0.28 s), not animation code. Next lever: critical-CSS-only inlining and a smaller homepage DOM.
+- [x] 9.3 Replace "bleeding money" and "transformative" in our own copy (client quotes untouched).
+- [x] 9.4 Hero scramble line readable while animating.
+- [x] 9.5 Menu close button and case-study chips >= 44 px on phones. Close button 44x44 (was 280x40); service links 98x44 / 78x44 (were 380x25 block links that stacked 'Service:', each link and the '·' on separate lines — now one line).
+- [x] 9.6 Link /industries from the footer and from each service page.
+- [x] 9.7 About, Privacy and Terms titles 45–60 characters, brand not repeated.
+- [x] 9.8 Sitemap lastmod from dateModified where a page has one; omitted elsewhere. 10 entries (4 guides, 6 services). Follow-up: Privacy and Terms now declare their visible "Last updated" date as WebPage.dateModified (dates in src/data/legal.ts feed the visible line, the schema and the sitemap), so their lastmod is back: 12 entries.
+Checks: all Phase 1–8 checks plus new ones per item; commit per item; push the branch only.
+
 ---
 
 ## Implementation notes
@@ -112,7 +125,7 @@ Checks: all Phase 1–7 checks plus new ones per item; commit per item; push the
 - Role-only testimonials stay as they are; no Review schema.
 - Stop a local server with `lsof -tiTCP:<port> -sTCP:LISTEN | xargs kill`; `pkill -f "next start"` does not match the next-server process.
 - Phase 3: the ~2.4 MB webflow video was the CTA background (bottom of the homepage), not the hero; the hero video's poster is the LCP element. Both videos are self-hosted in public/media and only attached at >= 768px (components/BackgroundVideo.tsx).
-- Legacy scripts (jQuery, GSAP, anime, Typed, Waypoints, CounterUp, /js/animation.js, /js/peregrine.js) load via components/DeferredScripts.tsx in dependency order after load+idle. Add new legacy scripts there, not with next/script.
+- Legacy scripts (jQuery, GSAP, anime, Typed, Waypoints, CounterUp, /js/animation.js, /js/peregrine.js) are gone (Phase 7 removed peregrine.js, Phase 9 the rest). Homepage animations live in components/HomeAnimations.tsx (scramble line, typing terminal, counters, card hover) and components/HomeEffects.tsx (Lottie, scroll reveals). The `data-svg="animated"` handshake outline was never animated: the old jQuery selector `[svg="animated"]` did not match the data- attribute, so it stays static.
 - Remix Icon is a bundled subset (src/app/css/remixicon-subset.css + public/fonts/remixicon-subset.woff2, v3.5.0). A new `ri-*` icon renders blank until the subset is regenerated: collect `grep -rhoE "ri-[a-z0-9-]+" src | sort -u` (pass the single directory `src`; multiple paths returned an incomplete list), take their codepoints from remixicon@3.5.0/fonts/remixicon.css, and run `pyftsubset remixicon.woff2 --unicodes=... --flavor=woff2`.
 - 3.5: @vercel/speed-insights was already installed and rendered in layout.tsx.
 - Phase 4 owner answers were not supplied (template placeholders), so: the six plan services were built with TODO(owner) to confirm them; no prices and no Offer schema; no team members, so no /team page and no team section on /about (src/data/team.ts + components/TeamGrid.tsx are ready); certifications claim dropped; case-study byline renders nothing until caseStudyAuthorId is set in src/data/team.ts.

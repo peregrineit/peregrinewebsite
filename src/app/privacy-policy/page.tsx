@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
+import JsonLd, { ORGANIZATION_REF, SITE_URL } from '../components/JsonLd';
+import { formatDate } from '@/data/guides';
+import { privacyPolicyUpdated } from '@/data/legal';
 
-const title = 'Privacy Policy';
+const title = 'Privacy Policy: What We Collect and Why';
 const description =
   'How Peregrine IT Solutions collects, uses and protects information submitted through peregrine-it.com, and the choices you have about your data.';
 const url = 'https://peregrine-it.com/privacy-policy';
@@ -10,7 +13,7 @@ export const metadata: Metadata = {
   description,
   alternates: { canonical: url },
   openGraph: {
-    title: `${title} | Peregrine IT Solutions`,
+    title: `${title} | Peregrine IT`,
     description,
     url,
     type: 'website',
@@ -20,10 +23,21 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPolicy() {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${SITE_URL}/privacy-policy#webpage`,
+    url: `${SITE_URL}/privacy-policy`,
+    name: 'Privacy Policy',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    publisher: ORGANIZATION_REF,
+    dateModified: privacyPolicyUpdated,
+  };
   return (
     <main style={{ maxWidth: '960px', margin: '0 auto', padding: '7rem 2rem 5rem' }}>
       <h1 style={{ fontSize: '2.25rem', fontWeight: '700', color: '#111827', marginBottom: '0.5rem' }}>Privacy Policy</h1>
-      <p style={{ color: '#9ca3af', fontSize: '0.9rem', marginBottom: '2.5rem' }}>Last updated: February 15, 2026</p>
+      <JsonLd data={schema} />
+      <p style={{ color: '#9ca3af', fontSize: '0.9rem', marginBottom: '2.5rem' }}>Last updated: <time dateTime={privacyPolicyUpdated}>{formatDate(privacyPolicyUpdated)}</time></p>
 
       <div style={{ color: '#374151', fontSize: '1rem', lineHeight: '1.8' }}>
 

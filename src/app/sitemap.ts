@@ -1,11 +1,13 @@
 import type { MetadataRoute } from "next";
 import { services } from "@/data/services";
 import { guides } from "@/data/guides";
+import { privacyPolicyUpdated, termsOfUseUpdated } from "@/data/legal";
 
 const SITE_URL = "https://peregrine-it.com";
 
-// Case studies have no publish/update dates in their content, so lastModified is
-// omitted rather than stamped with the build time.
+// lastModified only where the page itself declares a dateModified in its JSON-LD
+// (guides, service pages and the two legal pages). Everything else omits it rather than stamping the
+// build time.
 const caseStudySlugs = [
   "scaling-real-estate-saas-platform",
   "w3re-ai-real-estate-platform",
@@ -32,7 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: SITE_URL },
     { url: `${SITE_URL}/services` },
-    ...services.map((s) => ({ url: `${SITE_URL}/services/${s.slug}` })),
+    ...services.map((s) => ({ url: `${SITE_URL}/services/${s.slug}`, lastModified: s.updated })),
     { url: `${SITE_URL}/industries` },
     { url: `${SITE_URL}/industries/real-estate` },
     { url: `${SITE_URL}/blog` },
@@ -41,8 +43,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/contact` },
     { url: `${SITE_URL}/case-studies` },
     ...caseStudySlugs.map((slug) => ({ url: `${SITE_URL}/case-studies/${slug}` })),
-    // Legal pages carry a visible "Last updated" date.
-    { url: `${SITE_URL}/privacy-policy`, lastModified: "2026-02-15" },
-    { url: `${SITE_URL}/terms-of-use`, lastModified: "2026-02-15" },
+    { url: `${SITE_URL}/privacy-policy`, lastModified: privacyPolicyUpdated },
+    { url: `${SITE_URL}/terms-of-use`, lastModified: termsOfUseUpdated },
   ];
 }
