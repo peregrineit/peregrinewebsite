@@ -114,6 +114,17 @@ Branch seo/phase-9 from main, code only. Robots: owner left the choice as a brac
 - [x] 9.8 Sitemap lastmod from dateModified where a page has one; omitted elsewhere. 10 entries (4 guides, 6 services). Follow-up: Privacy and Terms now declare their visible "Last updated" date as WebPage.dateModified (dates in src/data/legal.ts feed the visible line, the schema and the sitemap), so their lastmod is back: 12 entries.
 Checks: all Phase 1–8 checks plus new ones per item; commit per item; push the branch only.
 
+## Phase 10 — AEO (answer-first content)
+Branch seo/phase-10 from main. Content only, no new claims: every fact already on the site or TODO(owner); nothing from the third-party AEO report.
+- [x] 10.1 Homepage: 66-word plain-language paragraph at the top of the dark services section, directly under the hero; the first <p> after the H1.
+- [x] 10.2 Service pages: question H2s (what it includes, how long, what it costs, how it starts, which case studies), each opened by a 40-60-word answer naming Peregrine and the service; cost answers link the first guide (AI automation and Odoo have none) and give no numbers. "At a glance" table: delivered, timeline (SaaS only: "8 to 14 weeks / four to six months" from existing homepage copy), how it starts, pricing note, related case studies. TODO(owner): engagement model row; timelines for the other five services.
+- [x] 10.3 Case studies: "Results at a glance" table (client as the Overview names it, industry, stack, hero duration, three stat cards). W3|re skips "4 MLS Integrations" (scope, not a result); insurance and legal use their compliance card as the third result.
+- [x] 10.4 Homepage FAQ: 10 questions, 42-58 words, naming Peregrine; schema equals visible text. TODO(owner): code and IP ownership question. Dropped the unsourced "3-6 month hiring cycle" and HubSpot/Salesforce (no case study).
+- [x] 10.5 /about: "Who Is Peregrine IT Solutions?" entity paragraph. TODO(owner): founding year, team size.
+- [x] 10.6 Guides: all four open with a 2-3 sentence short answer (MLS/IDX cost guide merged into one paragraph).
+- [x] 10.7 llms.txt refreshed.
+Checks: FAQ text equals schema on 11 pages; every number in new text already on main; no best/leading/#1 in titles, H1s or JSON-LD; cliché hits only in the two verbatim client quotes; Phase 1-9 checks.
+
 ---
 
 ## Implementation notes
