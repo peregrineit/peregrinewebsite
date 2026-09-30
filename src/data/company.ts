@@ -4,8 +4,7 @@ export const office = {
   streetAddress: 'Suite 115, H-160, BSI Business Park, Sector 63',
   addressLocality: 'Noida',
   addressRegion: 'Uttar Pradesh',
-  // TODO(owner): add the PIN code (postalCode) for the Noida office.
-  postalCode: undefined as string | undefined,
+  postalCode: '201301',
   addressCountry: 'IN',
   countryName: 'India',
 };
@@ -14,12 +13,9 @@ export const office = {
 export const officeAddressLine = [
   office.streetAddress,
   office.addressLocality,
-  office.addressRegion,
-  office.postalCode,
+  `${office.addressRegion} ${office.postalCode}`,
   office.countryName,
-]
-  .filter(Boolean)
-  .join(', ');
+].join(', ');
 
 export const officeMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(officeAddressLine)}`;
 

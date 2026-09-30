@@ -77,13 +77,11 @@ export default function AboutPage() {
         <div className="cp-container cp-narrow">
           <span className="cp-label">Company facts</span>
           <h2>Who Is Peregrine IT Solutions?</h2>
-          {/* Entity facts, all already on the site.
-              TODO(owner): founding year: owner proposed 2018 but marked it [confirm]; add
-              "founded in 2018" here and Organization.foundingDate in layout.tsx once confirmed.
-              Team size "25+" confirmed by the owner (2026-09-30); also Organization.numberOfEmployees. */}
+          {/* Entity facts. Founding year (2018) and team size (25+) confirmed by the owner
+              (2026-09-30); they also appear as Organization.foundingDate / numberOfEmployees. */}
           <p className="cp-answer">
-            Peregrine IT Solutions (legal name Peregrine IT Solutions LLP) is a software engineering firm with a team of
-            25+, founded and led by {team[0].name}, {team[0].role}. Its office is at {officeAddressLine}. Most clients are B2B companies
+            Peregrine IT Solutions (legal name Peregrine IT Solutions LLP) is a software engineering firm founded in
+            2018, with a team of 25+, led by {team[0].name}, {team[0].role}. Its office is at {officeAddressLine}. Most clients are B2B companies
             in the United States and Canada, with real estate and proptech a large share of the work alongside SaaS,
             logistics, healthcare, HR, insurance, legal, education, e-commerce and manufacturing. Clients named on this
             site include W3|re, Easy Agent PRO, BrokerLinx, Kypiq, Search Realty, Bahia International Realty, Torrins

@@ -10,6 +10,7 @@ Engineers work directly with client teams in sprint-based delivery, with daily o
 - Larger builds begin with a discovery sprint (requirements, architecture, written technical plan); development runs in two-week sprints with weekly demos.
 - Small, well-defined tasks get a scoped estimate within 48 hours through the quick project form.
 - Engagement model: fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Pricing is scoped per project; no price list is published.
+- IP ownership: once the work is paid for, the client owns the IP rights to what Peregrine builds.
 - A typical SaaS MVP ships in 4 to 6 weeks; complex platforms take 8 to 12 weeks.
 - [Frequently asked questions](https://peregrine-it.com/#faq): how engagements start, location and hours, industries, existing codebases, cost, timelines and past work
 
@@ -46,7 +47,7 @@ Each case study opens with a "Results at a glance" table: client, industry, stac
 
 ## Company
 
-- [About Peregrine IT Solutions](https://peregrine-it.com/about): legal name Peregrine IT Solutions LLP; a team of 25+; founded and led by Mukesh Swami, Founder & CEO; office in Noida, India
+- [About Peregrine IT Solutions](https://peregrine-it.com/about): legal name Peregrine IT Solutions LLP; founded in 2018; a team of 25+; founded and led by Mukesh Swami, Founder & CEO; office in Noida, India
 - Clients named on the site: W3|re, Easy Agent PRO, BrokerLinx, Kypiq, Search Realty, Bahia International Realty, Torrins and MM Nova Tech
 - Own product: [RealFoyer](https://realfoyer.com/), IDX websites, CRM and marketing tools for agents and brokerages
 
@@ -54,6 +55,6 @@ Each case study opens with a "Results at a glance" table: client, industry, stac
 
 - [Contact page](https://peregrine-it.com/contact)
 - Email: info@peregrine-it.com
-- Office: Suite 115, H-160, BSI Business Park, Sector 63, Noida, Uttar Pradesh, India (working in overlap with US and Canadian hours)
+- Office: Suite 115, H-160, BSI Business Park, Sector 63, Noida, Uttar Pradesh 201301, India (working in overlap with US and Canadian hours)
 - Book a call: https://calendly.com/mukesh-peregrine-it/30min
 - Website: https://peregrine-it.com

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../../components/JsonLd';
-import { engagement, engagementModel, getService, services, startAnswer } from '@/data/services';
+import { engagement, engagementModel, getService, ipFaq, services, startAnswer } from '@/data/services';
 import { getCaseStudy } from '@/data/case-studies';
 import { formatDate, getGuide, type Guide } from '@/data/guides';
 import '../../css/content-pages.css';
@@ -53,6 +53,7 @@ export default async function ServicePage({ params }: Props) {
   const url = `${SITE_URL}/services/${slug}`;
   const cited = service.caseStudies.map((c) => ({ ...c, study: getCaseStudy(c.slug) }));
   const guides = service.guides.map(getGuide);
+  const faq = [...service.faq, ipFaq];
 
   const schema = {
     '@context': 'https://schema.org',
@@ -82,7 +83,7 @@ export default async function ServicePage({ params }: Props) {
       {
         '@type': 'FAQPage',
         '@id': `${url}#faq`,
-        mainEntity: service.faq.map(({ question, answer }) => ({
+        mainEntity: faq.map(({ question, answer }) => ({
           '@type': 'Question',
           name: question,
           acceptedAnswer: { '@type': 'Answer', text: answer },
@@ -241,7 +242,7 @@ export default async function ServicePage({ params }: Props) {
         <div className="cp-container cp-narrow cp-faq">
           <span className="cp-label">FAQ</span>
           <h2>Frequently Asked Questions</h2>
-          {service.faq.map(({ question, answer }) => (
+          {faq.map(({ question, answer }) => (
             <details key={question}>
               <summary>
                 <h3>{question}</h3>

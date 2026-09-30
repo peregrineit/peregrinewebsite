@@ -9,7 +9,7 @@ export default function TeamGrid({ members }: { members: TeamMember[] }) {
       <div className="cp-grid" style={members.length === 1 ? { gridTemplateColumns: '1fr', maxWidth: 820 } : undefined}>
         {members.map((m) => (
           <div key={m.id} id={m.id} className="cp-card">
-            {m.photo && <Image src={m.photo} alt={`${m.name}, ${m.role}`} width={96} height={96} style={{ borderRadius: 999, marginBottom: 12 }} />}
+            {m.photo && <Image src={m.photo} alt={`${m.name}, ${m.role}`} width={96} height={96} style={{ width: 96, height: 96, borderRadius: 999, marginBottom: 12, objectFit: 'cover', objectPosition: '50% 25%' }} />}
             <h3>{m.name}</h3>
             <span className="cp-card-meta">{m.role}</span>
             <p style={{ marginTop: 10 }}>{m.bio}</p>

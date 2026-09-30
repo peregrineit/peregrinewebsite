@@ -15,9 +15,8 @@ import { guides } from '@/data/guides';
 // Rendered as the visible FAQ section and as FAQPage JSON-LD, so the two always match.
 // Every answer uses facts already on the site. [[guide-slug|text]] renders as a link to
 // that guide in the visible FAQ and as plain text in the JSON-LD.
-// TODO(owner): add "Who owns the code and IP?" once confirmed. Proposed wording awaiting
-//   confirmation: "You own the code and IP once the work is paid for; we build in your
-//   GitHub and cloud accounts." Also add it to each service FAQ (src/data/services.ts).
+// IP ownership confirmed by the owner (2026-09-30): the client owns the IP rights once the
+//   work is paid for. The same answer is on every service page (`ipFaq` in src/data/services.ts).
 const faqs = [
   {
     question: "How does an engagement with Peregrine start?",
@@ -56,8 +55,8 @@ const faqs = [
     answer: "Yes. Peregrine IT Solutions modernizes legacy systems incrementally: wrapping legacy APIs, migrating data in stages and gradually routing traffic to new services, so the existing system stays live throughout. For cloud moves we run the new environment alongside the old one and switch over in steps, with a rollback plan for each step.",
   },
   {
-    question: "How do API integrations from Peregrine improve operations?",
-    answer: "API integrations from Peregrine IT Solutions connect your CRM, ERP, billing and other tools into automated workflows, so data moves between systems instead of being re-typed or exported to spreadsheets. That cuts manual entry and errors. Our case studies include integrations with Stripe, DocuSign, ADP, QuickBooks and 12 shipping carrier APIs.",
+    question: "Who owns the IP rights to the software Peregrine builds?",
+    answer: "Once a client pays for the work, the client owns the intellectual property (IP) rights to what Peregrine IT Solutions builds for them. That holds whether the engagement is a fixed-scope project, a monthly retainer or a combination of the two. Questions about specific terms can be raised on the 30-minute technical discovery call.",
   },
 ];
 

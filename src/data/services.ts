@@ -56,6 +56,14 @@ export const engagement = {
 export const engagementModel =
   'Fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call';
 
+/** IP ownership, confirmed by the owner (2026-09-30). Appended to every service page's
+ *  FAQ (visible and FAQPage JSON-LD). */
+export const ipFaq = {
+  question: 'Who owns the IP rights to what Peregrine builds?',
+  answer:
+    'You do. Once the work is paid for, the client owns the intellectual property (IP) rights to what Peregrine builds for the project, whether it is delivered as a fixed-scope project, a monthly retainer or a combination of the two.',
+};
+
 /** Direct answer for "How does a <service> project start?"; the same facts as `engagement`. */
 export const startAnswer = (name: string) =>
   `A Peregrine ${name} project starts with a 30-minute technical discovery call with an engineer, not a salesperson. Larger builds then begin with a discovery sprint that maps requirements, designs the architecture and produces a written technical plan. Smaller, well-defined tasks can use the quick project form for a scoped estimate within 48 hours.`;
@@ -139,8 +147,6 @@ export const services: Service[] = [
         question: 'How do you handle subscription billing?',
         answer: 'We usually build on Stripe for subscriptions, one-time purchases and invoicing. The important part is the webhook handling: payment events update access, invoices and renewals automatically, and failed payments are retried and surfaced instead of being missed.',
       },
-      // TODO(owner): add an FAQ on code/IP and hosting ownership once the terms are confirmed
-      //   (proposed wording is in src/app/page.tsx, awaiting confirmation).
       {
         question: 'Can each of our customers have their own branding?',
         answer: 'Yes. White-label platforms serve every customer from one codebase and one backend, while each customer gets its own theme, domain and content. Our real estate SaaS case study runs branded agent websites this way, and our ATS case study gives each company its own career pages.',
