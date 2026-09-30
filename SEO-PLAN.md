@@ -125,6 +125,12 @@ Branch seo/phase-10 from main. Content only, no new claims: every fact already o
 - [x] 10.6 Guides: all four open with a 2-3 sentence short answer (MLS/IDX cost guide merged into one paragraph).
 - [x] 10.7 llms.txt refreshed.
 - Owner answers round 3 (2026-09-30): every item arrived as a bracket, so nothing new is published. Proposed values are recorded in the TODO(owner) comments: founded 2018 [confirm] (about + layout foundingDate), team size, engagement model, code/IP wording (homepage FAQ + service FAQs), SaaS timeline "8-14 weeks / 4-6 months" [confirm] and the other five timelines, W3|re "23% before / 94% after" [confirm], founder photo (public/images/team/mukesh-swami.jpg not present), engineers (none yet).
+- [x] 10.9 Owner answers round 4 (confirmed 2026-09-30):
+  - Team size 25+: /about entity paragraph ("a team of 25+"), Organization.numberOfEmployees {QuantitativeValue, minValue 25}, llms.txt.
+  - Engagement model "Fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call" (`engagementModel` in src/data/services.ts): At a glance row on all six service pages, the six "What does it cost?" answers, the homepage FAQ cost answer, llms.txt, SEO-OFFPAGE.md section 5. No existing service FAQ question is about pricing, so none was changed.
+  - SaaS timeline: MVP 4 to 6 weeks, complex platforms 8 to 12 weeks (replaces 8-14 weeks / 4-6 months): SaaS timeline answer and glance row, homepage FAQ, llms.txt. Other services keep no timeline.
+  - Number check allow-list: 25+, 4-6 weeks, 8-12 weeks (owner-stated).
+  - Still TODO(owner): founded year (2018 unconfirmed), code/IP, W3|re 23%/94%, founder photo, engineers.
 Checks: FAQ text equals schema on 11 pages; every number in new text already on main; no best/leading/#1 in titles, H1s or JSON-LD; cliché hits only in the two verbatim client quotes; Phase 1-9 checks.
 
 ---

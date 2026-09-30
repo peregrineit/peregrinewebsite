@@ -3,8 +3,9 @@
 //
 // Owner confirmed the six services, including Odoo ERP (2026-09-29). Odoo is a
 // capability page with no project claims until an Odoo case study exists.
-// TODO(owner): engagement model and prices. No prices are published and no Offer
-//   schema is emitted until the owner supplies real Peregrine prices (see `engagement`).
+// Engagement model confirmed by the owner (2026-09-30): see `engagementModel`.
+// TODO(owner): prices. No prices are published and no Offer schema is emitted until the
+//   owner supplies real Peregrine prices.
 
 export interface Service {
   slug: string;
@@ -47,11 +48,13 @@ export const engagement = {
     'Larger builds begin with a discovery sprint: we map requirements, design the architecture and hand you a written technical plan before development starts. Development then runs in two-week sprints with weekly demos, so you see working software early and can change priorities at each checkpoint.',
     'Smaller, well-defined tasks such as a single integration, a performance fix or an automation can be requested through the quick project form, and we reply with a scoped estimate within 48 hours.',
   ],
-  // TODO(owner): state the engagement models offered (fixed scope, retainer, time and
-  // materials?) and whether any prices are published. Until then the page says pricing
-  // is scoped per project and no Offer schema is emitted.
   pricingNote: 'Pricing is scoped per project after the discovery call.',
 };
+
+/** Engagement model, confirmed by the owner (2026-09-30). Used in the "At a glance"
+ *  tables, the cost answers and the homepage FAQ. */
+export const engagementModel =
+  'Fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call';
 
 /** Direct answer for "How does a <service> project start?"; the same facts as `engagement`. */
 export const startAnswer = (name: string) =>
@@ -111,17 +114,16 @@ export const services: Service[] = [
       includes:
         'Peregrine\'s SaaS development covers the whole platform: a multi-tenant data model, authentication and roles, Stripe billing, search over large datasets, admin and reporting tools, the integrations your customers expect, and the cloud infrastructure it runs on. We build new products and also take over existing MVPs that are starting to break under real customers.',
       timeline:
-        'Peregrine typically delivers a production-ready SaaS MVP in 8 to 14 weeks, covering core features, authentication, billing, multi-tenancy and deployment. More complex SaaS platforms with advanced integrations may take four to six months. The discovery sprint sets the actual schedule, and development runs in two-week sprints with a demo every week.',
+        'A typical SaaS MVP from Peregrine ships in 4 to 6 weeks, covering core features, authentication, billing, multi-tenancy and deployment. Complex SaaS platforms with advanced integrations take 8 to 12 weeks. The discovery sprint sets the actual schedule, and development runs in two-week sprints with a demo every week.',
       cost:
-        'Peregrine prices SaaS development per project after the discovery call, because cost depends on features, integrations, data volume and whether an existing product is being rebuilt. We do not publish a price list. For market figures, each linked to its source, read our guide [[guide]] before you set a budget.',
+        'Peregrine works on SaaS development as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on features, integrations, data volume and whether an existing product is being rebuilt, and we do not publish a price list. For sourced market figures, read our guide [[guide]].',
       work:
         'Three published case studies show Peregrine\'s SaaS development work: a real estate SaaS platform rebuilt with proper multi-tenant isolation that grew from 5 to 200+ agents, a multi-tenant self-storage platform with Stripe billing and smart-lock access, and a multi-tenant applicant tracking system with branded career pages and resume parsing.',
     },
     glance: {
       delivered: 'Multi-tenant platform: data model, authentication and roles, billing, search, admin and reporting, integrations and cloud infrastructure',
-      // TODO(owner): confirm or replace "8 to 14 weeks / four to six months" (existing homepage copy,
-      //   still unconfirmed); also used in answers.timeline and the homepage FAQ.
-      timeline: 'MVP typically 8 to 14 weeks; complex platforms four to six months',
+      // Owner-confirmed (2026-09-30).
+      timeline: 'Typical MVP 4 to 6 weeks; complex platforms 8 to 12 weeks',
     },
     updated: '2026-09-30',
     faq: [
@@ -205,7 +207,7 @@ export const services: Service[] = [
       timeline:
         'Peregrine sets the timeline for an API integration after mapping every system involved: its authentication, endpoints, rate limits, webhook support and data formats. The number of vendors and the quality of their sandboxes drive the schedule. Work then runs in two-week sprints with weekly demos, and rollout starts with a pilot group.',
       cost:
-        'Peregrine prices API integration work per project after the discovery call, since cost depends on how many systems are involved and how reliable their APIs are. Single, well-defined integrations can go through the quick project form for a scoped estimate within 48 hours. For CRM build-or-buy economics, see [[guide]].',
+        'Peregrine works on API integration as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on how many systems are involved and how reliable their APIs are. A single, well-defined integration can get a scoped estimate within 48 hours. For CRM build-or-buy economics, see [[guide]].',
       work:
         'Three published case studies show Peregrine\'s API integration work: a supply chain platform normalizing 12 carrier APIs with retry queues and per-carrier rate limits, an HR and payroll SaaS integrated with ADP, QuickBooks and DocuSign, and a legal document platform whose DocuSign webhooks keep multi-party signing moving during outages.',
     },
@@ -292,7 +294,7 @@ export const services: Service[] = [
       timeline:
         'Peregrine sets the timeline for an MLS feed project after reviewing the boards involved, the feed type each offers and the display and refresh rules in each data license. Data access approval is set by each MLS, not by us. Development then runs in two-week sprints with weekly demos, and every feed is monitored after launch.',
       cost:
-        'Peregrine prices MLS and IDX integration per project after the discovery call, because cost depends on the number of boards, feed types and what you build on top. MLS data fees are paid to each board separately. Our guide [[guide]] sets out published vendor and MLS fees, each linked to its source.',
+        'Peregrine works on MLS and IDX integration as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on the number of boards and what you build on top; MLS data fees are paid to each board. Our guide [[guide]] lists published fees.',
       work:
         'Two published case studies show Peregrine\'s MLS and IDX work: the W3|re platform, which unifies four MLS systems (NTREIS, Stellar MLS, ARMLS and REcolorado) and deduplicates cross-listed properties, and a real estate SaaS whose rebuilt MLS sync engine for US and Canadian boards feeds Elasticsearch search for agent IDX websites.',
     },
@@ -380,7 +382,7 @@ export const services: Service[] = [
       timeline:
         'Peregrine does not commit to an AI automation timeline before a prototype. We first pick one workflow and agree what accuracy is good enough, then run a short prototype on a sample of your data to show whether the approach works. The production build follows only once the prototype proves out, in two-week sprints.',
       cost:
-        'Peregrine prices AI automation per project after the discovery call and, for most work, after a short prototype on your own data shows the approach works. Cost depends on the workflow, the data available and how much human review the process needs. We do not publish a price list for AI automation.',
+        'Peregrine works on AI automation as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call and, for most work, after a short prototype on your own data. Cost depends on the workflow, the data available and how much human review the process needs. We do not publish a price list.',
       work:
         'Three published case studies show Peregrine\'s AI automation work: the W3|re real estate platform with conversational property search, an automated valuation model and a lead qualification chatbot; an insurance claims platform that extracts documents with AWS Textract and routes uncertain cases to people; and an ATS with resume parsing and candidate search.',
     },
@@ -468,7 +470,7 @@ export const services: Service[] = [
       timeline:
         'Peregrine sets the timeline for cloud and DevOps work after assessing your current hosting, release process, costs and incidents. The migration plan then moves one environment at a time, each verified before the next, with a rollback plan for every step. Work runs in two-week sprints and ends with load tests and a handover.',
       cost:
-        'Peregrine prices cloud and DevOps work per project after the discovery call, because cost depends on the current setup, how much moves and how much is automated. A single, well-defined performance fix can go through the quick project form for a scoped estimate within 48 hours. For infrastructure in context, see [[guide]].',
+        'Peregrine works on cloud and DevOps as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on the current setup, how much moves and how much is automated. A single performance fix can get a scoped estimate within 48 hours. For infrastructure in context, see [[guide]].',
       work:
         'Three published case studies show Peregrine\'s cloud and DevOps work: a real estate SaaS split into USA, Canada and staging environments with Elasticsearch, Redis and a CDN; an edtech platform with an event-driven AWS video pipeline delivering HLS; and a self-storage platform load-tested against 45,000 simulated units before rollout.',
     },
@@ -558,7 +560,7 @@ export const services: Service[] = [
       timeline:
         'Peregrine sets the timeline for Odoo work after process mapping, because it depends on how much a module changes, how many systems an integration touches and how much data has to be migrated. We recommend delivering in phases, one module or integration at a time, so each phase is small enough to test properly.',
       cost:
-        'Peregrine prices Odoo custom module and integration work per project after the discovery call. Cost depends on how far the work goes beyond standard configuration, the number of integrations and the data migration. Odoo Community is free, while Odoo Enterprise is a paid edition from Odoo S.A. We do not publish a price list.',
+        'Peregrine works on Odoo custom modules and integrations as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on how far the work goes beyond standard configuration, the number of integrations and the data migration. Odoo Enterprise is a paid edition from Odoo S.A. We do not publish a price list.',
       work:
         'Peregrine has no published Odoo case study yet, so this page makes no project claims. Our API integration case studies show how we build integrations: vendor adapters, webhooks, retries and reconciliation. You can browse every case study, or ask about Odoo on a discovery call.',
     },

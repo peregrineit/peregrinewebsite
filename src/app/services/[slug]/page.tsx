@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../../components/JsonLd';
-import { engagement, getService, services, startAnswer } from '@/data/services';
+import { engagement, engagementModel, getService, services, startAnswer } from '@/data/services';
 import { getCaseStudy } from '@/data/case-studies';
 import { formatDate, getGuide, type Guide } from '@/data/guides';
 import '../../css/content-pages.css';
@@ -125,7 +125,7 @@ export default async function ServicePage({ params }: Props) {
               <tbody>
                 <tr><th scope="row">What&apos;s delivered</th><td>{service.glance.delivered}</td></tr>
                 {service.glance.timeline && <tr><th scope="row">Timeline</th><td>{service.glance.timeline}</td></tr>}
-                {/* TODO(owner): engagement model (fixed scope, retainer, time and materials?); row omitted until confirmed. */}
+                <tr><th scope="row">Engagement model</th><td>{engagementModel}</td></tr>
                 <tr><th scope="row">How it starts</th><td>A 30-minute technical discovery call with an engineer</td></tr>
                 <tr><th scope="row">Pricing</th><td>{engagement.pricingNote}</td></tr>
                 <tr>

@@ -18,8 +18,6 @@ import { guides } from '@/data/guides';
 // TODO(owner): add "Who owns the code and IP?" once confirmed. Proposed wording awaiting
 //   confirmation: "You own the code and IP once the work is paid for; we build in your
 //   GitHub and cloud accounts." Also add it to each service FAQ (src/data/services.ts).
-// TODO(owner): the engagement model (fixed scope / monthly retainer / time and materials, or a
-//   mix) is unconfirmed; add it to the cost answer once supplied.
 const faqs = [
   {
     question: "How does an engagement with Peregrine start?",
@@ -39,11 +37,11 @@ const faqs = [
   },
   {
     question: "How much does a project with Peregrine cost?",
-    answer: "Peregrine IT Solutions scopes pricing per project after the discovery call, so we do not publish a price list. For market figures, each linked to its source, read our guides on [[mls-idx-integration-cost|MLS and IDX integration cost]] and [[cost-to-build-a-real-estate-platform|what it costs to build a real estate platform]]. Small, well-defined tasks can get a scoped estimate within 48 hours.",
+    answer: "Peregrine IT Solutions works on fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Pricing is scoped per project, and we do not publish a price list. For market figures, each linked to its source, read our guides on [[mls-idx-integration-cost|MLS and IDX integration cost]] and [[cost-to-build-a-real-estate-platform|what it costs to build a real estate platform]].",
   },
   {
     question: "How long does a typical project with Peregrine take?",
-    answer: "Peregrine IT Solutions typically delivers a production-ready SaaS MVP in 8 to 14 weeks, covering core features, authentication, billing, multi-tenancy and deployment. More complex platforms with advanced integrations may take four to six months. The discovery sprint sets the real schedule, and development runs in two-week sprints with a demo every week.",
+    answer: "A typical SaaS MVP from Peregrine IT Solutions ships in 4 to 6 weeks, covering core features, authentication, billing, multi-tenancy and deployment. Complex platforms with advanced integrations take 8 to 12 weeks. The discovery sprint sets the real schedule, and development runs in two-week sprints with a demo every week.",
   },
   {
     question: "How can I see Peregrine's past work?",
