@@ -5,6 +5,7 @@ import TeamGrid from '../components/TeamGrid';
 import { services } from '@/data/services';
 import { caseStudies } from '@/data/case-studies';
 import { team } from '@/data/team';
+import { officeAddressLine } from '@/data/company';
 import '../css/content-pages.css';
 
 const url = `${SITE_URL}/about`;
@@ -68,6 +69,23 @@ export default function AboutPage() {
           <p className="cp-lead-muted">
             Most of our clients are B2B companies in the United States and Canada. Real estate and proptech make up a
             large share of the work, alongside SaaS companies in other industries.
+          </p>
+        </div>
+      </section>
+
+      <section className="cp-section">
+        <div className="cp-container cp-narrow">
+          <span className="cp-label">Company facts</span>
+          <h2>Who Is Peregrine IT Solutions?</h2>
+          {/* Entity facts, all already on the site. TODO(owner): add the founding year and
+              team size once confirmed; neither is stated anywhere yet. */}
+          <p className="cp-answer">
+            Peregrine IT Solutions (legal name Peregrine IT Solutions LLP) is a software engineering firm founded and
+            led by {team[0].name}, {team[0].role}. Its office is at {officeAddressLine}. Most clients are B2B companies
+            in the United States and Canada, with real estate and proptech a large share of the work alongside SaaS,
+            logistics, healthcare, HR, insurance, legal, education, e-commerce and manufacturing. Clients named on this
+            site include W3|re, Easy Agent PRO, BrokerLinx, Kypiq, Search Realty, Bahia International Realty, Torrins
+            and MM Nova Tech.
           </p>
         </div>
       </section>
