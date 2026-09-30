@@ -15,7 +15,11 @@ import { guides } from '@/data/guides';
 // Rendered as the visible FAQ section and as FAQPage JSON-LD, so the two always match.
 // Every answer uses facts already on the site. [[guide-slug|text]] renders as a link to
 // that guide in the visible FAQ and as plain text in the JSON-LD.
-// TODO(owner): add "Who owns the code and IP?" once the ownership terms are confirmed.
+// TODO(owner): add "Who owns the code and IP?" once confirmed. Proposed wording awaiting
+//   confirmation: "You own the code and IP once the work is paid for; we build in your
+//   GitHub and cloud accounts." Also add it to each service FAQ (src/data/services.ts).
+// TODO(owner): the engagement model (fixed scope / monthly retainer / time and materials, or a
+//   mix) is unconfirmed; add it to the cost answer once supplied.
 const faqs = [
   {
     question: "How does an engagement with Peregrine start?",

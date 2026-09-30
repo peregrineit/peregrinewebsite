@@ -119,6 +119,8 @@ export const services: Service[] = [
     },
     glance: {
       delivered: 'Multi-tenant platform: data model, authentication and roles, billing, search, admin and reporting, integrations and cloud infrastructure',
+      // TODO(owner): confirm or replace "8 to 14 weeks / four to six months" (existing homepage copy,
+      //   still unconfirmed); also used in answers.timeline and the homepage FAQ.
       timeline: 'MVP typically 8 to 14 weeks; complex platforms four to six months',
     },
     updated: '2026-09-30',
@@ -135,7 +137,8 @@ export const services: Service[] = [
         question: 'How do you handle subscription billing?',
         answer: 'We usually build on Stripe for subscriptions, one-time purchases and invoicing. The important part is the webhook handling: payment events update access, invoices and renewals automatically, and failed payments are retried and surfaced instead of being missed.',
       },
-      // TODO(owner): add an FAQ on code/IP and hosting ownership once the terms are confirmed.
+      // TODO(owner): add an FAQ on code/IP and hosting ownership once the terms are confirmed
+      //   (proposed wording is in src/app/page.tsx, awaiting confirmation).
       {
         question: 'Can each of our customers have their own branding?',
         answer: 'Yes. White-label platforms serve every customer from one codebase and one backend, while each customer gets its own theme, domain and content. Our real estate SaaS case study runs branded agent websites this way, and our ATS case study gives each company its own career pages.',

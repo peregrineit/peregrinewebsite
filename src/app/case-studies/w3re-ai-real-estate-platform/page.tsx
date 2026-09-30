@@ -31,6 +31,8 @@ export const metadata: Metadata = {
 
 // TODO(owner): reconcile the 94% AVM accuracy with '23% of listing prices off by more than 8%'
 // (the latter is the pre-project baseline?), and add a measurement window/baseline to each metric.
+// Owner's candidate explanation (2026-09-30, unconfirmed): 23% was the before state and 94% the
+// after; reword the two sentences to say so only once confirmed.
 export default function W3reAIRealEstatePlatform() {
   return (
     <div className="case-study-detail csd-purple">

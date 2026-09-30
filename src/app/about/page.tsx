@@ -77,8 +77,10 @@ export default function AboutPage() {
         <div className="cp-container cp-narrow">
           <span className="cp-label">Company facts</span>
           <h2>Who Is Peregrine IT Solutions?</h2>
-          {/* Entity facts, all already on the site. TODO(owner): add the founding year and
-              team size once confirmed; neither is stated anywhere yet. */}
+          {/* Entity facts, all already on the site.
+              TODO(owner): founding year: owner proposed 2018 but marked it [confirm]; add
+              "founded in 2018" here and Organization.foundingDate in layout.tsx once confirmed.
+              TODO(owner): team size, not supplied yet. */}
           <p className="cp-answer">
             Peregrine IT Solutions (legal name Peregrine IT Solutions LLP) is a software engineering firm founded and
             led by {team[0].name}, {team[0].role}. Its office is at {officeAddressLine}. Most clients are B2B companies
