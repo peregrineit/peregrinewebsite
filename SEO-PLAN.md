@@ -111,7 +111,7 @@ Branch seo/phase-9 from main, code only. Robots: owner left the choice as a brac
 - [x] 9.5 Menu close button and case-study chips >= 44 px on phones. Close button 44x44 (was 280x40); service links 98x44 / 78x44 (were 380x25 block links that stacked 'Service:', each link and the '·' on separate lines — now one line).
 - [x] 9.6 Link /industries from the footer and from each service page.
 - [x] 9.7 About, Privacy and Terms titles 45–60 characters, brand not repeated.
-- [x] 9.8 Sitemap lastmod from dateModified where a page has one; omitted elsewhere. 10 entries (4 guides, 6 services). Privacy and Terms lost their 2026-02-15 lastmod: they show a visible date but emit no dateModified.
+- [x] 9.8 Sitemap lastmod from dateModified where a page has one; omitted elsewhere. 10 entries (4 guides, 6 services). Follow-up: Privacy and Terms now declare their visible "Last updated" date as WebPage.dateModified (dates in src/data/legal.ts feed the visible line, the schema and the sitemap), so their lastmod is back: 12 entries.
 Checks: all Phase 1–8 checks plus new ones per item; commit per item; push the branch only.
 
 ---

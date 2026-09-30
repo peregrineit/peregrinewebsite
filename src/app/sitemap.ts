@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
 import { services } from "@/data/services";
 import { guides } from "@/data/guides";
+import { privacyPolicyUpdated, termsOfUseUpdated } from "@/data/legal";
 
 const SITE_URL = "https://peregrine-it.com";
 
 // lastModified only where the page itself declares a dateModified in its JSON-LD
-// (guides and service pages). Everything else omits it rather than stamping the
+// (guides, service pages and the two legal pages). Everything else omits it rather than stamping the
 // build time.
 const caseStudySlugs = [
   "scaling-real-estate-saas-platform",
@@ -42,7 +43,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/contact` },
     { url: `${SITE_URL}/case-studies` },
     ...caseStudySlugs.map((slug) => ({ url: `${SITE_URL}/case-studies/${slug}` })),
-    { url: `${SITE_URL}/privacy-policy` },
-    { url: `${SITE_URL}/terms-of-use` },
+    { url: `${SITE_URL}/privacy-policy`, lastModified: privacyPolicyUpdated },
+    { url: `${SITE_URL}/terms-of-use`, lastModified: termsOfUseUpdated },
   ];
 }
