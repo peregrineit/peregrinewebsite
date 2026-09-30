@@ -160,3 +160,16 @@ a.cp-card:hover { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 10px 30px
 .cp-prose .cp-table-wrap { overflow-x: auto; }
 .cp-src { overflow-wrap: anywhere; }
 .cp-note { font-size: 14px; color: var(--cp-muted); border-left: 3px solid var(--cp-accent-strong); padding-left: 14px; }
+
+/* Answer-first paragraph that opens a question-led section, and "at a glance" tables */
+.cp-page .cp-answer { font-size: 17px; color: #f1f5f9; max-width: 820px; margin: 0 0 24px; }
+.cp-page .cp-answer a { display: inline; }
+.cp-table-wrap { overflow-x: auto; }
+.cp-glance { width: 100%; border-collapse: collapse; font-size: 15px; }
+.cp-glance th, .cp-glance td { border-bottom: 1px solid var(--cp-border); padding: 12px 10px; text-align: left; vertical-align: top; }
+.cp-glance th { color: #fff; font-weight: 700; width: 30%; }
+.cp-glance td { color: var(--cp-text); }
+.cp-glance td a { display: inline; }
+@media (max-width: 767px) {
+  .cp-glance th { width: 38%; }
+}
