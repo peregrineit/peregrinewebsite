@@ -125,3 +125,16 @@ img.expand-team {
 .grid__item-img-deco--fade {
     transition: opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
+
+/* Homepage intro paragraph directly under the hero (Phase 10.1). */
+.home-intro {
+    padding: 0 0 40px;
+}
+.home-intro p {
+    max-width: 820px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #cbd5e1 !important;
+}
