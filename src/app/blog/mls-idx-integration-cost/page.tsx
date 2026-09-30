@@ -32,8 +32,6 @@ export default function Guide() {
         MLS and IDX integration costs come from three places: the <strong>MLS</strong> (data license fees, which vary
         widely by board and by how you use the data), a <strong>data vendor or IDX provider</strong> if you use one
         (monthly subscriptions), and <strong>development</strong> if you build your own search, website or pipeline.
-      </p>
-      <p>
         An agent or small brokerage that only needs listings on its website can usually use an IDX plugin for a monthly
         subscription. A brokerage or proptech company that needs listing data inside its own product, from one or several
         MLS boards, pays MLS license fees, often a data vendor, and the cost of building and running the pipeline.
