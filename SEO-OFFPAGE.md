@@ -86,7 +86,12 @@ Create or claim a profile on each directory, using the name, descriptions and se
 - [ ] **GoodFirms** — https://www.goodfirms.co. Choose Software Development, Web Development and Artificial Intelligence.
 - [ ] **DesignRush** — https://www.designrush.com. Choose Software Development and Web Development.
 
-Set the **headquarters** field on every directory to the Noida office address above, exactly as written. Directory fields only the owner can fill in: minimum project size, hourly rate range, team size and founding year. Make sure these match whatever you decide to publish on the site; the site currently publishes no prices.
+Set the **headquarters** field on every directory to the Noida office address above, exactly as written. Use the same facts the site publishes:
+- **Team size:** 25+ (the Organization schema says minValue 25). Choose whichever size band on the directory contains 25+.
+- **Engagement model / pricing model:** fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Where a directory offers pricing-model checkboxes, tick only the ones that match fixed-scope and retainer work.
+- **Typical timeline** (if asked): a SaaS MVP ships in 4 to 6 weeks; complex platforms take 8 to 12 weeks.
+
+Fields only the owner can fill in: minimum project size, hourly rate range and founding year. Make sure these match whatever you decide to publish on the site; the site currently publishes no prices.
 
 Use real portfolio items only: link the published case studies on peregrine-it.com rather than writing new claims.
 
@@ -117,7 +122,7 @@ The three guides at /blog cite vendor and MLS prices that change. Every quarter 
 ## Owner TODOs still open in the codebase
 
 `grep -rn "TODO(owner)" src` lists them. At the time of writing:
-- prices and engagement model (no Offer schema until real prices exist);
+- prices (no Offer schema until real prices exist); the engagement model and team size are now published;
 - code and hosting ownership FAQ;
 - an Odoo case study once a project can be published (the Odoo page is currently a capability page);
 - the PIN code for the Noida office and the founder photo (`public/images/team/mukesh-swami.jpg`);

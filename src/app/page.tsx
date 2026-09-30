@@ -9,32 +9,71 @@ import CaseStudyCard from './components/CaseStudyCard';
 import BackgroundVideo from './components/BackgroundVideo';
 import HomeAnimations from './components/HomeAnimations';
 import HomeEffects from './components/HomeEffects';
-import { featuredCaseStudySlugs, getCaseStudy } from '@/data/case-studies';
+import { caseStudies, featuredCaseStudySlugs, getCaseStudy } from '@/data/case-studies';
 import { guides } from '@/data/guides';
 
 // Rendered as the visible FAQ section and as FAQPage JSON-LD, so the two always match.
+// Every answer uses facts already on the site. [[guide-slug|text]] renders as a link to
+// that guide in the visible FAQ and as plain text in the JSON-LD.
+// TODO(owner): add "Who owns the code and IP?" once confirmed. Proposed wording awaiting
+//   confirmation: "You own the code and IP once the work is paid for; we build in your
+//   GitHub and cloud accounts." Also add it to each service FAQ (src/data/services.ts).
 const faqs = [
   {
-    question: "When should a company hire a software development partner instead of employees?",
-    answer: "When you need to ship product fast without the 3\u20136 month hiring cycle. A development partner gives you an experienced, ready-to-deploy engineering team that scales with your roadmap. It\u2019s ideal when you need specialized skills like SaaS architecture, API integrations, or cloud infrastructure without long-term overhead.",
+    question: "How does an engagement with Peregrine start?",
+    answer: "An engagement with Peregrine IT Solutions starts with a 30-minute technical discovery call with an engineer, not a salesperson. Larger builds then begin with a discovery sprint that maps requirements, designs the architecture and produces a written technical plan. Smaller, well-defined tasks can go through the quick project form for a scoped estimate within 48 hours.",
   },
   {
-    question: "How long does it take to build a SaaS platform?",
-    answer: "A production-ready MVP typically takes 8\u201314 weeks. This covers core features, authentication, billing, multi-tenancy, and deployment. We deliver working software every two weeks through sprint-based execution. More complex platforms with advanced integrations may take 4\u20136 months.",
+    question: "Where is Peregrine's team based, and do your hours overlap with the US and Canada?",
+    answer: "Peregrine IT Solutions is based in Noida, India, at the BSI Business Park in Sector 63. The team works with daily overlap with North American and European business hours. Most of our clients are B2B companies in the United States and Canada.",
   },
   {
-    question: "Can legacy systems be modernized without downtime?",
-    answer: "Yes. We use incremental migration strategies \u2014 wrapping legacy APIs, migrating data in stages, and gradually routing traffic to new services. Your existing system stays live throughout the process. We\u2019ve modernized monolithic applications into cloud-native architectures without any business disruption.",
+    question: "Which industries does Peregrine work with?",
+    answer: "Peregrine IT Solutions works mostly with B2B companies, and real estate and proptech make up a large share of the work. Our published case studies also cover logistics and supply chain, healthcare, HR and payroll, insurance, legal, education, e-commerce and marketplaces, hospitality, events and manufacturing, alongside SaaS products in other industries.",
   },
   {
-    question: "What industries does Peregrine IT specialize in?",
-    answer: "We work with SaaS companies, real estate technology platforms, healthcare IT, fintech, logistics, and e-commerce. Our focus is product engineering \u2014 building scalable web applications, automation systems, and platform integrations using Node.js, React, Python, AWS, Azure, and modern DevOps practices.",
+    question: "Can Peregrine work with our existing codebase?",
+    answer: "Yes. Peregrine IT Solutions often takes over existing products. We start with a code and architecture audit to find what is actually limiting growth, which is often the data model, search or background jobs rather than hosting, then rebuild the parts that need it while the product stays live. Our real estate SaaS case study shows this approach.",
   },
   {
-    question: "How do API integrations improve operations?",
-    answer: "APIs connect your CRM, ERP, billing, and third-party tools into a single automated workflow. This eliminates manual data entry, reduces errors, and lets you scale operations without adding headcount. We build integrations with platforms like Stripe, HubSpot, Salesforce, and custom internal systems.",
+    question: "How much does a project with Peregrine cost?",
+    answer: "Peregrine IT Solutions works on fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Pricing is scoped per project, and we do not publish a price list. For market figures, each linked to its source, read our guides on [[mls-idx-integration-cost|MLS and IDX integration cost]] and [[cost-to-build-a-real-estate-platform|what it costs to build a real estate platform]].",
+  },
+  {
+    question: "How long does a typical project with Peregrine take?",
+    answer: "A typical SaaS MVP from Peregrine IT Solutions ships in 4 to 6 weeks, covering core features, authentication, billing, multi-tenancy and deployment. Complex platforms with advanced integrations take 8 to 12 weeks. The discovery sprint sets the real schedule, and development runs in two-week sprints with a demo every week.",
+  },
+  {
+    question: "How can I see Peregrine's past work?",
+    answer: `Peregrine IT Solutions publishes ${caseStudies.length} case studies, each covering the problem, the architecture and the results, across real estate and proptech, logistics, healthcare, HR and payroll, insurance, legal, education, e-commerce, hospitality, events and manufacturing. We also build and operate our own real estate product, RealFoyer. The case studies page lists them all by category.`,
+  },
+  {
+    question: "When should a company hire a development partner like Peregrine instead of employees?",
+    answer: "A development partner such as Peregrine IT Solutions makes sense when you need to ship product without first building an in-house team. You get an experienced engineering team that scales with your roadmap and brings specialized skills, such as SaaS architecture, API integrations or cloud infrastructure, without the long-term overhead of new hires.",
+  },
+  {
+    question: "Can Peregrine modernize a legacy system without downtime?",
+    answer: "Yes. Peregrine IT Solutions modernizes legacy systems incrementally: wrapping legacy APIs, migrating data in stages and gradually routing traffic to new services, so the existing system stays live throughout. For cloud moves we run the new environment alongside the old one and switch over in steps, with a rollback plan for each step.",
+  },
+  {
+    question: "How do API integrations from Peregrine improve operations?",
+    answer: "API integrations from Peregrine IT Solutions connect your CRM, ERP, billing and other tools into automated workflows, so data moves between systems instead of being re-typed or exported to spreadsheets. That cuts manual entry and errors. Our case studies include integrations with Stripe, DocuSign, ADP, QuickBooks and 12 shipping carrier APIs.",
   },
 ];
+
+const FAQ_LINK = /\[\[([^|\]]+)\|([^\]]+)\]\]/g;
+const faqText = (answer: string) => answer.replace(FAQ_LINK, '$2');
+function faqNode(answer: string) {
+  const parts: React.ReactNode[] = [];
+  let last = 0;
+  for (const m of answer.matchAll(FAQ_LINK)) {
+    parts.push(answer.slice(last, m.index));
+    parts.push(<Link key={m.index} href={`/blog/${m[1]}`} className="text-cyan-700 underline">{m[2]}</Link>);
+    last = (m.index ?? 0) + m[0].length;
+  }
+  parts.push(answer.slice(last));
+  return parts;
+}
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -55,7 +94,7 @@ const structuredData = {
       mainEntity: faqs.map(({ question, answer }) => ({
         "@type": "Question",
         name: question,
-        acceptedAnswer: { "@type": "Answer", text: answer },
+        acceptedAnswer: { "@type": "Answer", text: faqText(answer) },
       })),
     },
   ],
@@ -210,6 +249,16 @@ export default function Home() {
           <path d="M 0, -10 V 7.23 C 0,65.52 268.63,112.77 600,112.77 S 1200,65.52 1200,7.23 V -10 Z"></path>
         </svg>
           <div className="container">
+            {/* Plain-language summary for readers and answer engines: the first <p> after the H1.
+                Every fact is already on /about and /contact. */}
+            <div id="sec-intro" className="home-intro">
+              <p>
+                Peregrine IT Solutions is a software engineering firm based in Noida, India. We design, build and scale
+                SaaS platforms, API integrations, MLS and IDX data pipelines, AI automation and cloud infrastructure for
+                B2B companies, most of them in the United States and Canada, with real estate and proptech a large
+                share of the work. Every engagement starts with a 30-minute technical discovery call with an engineer.
+              </p>
+            </div>
             <div className="header-title-img-wrap"><Image src="/images/lap-mock.png" width={1248} height={832} sizes="(max-width: 767px) 93vw, 500px" alt="Laptop displaying a Peregrine AI product dashboard with analytics panels" className="img-main" />
               <div className="w-layout-vflex content-wrap">
                 <h2 className="heading-primary gradient">Built for Scale. Architected for Complexity.</h2>
@@ -1123,7 +1172,7 @@ export default function Home() {
                       <h3 style={{ fontSize: 'inherit', lineHeight: 'inherit', fontWeight: 'inherit', margin: 0 }}>{question}</h3>
                       <i className="ri-add-line text-xl text-cyan-600 transition-transform group-open:rotate-45" aria-hidden="true" />
                     </summary>
-                    <p className="mt-3 text-base leading-relaxed text-gray-600">{answer}</p>
+                    <p className="mt-3 text-base leading-relaxed text-gray-600">{faqNode(answer)}</p>
                   </details>
                 ))}
               </div>

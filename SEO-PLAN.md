@@ -103,6 +103,7 @@ Checks: all Phase 1–7 checks plus new ones per item; commit per item; push the
 
 ## Phase 9 — post-88 fixes
 Branch seo/phase-9 from main, code only. Robots: owner left the choice as a bracket, so the fallback applies: keep CCBot and Google-Extended allowed.
+- Post-deploy (2026-09-30): Phase 1-9 checks all pass on production; all 39 URLs re-submitted to IndexNow (HTTP 200, key validated); PSI mobile home, median of 3 cache-busted runs: main-thread 1.13 s (pre-Phase 9: 1.52 s), TBT 10 ms (30), LCP 1.80 s (2.10), CLS 0 (0). One run landed on a slow PSI host (benchmarkIndex 88 vs 740-770) and read 6.9 s; the median is unaffected.
 - [x] 9.1 Submit all sitemap URLs to IndexNow (one request, key file) and record the response. Done 2026-09-29 20:56 UTC: POST https://api.indexnow.org/indexnow with 39 URLs + keyLocation -> HTTP 202 Accepted (key validation pending on the engine side).
 - [x] 9.2 Homepage off jQuery: counters, typing terminal, grid hover and hero animations move to React/CSS; drop jQuery, GSAP, anime, CounterUp and Waypoints from the homepage. Verify against the Phase 3/7 behaviour map (7 Lottie, 42 reveals, counters, typing, hero) with a before/after screenshot diff and 3 cache-busted mobile Lighthouse runs. Target: main-thread work < 1.0 s, no visual change.
   Result (local, interleaved A/B vs main, 3 cache-busted mobile runs, median): main-thread 1.89 s -> 1.59 s, style & layout 363 -> 254 ms, script evaluation 379 -> 272 ms, TBT 53 -> 15 ms, CLS 0. Behaviour map identical (7/7 Lottie, 42 reveals, counters 50/3/97/4.7, typing, card hover). Screenshot diff: only the random card backdrop text differs. **Target < 1.0 s not met**: what remains is the document itself (~1.0 s: 500 KB HTML with ~174 KB inlined CSS, continuous CSS animations) and the React runtime (~0.28 s), not animation code. Next lever: critical-CSS-only inlining and a smaller homepage DOM.
@@ -113,6 +114,24 @@ Branch seo/phase-9 from main, code only. Robots: owner left the choice as a brac
 - [x] 9.7 About, Privacy and Terms titles 45–60 characters, brand not repeated.
 - [x] 9.8 Sitemap lastmod from dateModified where a page has one; omitted elsewhere. 10 entries (4 guides, 6 services). Follow-up: Privacy and Terms now declare their visible "Last updated" date as WebPage.dateModified (dates in src/data/legal.ts feed the visible line, the schema and the sitemap), so their lastmod is back: 12 entries.
 Checks: all Phase 1–8 checks plus new ones per item; commit per item; push the branch only.
+
+## Phase 10 — AEO (answer-first content)
+Branch seo/phase-10 from main. Content only, no new claims: every fact already on the site or TODO(owner); nothing from the third-party AEO report.
+- [x] 10.1 Homepage: 66-word plain-language paragraph at the top of the dark services section, directly under the hero; the first <p> after the H1.
+- [x] 10.2 Service pages: question H2s (what it includes, how long, what it costs, how it starts, which case studies), each opened by a 40-60-word answer naming Peregrine and the service; cost answers link the first guide (AI automation and Odoo have none) and give no numbers. "At a glance" table: delivered, timeline (SaaS only: "8 to 14 weeks / four to six months" from existing homepage copy), how it starts, pricing note, related case studies. TODO(owner): engagement model row; timelines for the other five services.
+- [x] 10.3 Case studies: "Results at a glance" table (client as the Overview names it, industry, stack, hero duration, three stat cards). W3|re skips "4 MLS Integrations" (scope, not a result); insurance and legal use their compliance card as the third result.
+- [x] 10.4 Homepage FAQ: 10 questions, 42-58 words, naming Peregrine; schema equals visible text. TODO(owner): code and IP ownership question. Dropped the unsourced "3-6 month hiring cycle" and HubSpot/Salesforce (no case study).
+- [x] 10.5 /about: "Who Is Peregrine IT Solutions?" entity paragraph. TODO(owner): founding year, team size.
+- [x] 10.6 Guides: all four open with a 2-3 sentence short answer (MLS/IDX cost guide merged into one paragraph).
+- [x] 10.7 llms.txt refreshed.
+- Owner answers round 3 (2026-09-30): every item arrived as a bracket, so nothing new is published. Proposed values are recorded in the TODO(owner) comments: founded 2018 [confirm] (about + layout foundingDate), team size, engagement model, code/IP wording (homepage FAQ + service FAQs), SaaS timeline "8-14 weeks / 4-6 months" [confirm] and the other five timelines, W3|re "23% before / 94% after" [confirm], founder photo (public/images/team/mukesh-swami.jpg not present), engineers (none yet).
+- [x] 10.9 Owner answers round 4 (confirmed 2026-09-30):
+  - Team size 25+: /about entity paragraph ("a team of 25+"), Organization.numberOfEmployees {QuantitativeValue, minValue 25}, llms.txt.
+  - Engagement model "Fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call" (`engagementModel` in src/data/services.ts): At a glance row on all six service pages, the six "What does it cost?" answers, the homepage FAQ cost answer, llms.txt, SEO-OFFPAGE.md section 5. No existing service FAQ question is about pricing, so none was changed.
+  - SaaS timeline: MVP 4 to 6 weeks, complex platforms 8 to 12 weeks (replaces 8-14 weeks / 4-6 months): SaaS timeline answer and glance row, homepage FAQ, llms.txt. Other services keep no timeline.
+  - Number check allow-list: 25+, 4-6 weeks, 8-12 weeks (owner-stated).
+  - Still TODO(owner): founded year (2018 unconfirmed), code/IP, W3|re 23%/94%, founder photo, engineers.
+Checks: FAQ text equals schema on 11 pages; every number in new text already on main; no best/leading/#1 in titles, H1s or JSON-LD; cliché hits only in the two verbatim client quotes; Phase 1-9 checks.
 
 ---
 

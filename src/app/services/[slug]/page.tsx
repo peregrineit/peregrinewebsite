@@ -2,12 +2,22 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../../components/JsonLd';
-import { engagement, getService, services } from '@/data/services';
+import { engagement, engagementModel, getService, services, startAnswer } from '@/data/services';
 import { getCaseStudy } from '@/data/case-studies';
-import { formatDate, getGuide } from '@/data/guides';
+import { formatDate, getGuide, type Guide } from '@/data/guides';
 import '../../css/content-pages.css';
 
 export const dynamicParams = false;
+
+// "an MLS ...", "an AI ...", "an Odoo ..." but "a SaaS ...", "a Cloud ...".
+const withArticle = (name: string) => `${/^(MLS|AI|API|Odoo)/.test(name) ? 'an' : 'a'} ${name}`;
+
+// Replaces the [[guide]] token in a cost answer with a link to the service's first guide.
+function withGuideLink(text: string, guide?: Guide) {
+  const [before, after] = text.split('[[guide]]');
+  if (after === undefined || !guide) return text;
+  return <>{before}<Link href={`/blog/${guide.slug}`}>{guide.title}</Link>{after}</>;
+}
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -108,8 +118,37 @@ export default async function ServicePage({ params }: Props) {
 
       <section className="cp-section">
         <div className="cp-container">
+          <span className="cp-label">At a glance</span>
+          <h2>{service.name} at a Glance</h2>
+          <div className="cp-table-wrap">
+            <table className="cp-glance">
+              <tbody>
+                <tr><th scope="row">What&apos;s delivered</th><td>{service.glance.delivered}</td></tr>
+                {service.glance.timeline && <tr><th scope="row">Timeline</th><td>{service.glance.timeline}</td></tr>}
+                <tr><th scope="row">Engagement model</th><td>{engagementModel}</td></tr>
+                <tr><th scope="row">How it starts</th><td>A 30-minute technical discovery call with an engineer</td></tr>
+                <tr><th scope="row">Pricing</th><td>{engagement.pricingNote}</td></tr>
+                <tr>
+                  <th scope="row">Related case studies</th>
+                  <td>
+                    {cited.length > 0
+                      ? cited.map(({ slug: csSlug, study }, i) => (
+                          <span key={csSlug}>{i > 0 && '; '}<Link href={`/case-studies/${csSlug}`}>{study.title}</Link></span>
+                        ))
+                      : <>None published yet. <Link href="/case-studies">Browse all case studies</Link></>}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section className="cp-section">
+        <div className="cp-container">
           <span className="cp-label">What we build</span>
-          <h2>What We Build</h2>
+          <h2>What Does Peregrine&apos;s {service.name} Service Include?</h2>
+          <p className="cp-answer">{service.answers.includes}</p>
           <div className="cp-grid">
             {service.whatWeBuild.map((item) => (
               <div key={item.title} className="cp-card">
@@ -122,50 +161,11 @@ export default async function ServicePage({ params }: Props) {
         </div>
       </section>
 
-      {cited.length > 0 && (
-        <section className="cp-section">
-          <div className="cp-container">
-            <span className="cp-label">Case studies</span>
-            <h2>Work We Can Point To</h2>
-            <p className="cp-muted">Rather than make claims, here is published work that shows how we approach {service.name} projects.</p>
-            <div className="cp-grid">
-              {cited.map(({ slug: csSlug, note, study }) => (
-                <Link key={csSlug} href={`/case-studies/${csSlug}`} className="cp-card">
-                  <span className="cp-card-meta">{study.industry}</span>
-                  <h3>{study.title}</h3>
-                  <p>{note}</p>
-                  <span className="cp-card-more">Read the case study <i className="ri-arrow-right-line" aria-hidden="true" /></span>
-                </Link>
-              ))}
-            </div>
-            <p style={{ marginTop: 20 }}><Link href="/case-studies" className="cp-standalone-link">Browse all case studies</Link></p>
-          </div>
-        </section>
-      )}
-
-      {guides.length > 0 && (
-        <section className="cp-section">
-          <div className="cp-container">
-            <span className="cp-label">Guides</span>
-            <h2>Read Before You Budget</h2>
-            <div className="cp-grid">
-              {guides.map((g) => (
-                <Link key={g.slug} href={`/blog/${g.slug}`} className="cp-card">
-                  <span className="cp-card-meta">Guide</span>
-                  <h3>{g.title}</h3>
-                  <p>{g.description}</p>
-                  <span className="cp-card-more">Read the guide <i className="ri-arrow-right-line" aria-hidden="true" /></span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
       <section className="cp-section">
         <div className="cp-container">
-          <span className="cp-label">Process</span>
-          <h2>How the Project Runs</h2>
+          <span className="cp-label">Timeline</span>
+          <h2>How Long Does {withArticle(service.name)} Project Take?</h2>
+          <p className="cp-answer">{service.answers.timeline}</p>
           <div className="cp-steps">
             {service.process.map((step) => (
               <div key={step.title} className="cp-card cp-step">
@@ -179,20 +179,61 @@ export default async function ServicePage({ params }: Props) {
 
       <section className="cp-section">
         <div className="cp-container">
-          <span className="cp-label">Stack</span>
-          <h2>Technology We Use</h2>
-          <div className="cp-tags">
-            {service.stack.map((t) => <span key={t} className="cp-tag">{t}</span>)}
-          </div>
+          <span className="cp-label">Cost</span>
+          <h2>What Does {service.name} Cost?</h2>
+          <p className="cp-answer">{withGuideLink(service.answers.cost, guides[0])}</p>
+          {guides.length > 0 && (
+            <div className="cp-grid">
+              {guides.map((g) => (
+                <Link key={g.slug} href={`/blog/${g.slug}`} className="cp-card">
+                  <span className="cp-card-meta">Guide</span>
+                  <h3>{g.title}</h3>
+                  <p>{g.description}</p>
+                  <span className="cp-card-more">Read the guide <i className="ri-arrow-right-line" aria-hidden="true" /></span>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       <section className="cp-section">
         <div className="cp-container cp-narrow">
-          <span className="cp-label">Engagement</span>
-          <h2>{engagement.heading}</h2>
-          {engagement.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
-          <p className="cp-muted">{engagement.pricingNote}</p>
+          <span className="cp-label">Getting started</span>
+          <h2>How Does {withArticle(service.name)} Project Start?</h2>
+          <p className="cp-answer">{startAnswer(service.name)}</p>
+          <p><Link href="/contact" className="cp-standalone-link">Book a discovery call or send a quick project request</Link></p>
+        </div>
+      </section>
+
+      <section className="cp-section">
+        <div className="cp-container">
+          <span className="cp-label">Case studies</span>
+          <h2>Which Case Studies Show Peregrine&apos;s {service.name} Work?</h2>
+          <p className="cp-answer">{service.answers.work}</p>
+          {cited.length > 0 && (
+            <div className="cp-grid">
+              {cited.map(({ slug: csSlug, note, study }) => (
+                <Link key={csSlug} href={`/case-studies/${csSlug}`} className="cp-card">
+                  <span className="cp-card-meta">{study.industry}</span>
+                  <h3>{study.title}</h3>
+                  <p>{note}</p>
+                  <span className="cp-card-more">Read the case study <i className="ri-arrow-right-line" aria-hidden="true" /></span>
+                </Link>
+              ))}
+            </div>
+          )}
+          <p style={{ marginTop: 20 }}><Link href="/case-studies" className="cp-standalone-link">Browse all case studies</Link></p>
+        </div>
+      </section>
+
+      <section className="cp-section">
+        <div className="cp-container">
+          <span className="cp-label">Stack</span>
+          <h2>Technology We Use</h2>
+          <div className="cp-tags">
+            {service.stack.map((t) => <span key={t} className="cp-tag">{t}</span>)}
+          </div>
         </div>
       </section>
 

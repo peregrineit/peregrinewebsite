@@ -4,7 +4,18 @@
 
 Engineers work directly with client teams in sprint-based delivery, with daily overlap with North American business hours.
 
+## How engagements start
+
+- Every project starts with a 30-minute technical discovery call with an engineer, not a salesperson.
+- Larger builds begin with a discovery sprint (requirements, architecture, written technical plan); development runs in two-week sprints with weekly demos.
+- Small, well-defined tasks get a scoped estimate within 48 hours through the quick project form.
+- Engagement model: fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Pricing is scoped per project; no price list is published.
+- A typical SaaS MVP ships in 4 to 6 weeks; complex platforms take 8 to 12 weeks.
+- [Frequently asked questions](https://peregrine-it.com/#faq): how engagements start, location and hours, industries, existing codebases, cost, timelines and past work
+
 ## Services
+
+Each service page opens with an "At a glance" table and answers, in order: what the service includes, how long a project takes, what it costs, how it starts, and which case studies show it.
 
 - [SaaS development](https://peregrine-it.com/services/saas-development): multi-tenant platforms, billing and role-based access, from a new build to scaling an existing MVP
 - [API integration](https://peregrine-it.com/services/api-integration): integration layers for CRMs, ERPs, payroll, e-signature and carrier APIs, with retries and reconciliation
@@ -24,6 +35,8 @@ Engineers work directly with client teams in sprint-based delivery, with daily o
 
 ## Selected case studies
 
+Each case study opens with a "Results at a glance" table: client, industry, stack, project duration and three headline results.
+
 - [Scaling a real estate SaaS platform](https://peregrine-it.com/case-studies/scaling-real-estate-saas-platform): re-architected a US/Canada property search product to serve millions of MLS listings with sub-second search.
 - [AI-powered multi-market real estate platform](https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform): unified four MLS feeds for a brokerage and added natural-language search, automated valuation and an AI lead-qualification assistant.
 - [Investor portal for a real estate developer](https://peregrine-it.com/case-studies/proptech-investor-portal): role-based portal with document management, capital call workflows and automated distribution reporting.
@@ -33,7 +46,9 @@ Engineers work directly with client teams in sprint-based delivery, with daily o
 
 ## Company
 
-- [About Peregrine IT Solutions](https://peregrine-it.com/about): founded and led by Mukesh Swami, Founder & CEO
+- [About Peregrine IT Solutions](https://peregrine-it.com/about): legal name Peregrine IT Solutions LLP; a team of 25+; founded and led by Mukesh Swami, Founder & CEO; office in Noida, India
+- Clients named on the site: W3|re, Easy Agent PRO, BrokerLinx, Kypiq, Search Realty, Bahia International Realty, Torrins and MM Nova Tech
+- Own product: [RealFoyer](https://realfoyer.com/), IDX websites, CRM and marketing tools for agents and brokerages
 
 ## Contact
 

@@ -4,6 +4,7 @@ import RelatedCaseStudies from '../../components/RelatedCaseStudies';
 import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
+import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
   title: 'Event Ticketing with Real-Time Availability',
@@ -107,6 +108,8 @@ export default function EventTicketingPlatform() {
 
       {/* ═══ CONTENT ═══ */}
       <div className="csd-content">
+        <CaseStudyGlance slug="event-ticketing-platform" />
+
         {/* KEY STATS */}
         <div className="csd-stats-row">
           <div className="csd-stat-card">

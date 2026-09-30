@@ -4,6 +4,7 @@ import RelatedCaseStudies from '../../components/RelatedCaseStudies';
 import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
+import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
   title: 'HR & Payroll SaaS for Mid-Market Companies',
@@ -108,6 +109,8 @@ export default function HRPayrollSaaSPlatform() {
 
       {/* ═══ CONTENT ═══ */}
       <div className="csd-content">
+        <CaseStudyGlance slug="hr-payroll-saas-platform" />
+
         {/* KEY STATS */}
         <div className="csd-stats-row">
           <div className="csd-stat-card">

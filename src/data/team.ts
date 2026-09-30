@@ -1,6 +1,7 @@
 // Team members shown on /about (and on a /team page once there are two or more).
 // Their Person JSON-LD is emitted site-wide from src/app/layout.tsx.
-// Real people only. TODO(owner): add each person: name, role, 2-3 lines of
+// Real people only. Engineers: none supplied yet (2026-09-30).
+// TODO(owner): add each person: name, role, 2-3 lines of
 // background, LinkedIn URL and a photo in /public/team/. Credentials and
 // certifications are only listed when the owner confirms who holds them.
 export interface TeamMember {

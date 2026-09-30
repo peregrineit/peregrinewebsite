@@ -5,6 +5,7 @@ import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import Image from 'next/image';
 import '../../css/case-study-detail.css';
+import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
   title: 'AI Multi-Market Real Estate Platform',
@@ -30,6 +31,8 @@ export const metadata: Metadata = {
 
 // TODO(owner): reconcile the 94% AVM accuracy with '23% of listing prices off by more than 8%'
 // (the latter is the pre-project baseline?), and add a measurement window/baseline to each metric.
+// Owner's candidate explanation (2026-09-30, unconfirmed): 23% was the before state and 94% the
+// after; reword the two sentences to say so only once confirmed.
 export default function W3reAIRealEstatePlatform() {
   return (
     <div className="case-study-detail csd-purple">
@@ -95,6 +98,8 @@ export default function W3reAIRealEstatePlatform() {
 
       {/* ═══ CONTENT ═══ */}
       <div className="csd-content">
+        <CaseStudyGlance slug="w3re-ai-real-estate-platform" />
+
         {/* KEY STATS */}
         <div className="csd-stats-row">
           <div className="csd-stat-card">

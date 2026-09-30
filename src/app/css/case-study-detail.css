@@ -1004,3 +1004,29 @@
   align-items: center;
   min-height: 44px;
 }
+
+/* "Results at a glance" table at the top of each case study (Phase 10.3). */
+.case-study-detail .csd-glance table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--csd-card);
+  border: 1px solid var(--csd-border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 15px;
+}
+.case-study-detail .csd-glance th,
+.case-study-detail .csd-glance td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--csd-border);
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.5;
+}
+.case-study-detail .csd-glance tr:last-child th,
+.case-study-detail .csd-glance tr:last-child td { border-bottom: 0; }
+.case-study-detail .csd-glance th { width: 34%; color: var(--csd-ink); font-weight: 600; }
+.case-study-detail .csd-glance td { color: #333; }
+.case-study-detail .csd-glance ul { margin: 0; padding: 0; list-style: none; }
+.case-study-detail .csd-glance li { margin: 0 0 4px; }
+.case-study-detail .csd-glance li strong { color: var(--csd-accent); }

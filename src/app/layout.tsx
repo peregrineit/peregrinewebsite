@@ -133,6 +133,9 @@ const siteStructuredData = {
       "@id": ORGANIZATION_ID,
       name: "Peregrine IT Solutions",
       legalName: "Peregrine IT Solutions LLP",
+      // TODO(owner): foundingDate "2018" proposed but unconfirmed; add once confirmed.
+      // Team size "25+" confirmed by the owner (2026-09-30).
+      numberOfEmployees: { "@type": "QuantitativeValue", minValue: 25 },
       url: SITE_URL,
       logo: {
         "@type": "ImageObject",
