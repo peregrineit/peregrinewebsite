@@ -4,6 +4,7 @@ import RelatedCaseStudies from '../../components/RelatedCaseStudies';
 import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
+import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
   title: 'EdTech LMS with Video Streaming',
@@ -106,6 +107,8 @@ export default function EdTechLearningPlatform() {
 
       {/* ═══ CONTENT ═══ */}
       <div className="csd-content">
+        <CaseStudyGlance slug="edtech-learning-platform" />
+
         {/* KEY STATS */}
         <div className="csd-stats-row">
           <div className="csd-stat-card">

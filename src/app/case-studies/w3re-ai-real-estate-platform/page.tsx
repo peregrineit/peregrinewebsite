@@ -5,6 +5,7 @@ import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import Image from 'next/image';
 import '../../css/case-study-detail.css';
+import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
   title: 'AI Multi-Market Real Estate Platform',
@@ -95,6 +96,8 @@ export default function W3reAIRealEstatePlatform() {
 
       {/* ═══ CONTENT ═══ */}
       <div className="csd-content">
+        <CaseStudyGlance slug="w3re-ai-real-estate-platform" />
+
         {/* KEY STATS */}
         <div className="csd-stats-row">
           <div className="csd-stat-card">

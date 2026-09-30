@@ -4,6 +4,7 @@ import RelatedCaseStudies from '../../components/RelatedCaseStudies';
 import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
+import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
   title: 'Legal Document Automation & E-Signature',
@@ -108,6 +109,8 @@ export default function LegalDocumentAutomationPlatform() {
 
       {/* ═══ CONTENT ═══ */}
       <div className="csd-content">
+        <CaseStudyGlance slug="legal-document-automation-platform" />
+
         {/* KEY STATS */}
         <div className="csd-stats-row">
           <div className="csd-stat-card">
