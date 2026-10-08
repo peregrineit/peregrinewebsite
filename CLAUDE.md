@@ -5,7 +5,8 @@ Marketing site for Peregrine IT Solutions (https://peregrine-it.com). Next.js 16
 **Goal of the SEO work:** more qualified organic traffic and software-development enquiries from US and Canadian B2B companies.
 
 ## Where things are tracked
-- `SEO-TASKS.md` — live task tracker: status, decisions, blockers, change log. Update it in the same commit as the work.
+- `docs/seo/MASTER-PLAN.md` — the 90-day plan and how the audit was reconciled with the repo.
+- `docs/seo/TASKS.md` — task status. `docs/seo/PROGRESS.md` — per-task log (files, hash, tests, what remains). `docs/seo/BLOCKERS.md` — what needs the owner. Update these with the work.
 - `SEO-PLAN.md` — history of Phases 1–11 and implementation notes (why things are the way they are).
 - `SEO-OFFPAGE.md` — manual off-site checklist for the owner.
 
@@ -44,7 +45,7 @@ Run `tsc`, a build and `seo_check.py` after every change to pages, metadata or s
 - **Icons** are a subset font. A new `ri-*` class renders blank until the subset is regenerated (see SEO-PLAN.md, implementation notes).
 - **Schema:** Organization, Person and WebSite come from `src/app/layout.tsx`; page-level nodes from each page via `components/JsonLd.tsx`.
 - **Forms:** `components/LeadForms.tsx` posts to `src/app/api/lead/route.ts`. Any element with `data-open-contact` or `data-open-quick-project` opens the footer popup.
-- **Tracking:** `src/lib/track.ts`. GA4 loads only when `NEXT_PUBLIC_GA_ID` is set; events are documented in SEO-TASKS.md.
+- **Tracking:** `src/lib/track.ts`. GA4 loads only when `NEXT_PUBLIC_GA_ID` is set; events are documented in docs/seo/TASKS.md.
 - New routes must be added to `src/app/sitemap.ts` and `public/llms.txt`.
 
 ## Environment variables (set in Vercel, never committed)

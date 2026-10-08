@@ -79,7 +79,7 @@ async function sendNotificationEmail(resend: Resend, lead: LeadData) {
 }
 
 async function sendAutoReply(resend: Resend, email: string, name: string) {
-  // TODO(owner): confirm the response-time promise (B3 in SEO-TASKS.md). The forms and
+  // TODO(owner): confirm the response-time promise (B3 in docs/seo/BLOCKERS.md). The forms and
   // this email currently state different times.
   await resend.emails.send({
     from: FROM,
