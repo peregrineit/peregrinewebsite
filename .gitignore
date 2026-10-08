@@ -42,3 +42,4 @@ next-env.d.ts
 
 # Static HTML exports of case studies (the Next.js routes are canonical)
 public/case-studies/*.html
+.next-build.log
