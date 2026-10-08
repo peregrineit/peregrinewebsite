@@ -7,8 +7,8 @@ Per-task detail, files, hashes and tests are in `PROGRESS.md`. Blockers are in `
 | ID | Task | Depends on | Status |
 |---|---|---|---|
 | T0 | Execution state: CLAUDE.md, docs/seo, `scripts/seo_check.py`, `scripts/serve-local.sh` | — | done |
-| T1 | Seven title and description experiments | — | ready |
-| T2 | MLS/IDX pricing and integration content from verified (sourced) data | T3 | ready |
+| T1 | Seven title and description experiments | — | done (re-measure after 300 impressions each) |
+| T2 | MLS/IDX pricing and integration content from verified (sourced) data | T3 | done |
 | T3 | Technical consultation CTA and short lead qualification form | T0 | done (copy: B4) |
 | T4 | GA4 events and CRM attribution | T3 | done in code (data: B2, B3) |
 | T5 | About, team and client sections from verified information | — | ready (clients); blocked (team: B7) |
@@ -25,6 +25,21 @@ Per-task detail, files, hashes and tests are in `PROGRESS.md`. Blockers are in `
 | T16 | Internal linking, schema, sitemap, metadata housekeeping | T9, T12 | ready |
 | T17 | SEO articles from the content strategy | T8 | ready |
 | T18 | Outreach assets and list of external account actions | — | ready |
+
+## Title experiments (T1)
+Baseline: Search Console, 2026-09-28 to 2026-10-05 (8 days). Only the first row has enough volume to call under-clicked; the rest are experiments. Re-measure each after 300 further impressions; revert any whose position drops.
+
+| Page | Impr. | Pos. | Clicks | Query signal | Old title | New title |
+|---|---|---|---|---|---|---|
+| `/blog/mls-idx-integration-cost` | 109 | 6.5 | 1 | mls api cost, mls grid pricing, idx cost per month | MLS/IDX Integration Cost (2026) | MLS & IDX Cost per Month and per Year (2026) |
+| `/case-studies/proptech-investor-portal` | 36 | 48.4 | 1 | investor portal solutions, custom investor portal | Investor Portal for a Real Estate Developer | Custom Real Estate Investor Portal Case Study |
+| `/case-studies/recruitment-ats-platform` | 34 | 5.2 | 0 | ats saas, resume parsing, candidate pipelines | Recruitment ATS with Resume Parsing | ATS SaaS with Resume Parsing: Case Study |
+| `/case-studies/edtech-learning-platform` | 17 | 7.5 | 0 | edtechlms, edtech lms | EdTech LMS with Video Streaming | EdTech LMS Development Case Study |
+| `/case-studies/self-storage-management-platform` | 17 | 40.7 | 0 | saas self storage software, self storage software with stripe | Self-Storage Management SaaS Platform | Self-Storage SaaS Case Study: 150+ Facilities |
+| `/case-studies/event-ticketing-platform` | 14 | 8.7 | 1 | ticketing platform with custom checkout, refunds | Event Ticketing with Real-Time Availability | Event Ticketing Platform: Checkout & Refunds |
+| `/services/odoo-erp` | 14 | 41.5 | 0 | odoo integration, odoo refurbed/orderstream integration | Odoo Custom Modules & API Integration | Odoo Integration & Custom Module Development |
+
+All titles carry the ` | Peregrine IT` suffix and are 60 characters or fewer. Descriptions were rewritten to lead with the page type and the searched terms; every fact in them is already on the page.
 
 ## Tracking events (T4)
 | Event | Fired when | Properties |

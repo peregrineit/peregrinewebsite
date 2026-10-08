@@ -99,7 +99,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "self-storage-management-platform",
     title: "Self-Storage Management Platform with IoT-Powered Access Control",
-    description: "How we built a SaaS platform for self-storage operators with smart-lock integration, automated billing and live occupancy dashboards for 150+ facilities.",
+    description: "Case study: self-storage management software for 150+ facilities, with Stripe billing, smart-lock gate access, online reservations and occupancy dashboards.",
     image: "/ogimage.png",
     industry: "Self-Storage / Property Management",
     stack: ["React Native", "Next.js", "Node.js", "PostgreSQL", "Redis", "MQTT / IoT", "Stripe", "AWS"],
@@ -200,7 +200,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "proptech-investor-portal",
     title: "Investor Communication Portal for a Real Estate Development Firm",
-    description: "How we built a role-based investor portal with document management, milestone tracking, capital calls and distribution reporting for a $450M portfolio.",
+    description: "Case study: a custom investor portal for a real estate developer with a $450M portfolio: documents, capital calls, distribution reporting and audit trails.",
     image: "/ogimage.png",
     industry: "Real Estate / Investment",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "AWS S3", "DocuSign API", "Stripe", "Chart.js"],
@@ -225,7 +225,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "edtech-learning-platform",
     title: "EdTech Learning Platform with LMS & Video Streaming",
-    description: "How we built a full-stack EdTech platform with LMS, HLS video streaming, and course management — serving 12K+ enrollments across 500+ courses with 99.2% uptime.",
+    description: "Case study: a custom EdTech LMS with HLS video streaming and course management, serving 12K+ enrollments across 500+ courses at 99.2% uptime.",
     image: "/ogimage.png",
     industry: "Education / EdTech",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "AWS MediaConvert", "Stripe", "AWS", "CloudFront"],
@@ -400,7 +400,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "recruitment-ats-platform",
     title: "Recruitment ATS for Applicant Tracking & Hiring",
-    description: "How we built a recruitment ATS for 200+ companies and 80K+ candidates, with resume parsing, interview scheduling and a 65% cut in time-to-hire.",
+    description: "Case study: a multi-tenant ATS SaaS for 200+ companies and 80K+ candidates, with resume parsing, candidate pipelines and a 65% cut in time-to-hire.",
     image: "/ogimage.png",
     industry: "HR Tech / SaaS",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Elasticsearch", "SendGrid", "Calendly API", "Resume Parsing", "Multi-Tenant"],
@@ -425,7 +425,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "event-ticketing-platform",
     title: "Event Ticketing Platform with Real-Time Availability",
-    description: "How we built an event ticketing platform for 500+ events and 120K tickets, with scalable checkout, fraud prevention and refund workflows.",
+    description: "Case study: an event ticketing platform for 500+ events and 120K tickets, with real-time availability, scalable checkout, fraud prevention and refund workflows.",
     image: "/ogimage.png",
     industry: "Events / E-Commerce",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "Stripe", "Twilio", "Fraud Prevention", "Multi-Venue"],

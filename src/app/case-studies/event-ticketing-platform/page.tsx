@@ -7,9 +7,9 @@ import '../../css/case-study-detail.css';
 import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
-  title: 'Event Ticketing with Real-Time Availability',
+  title: 'Event Ticketing Platform: Checkout & Refunds',
   description:
-    'How we built an event ticketing platform for 500+ events and 120K tickets, with scalable checkout, fraud prevention and refund workflows.',
+    'Case study: an event ticketing platform for 500+ events and 120K tickets, with real-time availability, scalable checkout, fraud prevention and refund workflows.',
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

@@ -7,9 +7,9 @@ import '../../css/case-study-detail.css';
 import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
-  title: 'Self-Storage Management SaaS Platform',
+  title: 'Self-Storage SaaS Case Study: 150+ Facilities',
   description:
-    'How we built a SaaS platform for self-storage operators with smart-lock integration, automated billing and live occupancy dashboards for 150+ facilities.',
+    'Case study: self-storage management software for 150+ facilities, with Stripe billing, smart-lock gate access, online reservations and occupancy dashboards.',
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

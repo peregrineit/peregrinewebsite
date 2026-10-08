@@ -513,9 +513,9 @@ export const services: Service[] = [
     slug: 'odoo-erp',
     name: 'Odoo ERP',
     serviceType: 'Odoo ERP implementation and integration',
-    title: 'Odoo Custom Modules & API Integration',
+    title: 'Odoo Integration & Custom Module Development',
     metaDescription:
-      'Odoo custom module and API integration development: new modules, workflow changes and integrations with your website, e-commerce, payment and finance systems.',
+      'Odoo integration and custom module development: connect Odoo to your website, e-commerce, payment, shipping and finance systems through its external API.',
     h1: 'Odoo Custom Module and API Integration Development',
     // Capability page: the owner has no Odoo project to publish yet, so the page makes no
     // project claims and cites no case studies. Add case studies here once they exist.

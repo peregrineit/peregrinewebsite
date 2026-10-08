@@ -7,9 +7,9 @@ import '../../css/case-study-detail.css';
 import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
-  title: 'Recruitment ATS with Resume Parsing',
+  title: 'ATS SaaS with Resume Parsing: Case Study',
   description:
-    'How we built a recruitment ATS for 200+ companies and 80K+ candidates, with resume parsing, interview scheduling and a 65% cut in time-to-hire.',
+    'Case study: a multi-tenant ATS SaaS for 200+ companies and 80K+ candidates, with resume parsing, candidate pipelines and a 65% cut in time-to-hire.',
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {

@@ -7,9 +7,9 @@ import '../../css/case-study-detail.css';
 import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
-  title: 'Investor Portal for a Real Estate Developer',
+  title: 'Custom Real Estate Investor Portal Case Study',
   description:
-    'How we built a role-based investor portal with document management, milestone tracking, capital calls and distribution reporting for a $450M portfolio.',
+    'Case study: a custom investor portal for a real estate developer with a $450M portfolio: documents, capital calls, distribution reporting and audit trails.',
   robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
