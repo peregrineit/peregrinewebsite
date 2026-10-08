@@ -334,6 +334,98 @@ export const services: Service[] = [
     icon: 'ri-home-4-line',
   },
   {
+    slug: 'investor-portal-development',
+    name: 'Investor Portal Development',
+    serviceType: 'Investor portal development',
+    title: 'Investor Portal Development for Real Estate',
+    metaDescription:
+      'Custom investor portal development for real estate firms and funds: role-based access, watermarked documents, capital calls and distribution reporting.',
+    h1: 'Custom Investor Portal Development for Real Estate Firms and Funds',
+    // One published case study backs this page (proptech-investor-portal). Every feature
+    // and figure below comes from it; the page says so rather than implying a practice.
+    offer: 'Secure investor portals with role-based access, document management and automated reporting.',
+    intro: [
+      'An investor portal is a secure, self-service website where limited partners and other investors log in to see their own investments, documents, distributions and project updates, instead of receiving them by email.',
+      'It is for real estate development firms, sponsors and funds whose investor relations still run on email, shared folders and quarterly PDF reports, and whose investors participate through different funds, co-investments and SPVs.',
+      'Peregrine builds the portal end to end: the permission model, the document system with watermarking and an audit trail, capital call and distribution workflows, and the reporting engine behind the quarterly reports.',
+    ],
+    whatWeBuild: [
+      {
+        title: 'Role-based access by entity',
+        body: 'Permissions modeled on the investment structure rather than on individual users, so an investor who is an LP in one fund and a co-investor in a single deal sees exactly those holdings. Our case study portal uses six role types, including family office administrators with delegate access, and gates every page and document at the API level.',
+      },
+      {
+        title: 'Document management with watermarking',
+        body: 'A document library for K-1s, distribution notices and offering documents, with each view or download watermarked with the investor\'s name, a timestamp and a tracking ID, version control, and a complete audit trail of who accessed what.',
+      },
+      {
+        title: 'Capital calls and e-signature',
+        body: 'Subscription documents and capital call notices sent for signature through DocuSign and tracked inside the portal, so investor relations can see which investors have signed without chasing email.',
+      },
+      {
+        title: 'Distribution and performance reporting',
+        body: 'Automated quarterly reports with IRR, equity multiple and distribution waterfall calculations taken from one system of record, exportable to PDF, plus distribution and payment history for each investor.',
+      },
+      {
+        title: 'Investor dashboard',
+        body: 'A responsive dashboard with a personalized view per investor: fund performance charts, the document library, a project milestone tracker and distribution history.',
+      },
+      {
+        title: 'Data migration and onboarding',
+        body: 'Moving historical documents and investor records into the portal and onboarding existing investors. In our case study that meant three years of documents and more than 280 investors.',
+      },
+    ],
+    process: [
+      { title: 'Requirements and access modeling', body: 'We map the fund structure, investor hierarchies and document types, then design the role model, watermarking and audit trail before anything is built.' },
+      { title: 'Core portal and documents', body: 'The investor dashboard, document management and watermarking pipeline, and the data model for multi-fund investment tracking.' },
+      { title: 'Reporting and integrations', body: 'Report generation with IRR and waterfall calculations, e-signature for subscription documents and capital calls, and distribution tracking.' },
+      { title: 'Security review and launch', body: 'Penetration testing and a security audit, migration of historical documents and data, then investor onboarding.' },
+    ],
+    stack: ['Next.js', 'Node.js', 'PostgreSQL', 'Redis', 'AWS S3', 'DocuSign API', 'Stripe', 'Chart.js'],
+    caseStudies: [
+      { slug: 'proptech-investor-portal', note: 'A role-based investor portal for a real estate development firm with a $450M portfolio and 280+ investors: watermarked documents, capital calls through DocuSign and automated quarterly reporting.' },
+    ],
+    guides: [],
+    answers: {
+      includes:
+        'Peregrine\'s investor portal development covers role-based access modeled on your fund, co-investment and SPV structure, a document library with per-investor watermarking and an audit trail, capital calls and subscription documents with e-signature, automated distribution and performance reporting, an investor dashboard, and migration of your existing documents and investor records.',
+      timeline:
+        'Peregrine sets the timeline for an investor portal after mapping the fund structure, investor hierarchies and document types, because the permission model drives most of the work. The portal in our published case study took six months in four phases; that is one project, not a typical timeline.',
+      cost:
+        'Peregrine works on investor portal development as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on how complex the fund and permission structure is, the reporting calculations needed and how much history has to be migrated. We do not publish a price list.',
+      work:
+        'One published case study shows Peregrine\'s investor portal work: a portal for a real estate development firm with a $450M portfolio and 280+ investors, with six role types, watermarked documents and automated quarterly reports. It is a single project, so we would rather walk you through it than generalize from it.',
+    },
+    glance: {
+      delivered: 'Role-based investor portal: access model, watermarked document library, capital calls with e-signature, distribution and performance reporting, migration',
+      // TODO(owner): typical timeline for this service; the case study's six months is one project.
+    },
+    updated: '2026-10-09',
+    faq: [
+      {
+        question: 'How is an investor portal different from sharing files through Dropbox or email?',
+        answer: 'File sharing gives everyone with the link the same files. A portal knows who each investor is and what they hold, so each person sees only their own documents and figures, every access is logged, and downloads can be watermarked. In our case study, the firm had been sharing K-1s and offering documents through shared links with no access controls or audit trail.',
+      },
+      {
+        question: 'Can the portal handle investors in several funds, co-investments and SPVs?',
+        answer: 'Yes. Permissions are modeled at the entity level, not the user level, so one investor can be an LP in a fund, a co-investor in a single deal and have an administrator with read-only access to both, without custom code for each case.',
+      },
+      {
+        question: 'How are confidential documents protected?',
+        answer: 'Documents are stored encrypted and served through signed URLs, access is permission-gated at the API level, and each viewed or downloaded copy is watermarked with the investor\'s name, a timestamp and a tracking ID. If a document leaks, the audit trail shows whose copy it was.',
+      },
+      {
+        question: 'Can the portal produce our quarterly investor reports?',
+        answer: 'Yes. Distribution waterfall, IRR and equity multiple calculations run from the portal\'s own data, so reports are generated rather than assembled by hand. In our case study, quarterly report preparation went from three weeks to two hours.',
+      },
+      {
+        question: 'Should we buy an off-the-shelf investor portal instead of building one?',
+        answer: 'Often, yes. Off-the-shelf investor portals suit firms whose fund structures and reports fit the product. A custom portal is worth considering when your participation structures, calculations or document rules do not fit, or when the portal has to connect to systems the product does not support.',
+      },
+    ],
+    icon: 'ri-funds-box-line',
+  },
+  {
     slug: 'ai-automation',
     name: 'AI Automation',
     serviceType: 'AI and workflow automation',

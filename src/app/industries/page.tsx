@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../components/JsonLd';
+import { industries, singleCaseStudyVerticals } from '@/data/industries';
+import { caseStudies, getCaseStudy } from '@/data/case-studies';
 import '../css/content-pages.css';
 
 const url = `${SITE_URL}/industries`;
 const title = 'Industries We Build Software For';
 const description =
-  'Industries we build software for, starting with real estate and proptech: MLS/IDX integration, brokerage platforms and investor portals.';
+  'Industries we build software for: real estate and proptech, self-storage, logistics, healthcare, HR and recruitment, and e-commerce, each with case studies.';
 
 export const metadata: Metadata = {
   title,
@@ -14,16 +16,6 @@ export const metadata: Metadata = {
   alternates: { canonical: url },
   openGraph: { title, description, url, type: 'website', siteName: 'Peregrine IT Solutions', locale: 'en_US', images: [{ url: '/ogimage.png', width: 1200, height: 630, alt: title }] },
 };
-
-const industries = [
-  {
-    href: '/industries/real-estate',
-    name: 'Real Estate & Proptech',
-    icon: 'ri-building-line',
-    summary:
-      'MLS data pipelines and IDX search, brokerage and agent platforms, AI search and lead qualification, and investor portals, with the case studies behind each.',
-  },
-];
 
 export default function IndustriesPage() {
   const schema = {
@@ -37,7 +29,7 @@ export default function IndustriesPage() {
         description,
         isPartOf: { '@id': `${SITE_URL}/#website` },
         about: ORGANIZATION_REF,
-        hasPart: industries.map((i) => ({ '@id': `${SITE_URL}${i.href}#webpage` })),
+        hasPart: industries.map((i) => ({ '@id': `${SITE_URL}/industries/${i.slug}#webpage` })),
       },
       breadcrumbList(url, [
         { name: 'Home', path: '' },
@@ -56,25 +48,70 @@ export default function IndustriesPage() {
           <div className="cp-badge"><i className="ri-briefcase-line" aria-hidden="true" />Industries</div>
           <h1>Industries We Build Software For</h1>
           <p className="cp-lead">
-            Our published case studies span many industries. Real estate and proptech is where we do the most work,
-            so it has its own page with the services and case studies that apply.
+            Our {caseStudies.length} published case studies span the industries below. Real estate and proptech is
+            where we do the most work; each industry page gathers the case studies, services and guides that apply to it.
           </p>
           <p className="cp-lead-muted">
-            For work in other industries, browse the <Link href="/case-studies">case studies</Link> by category.
+            An industry has its own page only where we have published work to show. Every figure on these pages comes
+            from the linked case study.
           </p>
         </div>
       </section>
+
       <section className="cp-section">
         <div className="cp-container">
-          <div className="cp-grid" style={industries.length === 1 ? { gridTemplateColumns: '1fr' } : undefined}>
+          <span className="cp-label">Industries</span>
+          <h2>Industries With Published Case Studies</h2>
+          <div className="cp-grid-2">
             {industries.map((i) => (
-              <Link key={i.href} href={i.href} className="cp-card">
+              <div key={i.slug} className="cp-card">
                 <span className="cp-card-icon"><i className={i.icon} aria-hidden="true" /></span>
-                <h2 style={{ fontSize: 22, margin: 0 }}>{i.name}</h2>
+                <h3><Link href={`/industries/${i.slug}`}>{i.name}</Link></h3>
                 <p>{i.summary}</p>
-                <span className="cp-card-more">View industry <i className="ri-arrow-right-line" aria-hidden="true" /></span>
-              </Link>
+                <ul className="cp-card-list">
+                  {i.caseStudies.map((slug) => (
+                    <li key={slug}><Link href={`/case-studies/${slug}`}>{getCaseStudy(slug).title}</Link></li>
+                  ))}
+                </ul>
+                <p style={{ marginTop: 12 }}>
+                  <Link href={`/industries/${i.slug}`} className="cp-standalone-link">View {i.name}</Link>
+                </p>
+              </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="cp-section">
+        <div className="cp-container">
+          <span className="cp-label">More industries</span>
+          <h2>Other Industries We Have Built For</h2>
+          <p className="cp-muted">One published case study each, so these link straight to the case study rather than to a page of their own.</p>
+          <div className="cp-grid">
+            {singleCaseStudyVerticals.map(({ name, caseStudy }) => {
+              const study = getCaseStudy(caseStudy);
+              return (
+                <Link key={caseStudy} href={`/case-studies/${caseStudy}`} className="cp-card">
+                  <span className="cp-card-meta">{name}</span>
+                  <h3>{study.title}</h3>
+                  <p>{study.card.summary}</p>
+                  <span className="cp-card-more">Read the case study <i className="ri-arrow-right-line" aria-hidden="true" /></span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="cp-section">
+        <div className="cp-container">
+          <div className="cp-cta">
+            <h2>Don&apos;t See Your Industry?</h2>
+            <p>The engineering problems repeat across industries: multi-tenant data, integrations, search and billing. Tell us what you are building.</p>
+            <div className="cp-buttons">
+              <Link href="/contact" className="cp-btn">Contact Us <i className="ri-arrow-right-line" aria-hidden="true" /></Link>
+              <Link href="/case-studies" className="cp-btn cp-btn-secondary">All Case Studies</Link>
+            </div>
           </div>
         </div>
       </section>

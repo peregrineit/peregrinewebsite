@@ -4,6 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { QuickProjectForm, StrategyCallForm } from './LeadForms';
 import { officeAddressLine, officeMapsUrl } from '@/data/company';
+import { industries } from '@/data/industries';
+import { services } from '@/data/services';
 
 export default function Footer() {
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
@@ -115,12 +117,9 @@ export default function Footer() {
                     </button>
                   </div>
                   <div className={`footer-section-content ${expandedSections.services ? 'expanded' : ''}`}>
-                    <Link href="/services/saas-development" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>SaaS Development</Link>
-                    <Link href="/services/api-integration" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>API Integration</Link>
-                    <Link href="/services/mls-idx-integration" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>MLS &amp; IDX Integration</Link>
-                    <Link href="/services/ai-automation" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>AI Automation</Link>
-                    <Link href="/services/cloud-devops" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Cloud &amp; DevOps</Link>
-                    <Link href="/services/odoo-erp" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Odoo ERP</Link>
+                    {services.map((sv) => (
+                      <Link key={sv.slug} href={`/services/${sv.slug}`} className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>{sv.name}</Link>
+                    ))}
                     <Link href="/services" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>All Services</Link>
                   </div>
                 </div>
@@ -134,10 +133,10 @@ export default function Footer() {
                     </button>
                   </div>
                   <div className={`footer-section-content ${expandedSections.industries ? 'expanded' : ''}`}>
-                    <Link href="/industries/real-estate" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Real Estate Platforms &amp; CRMs</Link>
-                    <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Marketplaces &amp; Portals</a>
-                    <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Logistics &amp; Operations Systems</a>
-                    <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Data-Heavy SaaS Products</a>
+                    {industries.map((i) => (
+                      <Link key={i.slug} href={`/industries/${i.slug}`} className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>{i.name}</Link>
+                    ))}
+                    <Link href="/industries" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>All Industries</Link>
                   </div>
                 </div>
                 <div className="dfs-wrap-7 footer-section-item">
@@ -152,7 +151,6 @@ export default function Footer() {
                   <div className={`footer-section-content ${expandedSections.company ? 'expanded' : ''}`}>
                     <Link href="/about" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>About Us</Link>
                     <Link href="/case-studies" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Case Studies</Link>
-                    <Link href="/industries" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Industries</Link>
                     <Link href="/contact" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Contact</Link>
                     <Link href="/blog" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Guides</Link>
                     <a href="https://calendly.com/mukesh-peregrine-it/30min" target="_blank" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Careers</a>

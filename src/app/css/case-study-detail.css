@@ -1030,3 +1030,4 @@
 .case-study-detail .csd-glance ul { margin: 0; padding: 0; list-style: none; }
 .case-study-detail .csd-glance li { margin: 0 0 4px; }
 .case-study-detail .csd-glance li strong { color: var(--csd-accent); }
+.case-study-detail .csd-glance td a { color: var(--csd-accent); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }

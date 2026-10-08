@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../../components/JsonLd';
 import { engagement, engagementModel, getService, ipFaq, services, startAnswer } from '@/data/services';
 import { getCaseStudy } from '@/data/case-studies';
+import { industries } from '@/data/industries';
 import { formatDate, getGuide, type Guide } from '@/data/guides';
 import ConsultationCta from '../../components/ConsultationCta';
 import '../../css/content-pages.css';
@@ -55,6 +56,8 @@ export default async function ServicePage({ params }: Props) {
   const cited = service.caseStudies.map((c) => ({ ...c, study: getCaseStudy(c.slug) }));
   const guides = service.guides.map(getGuide);
   const faq = [...service.faq, ipFaq];
+  // Industry pages that list this service.
+  const serviceIndustries = industries.filter((i) => i.services.includes(service.slug));
 
   const schema = {
     '@context': 'https://schema.org',
@@ -159,7 +162,13 @@ export default async function ServicePage({ params }: Props) {
               </div>
             ))}
           </div>
-          <p style={{ marginTop: 20 }}><Link href="/industries" className="cp-standalone-link">Industries we build for</Link></p>
+          <p style={{ marginTop: 20 }}>
+            Industries:{' '}
+            {serviceIndustries.map((i) => (
+              <span key={i.slug}><Link href={`/industries/${i.slug}`}>{i.name}</Link>{' · '}</span>
+            ))}
+            <Link href="/industries">All industries</Link>
+          </p>
         </div>
       </section>
 
