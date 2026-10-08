@@ -173,3 +173,11 @@ a.cp-card:hover { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 10px 30px
 @media (max-width: 767px) {
   .cp-glance th { width: 38%; }
 }
+
+/* Closing consultation block: context on the left, the short form on the right. */
+.cp-consult { display: grid; gap: 32px; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; }
+.cp-consult-points { margin: 0 0 16px; padding-left: 20px; list-style: disc; }
+.cp-consult-points li { margin-bottom: 8px; line-height: 1.6; color: var(--cp-text); }
+@media (max-width: 899px) {
+  .cp-consult { grid-template-columns: 1fr; }
+}

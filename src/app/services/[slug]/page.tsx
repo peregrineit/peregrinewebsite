@@ -5,6 +5,7 @@ import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../../compon
 import { engagement, engagementModel, getService, ipFaq, services, startAnswer } from '@/data/services';
 import { getCaseStudy } from '@/data/case-studies';
 import { formatDate, getGuide, type Guide } from '@/data/guides';
+import ConsultationCta from '../../components/ConsultationCta';
 import '../../css/content-pages.css';
 
 export const dynamicParams = false;
@@ -254,18 +255,11 @@ export default async function ServicePage({ params }: Props) {
         </div>
       </section>
 
-      <section className="cp-section">
-        <div className="cp-container">
-          <div className="cp-cta">
-            <h2>Talk to an Engineer About Your Project</h2>
-            <p>Tell us what you are building or fixing. Your first conversation is with an engineer, not a salesperson.</p>
-            <div className="cp-buttons">
-              <Link href="/contact" className="cp-btn">Contact Us <i className="ri-arrow-right-line" aria-hidden="true" /></Link>
-              <Link href="/services" className="cp-btn cp-btn-secondary">All Services</Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ConsultationCta
+        heading={`Talk to an Engineer About ${service.name}`}
+        text="Tell us what you are building or fixing. Your first conversation is with an engineer, not a salesperson."
+        source={`service:${service.slug}`}
+      />
     </main>
   );
 }

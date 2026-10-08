@@ -2,16 +2,16 @@ import type { NextConfig } from "next";
 
 // Content-Security-Policy, sent as Report-Only for now: violations are reported in the
 // browser console without blocking anything. Third-party origins actually used at
-// runtime: cdnjs (GSAP, anime, Typed, Waypoints, lottie-web) and jsDelivr (CounterUp),
-// homepage only. Switch to an enforced CSP once the reports are clean.
+// runtime: cdnjs (lottie-web, homepage only) and, only when NEXT_PUBLIC_GA_ID is set,
+// Google Analytics 4. Switch to an enforced CSP once the reports are clean.
 const cspReportOnly = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net",
+  "script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.googletagmanager.com",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
+  "img-src 'self' data: blob: https://*.google-analytics.com https://www.googletagmanager.com",
   "font-src 'self' data:",
   "media-src 'self'",
-  "connect-src 'self'",
+  "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com",
   "frame-src 'none'",
   "object-src 'none'",
   "base-uri 'self'",

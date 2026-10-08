@@ -6,6 +6,8 @@ export interface Guide {
   /** <title>; the layout appends "| Peregrine IT Solutions". */
   metaTitle: string;
   description: string;
+  /** Heading and one line for the closing consultation block; a default is used if absent. */
+  cta?: { heading: string; text: string };
   datePublished: string; // YYYY-MM-DD
   dateModified: string;
   /** Service page and case study the guide links to. */
@@ -16,6 +18,10 @@ export interface Guide {
 export const guides: Guide[] = [
   {
     slug: 'mls-idx-integration-cost',
+    cta: {
+      heading: 'Scoping an MLS or IDX Integration?',
+      text: 'Tell us which MLS boards you need and what you are building on top. We will tell you which feeds, vendors and license types apply before you budget.',
+    },
     title: 'MLS and IDX Integration Cost in 2026: What Brokerages and Proptech Teams Pay',
     metaTitle: 'MLS/IDX Integration Cost (2026)',
     description:
@@ -27,6 +33,10 @@ export const guides: Guide[] = [
   },
   {
     slug: 'custom-saas-vs-off-the-shelf-crm-for-brokerages',
+    cta: {
+      heading: 'Deciding Between a CRM Subscription and a Custom Build?',
+      text: 'Tell us how your brokerage works today and where the current tools fall short. An engineer will tell you plainly whether custom is worth it.',
+    },
     title: 'Custom SaaS vs Off-the-Shelf CRM for Brokerages',
     metaTitle: 'Custom SaaS vs Off-the-Shelf Brokerage CRM',
     description:
@@ -38,6 +48,10 @@ export const guides: Guide[] = [
   },
   {
     slug: 'cost-to-build-a-real-estate-platform',
+    cta: {
+      heading: 'Planning a Real Estate Platform?',
+      text: 'Tell us the scope: MLS boards, user groups and first-release features. We will map what drives the cost for your build.',
+    },
     title: 'What It Costs to Build a Real Estate Platform',
     metaTitle: 'Cost to Build a Real Estate Platform',
     description:
@@ -49,6 +63,10 @@ export const guides: Guide[] = [
   },
   {
     slug: 'how-to-get-mls-data-access',
+    cta: {
+      heading: 'Have MLS Access and Need the Pipeline Built?',
+      text: 'Tell us which boards have approved you, or which you are applying to. We build the ingestion, normalization and search on top of that access.',
+    },
     title: 'How to Get MLS Data Access for Your App',
     metaTitle: 'How to Get MLS Data Access for Your App',
     description:

@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Inter, IBM_Plex_Sans_Arabic, Manrope, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Tracking from "./components/Tracking";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import MobileFloatingButtons from "./components/MobileFloatingButtons";
@@ -227,6 +228,7 @@ export default function RootLayout({
         <MobileFloatingButtons />
         <SpeedInsights />
         <Analytics />
+        <Tracking />
 
         {/* Helper Script from original HTML */}
         <Script id="touch-mod" strategy="afterInteractive">

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import ConsultationCta from './ConsultationCta';
 import type { Metadata } from 'next';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from './JsonLd';
 import { formatDate, getGuide } from '@/data/guides';
@@ -104,6 +105,12 @@ export default function GuideLayout({ slug, children }: { slug: string; children
           </div>
         </div>
       </section>
+      <ConsultationCta
+        heading={g.cta?.heading ?? 'Talk to an Engineer About Your Project'}
+        text={g.cta?.text ?? 'Tell us what you are building or fixing and we will tell you how we would approach it.'}
+        source={`guide:${slug}`}
+        guide={slug}
+      />
     </main>
   );
 }

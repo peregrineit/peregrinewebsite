@@ -1,31 +1,47 @@
 'use client';
 import React, { useState } from 'react';
+import { getAttribution, track } from '@/lib/track';
 
 // The site's two lead forms (strategy call and quick project request). Used in the
-// Footer popups and inline on /contact. Both post to /api/lead.
+// Footer popups, inline on /contact and at the foot of service and landing pages.
+// Both post to /api/lead with attribution (landing page, referrer, UTM) and fire
+// lead_submit / lead_error events (see docs/seo/TASKS.md).
 type Status = { loading: boolean; success: boolean; error: string };
 const idle: Status = { loading: false, success: false, error: '' };
 
 async function submitLead(formData: Record<string, string>, setStatus: (s: Status) => void) {
   setStatus({ loading: true, success: false, error: '' });
+  const page = window.location.pathname;
+  const event = { form: formData.form, page, service: formData.service || '' };
   try {
     const res = await fetch('/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...formData, pageUrl: window.location.href }),
+      body: JSON.stringify({ ...formData, ...getAttribution(), pageUrl: window.location.href }),
     });
     const json = await res.json();
     if (res.ok && json.success) {
       setStatus({ loading: false, success: true, error: '' });
+      track('lead_submit', event);
     } else {
       setStatus({ loading: false, success: false, error: json.error || 'Something went wrong.' });
+      track('lead_error', event);
     }
   } catch {
     setStatus({ loading: false, success: false, error: 'Network error. Please try again.' });
+    track('lead_error', event);
   }
 }
 
-export function StrategyCallForm() {
+// Hidden from people (and from assistive technology); bots that fill every field
+// reveal themselves. The API drops any submission where it has a value.
+const Honeypot = () => (
+  <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true"
+    style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
+);
+
+/** `service` records which service or landing page the form sits on. */
+export function StrategyCallForm({ service = '' }: { service?: string }) {
   const [formStatus, setFormStatus] = useState<Status>(idle);
   return (
     <>
@@ -40,17 +56,24 @@ export function StrategyCallForm() {
       e.preventDefault();
       const f = e.target;
       submitLead({
+        form: 'strategy-call',
+        service,
         name: f.scName.value,
         email: f.scEmail.value,
+        company: f.scCompany.value,
         projectType: f.scType.value,
-        budget: f.scTimeline.value,
+        timeline: f.scTimeline.value,
         message: f.scMessage.value || 'Strategy call request',
+        website: f.website.value,
       }, setFormStatus);
     }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
       <input type="text" name="scName" placeholder="Your name" required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
       <input type="email" name="scEmail" placeholder="Work email" required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
+      <input type="text" name="scCompany" placeholder="Company (optional)" autoComplete="organization"
+        style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
+      <Honeypot />
       <select name="scType" aria-label="Project type" required defaultValue=""
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', appearance: 'none' as const, WebkitAppearance: 'none' as const }}>
         <option value="" disabled style={{ color: '#64748b' }}>Select project type...</option>
@@ -100,17 +123,20 @@ export function QuickProjectForm() {
       e.preventDefault();
       const f = e.target;
       submitLead({
+        form: 'quick-project',
         name: f.qpName.value,
         email: f.qpEmail.value,
         projectType: 'Quick Project Request',
-        budget: f.qpTimeline.value,
+        timeline: f.qpTimeline.value,
         message: f.qpNeed.value,
+        website: f.website.value,
       }, setQpFormStatus);
     }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
       <input type="text" name="qpName" placeholder="Your name" required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
       <input type="email" name="qpEmail" placeholder="Work email" required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
+      <Honeypot />
       <textarea name="qpNeed" placeholder="What do you need help with?" rows={3} required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', resize: 'vertical' as const }} />
       <select name="qpTimeline" aria-label="Desired timeline" required defaultValue=""
