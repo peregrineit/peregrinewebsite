@@ -28,7 +28,7 @@ Each service page opens with an "At a glance" table and answers, in order: what 
 
 ## Guides
 
-- [MLS/IDX integration cost (2026)](https://peregrine-it.com/blog/mls-idx-integration-cost): IDX vendor subscriptions, MLS data license fees, RESO Web API vendors and development cost drivers, with sourced figures
+- [MLS and IDX cost per month and per year (2026)](https://peregrine-it.com/blog/mls-idx-integration-cost): cost-at-a-glance table, IDX vendor subscriptions, MLS data license fees, RESO Web API vendors and development cost drivers, with sourced figures
 - [Custom SaaS vs off-the-shelf CRM for brokerages](https://peregrine-it.com/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages): published CRM pricing and when a custom platform makes sense
 - [Cost to build a real estate platform](https://peregrine-it.com/blog/cost-to-build-a-real-estate-platform): labor rates in the US, Canada and India, MLS data, maps and hosting costs
 - [How to get MLS data access for your app](https://peregrine-it.com/blog/how-to-get-mls-data-access): license types, broker sponsorship, agreements, MLS Grid / Trestle / Bridge, fees and compliance rules, with sources
