@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../components/JsonLd';
 import TeamGrid from '../components/TeamGrid';
-import { services } from '@/data/services';
+import { coreServices as services } from '@/data/services';
 import { caseStudies } from '@/data/case-studies';
 import { team } from '@/data/team';
 import { officeAddressLine } from '@/data/company';

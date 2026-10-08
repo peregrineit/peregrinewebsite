@@ -219,7 +219,7 @@ export const industries: Industry[] = [
     summary:
       'Multi-vendor marketplaces, food delivery with live dispatch, and restaurant POS and online ordering.',
     caseStudies: ['multi-vendor-ecommerce-marketplace', 'food-delivery-aggregator-platform', 'restaurant-pos-ordering-system'],
-    services: ['saas-development', 'api-integration', 'cloud-devops'],
+    services: ['saas-development', 'api-integration', 'shopify-development', 'cloud-devops'],
     guides: [],
     cta: {
       heading: 'Building a Marketplace or Ordering Platform?',

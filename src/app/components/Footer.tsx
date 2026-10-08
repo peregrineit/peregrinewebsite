@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { QuickProjectForm, StrategyCallForm } from './LeadForms';
 import { officeAddressLine, officeMapsUrl } from '@/data/company';
 import { industries } from '@/data/industries';
-import { services } from '@/data/services';
+import { coreServices as services } from '@/data/services';
 
 export default function Footer() {
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
@@ -120,6 +120,7 @@ export default function Footer() {
                     {services.map((sv) => (
                       <Link key={sv.slug} href={`/services/${sv.slug}`} className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>{sv.name}</Link>
                     ))}
+                    <Link href="/services#technologies" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Next.js, React, Shopify, Laravel, WordPress</Link>
                     <Link href="/services" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>All Services</Link>
                   </div>
                 </div>

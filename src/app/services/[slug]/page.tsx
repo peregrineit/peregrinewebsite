@@ -5,6 +5,7 @@ import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../../compon
 import { engagement, engagementModel, getService, ipFaq, services, startAnswer } from '@/data/services';
 import { getCaseStudy } from '@/data/case-studies';
 import { industries } from '@/data/industries';
+import { technologyPageFor, technologyServices } from '@/data/technology-services';
 import { formatDate, getGuide, type Guide } from '@/data/guides';
 import ConsultationCta from '../../components/ConsultationCta';
 import '../../css/content-pages.css';
@@ -243,8 +244,21 @@ export default async function ServicePage({ params }: Props) {
           <span className="cp-label">Stack</span>
           <h2>Technology We Use</h2>
           <div className="cp-tags">
-            {service.stack.map((t) => <span key={t} className="cp-tag">{t}</span>)}
+            {service.stack.map((t) => {
+              const page = technologyPageFor(t);
+              return page && page !== service.slug
+                ? <Link key={t} href={`/services/${page}`} className="cp-tag">{t}</Link>
+                : <span key={t} className="cp-tag">{t}</span>;
+            })}
           </div>
+          {service.group === 'technology' && (
+            <p style={{ marginTop: 20 }}>
+              Other technologies:{' '}
+              {technologyServices.filter((t) => t.slug !== service.slug).map((t, i) => (
+                <span key={t.slug}>{i > 0 && ' · '}<Link href={`/services/${t.slug}`}>{t.name}</Link></span>
+              ))}
+            </p>
+          )}
         </div>
       </section>
 

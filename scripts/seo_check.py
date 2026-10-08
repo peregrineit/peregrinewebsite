@@ -95,6 +95,12 @@ for p, (status, page) in pages.items():
     if "/case-studies/" in p or "/blog/" in p:
         if not any(n.get("@type") == "Article" for n in nodes): fail(p, "no Article schema")
         if not any(n.get("@type") == "BreadcrumbList" for n in nodes): fail(p, "no BreadcrumbList")
+    if p.startswith("/services/"):
+        answers = [text_of(x) for x in re.findall(r'<p class="cp-answer">(.*?)</p>', body, re.S)]
+        if len(answers) != 5: fail(p, f"{len(answers)} direct answers (expected 5)")
+        for ans in answers:
+            n = len(ans.split())
+            if not 40 <= n <= 60 or "Peregrine" not in ans: fail(p, f"direct answer {n} words / names Peregrine={'Peregrine' in ans}: {ans[:40]}")
     links[p] = {h.split("#")[0].split("?")[0].rstrip("/") or "/" for h in re.findall(r'<a\b[^>]*href="(/[^"]*)"', body)}
 
 for t, ps in titles.items():

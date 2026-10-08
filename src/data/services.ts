@@ -7,8 +7,12 @@
 // TODO(owner): prices. No prices are published and no Offer schema is emitted until the
 //   owner supplies real Peregrine prices.
 
+import { technologyServices } from './technology-services';
+
 export interface Service {
   slug: string;
+  /** 'technology' pages are listed separately from the core services (hub, footer, about). */
+  group?: 'technology';
   /** Short name for nav, cards and breadcrumbs. */
   name: string;
   /** schema.org serviceType */
@@ -68,7 +72,7 @@ export const ipFaq = {
 export const startAnswer = (name: string) =>
   `A Peregrine ${name} project starts with a 30-minute technical discovery call with an engineer, not a salesperson. Larger builds then begin with a discovery sprint that maps requirements, designs the architecture and produces a written technical plan. Smaller, well-defined tasks can use the quick project form for a scoped estimate within 48 hours.`;
 
-export const services: Service[] = [
+const coreServiceList: Service[] = [
   {
     slug: 'saas-development',
     name: 'SaaS Development',
@@ -300,7 +304,7 @@ export const services: Service[] = [
       timeline:
         'Peregrine sets the timeline for an MLS feed project after reviewing the boards involved, the feed type each offers and the display and refresh rules in each data license. Data access approval is set by each MLS, not by us. Development then runs in two-week sprints with weekly demos, and every feed is monitored after launch.',
       cost:
-        'Peregrine works on MLS and IDX integration as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on the number of boards and what you build on top; MLS data fees are paid to each board. Our guide [[guide]] lists published fees.',
+        'Peregrine works on MLS and IDX integration as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on the number of boards and what you build on top; MLS data fees go to each board. See [[guide]] for published fees.',
       work:
         'Two published case studies show Peregrine\'s MLS and IDX work: the W3|re platform, which unifies four MLS systems (NTREIS, Stellar MLS, ARMLS and REcolorado) and deduplicates cross-listed properties, and a real estate SaaS whose rebuilt MLS sync engine for US and Canadian boards feeds Elasticsearch search for agent IDX websites.',
     },
@@ -692,6 +696,11 @@ export const services: Service[] = [
     icon: 'ri-stack-line',
   },
 ];
+
+/** Every service page: core services first, then technology pages. */
+export const services: Service[] = [...coreServiceList, ...technologyServices];
+export const coreServices = coreServiceList;
+export { technologyServices };
 
 export function getService(slug: string): Service {
   const service = services.find((s) => s.slug === slug);

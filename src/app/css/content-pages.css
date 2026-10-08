@@ -187,3 +187,5 @@ a.cp-card:hover { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 10px 30px
 .cp-card-list li { margin-bottom: 6px; font-size: 15px; line-height: 1.5; color: var(--cp-muted); }
 .cp-card-list li a { display: inline; }
 .cp-card h3 a { color: #fff; }
+.cp-page a.cp-tag { color: var(--cp-accent); text-decoration: none; }
+.cp-page a.cp-tag:hover { border-color: rgba(34, 211, 238, 0.5); text-decoration: none; }
