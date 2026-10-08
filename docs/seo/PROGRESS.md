@@ -36,7 +36,7 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 - **Files:** `src/data/industries.ts`, `src/app/industries/[slug]/page.tsx`, `src/app/industries/page.tsx`, `src/data/services.ts`, `Footer.tsx`, `Navbar.tsx`, `CaseStudyGlance.tsx`, `RelatedCaseStudies.tsx`, `src/app/services/[slug]/page.tsx`, `sitemap.ts`, `public/llms.txt`; removed the static `industries/real-estate/page.tsx` (same URL now served by the data-driven route)
 - **Commit:** `5125afc`
 - **Tests:** `tsc`, `eslint` on changed files, build, `seo_check.py` on 45 URLs FAILS: 0; hub and self-storage page checked in the browser at 1280 px.
-- **Remaining:** self-storage page does not name lock vendors (B10). The investor portal page rests on one case study and says so. Not checked on a phone-width viewport.
+- **Remaining:** self-storage page does not name lock vendors (B10). The investor portal page rests on one case study and says so.
 - **Next:** T12
 
 ## T10–T13 — technology service pages
@@ -57,7 +57,7 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 - **Files:** `src/data/mls-fees.ts`, `src/app/components/MlsCostCalculator.tsx`, `src/app/tools/mls-idx-cost-calculator/page.tsx`, `content-pages.css`, `sitemap.ts`, cost guide, MLS service page, `/blog` hub, `public/llms.txt`
 - **Commit:** `55bc3f8`
 - **Tests:** `tsc`, `eslint`, build, `seo_check.py` on 51 URLs FAILS: 0. One combination worked by hand and matched in the browser: Realtyna + Stellar broker (20 offices) + MLS PIN vendor + CREA + Trestle technology provider (2 connections) + 100 US hours → $824–$974 per month, $7,500 annual, $17,388–$19,188 per year, $850 plus CAD 1,500 one-time, $5,000–$9,900 development.
-- **Remaining:** fee data is duplicated between the guide and `mls-fees.ts`; both must be updated together. Not tested on a phone-width viewport. No automated unit test for the fee functions.
+- **Remaining:** fee data is duplicated between the guide and `mls-fees.ts`; both must be updated together. No automated unit test for the fee functions.
 - **Next:** T17, T18
 
 ## T17, T18 — article briefs and outreach assets
@@ -66,3 +66,7 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 - **Tests:** none (documents).
 - **Remaining:** no article is written or published; each needs its sources gathered first. Nothing in OUTREACH.md has been sent.
 - **Next:** write article 1 (investor portal vs file sharing) once its vendor sources are gathered; phone-width visual pass on the new pages; then owner blockers.
+
+## Phone-width pass (after T15)
+- Checked at 375 px in the browser: calculator, `/industries`, `/industries/self-storage`, `/services/shopify-development`, a case study. No horizontal overflow; calculator inputs are at least 44 px tall; the consultation block stacks to one column.
+- **Not done:** Lighthouse accessibility and performance runs on the new pages; a real-device check.
