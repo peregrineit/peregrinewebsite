@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Scaling a Real Estate SaaS Platform',
   description:
     'How we re-architected a US and Canadian property search platform to handle millions of MLS listings with sub-second search, growing from 5 agents to 200+.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Scaling a Real Estate SaaS Platform | Peregrine IT Solutions',

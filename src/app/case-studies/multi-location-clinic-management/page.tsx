@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Multi-Location Clinic Management System',
   description:
     'How we built a HIPAA-compliant practice management platform unifying patient records, telehealth, scheduling and insurance billing across 35 clinics.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Multi-Location Clinic Management System | Peregrine IT Solutions',

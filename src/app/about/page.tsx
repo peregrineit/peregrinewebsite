@@ -29,6 +29,17 @@ export const metadata: Metadata = {
   },
 };
 
+// Clients whose testimonials appear on the homepage, with their own websites.
+const NAMED_CLIENTS: [string, string][] = [
+  ['Easy Agent PRO', 'https://www.easyagentpro.com'],
+  ['BrokerLinx', 'https://www.brokerlinx.com'],
+  ['Kypiq', 'https://www.kypiq.com'],
+  ['Search Realty', 'https://www.searchrealty.ca'],
+  ['Bahia International Realty', 'https://www.bahiainternationalrealty.com'],
+  ['Torrins', 'https://www.torrins.com'],
+  ['MM Nova Tech', 'https://www.mmnovatech.com'],
+];
+
 export default function AboutPage() {
   const schema = {
     '@context': 'https://schema.org',
@@ -84,8 +95,14 @@ export default function AboutPage() {
             2018, with a team of 25+, led by {team[0].name}, {team[0].role}. Its office is at {officeAddressLine}. Most clients are B2B companies
             in the United States and Canada, with real estate and proptech a large share of the work alongside SaaS,
             logistics, healthcare, HR, insurance, legal, education, e-commerce and manufacturing. Clients named on this
-            site include W3|re, Easy Agent PRO, BrokerLinx, Kypiq, Search Realty, Bahia International Realty, Torrins
-            and MM Nova Tech.
+            site include <Link href="/case-studies/w3re-ai-real-estate-platform">W3|re</Link>,{' '}
+            {NAMED_CLIENTS.map(([name, href], i) => (
+              <span key={name}>
+                {i === NAMED_CLIENTS.length - 1 ? 'and ' : ''}
+                <a href={href} target="_blank" rel="noopener noreferrer">{name}</a>
+                {i < NAMED_CLIENTS.length - 1 ? ', ' : '.'}
+              </span>
+            ))}
           </p>
         </div>
       </section>

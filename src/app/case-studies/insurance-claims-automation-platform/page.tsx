@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Insurance Claims Automation Platform',
   description:
     'How we built a claims automation platform processing 45K+ claims a year, with document extraction, multi-carrier rules and a full audit trail.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Insurance Claims Automation for Claims Processing | Peregrine IT Solutions',

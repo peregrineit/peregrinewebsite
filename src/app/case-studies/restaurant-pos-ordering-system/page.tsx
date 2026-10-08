@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Restaurant POS & Online Ordering for QSRs',
   description:
     'How we built a POS and online ordering platform for QSR chains across 120+ locations, with offline-first POS, kitchen display and multi-location sync.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Restaurant POS & Online Ordering for QSR Chains | Peregrine IT Solutions',

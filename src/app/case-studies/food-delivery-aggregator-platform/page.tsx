@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Multi-Restaurant Food Delivery Platform',
   description:
     'How we built a multi-restaurant food delivery platform with 200+ restaurants, 50K+ orders a month and real-time driver dispatch.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Food Delivery Aggregator for Multi-Restaurant Marketplace | Peregrine IT Solutions',

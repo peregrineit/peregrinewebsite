@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Multi-Vendor E-Commerce Marketplace',
   description:
     'How we built a bilingual Arabic/English marketplace for 400+ Gulf vendors with automated split payments, vendor onboarding and real-time inventory sync.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Multi-Vendor E-Commerce Marketplace | Peregrine IT Solutions',

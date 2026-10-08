@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'ATS SaaS with Resume Parsing: Case Study',
   description:
     'Case study: a multi-tenant ATS SaaS for 200+ companies and 80K+ candidates, with resume parsing, candidate pipelines and a 65% cut in time-to-hire.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Recruitment ATS for Applicant Tracking & Hiring | Peregrine IT Solutions',

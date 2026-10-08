@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Custom Real Estate Investor Portal Case Study',
   description:
     'Case study: a custom investor portal for a real estate developer with a $450M portfolio: documents, capital calls, distribution reporting and audit trails.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — PropTech Investor Communication Portal | Peregrine IT Solutions',

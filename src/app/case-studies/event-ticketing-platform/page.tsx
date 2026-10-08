@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Event Ticketing Platform: Checkout & Refunds',
   description:
     'Case study: an event ticketing platform for 500+ events and 120K tickets, with real-time availability, scalable checkout, fraud prevention and refund workflows.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Event Ticketing Platform with Real-Time Availability | Peregrine IT Solutions',

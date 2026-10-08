@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Legal Document Automation & E-Signature',
   description:
     'How we built a legal document automation platform for 15K+ documents a month, with contract templates, clause libraries and multi-party e-signature.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Legal Document Automation for Contract Generation & E-Signature | Peregrine IT Solutions',

@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Self-Storage SaaS Case Study: 150+ Facilities',
   description:
     'Case study: self-storage management software for 150+ facilities, with Stripe billing, smart-lock gate access, online reservations and occupancy dashboards.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Self-Storage Management Platform with IoT Access Control | Peregrine IT Solutions',

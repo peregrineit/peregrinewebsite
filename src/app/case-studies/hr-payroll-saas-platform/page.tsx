@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'HR & Payroll SaaS for Mid-Market Companies',
   description:
     'How we built an HR and payroll SaaS for 85+ mid-market companies and 12K employees, with multi-state tax, benefits integration and 99.9% payroll accuracy.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — HR & Payroll SaaS for Mid-Market Companies | Peregrine IT Solutions',

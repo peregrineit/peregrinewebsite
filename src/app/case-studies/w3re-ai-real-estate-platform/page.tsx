@@ -11,7 +11,6 @@ export const metadata: Metadata = {
   title: 'AI Multi-Market Real Estate Platform',
   description:
     'How we built an AI platform for W3|re across 4 MLS markets: natural-language search, a valuation model, a lead chatbot and a unified data pipeline.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — AI-Powered Multi-Market Real Estate Platform | Peregrine IT Solutions',
@@ -112,7 +111,7 @@ export default function W3reAIRealEstatePlatform() {
           </div>
           <div className="csd-stat-card">
             <div className="csd-stat-number">3.8×</div>
-            <div className="csd-stat-label">Lead Conversion</div>
+            <div className="csd-stat-label">Lead-to-Showing Rate</div>
           </div>
           <div className="csd-stat-card">
             <div className="csd-stat-number">94%</div>

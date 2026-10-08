@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'EdTech LMS Development Case Study',
   description:
     'Case study: a custom EdTech LMS with HLS video streaming and course management, serving 12K+ enrollments across 500+ courses at 99.2% uptime.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — EdTech Learning Platform with LMS & Video Streaming | Peregrine IT Solutions',

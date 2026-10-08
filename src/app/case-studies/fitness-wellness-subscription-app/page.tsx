@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Fitness Subscription App with Live Classes',
   description:
     'How we built a fitness subscription app with 80K+ subscribers and 2M+ workouts logged, featuring video streaming, workout sync and offline mode.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Fitness Subscription App with Workout Tracking & Live Classes | Peregrine IT Solutions',

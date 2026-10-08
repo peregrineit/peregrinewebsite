@@ -93,7 +93,7 @@ export const caseStudies: CaseStudy[] = [
     glance: {
       client: "W3|re",
       duration: "14 Months",
-      results: [["62%", "Workload Reduced"], ["3.8×", "Lead Conversion"], ["94%", "Valuation Accuracy"]],
+      results: [["62%", "Workload Reduced"], ["3.8×", "Lead-to-Showing Rate"], ["94%", "Valuation Accuracy"]],
     },
   },
   {

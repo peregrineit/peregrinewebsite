@@ -194,6 +194,7 @@ const siteStructuredData = {
       "@id": personId(m.id),
       name: m.name,
       jobTitle: m.role,
+      url: `${SITE_URL}/about#${m.id}`,
       description: m.bio,
       worksFor: { "@id": ORGANIZATION_ID },
       ...(m.photo ? { image: `${SITE_URL}${m.photo}` } : {}),

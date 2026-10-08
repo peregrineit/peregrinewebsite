@@ -73,6 +73,8 @@ for p, (status, page) in pages.items():
     if not canon or canon.group(1).rstrip("/") != (PROD + p).rstrip("/"): fail(p, "canonical not self")
     if len(h1s) != 1: fail(p, f"{len(h1s)} H1s")
     if re.search(r'<meta name="robots" content="[^"]*noindex', page): fail(p, "noindex")
+    robots = re.findall(r'<meta name="(?:robots|googlebot)" content="([^"]*)"', page)
+    if not any("max-image-preview:large" in r for r in robots): fail(p, "no max-image-preview:large robots directive")
     if LEGACY_JS.search(page): fail(p, "legacy script reference")
     levels = [int(x) for x in re.findall(r"<h([1-6])\b", body)]
     if any(b > a + 1 for a, b in zip(levels, levels[1:])): fail(p, "heading level skipped")
