@@ -11,20 +11,20 @@ Per-task detail, files, hashes and tests are in `PROGRESS.md`. Blockers are in `
 | T2 | MLS/IDX pricing and integration content from verified (sourced) data | T3 | done |
 | T3 | Technical consultation CTA and short lead qualification form | T0 | done (copy: B4) |
 | T4 | GA4 events and CRM attribution | T3 | done in code (data: B2, B3) |
-| T5 | About, team and client sections from verified information | — | ready (clients); blocked (team: B7) |
+| T5 | About, team and client sections from verified information | — | partial: eight named clients linked; team blocked (B7) |
 | T6 | Odoo integration content from verified capabilities | — | blocked (B6) |
-| T7 | Self-storage software landing page | T9 | ready |
-| T8 | Investor portal development page | — | ready |
-| T9 | Industry hub with relevant case studies | — | ready |
-| T10 | Shopify development service page | T12 | ready as capability page (B5) |
-| T11 | Laravel development service page | T12 | ready as capability page (B5) |
-| T12 | Next.js and React development pages | — | ready |
-| T13 | WordPress development service page | T12 | ready as capability page (B5) |
+| T7 | Self-storage software landing page | T9 | done (vendor names: B10) |
+| T8 | Investor portal development page | — | done |
+| T9 | Industry hub with relevant case studies | — | done |
+| T10 | Shopify development service page | T12 | partial: capability page live on branch; project proof blocked (B5) |
+| T11 | Laravel development service page | T12 | partial: capability page; project proof blocked (B5) |
+| T12 | Next.js and React development pages | — | done |
+| T13 | WordPress development service page | T12 | partial: capability page; project proof blocked (B5) |
 | T14 | Verified MLS-specific content | — | blocked (B8) |
-| T15 | MLS/IDX estimation calculator, from the guide's sourced fees only | T2 | ready |
-| T16 | Internal linking, schema, sitemap, metadata housekeeping | T9, T12 | ready |
-| T17 | SEO articles from the content strategy | T8 | ready |
-| T18 | Outreach assets and list of external account actions | — | ready |
+| T15 | MLS/IDX estimation calculator, from the guide's sourced fees only | T2 | done |
+| T16 | Internal linking, schema, sitemap, metadata housekeeping | T9, T12 | partial: linking, robots, sitemap, Person url, W3\|re label done. Open: CSP report-to (needs an endpoint), homepage video and logo weight, W3\|re dashboard block (B9) |
+| T17 | SEO articles from the content strategy | T8 | partial: five briefs in ARTICLES.md; writing needs sources gathered; two blocked (B6, B8) |
+| T18 | Outreach assets and list of external account actions | — | done: OUTREACH.md (nothing sent) |
 
 ## Title experiments (T1)
 Baseline: Search Console, 2026-09-28 to 2026-10-05 (8 days). Only the first row has enough volume to call under-clicked; the rest are experiments. Re-measure each after 300 further impressions; revert any whose position drops.
@@ -50,6 +50,7 @@ All titles carry the ` | Peregrine IT` suffix and are 60 characters or fewer. De
 | `calendly_click` | a Calendly link is clicked | `location`, `page` |
 | `email_click` | a `mailto:` link is clicked | `page` |
 | `guide_cta_click` | a CTA inside a guide's consultation block is clicked | `guide` |
+| `calculator_use` | first interaction with the cost calculator | `tool` |
 
 Lead payload (email and `LEAD_WEBHOOK_URL`): `name`, `email`, `company`, `form`, `projectType`, `timeline`, `service`, `message`, `pageUrl`, `landingPage`, `referrer`, `utm`, `receivedAt`, `source`.
 

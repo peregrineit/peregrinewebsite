@@ -6,7 +6,7 @@ Marketing site for Peregrine IT Solutions (https://peregrine-it.com). Next.js 16
 
 ## Where things are tracked
 - `docs/seo/MASTER-PLAN.md` — the 90-day plan and how the audit was reconciled with the repo.
-- `docs/seo/TASKS.md` — task status. `docs/seo/PROGRESS.md` — per-task log (files, hash, tests, what remains). `docs/seo/BLOCKERS.md` — what needs the owner. Update these with the work.
+- `docs/seo/TASKS.md` — task status. `docs/seo/ARTICLES.md` — briefs for the next guides. `docs/seo/OUTREACH.md` — outreach assets and external actions (nothing sent). `docs/seo/PROGRESS.md` — per-task log (files, hash, tests, what remains). `docs/seo/BLOCKERS.md` — what needs the owner. Update these with the work.
 - `SEO-PLAN.md` — history of Phases 1–11 and implementation notes (why things are the way they are).
 - `SEO-OFFPAGE.md` — manual off-site checklist for the owner.
 
@@ -38,7 +38,7 @@ scripts/serve-local.sh stop
 Run `tsc`, a build and `seo_check.py` after every change to pages, metadata or schema.
 
 ## How the site is built
-- **Data files drive most pages.** `src/data/services.ts` (service pages, one template at `src/app/services/[slug]/page.tsx`), `industries.ts`, `technologies.ts`, `case-studies.ts`, `guides.ts`, `team.ts`, `company.ts`, `legal.ts`. Prefer adding data over adding pages.
+- **Data files drive most pages.** `src/data/services.ts` (service pages, one template at `src/app/services/[slug]/page.tsx`), `technology-services.ts` (Next.js, React, Shopify, Laravel, WordPress pages on the same template), `industries.ts`, `mls-fees.ts` (calculator; mirrors the cost guide), `case-studies.ts`, `guides.ts`, `team.ts`, `company.ts`, `legal.ts`. Prefer adding data over adding pages.
 - **Case studies and guides** have hand-written JSX bodies (`src/app/case-studies/<slug>/page.tsx`, `src/app/blog/<slug>/page.tsx`); their metadata lives in the data files.
 - **New content pages** use `src/app/css/content-pages.css` (`.cp-*` classes, dark slate theme). Reuse them; do not introduce a new visual style.
 - `src/app/css/peregrine.css` has unlayered element rules (h1–h4, p, a, img, button) that beat Tailwind utilities. Scope new CSS or use inline styles when a utility seems to do nothing.
