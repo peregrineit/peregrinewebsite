@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { services } from "@/data/services";
 import { guides } from "@/data/guides";
 import { industries } from "@/data/industries";
+import { FEES_CHECKED } from "@/data/mls-fees";
 import { privacyPolicyUpdated, termsOfUseUpdated } from "@/data/legal";
 
 const SITE_URL = "https://peregrine-it.com";
@@ -40,6 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...industries.map((i) => ({ url: `${SITE_URL}/industries/${i.slug}` })),
     { url: `${SITE_URL}/blog` },
     ...guides.map((g) => ({ url: `${SITE_URL}/blog/${g.slug}`, lastModified: g.dateModified })),
+    { url: `${SITE_URL}/tools/mls-idx-cost-calculator`, lastModified: FEES_CHECKED },
     { url: `${SITE_URL}/about` },
     { url: `${SITE_URL}/contact` },
     { url: `${SITE_URL}/case-studies` },

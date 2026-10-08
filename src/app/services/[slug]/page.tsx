@@ -206,6 +206,11 @@ export default async function ServicePage({ params }: Props) {
               ))}
             </div>
           )}
+          {service.slug === 'mls-idx-integration' && (
+            <p style={{ marginTop: 20 }}>
+              <Link href="/tools/mls-idx-cost-calculator" className="cp-standalone-link">Add up published fees with the MLS and IDX cost calculator</Link>
+            </p>
+          )}
         </div>
       </section>
 

@@ -40,7 +40,8 @@ export default function Guide() {
       <h2>MLS and IDX cost at a glance</h2>
       <p>
         Published prices, grouped by how each cost is billed. Each figure links to the page it comes from and is
-        explained in the sections below.
+        explained in the sections below. To total the fees for your own setup, use the{' '}
+        <Link href="/tools/mls-idx-cost-calculator">MLS and IDX cost calculator</Link>.
       </p>
       <div className="cp-table-wrap">
         <table>
