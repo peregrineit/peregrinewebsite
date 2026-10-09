@@ -474,6 +474,20 @@ def run():
         reset(blob_sleep=6); t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
         check("store hangs: lead accepted, write gives up after about 3 s", s == 200 and b.get("store") == {"status": "failed"} and dt < 4.5 and "store timed out" in app_log(), f"got {s} in {dt:.1f}s")
         time.sleep(3.5)
+        # one deadline for webhook + store: together they never hold the response much beyond 5 s
+        reset(hook_sleep=7, blob_sleep=6); t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
+        check("budget: email accepted, webhook hangs, store hangs -> answered within about 5.5 s", s == 200 and dt < 6.0 and b.get("webhook") == {"status": "failed"} and b.get("store") == {"status": "failed"}, f"got {s} in {dt:.1f}s {b}")
+        time.sleep(3.0)
+        reset(hook_plan=[{"sleep": 3, "status": 500}, {"sleep": 7}], blob_sleep=6); t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
+        check("budget: slow 500, hung retry and hung store -> answered within about 5.5 s", s == 200 and dt < 6.0 and len(state["hook_attempts"]) == 2 and b.get("store") == {"status": "failed"}, f"got {s} in {dt:.1f}s {b}")
+        time.sleep(5.5)
+        reset(hook_sleep=7); t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t; obj = next(iter(state["blobs"].values()), {})
+        check("budget: webhook hangs, store healthy -> stored without waiting for the webhook to give up, and the object says the webhook was still pending",
+              s == 200 and dt < 6.0 and b.get("store") == {"status": "stored"} and b.get("durableStorage") == "vercel-blob" and obj.get("delivery") == {"notification": "accepted", "webhook": "pending"}, f"got {s} in {dt:.1f}s {b} {obj.get('delivery')}")
+        time.sleep(2.5)
+        reset(fail=500, hook_plan=[{"sleep": 3}], blob_sleep=6); t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
+        check("budget: email down, webhook accepts after 3 s, store hangs -> still within about 5.5 s", s == 200 and dt < 6.0 and b.get("webhook") == {"status": "accepted"} and b.get("store") == {"status": "failed"}, f"got {s} in {dt:.1f}s {b}")
+        time.sleep(3.5)
         # the rule: a store is a record of an accepted lead, never acceptance
         reset(fail=500, hook_fail=True); s, b = post(LEAD, ip())
         check("store: email and webhook both down -> 502 and nothing is stored", s == 502 and b.get("success") is False and not state["blob_puts"], f"got {s}, {len(state['blob_puts'])} writes")

@@ -2,7 +2,7 @@ import { after, NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { cleanAttribution, type LeadAttribution } from "@/lib/attribution";
 import { leadPriority, priorityLine, type PriorityResult } from "@/lib/lead-priority";
-import { getLeadStore, type StoreResult } from "@/lib/lead-store";
+import { getLeadStore, STORE_TIMEOUT_MS, type StoreResult } from "@/lib/lead-store";
 import { deliverWebhook, type Outcome } from "@/lib/lead-webhook";
 
 // Lead intake for the two site forms (components/LeadForms.tsx).
@@ -230,6 +230,13 @@ async function senderDomainVerified(): Promise<boolean | null> {
   return value;
 }
 
+/** Webhook and store together must be done this long after the request started. */
+const SHARED_DEADLINE_MS = 5500;
+/** Once the lead is accepted, the store write waits at most this long for the other destination's answer. */
+const STORE_START_MS = 2000;
+/** A store write is never started with less time than this. */
+const MIN_STORE_MS = 250;
+
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 // GET /api/lead                      configuration, booleans only, never a value.
@@ -339,14 +346,43 @@ export async function POST(request: NextRequest) {
     const store = getLeadStore();
     const receivedAt = new Date().toISOString();
 
-    const [notification, webhook] = await Promise.all([
-      resend
-        ? sendEmail(resend, notificationEmail(lead), `lead-notify-${ref}`)
-        : Promise.resolve<Outcome>({ status: "skipped", reason: "RESEND_API_KEY not set" }),
-      webhookUrl
-        ? postToWebhook(webhookUrl, lead, receivedAt)
-        : Promise.resolve<Outcome>({ status: "skipped", reason: "LEAD_WEBHOOK_URL not set" }),
-    ]);
+    // Time. The webhook (retry included) has 5 s. The store shares that deadline instead of
+    // adding its own 3 s on top: its write starts as soon as the lead is known to be accepted,
+    // at the latest STORE_START_MS after the start even if the other destination has not
+    // answered yet, and it must finish by SHARED_DEADLINE_MS. So a hung webhook and a hung
+    // store together hold the response for about 5.5 s at most, not 8.
+    const started = Date.now();
+    const notifying: Promise<Outcome> = resend
+      ? sendEmail(resend, notificationEmail(lead), `lead-notify-${ref}`)
+      : Promise.resolve<Outcome>({ status: "skipped", reason: "RESEND_API_KEY not set" });
+    const hooking: Promise<Outcome> = webhookUrl
+      ? postToWebhook(webhookUrl, lead, receivedAt)
+      : Promise.resolve<Outcome>({ status: "skipped", reason: "LEAD_WEBHOOK_URL not set" });
+
+    // What has answered so far. "pending" in the stored object means "not known yet when
+    // the object was written", which is the truth.
+    const sofar: { notification?: Outcome; webhook?: Outcome } = {};
+    const firstAcceptance = new Promise<void>((resolve) => {
+      void notifying.then((o) => { sofar.notification = o; if (o.status === "accepted") resolve(); });
+      void hooking.then((o) => { sofar.webhook = o; if (o.status === "accepted") resolve(); });
+    });
+    const settled = Promise.all([notifying, hooking]);
+    await Promise.race([settled, Promise.all([firstAcceptance, new Promise((resolve) => setTimeout(resolve, STORE_START_MS))])]);
+
+    // The durable record, only for a lead something has accepted (lib/lead-store.ts explains
+    // why a store write is not acceptance).
+    const saveNow = () =>
+      store.save(
+        {
+          ...webhookBody(lead, receivedAt),
+          delivery: { notification: sofar.notification?.status ?? "pending", webhook: sofar.webhook?.status ?? "pending" },
+        },
+        { timeoutMs: Math.max(MIN_STORE_MS, Math.min(STORE_TIMEOUT_MS, started + SHARED_DEADLINE_MS - Date.now())) }
+      );
+    const acceptedSoFar = sofar.notification?.status === "accepted" || sofar.webhook?.status === "accepted";
+    const earlyStoring: Promise<StoreResult> | null = acceptedSoFar ? saveNow() : null;
+
+    const [notification, webhook] = await settled;
 
     const accepted = notification.status === "accepted" || webhook.status === "accepted";
 
@@ -356,11 +392,8 @@ export async function POST(request: NextRequest) {
     else if (lead.spamSuspected) acknowledging = { status: "skipped", reason: "hidden field was filled" };
     else acknowledging = sendEmail(resend, acknowledgementEmail(lead), `lead-ack-${ref}`);
 
-    // The durable record, only for a lead something has accepted (lib/lead-store.ts explains
-    // why a store write is not acceptance). Written alongside the acknowledgement so it adds
-    // no time of its own; it has its own 3 s limit.
     const storing: Promise<StoreResult> | StoreResult = accepted
-      ? store.save({ ...webhookBody(lead, receivedAt), delivery: { notification: notification.status, webhook: webhook.status } })
+      ? earlyStoring ?? saveNow()
       : { status: "skipped", reason: store.name === "none" ? "no store configured" : "lead was not accepted" };
 
     const [acknowledgement, stored] = await Promise.all([acknowledging, storing]);

@@ -17,6 +17,9 @@ import { createHmac } from "node:crypto";
 //     a lead that reached only the store would be one the visitor believes was received
 //     and nobody reads. If neither the email nor the webhook accepts the lead, the visitor
 //     gets the same error as before and nothing is stored.
+//   - Time: the webhook and the store share one deadline (route.ts). The write starts as
+//     soon as the lead is accepted, without waiting for a webhook that is still hanging, so
+//     the two together cannot hold the visitor's response much beyond 5 seconds.
 //   - A failed write is logged and reported (`store.status: "failed"`, `durableStorage`
 //     without the store's name). It never turns an accepted lead into a failure.
 
@@ -31,8 +34,11 @@ export type StoreResult =
 export interface LeadStore {
   /** "none" for the no-op store; otherwise the name reported in `durableStorage`. */
   readonly name: string;
-  /** Writes one lead. Never throws. Writing the same `ref` again replaces the first object. */
-  save(lead: StoredLead): Promise<StoreResult>;
+  /**
+   * Writes one lead. Never throws. Writing the same `ref` again replaces the first object.
+   * `timeoutMs` shortens the store's own limit when the caller has less time left.
+   */
+  save(lead: StoredLead, options?: { timeoutMs?: number }): Promise<StoreResult>;
 }
 
 export const noopStore = (reason: string): LeadStore => ({
@@ -40,7 +46,7 @@ export const noopStore = (reason: string): LeadStore => ({
   save: async () => ({ status: "skipped", reason }),
 });
 
-const STORE_TIMEOUT_MS = 3000;
+export const STORE_TIMEOUT_MS = 3000;
 // The REST call the current @vercel/blob SDK makes (packages/blob/src/put.ts and api.ts in
 // github.com/vercel/storage, read 2026-10-10): PUT <api>/?pathname=<path> with the headers
 // below. Vercel documents the SDK, not this HTTP interface, so it can change without
@@ -67,7 +73,7 @@ export function vercelBlobStore(config: { token: string; apiUrl?: string; access
   const access = config.access === "public" ? "public" : "private";
   return {
     name: "vercel-blob",
-    async save(lead) {
+    async save(lead, options = {}) {
       try {
         const pathname = blobPath(lead.ref, lead.receivedAt, config.token);
         const res = await fetch(`${apiUrl}/?pathname=${encodeURIComponent(pathname)}`, {
@@ -84,7 +90,7 @@ export function vercelBlobStore(config: { token: string; apiUrl?: string; access
             "x-cache-control-max-age": "60",
           },
           body: JSON.stringify(lead),
-          signal: AbortSignal.timeout(STORE_TIMEOUT_MS),
+          signal: AbortSignal.timeout(Math.min(STORE_TIMEOUT_MS, options.timeoutMs ?? STORE_TIMEOUT_MS)),
         });
         if (!res.ok) {
           await res.body?.cancel().catch(() => {});
