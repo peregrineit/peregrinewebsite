@@ -1,0 +1,2946 @@
+{
+ "base": "http://localhost:3080",
+ "counts": {
+  "blocked-or-login": 7,
+  "client-error": 1,
+  "connection-error": 1,
+  "ok": 122,
+  "redirected": 9,
+  "server-error": 1,
+  "timeout": 0
+ },
+ "crawl_errors": [],
+ "date": "2026-10-10",
+ "links": [
+  {
+   "anchors": [],
+   "attempts": 1,
+   "class": "client-error",
+   "error": null,
+   "final_url": "https://www.facebook.com/peregrineitsolution",
+   "method": "GET",
+   "note": "HTTP 400",
+   "pages": [
+    "/blog/cost-to-build-a-real-estate-platform",
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages",
+    "/blog/how-to-get-mls-data-access",
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/investor-portal-vs-file-sharing",
+    "/blog/mls-data-access-canada",
+    "/blog/mls-idx-integration-cost",
+    "/blog/odoo-implementation-cost",
+    "/blog/reso-web-api-vs-rets",
+    "/blog/self-storage-software-build-vs-buy",
+    "/industries/ecommerce-food-ordering",
+    "/industries/healthcare-insurance",
+    "/industries/hr-recruitment",
+    "/industries/logistics",
+    "/industries/real-estate",
+    "/industries/self-storage",
+    "/services/ai-automation",
+    "/services/api-integration",
+    "/services/cloud-devops",
+    "/services/investor-portal-development",
+    "/services/laravel-development",
+    "/services/mls-idx-integration",
+    "/services/nextjs-development",
+    "/services/odoo-erp",
+    "/services/react-development",
+    "/services/saas-development",
+    "/services/shopify-development",
+    "/services/wordpress-development",
+    "/tools/mls-idx-cost-calculator"
+   ],
+   "redirects": [],
+   "source_citation": false,
+   "status": 400,
+   "url": "https://www.facebook.com/peregrineitsolution"
+  },
+  {
+   "anchors": [
+    "VOW or back-office agreements be completed through the MLS Grid",
+    "reviews the request and, if approved, provides a license",
+    "One-time $1,000 development fee and $500 startup fee"
+   ],
+   "attempts": 2,
+   "class": "server-error",
+   "error": null,
+   "final_url": "https://northstarmls.com/third-party-data-usage/",
+   "method": "GET",
+   "note": "HTTP 503",
+   "pages": [
+    "/blog/how-to-get-mls-data-access"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 503,
+   "url": "https://northstarmls.com/third-party-data-usage/"
+  },
+  {
+   "anchors": [
+    "Testimonials"
+   ],
+   "attempts": 2,
+   "class": "connection-error",
+   "error": "gaierror: [Errno 8] nodename nor servname provided, or not known",
+   "final_url": null,
+   "method": null,
+   "note": "gaierror: [Errno 8] nodename nor servname provided, or not known",
+   "pages": [
+    "/blog/cost-to-build-a-real-estate-platform",
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages",
+    "/blog/how-to-get-mls-data-access",
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/investor-portal-vs-file-sharing",
+    "/blog/mls-data-access-canada",
+    "/blog/mls-idx-integration-cost",
+    "/blog/odoo-implementation-cost",
+    "/blog/reso-web-api-vs-rets",
+    "/blog/self-storage-software-build-vs-buy",
+    "/industries/ecommerce-food-ordering",
+    "/industries/healthcare-insurance",
+    "/industries/hr-recruitment",
+    "/industries/logistics",
+    "/industries/real-estate",
+    "/industries/self-storage",
+    "/services/ai-automation",
+    "/services/api-integration",
+    "/services/cloud-devops",
+    "/services/investor-portal-development",
+    "/services/laravel-development",
+    "/services/mls-idx-integration",
+    "/services/nextjs-development",
+    "/services/odoo-erp",
+    "/services/react-development",
+    "/services/saas-development",
+    "/services/shopify-development",
+    "/services/wordpress-development",
+    "/tools/mls-idx-cost-calculator"
+   ],
+   "redirects": [],
+   "source_citation": false,
+   "status": null,
+   "url": "https://share.google.com/DOm7mkXoRAN5u1mWi"
+  },
+  {
+   "anchors": [
+    "$25 to $49",
+    "$50 to $99",
+    "$100 to $149"
+   ],
+   "attempts": 1,
+   "class": "blocked-or-login",
+   "error": null,
+   "final_url": "https://clutch.co/developers/pricing",
+   "method": "GET",
+   "note": "HTTP 403: the site refuses automated requests; check in a browser",
+   "pages": [
+    "/blog/cost-to-build-a-real-estate-platform",
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/mls-idx-integration-cost",
+    "/tools/mls-idx-cost-calculator"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 403,
+   "url": "https://clutch.co/developers/pricing"
+  },
+  {
+   "anchors": [
+    "ERP consulting at $25 to $49 per hour",
+    "updated September 21, 2026"
+   ],
+   "attempts": 1,
+   "class": "blocked-or-login",
+   "error": null,
+   "final_url": "https://clutch.co/it-services/msp/pricing",
+   "method": "GET",
+   "note": "HTTP 403: the site refuses automated requests; check in a browser",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 403,
+   "url": "https://clutch.co/it-services/msp/pricing"
+  },
+  {
+   "anchors": [
+    "Odoo's Success Packs page as captured for a US visitor on August 9, 2026"
+   ],
+   "attempts": 1,
+   "class": "blocked-or-login",
+   "error": null,
+   "final_url": "https://web.archive.org/web/20260809055248/https://www.odoo.com/pricing-packs",
+   "method": "GET",
+   "note": "HTTP 429: the site refuses automated requests; check in a browser",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 429,
+   "url": "https://web.archive.org/web/20260809055248/https://www.odoo.com/pricing-packs"
+  },
+  {
+   "anchors": [
+    "CAD 35.20, against a list price of CAD 44.00",
+    "CAD 44.00, against a list price of CAD 55.00",
+    "CAD 57.90, against a list price of CAD 73.00"
+   ],
+   "attempts": 1,
+   "class": "blocked-or-login",
+   "error": null,
+   "final_url": "https://web.archive.org/web/20261005210003/https://www.odoo.com/pricing",
+   "method": "GET",
+   "note": "HTTP 429: the site refuses automated requests; check in a browser",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 429,
+   "url": "https://web.archive.org/web/20261005210003/https://www.odoo.com/pricing"
+  },
+  {
+   "anchors": [
+    "$135,980 (May 2025)",
+    "median annual wage of $135,980 for software developers (May 2025)"
+   ],
+   "attempts": 1,
+   "class": "blocked-or-login",
+   "error": null,
+   "final_url": "https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm",
+   "method": "GET",
+   "note": "HTTP 403: the site refuses automated requests; check in a browser",
+   "pages": [
+    "/blog/cost-to-build-a-real-estate-platform"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 403,
+   "url": "https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm"
+  },
+  {
+   "anchors": [
+    "protection of financial and personal customer information as a key responsibilit"
+   ],
+   "attempts": 1,
+   "class": "blocked-or-login",
+   "error": null,
+   "final_url": "https://www.finra.org/rules-guidance/key-topics/customer-information-protection",
+   "method": "GET",
+   "note": "HTTP 403: the site refuses automated requests; check in a browser",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 403,
+   "url": "https://www.finra.org/rules-guidance/key-topics/customer-information-protection"
+  },
+  {
+   "anchors": [
+    "Manitoba and Quebec boards and associations do not participate in the National S",
+    "technology providers can build personal websites for REALTORS\u00ae only",
+    "updated an average of 46 times per day"
+   ],
+   "attempts": 1,
+   "class": "blocked-or-login",
+   "error": null,
+   "final_url": "https://www.realtor.ca/ddf/technology-providers",
+   "method": "GET",
+   "note": "HTTP 403: the site refuses automated requests; check in a browser",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 403,
+   "url": "https://www.realtor.ca/ddf/technology-providers"
+  },
+  {
+   "anchors": [
+    "BoldTrail"
+   ],
+   "attempts": 1,
+   "class": "redirected",
+   "error": null,
+   "final_url": "https://boldtrail.com/pricing-demo/",
+   "method": "HEAD",
+   "note": "moved to https://boldtrail.com/pricing-demo/",
+   "pages": [
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages"
+   ],
+   "redirects": [
+    {
+     "from": "https://boldtrail.com/pricing/",
+     "status": 301,
+     "to": "https://boldtrail.com/pricing-demo/"
+    }
+   ],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://boldtrail.com/pricing/"
+  },
+  {
+   "anchors": [
+    "\u201cOnly people invited\u201d can access a shared file or folder",
+    "\"Only people invited\" setting"
+   ],
+   "attempts": 1,
+   "class": "redirected",
+   "error": null,
+   "final_url": "https://help.dropbox.com/share/set-file-folder-permissions",
+   "method": "HEAD",
+   "note": "moved to https://help.dropbox.com/share/set-file-folder-permissions",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [
+    {
+     "from": "https://help.dropbox.com/share/set-folder-permissions",
+     "status": 301,
+     "to": "https://help.dropbox.com/share/set-file-folder-permissions"
+    }
+   ],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://help.dropbox.com/share/set-folder-permissions"
+  },
+  {
+   "anchors": [
+    "Lofty"
+   ],
+   "attempts": 1,
+   "class": "redirected",
+   "error": null,
+   "final_url": "https://lofty.com/price-packages",
+   "method": "HEAD",
+   "note": "moved to https://lofty.com/price-packages",
+   "pages": [
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages"
+   ],
+   "redirects": [
+    {
+     "from": "https://lofty.com/pricing",
+     "status": 301,
+     "to": "https://lofty.com/price-packages"
+    }
+   ],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://lofty.com/pricing"
+  },
+  {
+   "anchors": [
+    "\u201cPeople you choose\u201d links give access only to the people you specify",
+    "A \u201cCan't download\u201d permission; expiry dates only on \u201canyone\u201d links"
+   ],
+   "attempts": 1,
+   "class": "redirected",
+   "error": null,
+   "final_url": "https://support.microsoft.com/en-us/sharepoint/sharepoint-sharing-and-permissions/share-sharepoint-files-or-folders",
+   "method": "HEAD",
+   "note": "moved to https://support.microsoft.com/en-us/sharepoint/sharepoint-sharing-and-permissions/share-sharepoint-files-or-folders",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [
+    {
+     "from": "https://support.microsoft.com/en-us/office/share-sharepoint-files-or-folders-1fe37332-0f9a-4719-970e-d2578da4941c",
+     "status": 301,
+     "to": "https://support.microsoft.com/en-us/sharepoint/sharepoint-sharing-and-permissions/share-sharepoint-files-or-folders"
+    }
+   ],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://support.microsoft.com/en-us/office/share-sharepoint-files-or-folders-1fe37332-0f9a-4719-970e-d2578da4941c"
+  },
+  {
+   "anchors": [
+    "$49 per month",
+    "$49 or $77 per month"
+   ],
+   "attempts": 1,
+   "class": "redirected",
+   "error": null,
+   "final_url": "https://buyingbuddy.com/pricing.php",
+   "method": "HEAD",
+   "note": "same page, address form changed (scheme, www or trailing slash): https://buyingbuddy.com/pricing.php",
+   "pages": [
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [
+    {
+     "from": "https://www.buyingbuddy.com/pricing.php",
+     "status": 301,
+     "to": "https://buyingbuddy.com/pricing.php"
+    }
+   ],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.buyingbuddy.com/pricing.php"
+  },
+  {
+   "anchors": [
+    "Plan prices not published",
+    "Extra MLS $25 per month (one-agent plan) or $50 per month (two or more agents)",
+    "$25 per month on the one-agent plan or $50 per month for two or more agents"
+   ],
+   "attempts": 1,
+   "class": "redirected",
+   "error": null,
+   "final_url": "https://www.ihomefinder.com/platform-pricing/",
+   "method": "HEAD",
+   "note": "moved to https://www.ihomefinder.com/platform-pricing/",
+   "pages": [
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [
+    {
+     "from": "https://www.ihomefinder.com/pricing/",
+     "status": 301,
+     "to": "https://www.ihomefinder.com/platform-pricing/"
+    }
+   ],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.ihomefinder.com/pricing/"
+  },
+  {
+   "anchors": [
+    "your brokerage will function as your own \u201cVendor\u201d",
+    "sign the Data License Agreement",
+    "for MLS review during the approval process"
+   ],
+   "attempts": 1,
+   "class": "redirected",
+   "error": null,
+   "final_url": "https://static1.squarespace.com/static/5908cde79f745622b6a59828/t/69b06db16935bd0ea66676d9/1773170097942/MLS+Grid+-+Data+Consumer+Access+Guide.pdf",
+   "method": "HEAD",
+   "note": "moved to https://static1.squarespace.com/static/5908cde79f745622b6a59828/t/69b06db16935bd0ea66676d9/1773170097942/MLS+Grid+-+Data+Consumer+Access+Guide.pdf",
+   "pages": [
+    "/blog/how-to-get-mls-data-access"
+   ],
+   "redirects": [
+    {
+     "from": "https://www.mlsgrid.com/s/MLS-Grid-Data-Consumer-Access-Guide.pdf",
+     "status": 302,
+     "to": "https://static1.squarespace.com/static/5908cde79f745622b6a59828/t/69b06db16935bd0ea66676d9/1773170097942/MLS+Grid+-+Data+Consumer+Access+Guide.pdf"
+    }
+   ],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.mlsgrid.com/s/MLS-Grid-Data-Consumer-Access-Guide.pdf"
+  },
+  {
+   "anchors": [
+    "$399 per month plus a $500 one-time setup fee",
+    "2; users 3\u201310 are $25/month each",
+    "$10 per board per month"
+   ],
+   "attempts": 1,
+   "class": "redirected",
+   "error": null,
+   "final_url": "https://www.realgeeks.com/real-geeks-pricing",
+   "method": "HEAD",
+   "note": "moved to https://www.realgeeks.com/real-geeks-pricing",
+   "pages": [
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages"
+   ],
+   "redirects": [
+    {
+     "from": "https://www.realgeeks.com/pricing/",
+     "status": 301,
+     "to": "https://www.realgeeks.com/real-geeks-pricing"
+    }
+   ],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.realgeeks.com/pricing/"
+  },
+  {
+   "anchors": [
+    "$49 per month ($499 per year)",
+    "Up to 5 team members on a shared login; extra logins $20/month"
+   ],
+   "attempts": 1,
+   "class": "redirected",
+   "error": null,
+   "final_url": "https://www.wiseagent.com/pricing.asp",
+   "method": "HEAD",
+   "note": "moved to https://www.wiseagent.com/pricing.asp",
+   "pages": [
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages"
+   ],
+   "redirects": [
+    {
+     "from": "https://www.wiseagent.com/pricing/",
+     "status": 302,
+     "to": "https://www.wiseagent.com/pricing.asp"
+    }
+   ],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.wiseagent.com/pricing/"
+  },
+  {
+   "anchors": [
+    "Essential plan starts from $749 per month",
+    "Investor portal, CRM, document and K-1 management, waterfall automation, digital",
+    "Essential plan from $749 per month"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://agorareal.com/pricing/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://agorareal.com/pricing/"
+  },
+  {
+   "anchors": [
+    "$1,000 to $1,500 per product per month",
+    "Five free feeds per brokerage; additional feeds $150 per month each",
+    "Typically $1,000 to $1,500 per product per month"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://armls.com/data-feeds-vendor-info",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/how-to-get-mls-data-access",
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://armls.com/data-feeds-vendor-info"
+  },
+  {
+   "anchors": [
+    "shut down RETS on December 15, 2023",
+    "RETS field names are not human-readable and apply only to one MLS",
+    "RETS shutoff on December 15, 2023"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://armls.com/rets-to-api",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-idx-integration-cost",
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://armls.com/rets-to-api"
+  },
+  {
+   "anchors": [
+    "750 hours per month of selected single-AZ RDS instances with 20 GB of storage"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://aws.amazon.com/rds/postgresql/pricing/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/cost-to-build-a-real-estate-platform"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://aws.amazon.com/rds/postgresql/pricing/"
+  },
+  {
+   "anchors": [
+    "all datasets require approval from the data provider",
+    "may require license agreements, fees or compliance testing",
+    "automatic access to a test dataset"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://bridgedataoutput.com/docs/platform/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/how-to-get-mls-data-access"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://bridgedataoutput.com/docs/platform/"
+  },
+  {
+   "anchors": [
+    "Book a call on Calendly",
+    "Book a Strategy Call \u2192",
+    "Careers"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://calendly.com/mukesh-peregrine-it/30min",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/cost-to-build-a-real-estate-platform",
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages",
+    "/blog/how-to-get-mls-data-access",
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/investor-portal-vs-file-sharing",
+    "/blog/mls-data-access-canada",
+    "/blog/mls-idx-integration-cost",
+    "/blog/odoo-implementation-cost",
+    "/blog/reso-web-api-vs-rets",
+    "/blog/self-storage-software-build-vs-buy",
+    "/industries/ecommerce-food-ordering",
+    "/industries/healthcare-insurance",
+    "/industries/hr-recruitment",
+    "/industries/logistics",
+    "/industries/real-estate",
+    "/industries/self-storage",
+    "/services/ai-automation",
+    "/services/api-integration",
+    "/services/cloud-devops",
+    "/services/investor-portal-development",
+    "/services/laravel-development",
+    "/services/mls-idx-integration",
+    "/services/nextjs-development",
+    "/services/odoo-erp",
+    "/services/react-development",
+    "/services/saas-development",
+    "/services/shopify-development",
+    "/services/wordpress-development",
+    "/tools/mls-idx-cost-calculator"
+   ],
+   "redirects": [],
+   "source_citation": false,
+   "status": 200,
+   "url": "https://calendly.com/mukesh-peregrine-it/30min"
+  },
+  {
+   "anchors": [
+    "$500 establishment fee, $150 per month",
+    "$1,500 establishment fee, $500 per month",
+    "$500 + $150 per month (IDX); $1,500 + $500 per month (VOW)"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://cdn.recolorado.com/files/data/Participant-Pricing-Schedule.pdf",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/how-to-get-mls-data-access",
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://cdn.recolorado.com/files/data/Participant-Pricing-Schedule.pdf"
+  },
+  {
+   "anchors": [
+    "Login, Metadata, Search, GetObject and Logout transactions"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://crea.vanillacommunity.com/discussion/31/ddf-data-feed-technical-documentation",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://crea.vanillacommunity.com/discussion/31/ddf-data-feed-technical-documentation"
+  },
+  {
+   "anchors": [
+    "$1,500 onboarding fee",
+    "New technology providers pay a $1,500 onboarding fee",
+    "All prices are in Canadian dollars"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://crea.vanillacommunity.com/discussion/73/ddf-r-technology-provider-pricing-tiers",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada",
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://crea.vanillacommunity.com/discussion/73/ddf-r-technology-provider-pricing-tiers"
+  },
+  {
+   "anchors": [
+    "defines standard resources, fields and lookups",
+    "Data Dictionary 2.0, with 1,745 fields and 3,683 lookups"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://dd.reso.org/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://dd.reso.org/"
+  },
+  {
+   "anchors": [
+    "using the RESO Web API specification, which is based on OData",
+    "normalized based on the RESO Data Dictionary standards",
+    "lasts for 60 minutes"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://ddfapi-docs.realtor.ca/",
+   "method": "GET",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://ddfapi-docs.realtor.ca/"
+  },
+  {
+   "anchors": [
+    "10,000 free Dynamic Maps loads per month, then $7.00 per 1,000",
+    "geocoding is free up to 10,000 requests, then $5.00 per 1,000"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://developers.google.com/maps/billing-and-pricing/pricing",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/cost-to-build-a-real-estate-platform"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://developers.google.com/maps/billing-and-pricing/pricing"
+  },
+  {
+   "anchors": [
+    "A simplified OAuth 2 scheme with long-term tokens",
+    "\u201cWe do not support real time data access at this time\u201d",
+    "No more than 2 requests per second"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://docs.mlsgrid.com/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://docs.mlsgrid.com/"
+  },
+  {
+   "anchors": [
+    "At most 5,000 records per request",
+    "Query using the greatest ModificationTimestamp in your local database",
+    "MlgCanView"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://docs.mlsgrid.com/api-documentation/api-version-2.0",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://docs.mlsgrid.com/api-documentation/api-version-2.0"
+  },
+  {
+   "anchors": [
+    "Dropbox Business Plus, Advanced and Enterprise only",
+    "Business Plus, Advanced and Enterprise only"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://help.dropbox.com/account-access/view-activity",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://help.dropbox.com/account-access/view-activity"
+  },
+  {
+   "anchors": [
+    "Link expiry and disabled downloads on paid plans"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://help.dropbox.com/share/set-link-permissions",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://help.dropbox.com/share/set-link-permissions"
+  },
+  {
+   "anchors": [
+    "only to JPEG, PNG, BMP and PDF files",
+    "to JPEG, PNG, BMP and PDF files"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://help.dropbox.com/view-edit/add-a-watermark",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://help.dropbox.com/view-edit/add-a-watermark"
+  },
+  {
+   "anchors": [
+    "most Drive audit events are logged only for files owned by users with supported "
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://knowledge.workspace.google.com/admin/reports/drive-log-events",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://knowledge.workspace.google.com/admin/reports/drive-log-events"
+  },
+  {
+   "anchors": [
+    "a user accessing a file or downloading a document"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://learn.microsoft.com/en-us/purview/audit-log-activities",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://learn.microsoft.com/en-us/purview/audit-log-activities"
+  },
+  {
+   "anchors": [
+    "Audit (Standard) retains records for 180 days"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://learn.microsoft.com/en-us/purview/audit-solutions-overview",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://learn.microsoft.com/en-us/purview/audit-solutions-overview"
+  },
+  {
+   "anchors": [
+    "a program which enables participants to display on their websites the listings o"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://members.rebgv.org/news/Rules-of-Cooperation-Interactive-July-17-2023.pdf",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://members.rebgv.org/news/Rules-of-Cooperation-Interactive-July-17-2023.pdf"
+  },
+  {
+   "anchors": [
+    "RETS will be sunset soon"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://metromls.com/participant-data-feed-information/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://metromls.com/participant-data-feed-information/"
+  },
+  {
+   "anchors": [
+    "includes an open API so any property management software can integrate"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://opentechalliance.com/solutions/insomniac-cia-access-control/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://opentechalliance.com/solutions/insomniac-cia-access-control/"
+  },
+  {
+   "anchors": [
+    "will send an NDA to sign and then discuss the fees for report options"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://pillarnine.com/about",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://pillarnine.com/about"
+  },
+  {
+   "anchors": [
+    "refreshed at least once every twenty-four (24) hours"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://proptx.ca/files/proptx_mls_rules.pdf",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://proptx.ca/files/proptx_mls_rules.pdf"
+  },
+  {
+   "anchors": [
+    "RealFoyer"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://realfoyer.com/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/industries/real-estate"
+   ],
+   "redirects": [],
+   "source_citation": false,
+   "status": 200,
+   "url": "https://realfoyer.com/"
+  },
+  {
+   "anchors": [
+    "$99 per month for Tier 1 MLSs, plus $850 one-time setup",
+    "$99 per month plus $850 one-time setup"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://realtyna.com/mls-on-the-fly/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://realtyna.com/mls-on-the-fly/"
+  },
+  {
+   "anchors": [
+    "you can connect to any MLS in the U.S. or Canada"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://repliers.com/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://repliers.com/"
+  },
+  {
+   "anchors": [
+    "$199 to $399 per month",
+    "free Preview plan, then $199, $299 or $399 per month",
+    "$199, $299 or $399 per month"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://repliers.com/plans-and-pricing/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://repliers.com/plans-and-pricing/"
+  },
+  {
+   "anchors": [
+    "From $94.95 or $124.95 per month",
+    "No setup fee; MLS pass-through fees typically $0 to $33 per month",
+    "MLS pass-through fees of typically $0 to $33 per month"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://showcaseidx.com/pricing/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://showcaseidx.com/pricing/"
+  },
+  {
+   "anchors": [
+    "$49, $99 or $199 per month, plus a one-time $99 connection fee per feed",
+    "$49, $99 or $199 per month plus a one-time $99 connection fee"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://simplyrets.com/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://simplyrets.com/"
+  },
+  {
+   "anchors": [
+    "works with any standard RETS or RESO Web API data feed"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://simplyrets.com/faq",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://simplyrets.com/faq"
+  },
+  {
+   "anchors": [
+    "a legacy real estate data standard based on XML"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://sparkplatform.com/docs/rets/overview",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://sparkplatform.com/docs/rets/overview"
+  },
+  {
+   "anchors": [
+    "name-value pair conditions passed in the request URL"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://sparkplatform.com/docs/rets/tutorials/dmql",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://sparkplatform.com/docs/rets/tutorials/dmql"
+  },
+  {
+   "anchors": [
+    "returns only records modified since a given time"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://sparkplatform.com/docs/rets/tutorials/replicate",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://sparkplatform.com/docs/rets/tutorials/replicate"
+  },
+  {
+   "anchors": [
+    "a successful login establishes a cookie that keeps the session alive",
+    "Tab-delimited",
+    "one multi-part (MIME) response"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://sparkplatform.com/docs/rets/tutorials/session",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://sparkplatform.com/docs/rets/tutorials/session"
+  },
+  {
+   "anchors": [
+    "A public API on its Advanced and Premium plans",
+    "to customers on Advanced, Premium and legacy higher level plans",
+    "on Advanced and Premium plans"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://stora.co/features/api",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://stora.co/features/api"
+  },
+  {
+   "anchors": [
+    "Published by unit count, starting at 50 units"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://stora.co/pricing",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://stora.co/pricing"
+  },
+  {
+   "anchors": [
+    "payments with Stripe, Fortis or Mollie; access through PTI, Nok\u0113 or OpenTech"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://storeganise.com/features",
+   "method": "GET",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://storeganise.com/features"
+  },
+  {
+   "anchors": [
+    "A calculator by locations and units; exact price by quote",
+    "An open API in every subscription",
+    "an open API in every subscription"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://storeganise.com/pricing",
+   "method": "GET",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://storeganise.com/pricing"
+  },
+  {
+   "anchors": [
+    "Password, expiration and download restrictions on shared links"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://support.box.com/hc/en-us/articles/360043697094-Creating-Shared-Links",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://support.box.com/hc/en-us/articles/360043697094-Creating-Shared-Links"
+  },
+  {
+   "anchors": [
+    "watermarking is available only for Box Enterprise plans and above"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://support.box.com/hc/en-us/articles/360044195253-Watermarking-Files",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://support.box.com/hc/en-us/articles/360044195253-Watermarking-Files"
+  },
+  {
+   "anchors": [
+    "Editor and Viewer roles on all accounts; more roles on Business and Enterprise"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://support.box.com/hc/en-us/articles/360044196413-Understanding-Collaborator-Permission-Levels",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://support.box.com/hc/en-us/articles/360044196413-Understanding-Collaborator-Permission-Levels"
+  },
+  {
+   "anchors": [
+    "reports are available to Business plans and above"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://support.box.com/hc/en-us/articles/4415010860435-Using-Reports",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://support.box.com/hc/en-us/articles/4415010860435-Using-Reports"
+  },
+  {
+   "anchors": [
+    "\u201cRestricted: Only people with access can open the file\u201d",
+    "Owners control whether viewers can download, print and copy; access expiry is fo",
+    "\"Restricted: Only people with access can open the file\""
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://support.google.com/drive/answer/2494822?hl=en",
+   "method": "GET",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://support.google.com/drive/answer/2494822?hl=en"
+  },
+  {
+   "anchors": [
+    "the current state of the art"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://transport.reso.org/proposals/entity-events/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://transport.reso.org/proposals/entity-events/"
+  },
+  {
+   "anchors": [
+    "OAuth2 bearer tokens and client credentials",
+    "TLS 1.2 or above",
+    "JSON for data, XML for metadata"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://transport.reso.org/proposals/web-api-core/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://transport.reso.org/proposals/web-api-core/"
+  },
+  {
+   "anchors": [
+    "$30 per month for broker data feeds",
+    "$30 per month for broker data feeds and $100 per month for other feeds",
+    "$100 to $175 per connection per month"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://trestle-documentation.corelogic.com/data-pricing.html",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/cost-to-build-a-real-estate-platform",
+    "/blog/how-to-get-mls-data-access",
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://trestle-documentation.corelogic.com/data-pricing.html"
+  },
+  {
+   "anchors": [
+    "continues to provide data access via RETS for customers who do not wish to or ca"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://trestle-documentation.corelogic.com/rets/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://trestle-documentation.corelogic.com/rets/"
+  },
+  {
+   "anchors": [
+    "MLOs typically require a real estate broker or agent to ratify the contract",
+    "click \u201cADD MLO CONNECTION\u201d to begin the data request workflow",
+    "only facilitates the license agreement; Cotality is not a party to it"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://trestle-documentation.corelogic.com/support/faq/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/how-to-get-mls-data-access"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://trestle-documentation.corelogic.com/support/faq/"
+  },
+  {
+   "anchors": [
+    "OAuth2 client credentials; a token is good for up to 8 hours",
+    "A maximum of 1,000 records per query",
+    "7,200 queries per hour and 180 per minute"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://trestle-documentation.corelogic.com/web-api/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://trestle-documentation.corelogic.com/web-api/"
+  },
+  {
+   "anchors": [
+    "Filter on ModificationTimestamp"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://trestle-documentation.corelogic.com/web-api/at-scale/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://trestle-documentation.corelogic.com/web-api/at-scale/"
+  },
+  {
+   "anchors": [
+    "a replication endpoint for more than 1,000,000 records"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://trestle-documentation.corelogic.com/web-api/reference/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://trestle-documentation.corelogic.com/web-api/reference/"
+  },
+  {
+   "anchors": [
+    "a data access agreement with REALTOR.ca Canada Inc.",
+    "at least once every twenty-four (24) hours",
+    "to enable CREA's members to easily disseminate MLS\u00ae listing content to multiple "
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://us.v-cdn.net/6029909/uploads/WCDHHJMCZ480/ddf-28r-29-policy-and-rules-june-2026-eng.pdf",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/how-to-get-mls-data-access",
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://us.v-cdn.net/6029909/uploads/WCDHHJMCZ480/ddf-28r-29-policy-and-rules-june-2026-eng.pdf"
+  },
+  {
+   "anchors": [
+    "is now offered in RESO API format",
+    "IDX in RESO API format"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://webapp.proptx.ca/oas/common/IDX_Data_Feed.jsp",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://webapp.proptx.ca/oas/common/IDX_Data_Feed.jsp"
+  },
+  {
+   "anchors": [
+    "requires brokerages to sign the PropTx VOW Datafeed Agreement"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://webapp.proptx.ca/oas/common/VOW_Data_Feed.jsp",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://webapp.proptx.ca/oas/common/VOW_Data_Feed.jsp"
+  },
+  {
+   "anchors": [
+    "Payments through Stripe or Fortis Pay, access-control partners, and an open API"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.6storage.com/partners-integrations/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.6storage.com/partners-integrations/"
+  },
+  {
+   "anchors": [
+    "No fixed pricing listed",
+    "not list fixed pricing"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.6storage.com/self-storage-management-software/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.6storage.com/self-storage-management-software/"
+  },
+  {
+   "anchors": [
+    "Investor portal with downloadable K-1s and reports, electronic signatures, water"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.appfolio.com/investment-manager",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.appfolio.com/investment-manager"
+  },
+  {
+   "anchors": [
+    "Core plan starting at $650 per month"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.appfolio.com/pricing",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.appfolio.com/pricing#investment-manager"
+  },
+  {
+   "anchors": [
+    "Syndication Suite starts at $699 per month",
+    "Branded investor portal, secure document sharing, K-1 distribution, e-signatures",
+    "Syndication Suite at $699 per month"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.cashflowportal.com/pricing",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.cashflowportal.com/pricing"
+  },
+  {
+   "anchors": [
+    "CINC"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.cincpro.com/pricing",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.cincpro.com/pricing"
+  },
+  {
+   "anchors": [
+    "Priced per legal entity: $249, $283 or $406 per entity per month across three pl",
+    "CRM, investor portal, fundraising, distributions, reporting, funds and capital c"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.covercy.com/pricing/investment-management/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.covercy.com/pricing/investment-management/"
+  },
+  {
+   "anchors": [
+    "the MLS\u00ae mark can never be used as part of a business name, trade name or in any"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.crea.ca/standards-programs/trademark-protection-competition/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.crea.ca/standards-programs/trademark-protection-competition/"
+  },
+  {
+   "anchors": [
+    "build their own integration with its open API"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.followupboss.com/integrations",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.followupboss.com/integrations"
+  },
+  {
+   "anchors": [
+    "$69 per user per month ($58 billed annually)",
+    "$499 per month ($416 billed annually)",
+    "10; extra users $49/month"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.followupboss.com/pricing",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.followupboss.com/pricing"
+  },
+  {
+   "anchors": [
+    "Suite 115, H-160, BSI Business Park, Sector 63, Noida, Uttar Pradesh 201301, Ind"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.google.com/maps/search/?api=1&query=Suite%20115%2C%20H-160%2C%20BSI%20Business%20Park%2C%20Sector%2063%2C%20Noida%2C%20Uttar%20Pradesh%20201301%2C%20India",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/cost-to-build-a-real-estate-platform",
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages",
+    "/blog/how-to-get-mls-data-access",
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/investor-portal-vs-file-sharing",
+    "/blog/mls-data-access-canada",
+    "/blog/mls-idx-integration-cost",
+    "/blog/odoo-implementation-cost",
+    "/blog/reso-web-api-vs-rets",
+    "/blog/self-storage-software-build-vs-buy",
+    "/industries/ecommerce-food-ordering",
+    "/industries/healthcare-insurance",
+    "/industries/hr-recruitment",
+    "/industries/logistics",
+    "/industries/real-estate",
+    "/industries/self-storage",
+    "/services/ai-automation",
+    "/services/api-integration",
+    "/services/cloud-devops",
+    "/services/investor-portal-development",
+    "/services/laravel-development",
+    "/services/mls-idx-integration",
+    "/services/nextjs-development",
+    "/services/odoo-erp",
+    "/services/react-development",
+    "/services/saas-development",
+    "/services/shopify-development",
+    "/services/wordpress-development",
+    "/tools/mls-idx-cost-calculator"
+   ],
+   "redirects": [],
+   "source_citation": false,
+   "status": 200,
+   "url": "https://www.google.com/maps/search/?api=1&query=Suite%20115%2C%20H-160%2C%20BSI%20Business%20Park%2C%20Sector%2063%2C%20Noida%2C%20Uttar%20Pradesh%20201301%2C%20India"
+  },
+  {
+   "anchors": [
+    "$149 per month",
+    "$60, $99 or $149 per month"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.idxbroker.com/compare-idx",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.idxbroker.com/compare-idx"
+  },
+  {
+   "anchors": [],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.instagram.com/peregrineitsolution/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/cost-to-build-a-real-estate-platform",
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages",
+    "/blog/how-to-get-mls-data-access",
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/investor-portal-vs-file-sharing",
+    "/blog/mls-data-access-canada",
+    "/blog/mls-idx-integration-cost",
+    "/blog/odoo-implementation-cost",
+    "/blog/reso-web-api-vs-rets",
+    "/blog/self-storage-software-build-vs-buy",
+    "/industries/ecommerce-food-ordering",
+    "/industries/healthcare-insurance",
+    "/industries/hr-recruitment",
+    "/industries/logistics",
+    "/industries/real-estate",
+    "/industries/self-storage",
+    "/services/ai-automation",
+    "/services/api-integration",
+    "/services/cloud-devops",
+    "/services/investor-portal-development",
+    "/services/laravel-development",
+    "/services/mls-idx-integration",
+    "/services/nextjs-development",
+    "/services/odoo-erp",
+    "/services/react-development",
+    "/services/saas-development",
+    "/services/shopify-development",
+    "/services/wordpress-development",
+    "/tools/mls-idx-cost-calculator"
+   ],
+   "redirects": [],
+   "source_citation": false,
+   "status": 200,
+   "url": "https://www.instagram.com/peregrineitsolution/"
+  },
+  {
+   "anchors": [
+    "No subscription price published; ACH payments cost 0.03% plus 25\u00a2 each, capped a",
+    "Custom investor portal, investor CRM, distributions and payments, waterfalls, do"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.investnext.com/pricing/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.investnext.com/pricing/"
+  },
+  {
+   "anchors": [
+    "integrates with all major property management software providers",
+    "new integrations typically take 4-6 weeks"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.janusintl.com/products/noke/noke-faqs",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.janusintl.com/products/noke/noke-faqs"
+  },
+  {
+   "anchors": [
+    "$48.08 per hour (2023\u20132024)"
+   ],
+   "attempts": 2,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.jobbank.gc.ca/marketreport/wages-occupation/22548/ca",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/cost-to-build-a-real-estate-platform"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.jobbank.gc.ca/marketreport/wages-occupation/22548/ca"
+  },
+  {
+   "anchors": [
+    "No price published; the site offers a demo"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.junipersquare.com/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.junipersquare.com/"
+  },
+  {
+   "anchors": [
+    "Investor portal with granular permissions by contact, investor account, investme"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.junipersquare.com/finance-and-reporting/investor-portal",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.junipersquare.com/finance-and-reporting/investor-portal"
+  },
+  {
+   "anchors": [
+    "watermarking and download restrictions"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.junipersquare.com/investor-relations/data-rooms",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.junipersquare.com/investor-relations/data-rooms"
+  },
+  {
+   "anchors": [],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.linkedin.com/company/peregrine-it-solutions/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/cost-to-build-a-real-estate-platform",
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages",
+    "/blog/how-to-get-mls-data-access",
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/investor-portal-vs-file-sharing",
+    "/blog/mls-data-access-canada",
+    "/blog/mls-idx-integration-cost",
+    "/blog/odoo-implementation-cost",
+    "/blog/reso-web-api-vs-rets",
+    "/blog/self-storage-software-build-vs-buy",
+    "/industries/ecommerce-food-ordering",
+    "/industries/healthcare-insurance",
+    "/industries/hr-recruitment",
+    "/industries/logistics",
+    "/industries/real-estate",
+    "/industries/self-storage",
+    "/services/ai-automation",
+    "/services/api-integration",
+    "/services/cloud-devops",
+    "/services/investor-portal-development",
+    "/services/laravel-development",
+    "/services/mls-idx-integration",
+    "/services/nextjs-development",
+    "/services/odoo-erp",
+    "/services/react-development",
+    "/services/saas-development",
+    "/services/shopify-development",
+    "/services/wordpress-development",
+    "/tools/mls-idx-cost-calculator"
+   ],
+   "redirects": [],
+   "source_citation": false,
+   "status": 200,
+   "url": "https://www.linkedin.com/company/peregrine-it-solutions/"
+  },
+  {
+   "anchors": [
+    "50,000 free web map loads per month, then $5.00 per 1,000"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.mapbox.com/pricing",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/cost-to-build-a-real-estate-platform"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.mapbox.com/pricing"
+  },
+  {
+   "anchors": [
+    "no fee beyond your MLS's license fee",
+    "states that you only pay the license fee your MLS requires",
+    "you only pay the license fee required by your MLS, which MLS Grid collects on th"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.mlsgrid.com/faq",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/how-to-get-mls-data-access",
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.mlsgrid.com/faq"
+  },
+  {
+   "anchors": [
+    "$100 per month",
+    "$525 per month",
+    "broker, vendor/third-party and syndicator access, plus two free IDX options"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.mlspin.com/resources/data-services",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/how-to-get-mls-data-access",
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.mlspin.com/resources/data-services"
+  },
+  {
+   "anchors": [
+    "may not use IDX-provided listings for any purpose other than IDX display",
+    "not less frequently than every 12 hours",
+    "must identify the listing firm, and the email or phone number"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.nar.realtor/handbook-on-multiple-listing-policy/advertising-print-and-electronic-section-1-internet-data-exchange-idx-policy-policy-statement-7-58",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/how-to-get-mls-data-access"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.nar.realtor/handbook-on-multiple-listing-policy/advertising-print-and-electronic-section-1-internet-data-exchange-idx-policy-policy-statement-7-58"
+  },
+  {
+   "anchors": [
+    "NAR MLS Policy Statement 7.90",
+    "RESO Web API by June 30, 2016"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.nar.realtor/handbook-on-multiple-listing-policy/operational-issues-section-12-real-estate-transaction-standards-rets-policy-statement-790",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.nar.realtor/handbook-on-multiple-listing-policy/operational-issues-section-12-real-estate-transaction-standards-rets-policy-statement-790"
+  },
+  {
+   "anchors": [
+    "first established a lawful consumer-broker relationship",
+    "may designate an \u201cAffiliated VOW Partner\u201d to operate a VOW",
+    "not less frequently than every three (3) days"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.nar.realtor/handbook-on-multiple-listing-policy/virtual-office-websites-policy-governing-use-of-mls-data-in-connection-with-internet-brokerage",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/how-to-get-mls-data-access"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.nar.realtor/handbook-on-multiple-listing-policy/virtual-office-websites-policy-governing-use-of-mls-data-in-connection-with-internet-brokerage"
+  },
+  {
+   "anchors": [
+    "46% of agents",
+    "less than $50 for 18%, $50 to $250 for 36%, $251 to $500 for 19%, and more than "
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.nar.realtor/newsroom/realtors-adopt-technology-to-save-time-and-improve-the-client-experience-nar-report-finds",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.nar.realtor/newsroom/realtors-adopt-technology-to-save-time-and-improve-the-client-experience-nar-report-finds"
+  },
+  {
+   "anchors": [
+    "Odoo Online is incompatible with custom modules or modules from the Odoo Apps St"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.odoo.com/documentation/19.0/administration/odoo_online.html",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.odoo.com/documentation/19.0/administration/odoo_online.html"
+  },
+  {
+   "anchors": [
+    "standard support covers the first three years after release",
+    "extended support requires an additional fee"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.odoo.com/documentation/19.0/administration/standard_extended_support.html",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.odoo.com/documentation/19.0/administration/standard_extended_support.html"
+  },
+  {
+   "anchors": [
+    "upgrading a database to the most recent version of Odoo is free",
+    "covered by a maintenance of customizations subscription",
+    "not covered by a maintenance contract, created in-house or by third parties"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.odoo.com/documentation/19.0/administration/upgrade.html",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.odoo.com/documentation/19.0/administration/upgrade.html"
+  },
+  {
+   "anchors": [
+    "access to data via the external API is only available on Custom Odoo pricing pla",
+    "is not available on One App Free or Standard plans"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.odoo.com/documentation/19.0/developer/reference/external_api.html",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.odoo.com/documentation/19.0/developer/reference/external_api.html"
+  },
+  {
+   "anchors": [
+    "scheduled for removal in Odoo 22 (fall 2028)"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.odoo.com/documentation/19.0/developer/reference/external_rpc_api.html",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.odoo.com/documentation/19.0/developer/reference/external_rpc_api.html"
+  },
+  {
+   "anchors": [
+    "licensed under LGPL version 3",
+    "can only be used with a valid Odoo Enterprise Subscription for the correct numbe"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.odoo.com/documentation/19.0/legal/licenses.html",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.odoo.com/documentation/19.0/legal/licenses.html"
+  },
+  {
+   "anchors": [
+    "a monthly fee per 100 lines of code",
+    "an extra fee equal to 25% of the annualized price"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.odoo.com/documentation/19.0/legal/terms/enterprise.html",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.odoo.com/documentation/19.0/legal/terms/enterprise.html"
+  },
+  {
+   "anchors": [
+    "the core upon which Odoo Enterprise is built"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.odoo.com/page/editions",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.odoo.com/page/editions"
+  },
+  {
+   "anchors": [
+    "is hosted on Odoo Online, Odoo's cloud infrastructure for databases without cust",
+    "if you install Studio or add companies to your database, you will automatically ",
+    "the discount is valid for 12 months, for initial users ordered"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.odoo.com/pricing",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.odoo.com/pricing"
+  },
+  {
+   "anchors": [
+    "the monthly plan is only available to cloud hosting options",
+    "expire after one year"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.odoo.com/pricing-configurator?plan=custom",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.odoo.com/pricing-configurator?plan=custom"
+  },
+  {
+   "anchors": [
+    "a package of premium services by a dedicated consultant",
+    "the live page",
+    "A 15% discount applies automatically to new customers, for their first pack only"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.odoo.com/pricing-packs",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.odoo.com/pricing-packs"
+  },
+  {
+   "anchors": [
+    "$57.60 per worker per month, $0.20 per GB per month and $14.40 per staging envir",
+    "$57.80 per month",
+    "does not include the enterprise licence"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.odoo.sh/pricing",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/odoo-implementation-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.odoo.sh/pricing"
+  },
+  {
+   "anchors": [
+    "as of November 25, 2024"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.oreb.ca/newsroom/ottawa-real-estate-board-launches-new-proptx-mls-system/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.oreb.ca/newsroom/ottawa-real-estate-board-launches-new-proptx-mls-system/"
+  },
+  {
+   "anchors": [
+    "the MLS\u00ae technology subsidiary of the Toronto Regional Real Estate Board"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.proptx.ca/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.proptx.ca/"
+  },
+  {
+   "anchors": [
+    "the DDF accounts for almost 100% of properties across Canada",
+    "accounts for almost 100% of properties across Canada"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.reso.org/blog/expanding-intl-impact-reso/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.reso.org/blog/expanding-intl-impact-reso/"
+  },
+  {
+   "anchors": [
+    "in 2023"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.reso.org/blog/festival-of-nations/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.reso.org/blog/festival-of-nations/"
+  },
+  {
+   "anchors": [
+    "the RETS Workgroup had completed its final release and would be retired"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.reso.org/blog/rets-sunset/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.reso.org/blog/rets-sunset/"
+  },
+  {
+   "anchors": [
+    "tests technology systems to confirm compliance with ratified standards",
+    "discontinued certifying RETS in 2018",
+    "NAR MLS policy requires compliance with RESO's most recent standards"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.reso.org/certification/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/how-to-get-mls-data-access",
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.reso.org/certification/"
+  },
+  {
+   "anchors": [
+    "more than 1,700 fields and 3,100 lookups"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.reso.org/data-dictionary/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/how-to-get-mls-data-access"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.reso.org/data-dictionary/"
+  },
+  {
+   "anchors": [
+    "deprecated and no longer supported",
+    "does not provide MLS data and directs data requests to MLSs",
+    "the modern way to transport data in the real estate industry"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.reso.org/reso-web-api/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/how-to-get-mls-data-access",
+    "/blog/mls-idx-integration-cost",
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.reso.org/reso-web-api/"
+  },
+  {
+   "anchors": [
+    "at least 90% of MLSs in the industry have RESO-certified Web API services",
+    "MLS feeds converted to Web API now cover 62.4% of U.S. subscribers"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.reso.org/web-api-transition-leaderboard/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.reso.org/web-api-transition-leaderboard/"
+  },
+  {
+   "anchors": [
+    "RETS shutoff on March 31, 2024",
+    "March 31, 2024"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.rlcar.org/rets-to-api",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/reso-web-api-vs-rets"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.rlcar.org/rets-to-api"
+  },
+  {
+   "anchors": [
+    "$25 to $550 per user per month"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.salesforce.com/sales/pricing/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.salesforce.com/sales/pricing/"
+  },
+  {
+   "anchors": [
+    "Investor portal with tax document access and signing of subscription agreements"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.sponsorcloud.io/platform/investor-portal-software",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.sponsorcloud.io/platform/investor-portal-software"
+  },
+  {
+   "anchors": [
+    "No price published; custom quote"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.sponsorcloud.io/pricing",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/investor-portal-vs-file-sharing"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.sponsorcloud.io/pricing"
+  },
+  {
+   "anchors": [
+    "$450 per office per year",
+    "$7,500 per product per year",
+    "$450 per office per year, capped at $7,500"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.stellarmls.com/data-delivery",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/cost-to-build-a-real-estate-platform",
+    "/blog/how-to-get-mls-data-access",
+    "/blog/idx-vendor-vs-custom-build",
+    "/blog/mls-idx-integration-cost"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.stellarmls.com/data-delivery"
+  },
+  {
+   "anchors": [
+    "automatic lockout of tenants who miss payments"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.storable.com/products/access-control/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.storable.com/products/access-control/"
+  },
+  {
+   "anchors": [
+    "None published; demo request"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.storable.com/products/edge/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.storable.com/products/edge/"
+  },
+  {
+   "anchors": [
+    "No figure; billed monthly with a monthly commitment",
+    "A third-party marketplace it describes as the largest in the industry"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.storable.com/products/sitelink/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.storable.com/products/sitelink/"
+  },
+  {
+   "anchors": [
+    "Three packages, no figures; pricing on request",
+    "Online rental, reservation and payment; cloud-based gate integration"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.storagecommander.com/pricing",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.storagecommander.com/pricing"
+  },
+  {
+   "anchors": [
+    "running a single facility or five"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.storageunitsoftware.com/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.storageunitsoftware.com/"
+  },
+  {
+   "anchors": [
+    "Varies with the number of facilities and units",
+    "Integrations with access control systems, QuickBooks and payment processors",
+    "varies based on how many facilities and units you have"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.storageunitsoftware.com/faq/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.storageunitsoftware.com/faq/"
+  },
+  {
+   "anchors": [
+    "Noke, SpiderDoor, Doorking and PTI Security Systems"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.tenantinc.com/frequently-asked-questions",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.tenantinc.com/frequently-asked-questions"
+  },
+  {
+   "anchors": [
+    "None published; demo request"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.tenantinc.com/products/hummingbird",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.tenantinc.com/products/hummingbird"
+  },
+  {
+   "anchors": [
+    "An open API with a developer portal and 40+ pre-built integrations",
+    "an open API with a developer portal"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.tenantinc.com/products/nectar-gds",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.tenantinc.com/products/nectar-gds"
+  },
+  {
+   "anchors": [
+    "Published on its pricing page, with a minimum of $30.00 per month",
+    "API access among its included features",
+    "a minimum of $30.00 per month"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.unittrac.com/pricing",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.unittrac.com/pricing"
+  },
+  {
+   "anchors": [
+    "updated at least every 24 hours"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.vreb.org/vreb-idx-reciprocity-program",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/mls-data-access-canada"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.vreb.org/vreb-idx-reciprocity-program"
+  },
+  {
+   "anchors": [
+    "On request for self storage",
+    "Online reservations and leases, autopay, portfolio performance comparison"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.yardibreeze.com/self-storage-features/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/self-storage-software-build-vs-buy"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.yardibreeze.com/self-storage-features/"
+  },
+  {
+   "anchors": [
+    "currently invite only"
+   ],
+   "attempts": 1,
+   "class": "ok",
+   "error": null,
+   "final_url": "https://www.zillowgroup.com/developers/api/mls-broker-data/mls-listings/",
+   "method": "HEAD",
+   "note": "",
+   "pages": [
+    "/blog/how-to-get-mls-data-access"
+   ],
+   "redirects": [],
+   "source_citation": true,
+   "status": 200,
+   "url": "https://www.zillowgroup.com/developers/api/mls-broker-data/mls-listings/"
+  }
+ ],
+ "pages": [
+  "/services/saas-development",
+  "/services/api-integration",
+  "/services/mls-idx-integration",
+  "/services/investor-portal-development",
+  "/services/ai-automation",
+  "/services/cloud-devops",
+  "/services/odoo-erp",
+  "/services/nextjs-development",
+  "/services/react-development",
+  "/services/shopify-development",
+  "/services/laravel-development",
+  "/services/wordpress-development",
+  "/industries/real-estate",
+  "/industries/self-storage",
+  "/industries/logistics",
+  "/industries/healthcare-insurance",
+  "/industries/hr-recruitment",
+  "/industries/ecommerce-food-ordering",
+  "/blog/mls-idx-integration-cost",
+  "/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages",
+  "/blog/cost-to-build-a-real-estate-platform",
+  "/blog/how-to-get-mls-data-access",
+  "/blog/investor-portal-vs-file-sharing",
+  "/blog/idx-vendor-vs-custom-build",
+  "/blog/reso-web-api-vs-rets",
+  "/blog/self-storage-software-build-vs-buy",
+  "/blog/mls-data-access-canada",
+  "/blog/odoo-implementation-cost",
+  "/tools/mls-idx-cost-calculator"
+ ]
+}
