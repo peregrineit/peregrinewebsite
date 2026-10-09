@@ -8,6 +8,16 @@ import { caseStudies } from '@/data/case-studies';
 // Import extracted CSS
 import '../css/case-studies-extracted.css'; // This will be replaced
 
+// Counts on the industry cards come from the data, so they can't drift from the grid below.
+function IndustryCount({ category }: { category: string }) {
+  const n = caseStudies.filter((c) => c.card.category.split(/\s+/).includes(category)).length;
+  return (
+    <span className="text-sm text-gray-400">
+      <strong className="text-cyan-400 font-semibold">{n}</strong> {n === 1 ? 'case study' : 'case studies'}
+    </span>
+  );
+}
+
 export default function CaseStudies() {
 
   useEffect(() => {
@@ -150,7 +160,7 @@ export default function CaseStudies() {
                   <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">PropTech &amp; Real Estate</h3>
                   <p className="text-gray-400 text-sm leading-relaxed mb-5 flex-grow">SaaS platforms, investor portals, IoT-enabled facility management, and MLS integration systems</p>
                   <div className="flex items-center justify-between pt-4 border-t border-slate-700">
-                    <span className="text-sm text-gray-400"><strong className="text-cyan-400 font-semibold">3</strong> case studies</span>
+                    <IndustryCount category="proptech" />
                     <span className="text-cyan-400 text-sm font-medium flex items-center gap-1">Explore<i className="ri-arrow-right-line group-hover:translate-x-1 transition-transform"></i></span>
                   </div>
                 </div>
@@ -163,7 +173,7 @@ export default function CaseStudies() {
                   <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Logistics &amp; Transportation</h3>
                   <p className="text-gray-400 text-sm leading-relaxed mb-5 flex-grow">Fleet tracking, route optimization, driver apps, real-time GPS systems, and delivery management</p>
                   <div className="flex items-center justify-between pt-4 border-t border-slate-700">
-                    <span className="text-sm text-gray-400"><strong className="text-cyan-400 font-semibold">1</strong> case study</span>
+                    <IndustryCount category="logistics" />
                     <span className="text-cyan-400 text-sm font-medium flex items-center gap-1">Explore<i className="ri-arrow-right-line group-hover:translate-x-1 transition-transform"></i></span>
                   </div>
                 </div>
@@ -176,7 +186,7 @@ export default function CaseStudies() {
                   <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Healthcare &amp; HealthTech</h3>
                   <p className="text-gray-400 text-sm leading-relaxed mb-5 flex-grow">HIPAA-compliant platforms, telehealth, patient record systems, and insurance billing automation</p>
                   <div className="flex items-center justify-between pt-4 border-t border-slate-700">
-                    <span className="text-sm text-gray-400"><strong className="text-cyan-400 font-semibold">1</strong> case study</span>
+                    <IndustryCount category="healthcare" />
                     <span className="text-cyan-400 text-sm font-medium flex items-center gap-1">Explore<i className="ri-arrow-right-line group-hover:translate-x-1 transition-transform"></i></span>
                   </div>
                 </div>
@@ -189,7 +199,7 @@ export default function CaseStudies() {
                   <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">E-Commerce &amp; Marketplace</h3>
                   <p className="text-gray-400 text-sm leading-relaxed mb-5 flex-grow">Multi-vendor platforms, split payments, bilingual storefronts, and inventory management systems</p>
                   <div className="flex items-center justify-between pt-4 border-t border-slate-700">
-                    <span className="text-sm text-gray-400"><strong className="text-cyan-400 font-semibold">1</strong> case study</span>
+                    <IndustryCount category="ecommerce" />
                     <span className="text-cyan-400 text-sm font-medium flex items-center gap-1">Explore<i className="ri-arrow-right-line group-hover:translate-x-1 transition-transform"></i></span>
                   </div>
                 </div>
@@ -202,7 +212,7 @@ export default function CaseStudies() {
                   <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">IoT &amp; Smart Hardware</h3>
                   <p className="text-gray-400 text-sm leading-relaxed mb-5 flex-grow">Connected device integration, MQTT pipelines, smart lock systems, and sensor data platforms</p>
                   <div className="flex items-center justify-between pt-4 border-t border-slate-700">
-                    <span className="text-sm text-gray-400"><strong className="text-cyan-400 font-semibold">2</strong> case studies</span>
+                    <IndustryCount category="iot" />
                     <span className="text-cyan-400 text-sm font-medium flex items-center gap-1">Explore<i className="ri-arrow-right-line group-hover:translate-x-1 transition-transform"></i></span>
                   </div>
                 </div>
@@ -215,7 +225,7 @@ export default function CaseStudies() {
                   <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Finance &amp; Investment</h3>
                   <p className="text-gray-400 text-sm leading-relaxed mb-5 flex-grow">Investor portals, document management, reporting automation, and compliance-grade security</p>
                   <div className="flex items-center justify-between pt-4 border-t border-slate-700">
-                    <span className="text-sm text-gray-400"><strong className="text-cyan-400 font-semibold">1</strong> case study</span>
+                    <IndustryCount category="fintech" />
                     <span className="text-cyan-400 text-sm font-medium flex items-center gap-1">Explore<i className="ri-arrow-right-line group-hover:translate-x-1 transition-transform"></i></span>
                   </div>
                 </div>
@@ -223,45 +233,6 @@ export default function CaseStudies() {
             </div>
           </section>
 
-          {/*  NEWSLETTER SECTION  */}
-          <section className="py-14 sm:py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
-            <div className="absolute inset-0 opacity-20">
-              <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500 rounded-full blur-3xl"></div>
-              <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600 rounded-full blur-3xl"></div>
-            </div>
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
-              <div
-                className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-12 border border-cyan-500/30 shadow-2xl shadow-cyan-500/20">
-                <div className="text-center mb-8 sm:mb-10">
-                  <div
-                    className="inline-flex items-center gap-2 px-5 py-2 bg-cyan-500/10 backdrop-blur-sm rounded-full text-cyan-400 mb-4 sm:mb-6 border border-cyan-500/30">
-                    <i className="ri-mail-line"></i>
-                    <span className="text-sm font-semibold">Stay Updated</span>
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">Get Project Insights Delivered</h2>
-                  <p className="text-gray-300 text-sm leading-relaxed max-w-2xl mx-auto">Subscribe to receive new case studies, architecture deep-dives, and lessons learned from real production projects. No spam, unsubscribe anytime.</p>
-                </div>
-                <form className="max-w-xl mx-auto">
-                  <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                    <input placeholder="Enter your email address"
-                      className="flex-1 px-6 py-4 bg-slate-900/50 border border-slate-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all text-sm"
-                      type="email" required />
-                    <button type="submit"
-                      className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all whitespace-nowrap cursor-pointer font-semibold text-sm shadow-lg shadow-cyan-500/40">Subscribe
-                      Now</button>
-                  </div>
-                </form>
-                <div className="flex items-center justify-center gap-4 sm:gap-8 mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-slate-700 flex-wrap">
-                  <div className="flex items-center gap-2 text-gray-400 text-xs sm:text-sm"><i
-                    className="ri-shield-check-line text-cyan-400 text-lg"></i><span>100% Privacy</span></div>
-                  <div className="flex items-center gap-2 text-gray-400 text-xs sm:text-sm"><i
-                    className="ri-mail-check-line text-cyan-400 text-lg"></i><span>No Spam</span></div>
-                  <div className="flex items-center gap-2 text-gray-400 text-xs sm:text-sm"><i
-                    className="ri-time-line text-cyan-400 text-lg"></i><span>Weekly Updates</span></div>
-                </div>
-              </div>
-            </div>
-          </section>
 
 
         </div >

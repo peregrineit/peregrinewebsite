@@ -14,11 +14,14 @@ export interface Guide {
   service: string;
   /** Related case study; omitted when no published case study fits the guide. */
   caseStudy?: string;
+  /** Slugs of guides on a neighboring question, shown under "Related". */
+  related?: string[];
 }
 
 export const guides: Guide[] = [
   {
     slug: 'mls-idx-integration-cost',
+    related: ['idx-vendor-vs-custom-build', 'how-to-get-mls-data-access'],
     cta: {
       heading: 'Scoping an MLS or IDX Integration?',
       text: 'Tell us which MLS boards you need and what you are building on top. We will tell you which feeds, vendors and license types apply before you budget.',
@@ -34,6 +37,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'custom-saas-vs-off-the-shelf-crm-for-brokerages',
+    related: ['idx-vendor-vs-custom-build', 'self-storage-software-build-vs-buy'],
     cta: {
       heading: 'Deciding Between a CRM Subscription and a Custom Build?',
       text: 'Tell us how your brokerage works today and where the current tools fall short. An engineer will tell you plainly whether custom is worth it.',
@@ -49,6 +53,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'cost-to-build-a-real-estate-platform',
+    related: ['mls-idx-integration-cost', 'investor-portal-vs-file-sharing'],
     cta: {
       heading: 'Planning a Real Estate Platform?',
       text: 'Tell us the scope: MLS boards, user groups and first-release features. We will map what drives the cost for your build.',
@@ -64,6 +69,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'how-to-get-mls-data-access',
+    related: ['reso-web-api-vs-rets', 'mls-data-access-canada'],
     cta: {
       heading: 'Have MLS Access and Need the Pipeline Built?',
       text: 'Tell us which boards have approved you, or which you are applying to. We build the ingestion, normalization and search on top of that access.',
@@ -79,6 +85,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'investor-portal-vs-file-sharing',
+    related: ['cost-to-build-a-real-estate-platform'],
     cta: {
       heading: 'Outgrowing Shared Folders for Investor Reporting?',
       text: 'Tell us how your funds and investors are structured and what you send each quarter. An engineer will tell you whether an off-the-shelf portal fits or a custom one is worth it.',
@@ -94,6 +101,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'idx-vendor-vs-custom-build',
+    related: ['mls-idx-integration-cost', 'reso-web-api-vs-rets'],
     cta: {
       heading: 'Deciding Whether to Move Off Your IDX Vendor?',
       text: 'Tell us which MLSs you work in and what your current IDX cannot do. An engineer will tell you whether a data vendor, a custom pipeline or staying put makes sense.',
@@ -109,6 +117,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'reso-web-api-vs-rets',
+    related: ['how-to-get-mls-data-access', 'mls-data-access-canada'],
     cta: {
       heading: 'Still on a RETS Feed?',
       text: 'Tell us which MLSs you pull from and what the data feeds today. An engineer will tell you what the move to the RESO Web API involves for your setup.',
@@ -124,6 +133,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'self-storage-software-build-vs-buy',
+    related: ['custom-saas-vs-off-the-shelf-crm-for-brokerages'],
     cta: {
       heading: 'Weighing a Custom Self-Storage Platform?',
       text: 'Tell us how many facilities you run, which software and lock hardware they use, and what you cannot do today. An engineer will tell you whether a product, its API or a build fits.',
@@ -139,6 +149,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'mls-data-access-canada',
+    related: ['how-to-get-mls-data-access', 'mls-idx-integration-cost'],
     cta: {
       heading: 'Building on Canadian Listing Data?',
       text: 'Tell us which provinces and boards you need and what you are building. An engineer will tell you which feeds and agreements apply and how we would combine them.',
@@ -154,6 +165,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'odoo-implementation-cost',
+    related: ['custom-saas-vs-off-the-shelf-crm-for-brokerages'],
     cta: {
       heading: 'Budgeting an Odoo Project?',
       text: 'Tell us which Odoo apps you need, which systems Odoo has to connect to and what you want customized. An engineer will tell you what that means for plan, hosting and upkeep.',
@@ -174,6 +186,9 @@ export function getGuide(slug: string): Guide {
   if (!g) throw new Error(`Unknown guide: ${slug}`);
   return g;
 }
+
+/** Guides that cite a case study, for the link back from that case study's page. */
+export const guidesForCaseStudy = (slug: string): Guide[] => guides.filter((g) => g.caseStudy === slug);
 
 export const formatDate = (d: string) =>
   new Date(`${d}T00:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });

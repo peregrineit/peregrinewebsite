@@ -104,6 +104,13 @@ export default function GuideLayout({ slug, children }: { slug: string; children
                 <p>{study.industry}</p>
               </Link>
             )}
+            {(g.related ?? []).map(getGuide).map((r) => (
+              <Link key={r.slug} href={`/blog/${r.slug}`} className="cp-card">
+                <span className="cp-card-meta">Guide</span>
+                <h3>{r.title}</h3>
+                <p>{r.description}</p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

@@ -252,7 +252,7 @@ export default function Home() {
             </div>
             <div className="grid">
               <div className="grid__item">
-                <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about Product Architecture & Prototyping">
+                <Link href="/services" className="grid__item-img w-inline-block" aria-label="Learn more about Product Architecture & Prototyping">
                   <div className="iconx_component">
                     <div className="iconx_screen is-radar">
                       <div className="iconx_radar">
@@ -267,7 +267,7 @@ export default function Home() {
                   </div>
                   <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
-                </a>
+                </Link>
                 <p className="card-title">Product Architecture & Prototyping</p>
                 <p id="w-node-_7dd46aa2-f506-0765-d688-e7b6b33bba18-098fe091" className="card-caption">From concept validation to production-ready architecture — technical scoping, system design, and a working prototype tested with real users.</p>
                 <div id="w-node-d4142ec9-974a-0ed0-2121-2b7ac109a48d-098fe091" className="w-layout-vflex check-list-wrapper">
@@ -300,7 +300,7 @@ export default function Home() {
                 </div>
               </div>
               <div id="w-node-_0f6253c9-ec94-a38c-1516-7c75675ef41d-098fe091" className="grid__item">
-                <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about SaaS & Platform Engineering">
+                <Link href="/services/saas-development" className="grid__item-img w-inline-block" aria-label="Learn more about SaaS & Platform Engineering">
                   <div id="w-node-_0f6253c9-ec94-a38c-1516-7c75675ef41f-098fe091" className="iconx_component">
                     <div data-w-id="0f6253c9-ec94-a38c-1516-7c75675ef420" className="iconx_screen is-speaker">
                       <div className="loader_component">
@@ -311,7 +311,7 @@ export default function Home() {
                   </div>
                   <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
-                </a>
+                </Link>
                 <p className="card-title">SaaS & Platform Engineering</p>
                 <p id="w-node-_056cfeaf-ed64-eafb-044a-bb3bf2a25722-098fe091" className="card-caption">Multi-tenant SaaS, marketplaces, and portals — architected for scale from day one. Production-ready platforms shipped in 8–12 weeks.</p>
                 <div className="w-layout-vflex check-list-wrapper">
@@ -345,7 +345,7 @@ export default function Home() {
                 </div>
               </div>
               <div id="w-node-ec268015-87b7-7bec-e74d-d8b979ff626c-098fe091" className="grid__item">
-                <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about Systems Integration & Data Pipelines">
+                <Link href="/services/api-integration" className="grid__item-img w-inline-block" aria-label="Learn more about Systems Integration & Data Pipelines">
                   <div className="iconx_component">
                     <div className="iconx_top-bar-wrap">
                       <div className="iconx_tip-bar">
@@ -363,7 +363,7 @@ export default function Home() {
                   </div>
                   <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
-                </a>
+                </Link>
                 <p className="card-title">Systems Integration & Data Pipelines</p>
                 <p id="w-node-_34f07b00-4c15-0a1f-6271-0d5073194765-098fe091" className="card-caption">ERP integrations, API layers, and data pipelines that connect disparate systems and eliminate manual data entry across your organization.</p>
                 <div id="w-node-ab1b055a-ae3b-edff-fc0e-30c0e0d96432-098fe091" className="w-layout-vflex check-list-wrapper">
@@ -405,13 +405,13 @@ export default function Home() {
                 </div>
               </div>
               <div id="w-node-_11afe82e-c384-13e8-e364-3e6e558d1844-098fe091" className="grid__item">
-                <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about Cloud Performance & DevOps">
+                <Link href="/services/cloud-devops" className="grid__item-img w-inline-block" aria-label="Learn more about Cloud Performance & DevOps">
                   <div id="w-node-_11afe82e-c384-13e8-e364-3e6e558d1846-098fe091" className="iconx_component---nnofle"><img loading="lazy" width="24" height="21"
                     src="/images/updateicon.svg" data-w-id="20085b6b-40e9-5543-2650-533d1fdece93" alt=""
                     className="image-6" /><img loading="lazy" width="96" height="96" src="/images/lap.svg" alt="" className="image-7" /></div>
                   <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
-                </a>
+                </Link>
                 <p className="card-title">Cloud Performance & DevOps</p>
                 <p id="w-node-ce33ac8b-9db8-17bf-d54a-a0731321ef44-098fe091" className="card-caption">Cloud migration, infrastructure optimization, and DevOps pipelines that cut hosting costs and eliminate downtime.</p>
                 <div id="w-node-f525032f-b50b-8c52-803a-6c791f1fa233-098fe091" className="w-layout-vflex check-list-wrapper">
@@ -444,11 +444,11 @@ export default function Home() {
                 </div>
               </div>
               <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520b-098fe091" className="grid__item">
-                <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about AI & Intelligent Automation">
+                <Link href="/services/ai-automation" className="grid__item-img w-inline-block" aria-label="Learn more about AI & Intelligent Automation">
                   <div id="w-node-c6b733e2-89d5-d285-9942-1918046a520d-098fe091" className="iconx_component"><Image src="/images/ai-anim.webp" width={96} height={96} unoptimized alt="" className="image-5" /></div>
                   <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
-                </a>
+                </Link>
                 <p className="card-title">AI & Intelligent Automation</p>
                 <p id="w-node-bbb6605b-388c-e81c-0b01-5b46ba0663ac-098fe091" className="card-caption">Predictive analytics, LLM-powered workflows, and custom AI solutions — scoped to your actual business problem, not hype.</p>
                 <div id="w-node-_139780c3-d0d0-33c6-80f3-b26b71a73dee-098fe091" className="w-layout-vflex check-list-wrapper">
@@ -483,7 +483,7 @@ export default function Home() {
               </div>
               <div id="w-node-_762728e3-2fcf-7363-3693-f41c1c075e2c-098fe091"
                 data-w-id="762728e3-2fcf-7363-3693-f41c1c075e2c" className="grid__item">
-                <a href="#" className="grid__item-img w-inline-block" aria-label="Learn more about Workflow Automation & Internal Tools">
+                <Link href="/services" className="grid__item-img w-inline-block" aria-label="Learn more about Workflow Automation & Internal Tools">
                   <div className="iconx_component">
                     <div className="iconx_screen is-radar">
                       <div className="radar-dot"></div>
@@ -501,7 +501,7 @@ export default function Home() {
                   </div>
                   <div className="grid__item-img-deco" aria-hidden="true"></div>
                   <div className="grid__item-img-overlay"></div>
-                </a>
+                </Link>
                 <p className="card-title">Workflow Automation & Internal Tools</p>
                 <p id="w-node-_762728e3-2fcf-7363-3693-f41c1c075e42-098fe091" className="card-caption">Custom internal tools, n8n/Zapier automations, and third-party integrations that replace spreadsheets and manual processes with reliable systems.</p>
                 <div id="w-node-_762728e3-2fcf-7363-3693-f41c1c075e44-098fe091" className="w-layout-vflex check-list-wrapper">
