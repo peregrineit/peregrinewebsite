@@ -8,8 +8,9 @@ Engineers work directly with client teams in sprint-based delivery, with daily o
 
 - Every project starts with a 30-minute technical discovery call with an engineer, not a salesperson.
 - Larger builds begin with a discovery sprint (requirements, architecture, written technical plan); development runs in two-week sprints with weekly demos.
-- Small, well-defined tasks get a scoped estimate within 48 hours through the quick project form.
+- Small, well-defined tasks get a scoped estimate through the quick project form. Enquiries get a reply within 1 business day.
 - Engagement model: fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Pricing is scoped per project; no price list is published.
+- IP ownership: once the work is paid for, the client owns the IP rights to what Peregrine builds.
 - A typical SaaS MVP ships in 4 to 6 weeks; complex platforms take 8 to 12 weeks.
 - [Frequently asked questions](https://peregrine-it.com/#faq): how engagements start, location and hours, industries, existing codebases, cost, timelines and past work
 
@@ -22,16 +23,43 @@ Each service page opens with an "At a glance" table and answers, in order: what 
 - [MLS & IDX integration](https://peregrine-it.com/services/mls-idx-integration): RESO Web API and RETS feeds, multi-MLS normalization and IDX search
 - [AI automation](https://peregrine-it.com/services/ai-automation): natural-language search, lead qualification assistants, document extraction and predictive models
 - [Cloud & DevOps](https://peregrine-it.com/services/cloud-devops): AWS architecture, CI/CD, caching and CDN, load testing and monitoring
+- [Investor portal development](https://peregrine-it.com/services/investor-portal-development): role-based investor portals with watermarked documents, capital calls and distribution reporting (one published case study)
 - [Odoo ERP](https://peregrine-it.com/services/odoo-erp): Odoo HR, CRM, Inventory and Accounting implementation, custom modules, data migration and integrations
 - [All services](https://peregrine-it.com/services)
 
+### By technology
+
+- [Next.js development](https://peregrine-it.com/services/nextjs-development): server-rendered storefronts, portals and dashboards; most published case studies run on Next.js
+- [React and React Native development](https://peregrine-it.com/services/react-development): web apps and offline-first mobile apps, with published case studies
+- [Shopify development](https://peregrine-it.com/services/shopify-development): custom apps, storefront work and integrations (capability page; no published case study yet)
+- [Laravel development](https://peregrine-it.com/services/laravel-development): APIs, SaaS backends and PHP upgrades (capability page; no published case study yet)
+- [WordPress development and migration](https://peregrine-it.com/services/wordpress-development): themes, plugins, headless WordPress and moves to a custom platform (no published WordPress build yet)
+
+## Industries
+
+Industry pages exist only where published case studies back them; every figure on them comes from the linked case study.
+
+- [Real estate and proptech](https://peregrine-it.com/industries/real-estate)
+- [Self-storage](https://peregrine-it.com/industries/self-storage): custom self-storage management software (reservations, Stripe billing, smart-lock access, occupancy dashboards)
+- [Logistics and supply chain](https://peregrine-it.com/industries/logistics)
+- [Healthcare and insurance](https://peregrine-it.com/industries/healthcare-insurance)
+- [HR, payroll and recruitment](https://peregrine-it.com/industries/hr-recruitment)
+- [E-commerce, marketplaces and food ordering](https://peregrine-it.com/industries/ecommerce-food-ordering)
+- [All industries](https://peregrine-it.com/industries)
+
 ## Guides
 
-- [MLS/IDX integration cost (2026)](https://peregrine-it.com/blog/mls-idx-integration-cost): IDX vendor subscriptions, MLS data license fees, RESO Web API vendors and development cost drivers, with sourced figures
+- [MLS and IDX cost per month and per year (2026)](https://peregrine-it.com/blog/mls-idx-integration-cost): cost-at-a-glance table, IDX vendor subscriptions, MLS data license fees, RESO Web API vendors and development cost drivers, with sourced figures
+- [MLS and IDX cost calculator](https://peregrine-it.com/tools/mls-idx-cost-calculator): adds up published MLS license, IDX plugin and RESO Web API vendor fees per month and per year; every figure sourced; no Peregrine prices
 - [Custom SaaS vs off-the-shelf CRM for brokerages](https://peregrine-it.com/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages): published CRM pricing and when a custom platform makes sense
 - [Cost to build a real estate platform](https://peregrine-it.com/blog/cost-to-build-a-real-estate-platform): labor rates in the US, Canada and India, MLS data, maps and hosting costs
 - [How to get MLS data access for your app](https://peregrine-it.com/blog/how-to-get-mls-data-access): license types, broker sponsorship, agreements, MLS Grid / Trestle / Bridge, fees and compliance rules, with sources
-- [Real estate and proptech work](https://peregrine-it.com/industries/real-estate): services and case studies for brokerages and proptech companies
+- [RESO Web API vs RETS: what changes and how to migrate](https://peregrine-it.com/blog/reso-web-api-vs-rets): authentication, queries, field names, media and sync compared; platform limits for MLS Grid and Trestle; published RETS shutdown dates; a migration checklist
+- [MLS data access in Canada: CREA DDF and board feeds](https://peregrine-it.com/blog/mls-data-access-canada): DDF channels, rules, API and published technology-provider fees (CAD); PropTx, BC Reciprocity, Victoria and Pillar 9 programs; aggregators with Canadian coverage
+- [IDX vendor or custom build: when to switch](https://peregrine-it.com/blog/idx-vendor-vs-custom-build): IDX plugin vs data vendor API vs direct MLS feeds, signs it is time to build, and what changes in cost, with sourced figures
+- [Self-storage management software: build or buy?](https://peregrine-it.com/blog/self-storage-software-build-vs-buy): what ten products list on their own sites (pricing, APIs, access-control integrations), where multi-site operators hit limits, and three options: standardize, extend through an API, or build
+- [Odoo implementation cost](https://peregrine-it.com/blog/odoo-implementation-cost): Odoo plans and what the Custom plan is needed for (external API, custom modules), Odoo.sh hosting prices, Success Pack prices, and the cost of maintaining custom code through upgrades, from Odoo's own pages
+- [Investor portal vs file sharing](https://peregrine-it.com/blog/investor-portal-vs-file-sharing): what shared folders cover, where they stop (audit trails, watermarking, per-investor data) and published investor-portal prices, with sources
 
 ## Selected case studies
 
@@ -46,7 +74,7 @@ Each case study opens with a "Results at a glance" table: client, industry, stac
 
 ## Company
 
-- [About Peregrine IT Solutions](https://peregrine-it.com/about): legal name Peregrine IT Solutions LLP; a team of 25+; founded and led by Mukesh Swami, Founder & CEO; office in Noida, India
+- [About Peregrine IT Solutions](https://peregrine-it.com/about): legal name Peregrine IT Solutions LLP; founded in 2018; a team of 25+; founded and led by Mukesh Swami, Founder & CEO; office in Noida, India
 - Clients named on the site: W3|re, Easy Agent PRO, BrokerLinx, Kypiq, Search Realty, Bahia International Realty, Torrins and MM Nova Tech
 - Own product: [RealFoyer](https://realfoyer.com/), IDX websites, CRM and marketing tools for agents and brokerages
 
@@ -54,6 +82,6 @@ Each case study opens with a "Results at a glance" table: client, industry, stac
 
 - [Contact page](https://peregrine-it.com/contact)
 - Email: info@peregrine-it.com
-- Office: Suite 115, H-160, BSI Business Park, Sector 63, Noida, Uttar Pradesh, India (working in overlap with US and Canadian hours)
+- Office: Suite 115, H-160, BSI Business Park, Sector 63, Noida, Uttar Pradesh 201301, India (working in overlap with US and Canadian hours)
 - Book a call: https://calendly.com/mukesh-peregrine-it/30min
 - Website: https://peregrine-it.com

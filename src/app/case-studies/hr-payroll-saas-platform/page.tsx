@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'HR & Payroll SaaS for Mid-Market Companies',
   description:
     'How we built an HR and payroll SaaS for 85+ mid-market companies and 12K employees, with multi-state tax, benefits integration and 99.9% payroll accuracy.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — HR & Payroll SaaS for Mid-Market Companies | Peregrine IT Solutions',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function HRPayrollSaaSPlatform() {
   return (
-    <div className="case-study-detail csd-purple">
+    <main className="case-study-detail csd-purple">
       <CaseStudySchema slug="hr-payroll-saas-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -413,16 +412,7 @@ export default function HRPayrollSaaSPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;Multi-state payroll used to keep us up at night. One wrong rate and we&apos;d
-            have to issue corrections for hundreds of employees. Now the system handles it
-            automatically — we hit 99.9% accuracy from day one. The self-service portal alone cut
-            our HR support load in half.&rdquo;
-          </div>
-          <div className="csd-quote-author">— VP of Operations, PEO</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -443,7 +433,7 @@ export default function HRPayrollSaaSPlatform() {
           <p>
             The audit trail was non-negotiable for compliance. Every change to an employee record,
             tax config, or pay run is logged with user ID, timestamp, and before/after JSON. That
-            gave auditors a complete picture and the client confidence to pass SOC 2. Document
+            gave auditors a complete picture and the client confidence going into a SOC 2 audit. Document
             retention for 7 years was implemented with lifecycle policies and encrypted storage.
           </p>
         </div>
@@ -475,6 +465,6 @@ export default function HRPayrollSaaSPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

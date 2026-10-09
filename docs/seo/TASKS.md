@@ -1,0 +1,118 @@
+# SEO tasks
+
+**Status key:** `done` · `in progress` · `ready` · `partial` (shipped what is verifiable; rest blocked) · `blocked`
+**Branch:** `seo/phase-12`, stacked on `seo/phase-11`. Merge order: 11, then 12.
+Per-task detail, files, hashes and tests are in `PROGRESS.md`. Blockers are in `BLOCKERS.md`.
+
+| ID | Task | Depends on | Status |
+|---|---|---|---|
+| T0 | Execution state: CLAUDE.md, docs/seo, `scripts/seo_check.py`, `scripts/serve-local.sh` | — | done |
+| T1 | Seven title and description experiments | — | done (re-measure after 300 impressions each) |
+| T2 | MLS/IDX pricing and integration content from verified (sourced) data | T3 | done |
+| T3 | Technical consultation CTA and short lead qualification form | T0 | done (copy: B4) |
+| T4 | GA4 events and CRM attribution | T3 | done in code (data: B2, B3) |
+| T5 | About, team and client sections from verified information | — | partial: eight named clients linked; team blocked (B7) |
+| T6 | Odoo integration content from verified capabilities | — | blocked (B6) |
+| T7 | Self-storage software landing page | T9 | done (vendor names: B10) |
+| T8 | Investor portal development page | — | done |
+| T9 | Industry hub with relevant case studies | — | done |
+| T10 | Shopify development service page | T12 | partial: capability page live on branch; project proof blocked (B5) |
+| T11 | Laravel development service page | T12 | partial: capability page; project proof blocked (B5) |
+| T12 | Next.js and React development pages | — | done |
+| T13 | WordPress development service page | T12 | partial: capability page; project proof blocked (B5) |
+| T14 | Verified MLS-specific content | — | blocked (B8) |
+| T15 | MLS/IDX estimation calculator, from the guide's sourced fees only | T2 | done |
+| T16 | Internal linking, schema, sitemap, metadata housekeeping | T9, T12 | partial: linking, robots, sitemap, Person url, W3\|re label done. homepage video and logo weight done. Open: CSP report-to (B15), W3\|re dashboard block (B9) |
+| T17 | SEO articles from the content strategy | T8 | done for every unblocked brief: five guides written on the branch; two briefs blocked (B6, B8) |
+| T18 | Outreach assets and list of external account actions | — | done: OUTREACH.md (nothing sent) |
+
+## Title experiments (T1)
+Baseline: Search Console, 2026-09-28 to 2026-10-05 (8 days). Only the first row has enough volume to call under-clicked; the rest are experiments. Re-measure each after 300 further impressions; revert any whose position drops.
+
+| Page | Impr. | Pos. | Clicks | Query signal | Old title | New title |
+|---|---|---|---|---|---|---|
+| `/blog/mls-idx-integration-cost` | 109 | 6.5 | 1 | mls api cost, mls grid pricing, idx cost per month | MLS/IDX Integration Cost (2026) | MLS & IDX Cost per Month and per Year (2026) |
+| `/case-studies/proptech-investor-portal` | 36 | 48.4 | 1 | investor portal solutions, custom investor portal | Investor Portal for a Real Estate Developer | Custom Real Estate Investor Portal Case Study |
+| `/case-studies/recruitment-ats-platform` | 34 | 5.2 | 0 | ats saas, resume parsing, candidate pipelines | Recruitment ATS with Resume Parsing | ATS SaaS with Resume Parsing: Case Study |
+| `/case-studies/edtech-learning-platform` | 17 | 7.5 | 0 | edtechlms, edtech lms | EdTech LMS with Video Streaming | EdTech LMS Development Case Study |
+| `/case-studies/self-storage-management-platform` | 17 | 40.7 | 0 | saas self storage software, self storage software with stripe | Self-Storage Management SaaS Platform | Self-Storage SaaS Case Study: 150+ Facilities |
+| `/case-studies/event-ticketing-platform` | 14 | 8.7 | 1 | ticketing platform with custom checkout, refunds | Event Ticketing with Real-Time Availability | Event Ticketing Platform: Checkout & Refunds |
+| `/services/odoo-erp` | 14 | 41.5 | 0 | odoo integration, odoo refurbed/orderstream integration | Odoo Custom Modules & API Integration | Odoo Integration & Custom Module Development |
+
+All titles carry the ` | Peregrine IT` suffix and are 60 characters or fewer. Descriptions were rewritten to lead with the page type and the searched terms; every fact in them is already on the page.
+
+## Tracking events (T4)
+| Event | Fired when | Properties |
+|---|---|---|
+| `cta_open` | a `[data-open-contact]`, `#lets-talk-btn` or `[data-open-quick-project]` element is clicked | `form`, `location`, `page` |
+| `lead_submit` | a lead form succeeds | `form`, `page`, `service` |
+| `lead_error` | a lead form fails | `form`, `page`, `service` |
+| `lead_delivery_failed` | after an accepted lead, Resend reports the notification bounced or failed | `form`, `page` |
+| `calendly_click` | a Calendly link is clicked | `location`, `page` |
+| `email_click` | a `mailto:` link is clicked | `page` |
+| `guide_cta_click` | a Calendly click, popup open or form submit inside a guide's consultation block | `guide`, `action` |
+| `calculator_use` | first interaction with the cost calculator | `tool` |
+
+Lead payload (email and `LEAD_WEBHOOK_URL`): `name`, `email`, `company`, `form`, `projectType`, `timeline`, `service`, `message`, `pageUrl`, `landingPage`, `referrer`, `utm`, `receivedAt`, `source`.
+
+## Decisions
+| Date | Decision | Why |
+|---|---|---|
+| 2026-10-09 | The brief's 18 tasks are the plan; no separate strategy file exists | nothing else to reconcile |
+| 2026-10-09 | Title experiments: the seven pages with a clear query signal in Search Console | owner did not name them |
+| 2026-10-09 | GA4 loads only when `NEXT_PUBLIC_GA_ID` is set | no credentials in the repo |
+| 2026-10-09 | No headline dollar range in the MLS cost title | "$450–$7,500" is one Stellar MLS fee |
+| 2026-10-09 | Case-study dates are not derived from git | earlier owner decision |
+| 2026-10-09 | Industry pages only where two or more case studies exist, plus self-storage | avoid thin pages |
+| 2026-10-09 | Shopify, Laravel and WordPress are capability pages with no project claims until B5 | brief approves the pages; repo has no project evidence |
+
+## Review of Phases 11 and 12 (2026-10-09)
+| ID | Item | Status |
+|---|---|---|
+| R1 | Independent code review of `origin/main...seo/phase-12`; ten findings, none critical or high | done; all fixed except the Resend sender (B3) |
+| R2 | Integration tests for the lead API against mocked Resend and webhook | done: `scripts/test_lead_api.py`, 39 checks |
+| R3 | GA4 consent | done: Consent Mode default denied + consent bar, only when the GA ID is set |
+| R4 | Media: lazy CTA video, logo weight; footer data out of the client bundle; nav wrap | done |
+| R5 | Production deployment checklist | done: `DEPLOYMENT.md` |
+
+## Loop queue (autonomous execution, started 2026-10-09)
+Ordered. The loop takes the first item that is `ready`, finishes it, updates this table, PROGRESS.md and BLOCKERS.md, pushes, and moves on. It stops when every row is `done` or `blocked`.
+
+| ID | Item | Status |
+|---|---|---|
+| Q1 | Code quality: remove the two remaining `any` lint errors in `src/app/page.tsx`; automated test for the calculator's fee arithmetic | done |
+| Q2 | CSP: a report endpoint (`/api/csp-report`, logs to Vercel logs) and `report-uri`/`report-to` on the report-only policy | done |
+| Q3 | Guide: RESO Web API vs RETS | done |
+| Q4 | Guide: self-storage software, build or buy | done |
+| Q5 | Guide: MLS data access in Canada | done |
+| Q6 | Guide: IDX vendor vs custom build (uses the cost guide's sources and the calculator) | done |
+| Q7 | Lighthouse performance and accessibility on each new page type; fix what it finds | done: nothing to fix |
+| Q8 | Release readiness: draft pull request `seo/phase-12` → `main` with the deployment checklist (draft, not to be merged without the owner) | done: PR #7 (draft) |
+| Q9 | Enforce the CSP | blocked: needs clean reports from production after Q2 ships |
+| Q10 | W3\|re dashboard block and metric windows | blocked (B9) |
+| Q11 | Team section, Odoo named integrations, first-hand MLS timelines, Shopify/Laravel/WordPress proof | blocked (B5–B8) |
+| Q12 | Merge, deploy, IndexNow resubmission, outreach | blocked: owner authorization (B1, B12) |
+| Q13 | Guide: Odoo implementation cost, from Odoo's published pricing | done |
+| Q14 | Source follow-up on the data-access guide: CREA citation moved to the June 2026 rules; NAR login wall and NorthstarMLS noted | done |
+| Q15 | Brokerage CRM development landing page (content backlog in SEO-PLAN.md) | blocked: no published case study is about a CRM build, so the page would rest on claims (same rule as B5) |
+| Q16 | "Odoo for real estate" page (content backlog) | blocked: no Odoo project to cite (B6) |
+| Q17 | US-dollar Odoo plan prices in the Odoo cost guide | blocked: Odoo prices by visitor country and this machine is in India; needs a check from a US connection |
+
+## Release validation and next phase (2026-10-09)
+| ID | Item | Status |
+|---|---|---|
+| R6 | Release validation of Phases 11 and 12: build, types, lint, 57-URL SEO check, 41 lead tests, 56 fee tests, Lighthouse on 12 pages, responsive, Consent Mode and GA4 events | done; defects fixed (`641cb6e`) |
+| R7 | Production readiness: Vercel and Resend configuration | blocked on access (B18, B19); email fallback and `/api/lead` status endpoint shipped |
+| R8 | GO/NO-GO report with deploy and rollback steps | done: `GO-NO-GO.md` |
+| P4.1 | Internal linking: related guides, guide links from cited case studies, homepage service cards linked, hub counts from data, dead newsletter form removed | done (`af7afcc`) |
+| P4.2 | Accuracy review of existing content against the case studies | done; owner items in B20–B22 |
+| P4.3 | Outreach prospect criteria and two more drafts (nothing sent) | done: `OUTREACH.md` |
+| P4.4 | Search Console monitoring and post-deploy validation plan | done: `MONITORING.md` |
+| P4.5 | New MLS, Shopify, Laravel, WordPress content | blocked (B5, B8, B13): no verified project facts; no page added for page count |
+| C1 | Credibility: one reply-time promise; case-study labels match their figures; certification, SLA and compliance claims removed | done; open items in GO-NO-GO.md section 2 |
+| C2 | Lead delivery: provider and configuration documented; Resend domain status in `/api/lead`; retry; lead reference; Google Sheet receiver prepared | done in code; delivery itself unverified (B18, B19, B24) |
+| C3 | Release re-validation after C1 and C2 | done: build, `tsc`, ESLint 0 errors, `seo_check.py` FAILS 0 on 57 URLs, 44 lead tests, 56 fee tests |
+| C4 | Unsupported testimonials and homepage figures replaced with client logos and verified stats; layout kept | done |
+| C5 | Real lead test on the Vercel preview | done by the owner 2026-10-10: passed |
+| P0 | Lead delivery failure on the preview | closed 2026-10-10: real preview submission delivered (reference `0a3efc8a`). The second failure's cause was never captured |
+| REL | Release of PR #7 | ready; waiting for the owner's authorization to merge |

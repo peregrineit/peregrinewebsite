@@ -93,13 +93,13 @@ export const caseStudies: CaseStudy[] = [
     glance: {
       client: "W3|re",
       duration: "14 Months",
-      results: [["62%", "Workload Reduced"], ["3.8×", "Lead Conversion"], ["94%", "Valuation Accuracy"]],
+      results: [["62%", "Workload Reduced"], ["3.8×", "Lead-to-Showing Rate"], ["94%", "Valuation Accuracy"]],
     },
   },
   {
     slug: "self-storage-management-platform",
     title: "Self-Storage Management Platform with IoT-Powered Access Control",
-    description: "How we built a SaaS platform for self-storage operators with smart-lock integration, automated billing and live occupancy dashboards for 150+ facilities.",
+    description: "Case study: self-storage management software for 150+ facilities, with Stripe billing, smart-lock gate access, online reservations and occupancy dashboards.",
     image: "/ogimage.png",
     industry: "Self-Storage / Property Management",
     stack: ["React Native", "Next.js", "Node.js", "PostgreSQL", "Redis", "MQTT / IoT", "Stripe", "AWS"],
@@ -200,7 +200,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "proptech-investor-portal",
     title: "Investor Communication Portal for a Real Estate Development Firm",
-    description: "How we built a role-based investor portal with document management, milestone tracking, capital calls and distribution reporting for a $450M portfolio.",
+    description: "Case study: a custom investor portal for a real estate developer with a $450M portfolio: documents, capital calls, distribution reporting and audit trails.",
     image: "/ogimage.png",
     industry: "Real Estate / Investment",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "AWS S3", "DocuSign API", "Stripe", "Chart.js"],
@@ -214,7 +214,7 @@ export const caseStudies: CaseStudy[] = [
       industryIcon: "ri-funds-box-line",
       duration: "6 month project",
       summary: "How we built a secure, role-based portal for 280+ investors — with document management, milestone tracking, and automated distribution reporting across a $450M portfolio.",
-      badges: ["$450M AUM", "85% time saved"],
+      badges: ["$450M AUM", "3 weeks → 2 hours"],
     },
     glance: {
       client: "A real estate development firm",
@@ -225,7 +225,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "edtech-learning-platform",
     title: "EdTech Learning Platform with LMS & Video Streaming",
-    description: "How we built a full-stack EdTech platform with LMS, HLS video streaming, and course management — serving 12K+ enrollments across 500+ courses with 99.2% uptime.",
+    description: "Case study: a custom EdTech LMS with HLS video streaming and course management, serving 12K+ enrollments across 500+ courses at 99.2% uptime.",
     image: "/ogimage.png",
     industry: "Education / EdTech",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "AWS MediaConvert", "Stripe", "AWS", "CloudFront"],
@@ -263,13 +263,13 @@ export const caseStudies: CaseStudy[] = [
       flow: "200+ Restaurants → Real-Time Dispatch",
       industryIcon: "ri-restaurant-2-line",
       duration: "11 month project",
-      summary: "How we built a FoodTech aggregator with 200+ restaurants, 50K+ orders/month, and real-time driver dispatch achieving <3min delivery.",
+      summary: "How we built a FoodTech aggregator with 200+ restaurants, 50K+ orders/month, and real-time driver dispatch, with <3min average delivery in the pilot zone.",
       badges: ["50K+ orders/mo", "Real-time"],
     },
     glance: {
       client: "A regional food delivery operator",
       duration: "11 Months",
-      results: [["200+", "Restaurants"], ["50K+", "Orders/Month"], ["<3min", "Avg Delivery"]],
+      results: [["200+", "Restaurants"], ["50K+", "Orders/Month"], ["<3min", "Avg Delivery (Pilot)"]],
     },
   },
   {
@@ -363,13 +363,13 @@ export const caseStudies: CaseStudy[] = [
       flow: "15K+ docs · DocuSign · SOC2",
       industryIcon: "ri-file-text-line",
       duration: "9 month project",
-      summary: "How we built a legal document automation platform processing 15K+ documents/month with multi-party e-signature and SOC2 compliance.",
+      summary: "How we built a legal document automation platform processing 15K+ documents/month with multi-party e-signature and SOC2-ready audit trails.",
       badges: ["40% faster", "SOC2"],
     },
     glance: {
       client: "A mid-market legal services firm",
       duration: "9 Months",
-      results: [["15K+", "Documents/Month"], ["40%", "Faster Turnaround"], ["SOC2", "Compliant"]],
+      results: [["15K+", "Documents/Month"], ["40%", "Faster Turnaround"], ["SOC2", "Ready"]],
     },
   },
   {
@@ -400,7 +400,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "recruitment-ats-platform",
     title: "Recruitment ATS for Applicant Tracking & Hiring",
-    description: "How we built a recruitment ATS for 200+ companies and 80K+ candidates, with resume parsing, interview scheduling and a 65% cut in time-to-hire.",
+    description: "Case study: a multi-tenant ATS SaaS for 200+ companies and 80K+ candidates, with resume parsing, candidate pipelines and a 65% cut in time-to-hire.",
     image: "/ogimage.png",
     industry: "HR Tech / SaaS",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Elasticsearch", "SendGrid", "Calendly API", "Resume Parsing", "Multi-Tenant"],
@@ -425,7 +425,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "event-ticketing-platform",
     title: "Event Ticketing Platform with Real-Time Availability",
-    description: "How we built an event ticketing platform for 500+ events and 120K tickets, with scalable checkout, fraud prevention and refund workflows.",
+    description: "Case study: an event ticketing platform for 500+ events and 120K tickets, with real-time availability, scalable checkout, fraud prevention and refund workflows.",
     image: "/ogimage.png",
     industry: "Events / E-Commerce",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "Stripe", "Twilio", "Fraud Prevention", "Multi-Venue"],

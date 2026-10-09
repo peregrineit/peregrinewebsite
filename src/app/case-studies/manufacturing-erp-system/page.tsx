@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Manufacturing ERP for Production & Inventory',
   description:
     'How we built a manufacturing ERP for 8 factories and 50K SKUs with multi-plant sync, BOM management, shop-floor data capture and 30% lower inventory.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Manufacturing ERP for Production & Inventory | Peregrine IT Solutions',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function ManufacturingErpSystem() {
   return (
-    <div className="case-study-detail">
+    <main className="case-study-detail">
       <CaseStudySchema slug="manufacturing-erp-system" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -403,15 +402,7 @@ export default function ManufacturingErpSystem() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We finally have one system that all plants trust. Inventory reconciliation used to
-            take two weeks — now it&apos;s real-time. The BOM versioning alone prevents costly
-            production errors.&rdquo;
-          </div>
-          <div className="csd-quote-author">— VP of Operations, Manufacturing</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -463,6 +454,6 @@ export default function ManufacturingErpSystem() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

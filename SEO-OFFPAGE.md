@@ -9,7 +9,9 @@ Use the same name, description and URL everywhere, matching the Organization sch
 - **Legal name:** Peregrine IT Solutions LLP
 - **Website:** https://peregrine-it.com
 - **Email:** info@peregrine-it.com
-- **Headquarters / office:** Suite 115, H-160, BSI Business Park, Sector 63, Noida, Uttar Pradesh, India (add the PIN code everywhere once confirmed; no phone number is published)
+- **Headquarters / office:** Suite 115, H-160, BSI Business Park, Sector 63, Noida, Uttar Pradesh 201301, India (no phone number is published)
+- **Founded:** 2018
+- **Team size:** 25+
 - **Founder:** Mukesh Swami, Founder & CEO — https://www.linkedin.com/in/mukeshswami/
 - **Short description (≤160 characters):**
   Peregrine IT Solutions builds SaaS platforms, API and MLS/IDX integrations, AI automation and cloud infrastructure for real estate, proptech and B2B companies.
@@ -91,7 +93,10 @@ Set the **headquarters** field on every directory to the Noida office address ab
 - **Engagement model / pricing model:** fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Where a directory offers pricing-model checkboxes, tick only the ones that match fixed-scope and retainer work.
 - **Typical timeline** (if asked): a SaaS MVP ships in 4 to 6 weeks; complex platforms take 8 to 12 weeks.
 
-Fields only the owner can fill in: minimum project size, hourly rate range and founding year. Make sure these match whatever you decide to publish on the site; the site currently publishes no prices.
+- **Founding year:** 2018.
+- **IP ownership** (if a directory asks): the client owns the IP rights once the work is paid for.
+
+Fields only the owner can fill in: minimum project size and hourly rate range. Make sure these match whatever you decide to publish on the site; the site currently publishes no prices.
 
 Use real portfolio items only: link the published case studies on peregrine-it.com rather than writing new claims.
 
@@ -123,8 +128,6 @@ The three guides at /blog cite vendor and MLS prices that change. Every quarter 
 
 `grep -rn "TODO(owner)" src` lists them. At the time of writing:
 - prices (no Offer schema until real prices exist); the engagement model and team size are now published;
-- code and hosting ownership FAQ;
 - an Odoo case study once a project can be published (the Odoo page is currently a capability page);
-- the PIN code for the Noida office and the founder photo (`public/images/team/mukesh-swami.jpg`);
 - additional team members and certifications;
 - any vendor-partnership disclosure in the CRM guide.

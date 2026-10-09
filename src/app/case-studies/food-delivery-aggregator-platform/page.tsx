@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Multi-Restaurant Food Delivery Platform',
   description:
     'How we built a multi-restaurant food delivery platform with 200+ restaurants, 50K+ orders a month and real-time driver dispatch.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Food Delivery Aggregator for Multi-Restaurant Marketplace | Peregrine IT Solutions',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function FoodDeliveryAggregatorPlatform() {
   return (
-    <div className="case-study-detail csd-orange">
+    <main className="case-study-detail csd-orange">
       <CaseStudySchema slug="food-delivery-aggregator-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -123,7 +122,7 @@ export default function FoodDeliveryAggregatorPlatform() {
           </div>
           <div className="csd-stat-card">
             <div className="csd-stat-number">&lt;3min</div>
-            <div className="csd-stat-label">Avg Delivery</div>
+            <div className="csd-stat-label">Avg Delivery (Pilot Zone)</div>
           </div>
           <div className="csd-stat-card">
             <div className="csd-stat-number">Real-Time</div>
@@ -413,16 +412,7 @@ export default function FoodDeliveryAggregatorPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We went from WhatsApp and spreadsheets to a platform that routes orders and
-            dispatches drivers in seconds. Our average delivery time dropped to under three minutes
-            in the pilot zone. Restaurant partners love the kitchen display — they know exactly when
-            to start cooking.&rdquo;
-          </div>
-          <div className="csd-quote-author">— COO, Food Delivery Operator</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -475,6 +465,6 @@ export default function FoodDeliveryAggregatorPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

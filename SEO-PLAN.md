@@ -133,6 +133,15 @@ Branch seo/phase-10 from main. Content only, no new claims: every fact already o
   - Still TODO(owner): founded year (2018 unconfirmed), code/IP, W3|re 23%/94%, founder photo, engineers.
 Checks: FAQ text equals schema on 11 pages; every number in new text already on main; no best/leading/#1 in titles, H1s or JSON-LD; cliché hits only in the two verbatim client quotes; Phase 1-9 checks.
 
+## Phase 11 — owner answers, round 5
+Branch seo/phase-11 from main (Phase 10 merged as PR #6).
+- [x] 11.1 Founded 2018 (confirmed): /about entity paragraph, Organization.foundingDate, llms.txt, SEO-OFFPAGE.md.
+- [x] 11.2 IP ownership (confirmed: once the client pays, the client owns the IP rights): homepage FAQ (replaces "How do API integrations improve operations?" to stay at 10 questions; that content is on /services/api-integration) and a shared `ipFaq` on all six service FAQs (visible + FAQPage), llms.txt, SEO-OFFPAGE.md. No claim about building in the client's GitHub or cloud accounts (not confirmed).
+- [x] 11.3 Office PIN 201301: Organization.address.postalCode and every officeAddressLine (/contact, /about, footer), llms.txt, SEO-OFFPAGE.md. The legal pages already had it.
+- [x] 11.4 Founder photo (confirmed): public/images/team/mukesh-swami.jpg, copied from the owner's other projects (identical file in sellv3, sellv3-content and Lumen); shown on /about as a 96x96 circle and as Person.image.
+- Still TODO(owner): W3|re 23% vs 94% and metric windows; named engineers; timelines for the five non-SaaS services; prices; Odoo case study; CRM vendor disclosure.
+Checks: Phase 1-10 checks pass; number check allow-lists 2018 (owner-stated); Organization foundingDate/postalCode/numberOfEmployees and Person.image on all 39 pages.
+
 ---
 
 ## Implementation notes

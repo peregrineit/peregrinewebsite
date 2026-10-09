@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../components/JsonLd';
-import { engagement, services } from '@/data/services';
+import { coreServices, engagement, services, technologyServices } from '@/data/services';
 import { getCaseStudy } from '@/data/case-studies';
 import '../css/content-pages.css';
 
@@ -71,7 +71,7 @@ export default function ServicesPage() {
       <section className="cp-section">
         <div className="cp-container">
           <div className="cp-grid-2">
-            {services.map((s) => (
+            {coreServices.map((s) => (
               <Link key={s.slug} href={`/services/${s.slug}`} className="cp-card">
                 <span className="cp-card-icon"><i className={s.icon} aria-hidden="true" /></span>
                 <h2 style={{ fontSize: 22, margin: 0 }}>{s.name}</h2>
@@ -81,6 +81,27 @@ export default function ServicesPage() {
                     Case studies: {s.caseStudies.map((c) => getCaseStudy(c.slug).title).join(' · ')}
                   </p>
                 )}
+                <span className="cp-card-more">View service <i className="ri-arrow-right-line" aria-hidden="true" /></span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="cp-section" id="technologies">
+        <div className="cp-container">
+          <span className="cp-label">Technologies</span>
+          <h2>Development by Technology</h2>
+          <p className="cp-muted">
+            Pages for the frameworks and platforms clients ask for by name. Where we have published case studies they
+            are listed; where we have not, the page says so.
+          </p>
+          <div className="cp-grid">
+            {technologyServices.map((s) => (
+              <Link key={s.slug} href={`/services/${s.slug}`} className="cp-card">
+                <span className="cp-card-icon"><i className={s.icon} aria-hidden="true" /></span>
+                <h3>{s.name}</h3>
+                <p>{s.offer}</p>
                 <span className="cp-card-more">View service <i className="ri-arrow-right-line" aria-hidden="true" /></span>
               </Link>
             ))}

@@ -3,6 +3,9 @@ import Script from "next/script";
 import { Inter, IBM_Plex_Sans_Arabic, Manrope, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { coreServices } from "@/data/services";
+import { industries } from "@/data/industries";
+import Tracking from "./components/Tracking";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import MobileFloatingButtons from "./components/MobileFloatingButtons";
@@ -133,8 +136,8 @@ const siteStructuredData = {
       "@id": ORGANIZATION_ID,
       name: "Peregrine IT Solutions",
       legalName: "Peregrine IT Solutions LLP",
-      // TODO(owner): foundingDate "2018" proposed but unconfirmed; add once confirmed.
-      // Team size "25+" confirmed by the owner (2026-09-30).
+      // Founding year and team size confirmed by the owner (2026-09-30).
+      foundingDate: "2018",
       numberOfEmployees: { "@type": "QuantitativeValue", minValue: 25 },
       url: SITE_URL,
       logo: {
@@ -193,6 +196,7 @@ const siteStructuredData = {
       "@id": personId(m.id),
       name: m.name,
       jobTitle: m.role,
+      url: `${SITE_URL}/about#${m.id}`,
       description: m.bio,
       worksFor: { "@id": ORGANIZATION_ID },
       ...(m.photo ? { image: `${SITE_URL}${m.photo}` } : {}),
@@ -223,10 +227,14 @@ export default function RootLayout({
         />
         <Navbar />
         {children}
-        <Footer />
+        <Footer
+          services={coreServices.map(({ slug, name }) => ({ slug, name }))}
+          industries={industries.map(({ slug, name }) => ({ slug, name }))}
+        />
         <MobileFloatingButtons />
         <SpeedInsights />
         <Analytics />
+        <Tracking />
 
         {/* Helper Script from original HTML */}
         <Script id="touch-mod" strategy="afterInteractive">

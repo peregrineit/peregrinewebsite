@@ -8,7 +8,6 @@ import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
   title: 'Real-Time Fleet Tracking Platform',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   description:
     'How we built a GPS fleet management system with live tracking, route optimization, driver apps and customer ETA alerts for 500+ vehicles in the MENA region.',
@@ -32,7 +31,7 @@ export const metadata: Metadata = {
 
 export default function LogisticsFleetTrackingPlatform() {
   return (
-    <div className="case-study-detail csd-orange">
+    <main className="case-study-detail csd-orange">
       <CaseStudySchema slug="logistics-fleet-tracking-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -416,15 +415,7 @@ export default function LogisticsFleetTrackingPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;Before this system, I was spending my entire shift on the phone trying to find
-            trucks. Now I can see every vehicle on one screen and focus on actually solving problems
-            instead of just locating drivers.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Senior Dispatcher, Operations Center</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -475,6 +466,6 @@ export default function LogisticsFleetTrackingPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

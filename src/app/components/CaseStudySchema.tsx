@@ -1,5 +1,7 @@
 import { SITE_URL, caseStudyUrl, getCaseStudy } from '@/data/case-studies';
 import { getCaseStudyAuthor, personId } from '@/data/team';
+// Imported for its side effect: preloads the two hero fonts on case-study pages.
+import './caseStudyFonts';
 
 const ORGANIZATION = { '@id': `${SITE_URL}/#organization` };
 

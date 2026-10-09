@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Multi-Vendor E-Commerce Marketplace',
   description:
     'How we built a bilingual Arabic/English marketplace for 400+ Gulf vendors with automated split payments, vendor onboarding and real-time inventory sync.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Multi-Vendor E-Commerce Marketplace | Peregrine IT Solutions',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function MultiVendorEcommerceMarketplace() {
   return (
-    <div className="case-study-detail csd-green-accent">
+    <main className="case-study-detail csd-green-accent">
       <CaseStudySchema slug="multi-vendor-ecommerce-marketplace" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -409,16 +408,7 @@ export default function MultiVendorEcommerceMarketplace() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;Most marketplace platforms treat Arabic as an afterthought — flip the CSS and call
-            it done. Peregrine built true bilingual support from the ground up. Our Arabic-speaking
-            customers say the experience feels native, not translated. That&apos;s the
-            difference.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Head of Digital, Retail Conglomerate</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -473,6 +463,6 @@ export default function MultiVendorEcommerceMarketplace() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

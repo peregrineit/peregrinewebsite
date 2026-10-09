@@ -7,9 +7,9 @@ import '../../css/case-study-detail.css';
 import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
-  title: 'EdTech LMS with Video Streaming',
-  description: 'How we built a full-stack EdTech platform with LMS, HLS video streaming, and course management — serving 12K+ enrollments across 500+ courses with 99.2% uptime.',
-  robots: { index: true, follow: true },
+  title: 'EdTech LMS Development Case Study',
+  description:
+    'Case study: a custom EdTech LMS with HLS video streaming and course management, serving 12K+ enrollments across 500+ courses at 99.2% uptime.',
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — EdTech Learning Platform with LMS & Video Streaming | Peregrine IT Solutions',
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function EdTechLearningPlatform() {
   return (
-    <div className="case-study-detail csd-teal">
+    <main className="case-study-detail csd-teal">
       <CaseStudySchema slug="edtech-learning-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -410,15 +410,7 @@ export default function EdTechLearningPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We went from three different systems and spreadsheets to one platform that
-            actually shows us how learners engage. The video streaming alone — no more buffering
-            complaints. Our completion rates improved by 40% in the first quarter.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Head of Product, EdTech Company</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -472,6 +464,6 @@ export default function EdTechLearningPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

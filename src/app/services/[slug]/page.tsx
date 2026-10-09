@@ -2,9 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../../components/JsonLd';
-import { engagement, engagementModel, getService, services, startAnswer } from '@/data/services';
+import { engagement, engagementModel, getService, ipFaq, services, startAnswer } from '@/data/services';
 import { getCaseStudy } from '@/data/case-studies';
+import { industries } from '@/data/industries';
+import { technologyPageFor, technologyServices } from '@/data/technology-services';
 import { formatDate, getGuide, type Guide } from '@/data/guides';
+import ConsultationCta from '../../components/ConsultationCta';
 import '../../css/content-pages.css';
 
 export const dynamicParams = false;
@@ -53,6 +56,9 @@ export default async function ServicePage({ params }: Props) {
   const url = `${SITE_URL}/services/${slug}`;
   const cited = service.caseStudies.map((c) => ({ ...c, study: getCaseStudy(c.slug) }));
   const guides = service.guides.map(getGuide);
+  const faq = [...service.faq, ipFaq];
+  // Industry pages that list this service.
+  const serviceIndustries = industries.filter((i) => i.services.includes(service.slug));
 
   const schema = {
     '@context': 'https://schema.org',
@@ -82,7 +88,7 @@ export default async function ServicePage({ params }: Props) {
       {
         '@type': 'FAQPage',
         '@id': `${url}#faq`,
-        mainEntity: service.faq.map(({ question, answer }) => ({
+        mainEntity: faq.map(({ question, answer }) => ({
           '@type': 'Question',
           name: question,
           acceptedAnswer: { '@type': 'Answer', text: answer },
@@ -157,7 +163,13 @@ export default async function ServicePage({ params }: Props) {
               </div>
             ))}
           </div>
-          <p style={{ marginTop: 20 }}><Link href="/industries" className="cp-standalone-link">Industries we build for</Link></p>
+          <p style={{ marginTop: 20 }}>
+            Industries:{' '}
+            {serviceIndustries.map((i) => (
+              <span key={i.slug}><Link href={`/industries/${i.slug}`}>{i.name}</Link>{' · '}</span>
+            ))}
+            <Link href="/industries">All industries</Link>
+          </p>
         </div>
       </section>
 
@@ -193,6 +205,11 @@ export default async function ServicePage({ params }: Props) {
                 </Link>
               ))}
             </div>
+          )}
+          {service.slug === 'mls-idx-integration' && (
+            <p style={{ marginTop: 20 }}>
+              <Link href="/tools/mls-idx-cost-calculator" className="cp-standalone-link">Add up published fees with the MLS and IDX cost calculator</Link>
+            </p>
           )}
         </div>
       </section>
@@ -232,8 +249,21 @@ export default async function ServicePage({ params }: Props) {
           <span className="cp-label">Stack</span>
           <h2>Technology We Use</h2>
           <div className="cp-tags">
-            {service.stack.map((t) => <span key={t} className="cp-tag">{t}</span>)}
+            {service.stack.map((t) => {
+              const page = technologyPageFor(t);
+              return page && page !== service.slug
+                ? <Link key={t} href={`/services/${page}`} className="cp-tag">{t}</Link>
+                : <span key={t} className="cp-tag">{t}</span>;
+            })}
           </div>
+          {service.group === 'technology' && (
+            <p style={{ marginTop: 20 }}>
+              Other technologies:{' '}
+              {technologyServices.filter((t) => t.slug !== service.slug).map((t, i) => (
+                <span key={t.slug}>{i > 0 && ' · '}<Link href={`/services/${t.slug}`}>{t.name}</Link></span>
+              ))}
+            </p>
+          )}
         </div>
       </section>
 
@@ -241,7 +271,7 @@ export default async function ServicePage({ params }: Props) {
         <div className="cp-container cp-narrow cp-faq">
           <span className="cp-label">FAQ</span>
           <h2>Frequently Asked Questions</h2>
-          {service.faq.map(({ question, answer }) => (
+          {faq.map(({ question, answer }) => (
             <details key={question}>
               <summary>
                 <h3>{question}</h3>
@@ -253,18 +283,11 @@ export default async function ServicePage({ params }: Props) {
         </div>
       </section>
 
-      <section className="cp-section">
-        <div className="cp-container">
-          <div className="cp-cta">
-            <h2>Talk to an Engineer About Your Project</h2>
-            <p>Tell us what you are building or fixing. Your first conversation is with an engineer, not a salesperson.</p>
-            <div className="cp-buttons">
-              <Link href="/contact" className="cp-btn">Contact Us <i className="ri-arrow-right-line" aria-hidden="true" /></Link>
-              <Link href="/services" className="cp-btn cp-btn-secondary">All Services</Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ConsultationCta
+        heading={`Talk to an Engineer About ${service.name}`}
+        text="Tell us what you are building or fixing. Your first conversation is with an engineer, not a salesperson."
+        source={`service:${service.slug}`}
+      />
     </main>
   );
 }

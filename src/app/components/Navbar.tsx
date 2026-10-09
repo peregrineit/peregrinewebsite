@@ -5,7 +5,9 @@ import Image from 'next/image';
 
 const navLinks = [
   { href: '/services', label: 'Services' },
+  { href: '/industries', label: 'Industries' },
   { href: '/case-studies', label: 'Case Studies' },
+  { href: '/blog', label: 'Guides' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -21,9 +23,9 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white backdrop-blur-md border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 md:py-5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 lg:py-5">
         {/* Mobile: logo centered, hamburger right */}
-        <div className="flex md:hidden items-center">
+        <div className="flex lg:hidden items-center">
           <div className="flex-1 min-w-0" />
           <Link href="/" className="flex-shrink-0 nav-logo-link" onClick={() => setMenuOpen(false)}>
             <Image src="/images/peregrine-logo-new.png" alt="Peregrine IT" width={205} height={36} loading="eager" className="h-9 w-auto" />
@@ -44,14 +46,15 @@ export default function Navbar() {
         </div>
 
         {/* Desktop: logo left, nav center, CTA right */}
-        <div className="hidden md:flex items-center justify-between">
+        <div className="hidden lg:flex items-center justify-between">
           <Link href="/" className="flex-shrink-0 nav-logo-link" onClick={() => setMenuOpen(false)}>
             <Image src="/images/peregrine-logo-new.png" alt="Peregrine IT" width={228} height={40} loading="eager" className="h-10 w-auto" />
           </Link>
-          <div className="flex items-center gap-8">
+          {/* Six links: the desktop bar starts at lg, and links never wrap. */}
+          <div className="flex items-center gap-5 xl:gap-8">
             {navLinks.map(({ href, label }) => (
               <Link key={href} href={href}
-                className="transition-colors cursor-pointer font-medium text-sm uppercase tracking-wider !text-slate-800 hover:!text-cyan-600 !no-underline">
+                className="transition-colors cursor-pointer font-medium text-sm uppercase tracking-wider whitespace-nowrap !text-slate-800 hover:!text-cyan-600 !no-underline">
                 {label}
               </Link>
             ))}
@@ -65,12 +68,12 @@ export default function Navbar() {
 
       {/* Mobile menu overlay */}
       <div
-        className={`fixed inset-0 z-[60] bg-black/50 md:hidden transition-opacity ${menuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 z-[60] bg-black/50 lg:hidden transition-opacity ${menuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         aria-hidden={!menuOpen}
         onClick={() => setMenuOpen(false)}
       />
       <div
-        className={`fixed top-0 right-0 bottom-0 z-[70] w-full max-w-[280px] bg-white shadow-xl md:hidden transform transition-transform duration-300 ease-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed top-0 right-0 bottom-0 z-[70] w-full max-w-[280px] bg-white shadow-xl lg:hidden transform transition-transform duration-300 ease-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}
         aria-hidden={!menuOpen}
         inert={!menuOpen}
       >

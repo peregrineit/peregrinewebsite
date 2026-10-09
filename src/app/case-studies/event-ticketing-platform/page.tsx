@@ -7,10 +7,9 @@ import '../../css/case-study-detail.css';
 import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
-  title: 'Event Ticketing with Real-Time Availability',
+  title: 'Event Ticketing Platform: Checkout & Refunds',
   description:
-    'How we built an event ticketing platform for 500+ events and 120K tickets, with scalable checkout, fraud prevention and refund workflows.',
-  robots: { index: true, follow: true },
+    'Case study: an event ticketing platform for 500+ events and 120K tickets, with real-time availability, scalable checkout, fraud prevention and refund workflows.',
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Event Ticketing Platform with Real-Time Availability | Peregrine IT Solutions',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function EventTicketingPlatform() {
   return (
-    <div className="case-study-detail csd-green-accent">
+    <main className="case-study-detail csd-green-accent">
       <CaseStudySchema slug="event-ticketing-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -401,15 +400,7 @@ export default function EventTicketingPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We used to oversell every popular event. Now we have real-time locks and 99.5%
-            accuracy. The fraud prevention cut our chargebacks in half. Refunds happen in minutes,
-            not days.&rdquo;
-          </div>
-          <div className="csd-quote-author">— COO, Events Company</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -461,6 +452,6 @@ export default function EventTicketingPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

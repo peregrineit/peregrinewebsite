@@ -7,10 +7,9 @@ import '../../css/case-study-detail.css';
 import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
-  title: 'Investor Portal for a Real Estate Developer',
+  title: 'Custom Real Estate Investor Portal Case Study',
   description:
-    'How we built a role-based investor portal with document management, milestone tracking, capital calls and distribution reporting for a $450M portfolio.',
-  robots: { index: true, follow: true },
+    'Case study: a custom investor portal for a real estate developer with a $450M portfolio: documents, capital calls, distribution reporting and audit trails.',
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — PropTech Investor Communication Portal | Peregrine IT Solutions',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function PropTechInvestorPortal() {
   return (
-    <div className="case-study-detail csd-gold">
+    <main className="case-study-detail csd-gold">
       <CaseStudySchema slug="proptech-investor-portal" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -126,8 +125,8 @@ export default function PropTechInvestorPortal() {
             <div className="csd-stat-label">Document Delivery</div>
           </div>
           <div className="csd-stat-card">
-            <div className="csd-stat-number">85%</div>
-            <div className="csd-stat-label">Time Saved on Reporting</div>
+            <div className="csd-stat-number">2 hrs</div>
+            <div className="csd-stat-label">Quarterly Report Prep (Was 3 Weeks)</div>
           </div>
         </div>
 
@@ -397,7 +396,7 @@ export default function PropTechInvestorPortal() {
             <div className="csd-result-card">
               <div className="csd-result-before">Quarterly report preparation</div>
               <div className="csd-result-after">3 weeks → 2 hours</div>
-              <div className="csd-result-label">85% time saved on IR reporting</div>
+              <div className="csd-result-label">Time to prepare the quarterly investor report</div>
             </div>
             <div className="csd-result-card">
               <div className="csd-result-before">Document security</div>
@@ -418,16 +417,7 @@ export default function PropTechInvestorPortal() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;Our IR team was spending three weeks every quarter just assembling and sending
-            reports. Now the portal generates everything automatically, each investor sees exactly their
-            data, and we have a complete audit trail. It transformed our investor relations from a
-            bottleneck into a competitive advantage.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Managing Partner, Real Estate Development Firm</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY LEARNINGS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -481,6 +471,6 @@ export default function PropTechInvestorPortal() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

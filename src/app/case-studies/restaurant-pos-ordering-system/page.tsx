@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Restaurant POS & Online Ordering for QSRs',
   description:
     'How we built a POS and online ordering platform for QSR chains across 120+ locations, with offline-first POS, kitchen display and multi-location sync.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Restaurant POS & Online Ordering for QSR Chains | Peregrine IT Solutions',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function RestaurantPOSOrderingSystem() {
   return (
-    <div className="case-study-detail csd-green-accent">
+    <main className="case-study-detail csd-green-accent">
       <CaseStudySchema slug="restaurant-pos-ordering-system" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -414,16 +413,7 @@ export default function RestaurantPOSOrderingSystem() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;When the internet goes down in a food court, we used to shut the register. Now we
-            keep selling — orders sync when we&apos;re back online. The kitchen display alone
-            cut our modifier errors by half. Managers finally have one report instead of three
-            spreadsheets.&rdquo;
-          </div>
-          <div className="csd-quote-author">— VP of Operations, QSR Chain</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -477,6 +467,6 @@ export default function RestaurantPOSOrderingSystem() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

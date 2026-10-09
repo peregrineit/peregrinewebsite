@@ -7,10 +7,9 @@ import '../../css/case-study-detail.css';
 import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
-  title: 'Self-Storage Management SaaS Platform',
+  title: 'Self-Storage SaaS Case Study: 150+ Facilities',
   description:
-    'How we built a SaaS platform for self-storage operators with smart-lock integration, automated billing and live occupancy dashboards for 150+ facilities.',
-  robots: { index: true, follow: true },
+    'Case study: self-storage management software for 150+ facilities, with Stripe billing, smart-lock gate access, online reservations and occupancy dashboards.',
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Self-Storage Management Platform with IoT Access Control | Peregrine IT Solutions',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function SelfStorageManagementPlatform() {
   return (
-    <div className="case-study-detail csd-purple">
+    <main className="case-study-detail csd-purple">
       <CaseStudySchema slug="self-storage-management-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -403,15 +402,7 @@ export default function SelfStorageManagementPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We went from juggling three dashboards and a spreadsheet every morning to having
-            everything in one place. The IoT access control alone saved us two full-time staff positions
-            across our facilities.&rdquo;
-          </div>
-          <div className="csd-quote-author">— VP of Operations, Storage Operator</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -462,6 +453,6 @@ export default function SelfStorageManagementPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

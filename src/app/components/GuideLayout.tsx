@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import ConsultationCta from './ConsultationCta';
 import type { Metadata } from 'next';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from './JsonLd';
 import { formatDate, getGuide } from '@/data/guides';
@@ -37,7 +38,7 @@ export default function GuideLayout({ slug, children }: { slug: string; children
   const g = getGuide(slug);
   const url = `${SITE_URL}/blog/${slug}`;
   const service = getService(g.service);
-  const study = getCaseStudy(g.caseStudy);
+  const study = g.caseStudy ? getCaseStudy(g.caseStudy) : null;
   const author = getCaseStudyAuthor(); // TODO(owner): a named author once team data exists
   const schema = {
     '@context': 'https://schema.org',
@@ -96,14 +97,29 @@ export default function GuideLayout({ slug, children }: { slug: string; children
               <h3>{service.name}</h3>
               <p>{service.offer}</p>
             </Link>
-            <Link href={`/case-studies/${study.slug}`} className="cp-card">
-              <span className="cp-card-meta">Case study</span>
-              <h3>{study.title}</h3>
-              <p>{study.industry}</p>
-            </Link>
+            {study && (
+              <Link href={`/case-studies/${study.slug}`} className="cp-card">
+                <span className="cp-card-meta">Case study</span>
+                <h3>{study.title}</h3>
+                <p>{study.industry}</p>
+              </Link>
+            )}
+            {(g.related ?? []).map(getGuide).map((r) => (
+              <Link key={r.slug} href={`/blog/${r.slug}`} className="cp-card">
+                <span className="cp-card-meta">Guide</span>
+                <h3>{r.title}</h3>
+                <p>{r.description}</p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
+      <ConsultationCta
+        heading={g.cta?.heading ?? 'Talk to an Engineer About Your Project'}
+        text={g.cta?.text ?? 'Tell us what you are building or fixing and we will tell you how we would approach it.'}
+        source={`guide:${slug}`}
+        guide={slug}
+      />
     </main>
   );
 }

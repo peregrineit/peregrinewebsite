@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Fitness Subscription App with Live Classes',
   description:
     'How we built a fitness subscription app with 80K+ subscribers and 2M+ workouts logged, featuring video streaming, workout sync and offline mode.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Fitness Subscription App with Workout Tracking & Live Classes | Peregrine IT Solutions',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function FitnessWellnessSubscriptionApp() {
   return (
-    <div className="case-study-detail csd-purple">
+    <main className="case-study-detail csd-purple">
       <CaseStudySchema slug="fitness-wellness-subscription-app" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -415,15 +414,7 @@ export default function FitnessWellnessSubscriptionApp() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We went from a basic video app to a full fitness platform. Our subscribers can
-            now workout in the gym without Wi‑Fi, join live classes without lag, and see their
-            progress across devices. The 4.8 rating and 2M+ workouts logged speak for themselves.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Head of Product, Fitness Brand</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -480,6 +471,6 @@ export default function FitnessWellnessSubscriptionApp() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

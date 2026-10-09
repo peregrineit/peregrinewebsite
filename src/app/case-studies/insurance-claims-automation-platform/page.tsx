@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Insurance Claims Automation Platform',
   description:
     'How we built a claims automation platform processing 45K+ claims a year, with document extraction, multi-carrier rules and a full audit trail.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Insurance Claims Automation for Claims Processing | Peregrine IT Solutions',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function InsuranceClaimsAutomationPlatform() {
   return (
-    <div className="case-study-detail">
+    <main className="case-study-detail">
       <CaseStudySchema slug="insurance-claims-automation-platform" />
       {/* ═══ HERO — Default (no accent) ═══ */}
       <section className="csd-hero">
@@ -414,16 +413,7 @@ export default function InsuranceClaimsAutomationPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We used to have a backlog of thousands of claims and auditors breathing down our
-            necks. Now we process 45K claims a year with 60% less time per claim. The document
-            extraction alone saved us from hiring five more adjusters. And we finally have an
-            audit trail that stands up to scrutiny.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Director of Claims, Health Insurer</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -479,6 +469,6 @@ export default function InsuranceClaimsAutomationPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

@@ -7,8 +7,12 @@
 // TODO(owner): prices. No prices are published and no Offer schema is emitted until the
 //   owner supplies real Peregrine prices.
 
+import { technologyServices } from './technology-services';
+
 export interface Service {
   slug: string;
+  /** 'technology' pages are listed separately from the core services (hub, footer, about). */
+  group?: 'technology';
   /** Short name for nav, cards and breadcrumbs. */
   name: string;
   /** schema.org serviceType */
@@ -40,13 +44,14 @@ export interface Service {
 }
 
 /** Shared by every service page. Facts only from the existing site (discovery call,
- *  discovery sprint, 2-week sprints with weekly demos, 48-hour scoped estimates). */
+ *  discovery sprint, 2-week sprints with weekly demos, scoped estimates). The only
+ *  reply-time promise on the site is "within 1 business day". */
 export const engagement = {
   heading: 'How an Engagement Works',
   paragraphs: [
     'Every project starts with a 30-minute technical discovery call with an engineer, not a salesperson. We use it to understand the system you have, the outcome you need and whether we are the right team for it.',
     'Larger builds begin with a discovery sprint: we map requirements, design the architecture and hand you a written technical plan before development starts. Development then runs in two-week sprints with weekly demos, so you see working software early and can change priorities at each checkpoint.',
-    'Smaller, well-defined tasks such as a single integration, a performance fix or an automation can be requested through the quick project form, and we reply with a scoped estimate within 48 hours.',
+    'Smaller, well-defined tasks such as a single integration, a performance fix or an automation can be requested through the quick project form, and we reply within 1 business day and follow with a scoped estimate.',
   ],
   pricingNote: 'Pricing is scoped per project after the discovery call.',
 };
@@ -56,11 +61,19 @@ export const engagement = {
 export const engagementModel =
   'Fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call';
 
+/** IP ownership, confirmed by the owner (2026-09-30). Appended to every service page's
+ *  FAQ (visible and FAQPage JSON-LD). */
+export const ipFaq = {
+  question: 'Who owns the IP rights to what Peregrine builds?',
+  answer:
+    'You do. Once the work is paid for, the client owns the intellectual property (IP) rights to what Peregrine builds for the project, whether it is delivered as a fixed-scope project, a monthly retainer or a combination of the two.',
+};
+
 /** Direct answer for "How does a <service> project start?"; the same facts as `engagement`. */
 export const startAnswer = (name: string) =>
-  `A Peregrine ${name} project starts with a 30-minute technical discovery call with an engineer, not a salesperson. Larger builds then begin with a discovery sprint that maps requirements, designs the architecture and produces a written technical plan. Smaller, well-defined tasks can use the quick project form for a scoped estimate within 48 hours.`;
+  `A Peregrine ${name} project starts with a 30-minute technical discovery call with an engineer, not a salesperson. Larger builds then begin with a discovery sprint that maps requirements, designs the architecture and produces a written technical plan. Smaller, well-defined tasks can use the quick project form for a scoped estimate.`;
 
-export const services: Service[] = [
+const coreServiceList: Service[] = [
   {
     slug: 'saas-development',
     name: 'SaaS Development',
@@ -139,8 +152,6 @@ export const services: Service[] = [
         question: 'How do you handle subscription billing?',
         answer: 'We usually build on Stripe for subscriptions, one-time purchases and invoicing. The important part is the webhook handling: payment events update access, invoices and renewals automatically, and failed payments are retried and surfaced instead of being missed.',
       },
-      // TODO(owner): add an FAQ on code/IP and hosting ownership once the terms are confirmed
-      //   (proposed wording is in src/app/page.tsx, awaiting confirmation).
       {
         question: 'Can each of our customers have their own branding?',
         answer: 'Yes. White-label platforms serve every customer from one codebase and one backend, while each customer gets its own theme, domain and content. Our real estate SaaS case study runs branded agent websites this way, and our ATS case study gives each company its own career pages.',
@@ -207,7 +218,7 @@ export const services: Service[] = [
       timeline:
         'Peregrine sets the timeline for an API integration after mapping every system involved: its authentication, endpoints, rate limits, webhook support and data formats. The number of vendors and the quality of their sandboxes drive the schedule. Work then runs in two-week sprints with weekly demos, and rollout starts with a pilot group.',
       cost:
-        'Peregrine works on API integration as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on how many systems are involved and how reliable their APIs are. A single, well-defined integration can get a scoped estimate within 48 hours. For CRM build-or-buy economics, see [[guide]].',
+        'Peregrine works on API integration as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on how many systems are involved and how reliable their APIs are. A single, well-defined integration can get a scoped estimate. For CRM build-or-buy economics, see [[guide]].',
       work:
         'Three published case studies show Peregrine\'s API integration work: a supply chain platform normalizing 12 carrier APIs with retry queues and per-carrier rate limits, an HR and payroll SaaS integrated with ADP, QuickBooks and DocuSign, and a legal document platform whose DocuSign webhooks keep multi-party signing moving during outages.',
     },
@@ -287,14 +298,14 @@ export const services: Service[] = [
       { slug: 'w3re-ai-real-estate-platform', note: 'A unified pipeline for four MLS systems (NTREIS, Stellar MLS, ARMLS and REcolorado) that normalizes schemas and deduplicates cross-listed properties.' },
       { slug: 'scaling-real-estate-saas-platform', note: 'Rebuilt the MLS sync engine for US and Canadian boards with delta detection, retry logic and per-feed error isolation, feeding Elasticsearch search for agent IDX sites.' },
     ],
-    guides: ['mls-idx-integration-cost', 'how-to-get-mls-data-access', 'cost-to-build-a-real-estate-platform'],
+    guides: ['mls-idx-integration-cost', 'how-to-get-mls-data-access', 'idx-vendor-vs-custom-build', 'reso-web-api-vs-rets', 'mls-data-access-canada', 'cost-to-build-a-real-estate-platform'],
     answers: {
       includes:
         'Peregrine\'s MLS and IDX integration service builds the full listing pipeline: feed ingestion over the RESO Web API or RETS, normalization across MLS boards, deduplication of cross-listed properties, a fast search layer, and the IDX website or app on top, with lead capture feeding your CRM. We also build and operate our own real estate product, RealFoyer.',
       timeline:
         'Peregrine sets the timeline for an MLS feed project after reviewing the boards involved, the feed type each offers and the display and refresh rules in each data license. Data access approval is set by each MLS, not by us. Development then runs in two-week sprints with weekly demos, and every feed is monitored after launch.',
       cost:
-        'Peregrine works on MLS and IDX integration as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on the number of boards and what you build on top; MLS data fees are paid to each board. Our guide [[guide]] lists published fees.',
+        'Peregrine works on MLS and IDX integration as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on the number of boards and what you build on top; MLS data fees go to each board. See [[guide]] for published fees.',
       work:
         'Two published case studies show Peregrine\'s MLS and IDX work: the W3|re platform, which unifies four MLS systems (NTREIS, Stellar MLS, ARMLS and REcolorado) and deduplicates cross-listed properties, and a real estate SaaS whose rebuilt MLS sync engine for US and Canadian boards feeds Elasticsearch search for agent IDX websites.',
     },
@@ -326,6 +337,98 @@ export const services: Service[] = [
       },
     ],
     icon: 'ri-home-4-line',
+  },
+  {
+    slug: 'investor-portal-development',
+    name: 'Investor Portal Development',
+    serviceType: 'Investor portal development',
+    title: 'Investor Portal Development for Real Estate',
+    metaDescription:
+      'Custom investor portal development for real estate firms and funds: role-based access, watermarked documents, capital calls and distribution reporting.',
+    h1: 'Custom Investor Portal Development for Real Estate Firms and Funds',
+    // One published case study backs this page (proptech-investor-portal). Every feature
+    // and figure below comes from it; the page says so rather than implying a practice.
+    offer: 'Secure investor portals with role-based access, document management and automated reporting.',
+    intro: [
+      'An investor portal is a secure, self-service website where limited partners and other investors log in to see their own investments, documents, distributions and project updates, instead of receiving them by email.',
+      'It is for real estate development firms, sponsors and funds whose investor relations still run on email, shared folders and quarterly PDF reports, and whose investors participate through different funds, co-investments and SPVs.',
+      'Peregrine builds the portal end to end: the permission model, the document system with watermarking and an audit trail, capital call and distribution workflows, and the reporting engine behind the quarterly reports.',
+    ],
+    whatWeBuild: [
+      {
+        title: 'Role-based access by entity',
+        body: 'Permissions modeled on the investment structure rather than on individual users, so an investor who is an LP in one fund and a co-investor in a single deal sees exactly those holdings. Our case study portal uses six role types, including family office administrators with delegate access, and gates every page and document at the API level.',
+      },
+      {
+        title: 'Document management with watermarking',
+        body: 'A document library for K-1s, distribution notices and offering documents, with each view or download watermarked with the investor\'s name, a timestamp and a tracking ID, version control, and a complete audit trail of who accessed what.',
+      },
+      {
+        title: 'Capital calls and e-signature',
+        body: 'Subscription documents and capital call notices sent for signature through DocuSign from inside the portal. In our case study, capital call processing went from 12 days to 3 days with the e-signature workflow.',
+      },
+      {
+        title: 'Distribution and performance reporting',
+        body: 'Automated quarterly reports with IRR, equity multiple and distribution waterfall calculations taken from one system of record, exportable to PDF, plus distribution and payment history for each investor.',
+      },
+      {
+        title: 'Investor dashboard',
+        body: 'A responsive dashboard with a personalized view per investor: fund performance charts, the document library, a project milestone tracker and distribution history.',
+      },
+      {
+        title: 'Data migration and onboarding',
+        body: 'Moving historical documents and investor records into the portal and onboarding existing investors. In our case study that meant three years of documents and more than 280 investors.',
+      },
+    ],
+    process: [
+      { title: 'Requirements and access modeling', body: 'We map the fund structure, investor hierarchies and document types, then design the role model, watermarking and audit trail before anything is built.' },
+      { title: 'Core portal and documents', body: 'The investor dashboard, document management and watermarking pipeline, and the data model for multi-fund investment tracking.' },
+      { title: 'Reporting and integrations', body: 'Report generation with IRR and waterfall calculations, e-signature for subscription documents and capital calls, and distribution tracking.' },
+      { title: 'Security review and launch', body: 'Penetration testing and a security audit, migration of historical documents and data, then investor onboarding.' },
+    ],
+    stack: ['Next.js', 'Node.js', 'PostgreSQL', 'Redis', 'AWS S3', 'DocuSign API', 'Stripe', 'Chart.js'],
+    caseStudies: [
+      { slug: 'proptech-investor-portal', note: 'A role-based investor portal for a real estate development firm with a $450M portfolio and 280+ investors: watermarked documents, capital calls through DocuSign and automated quarterly reporting.' },
+    ],
+    guides: ['investor-portal-vs-file-sharing'],
+    answers: {
+      includes:
+        'Peregrine\'s investor portal development covers role-based access modeled on your fund, co-investment and SPV structure, a document library with per-investor watermarking and an audit trail, capital calls and subscription documents with e-signature, automated distribution and performance reporting, an investor dashboard, and migration of your existing documents and investor records.',
+      timeline:
+        'Peregrine sets the timeline for an investor portal after mapping the fund structure, investor hierarchies and document types, because the permission model drives most of the work. The portal in our published case study took six months in four phases; that is one project, not a typical timeline.',
+      cost:
+        'Peregrine works on investor portal development as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on how complex the fund and permission structure is, the reporting calculations needed and how much history has to be migrated. We do not publish a price list.',
+      work:
+        'One published case study shows Peregrine\'s investor portal work: a portal for a real estate development firm with a $450M portfolio and 280+ investors, with six role types, watermarked documents and automated quarterly reports. It is a single project, so we would rather walk you through it than generalize from it.',
+    },
+    glance: {
+      delivered: 'Role-based investor portal: access model, watermarked document library, capital calls with e-signature, distribution and performance reporting, migration',
+      // TODO(owner): typical timeline for this service; the case study's six months is one project.
+    },
+    updated: '2026-10-09',
+    faq: [
+      {
+        question: 'How is an investor portal different from sharing files through Dropbox or email?',
+        answer: 'File sharing gives everyone with the link the same files. A portal knows who each investor is and what they hold, so each person sees only their own documents and figures, every access is logged, and downloads can be watermarked. In our case study, the firm had been sharing K-1s and offering documents through shared links with no access controls or audit trail.',
+      },
+      {
+        question: 'Can the portal handle investors in several funds, co-investments and SPVs?',
+        answer: 'Yes. Permissions are modeled at the entity level, not the user level, so one investor can be an LP in a fund, a co-investor in a single deal and have an administrator with read-only access to both, without custom code for each case.',
+      },
+      {
+        question: 'How are confidential documents protected?',
+        answer: 'Documents are stored encrypted and served through signed URLs, access is permission-gated at the API level, and each viewed or downloaded copy is watermarked with the investor\'s name, a timestamp and a tracking ID. If a document leaks, the audit trail shows whose copy it was.',
+      },
+      {
+        question: 'Can the portal produce our quarterly investor reports?',
+        answer: 'Yes. Distribution waterfall, IRR and equity multiple calculations run from the portal\'s own data, so reports are generated rather than assembled by hand. In our case study, quarterly report preparation went from three weeks to two hours.',
+      },
+      {
+        question: 'Should we buy an off-the-shelf investor portal instead of building one?',
+        answer: 'Often, yes. Off-the-shelf investor portals suit firms whose fund structures and reports fit the product. A custom portal is worth considering when your participation structures, calculations or document rules do not fit, or when the portal has to connect to systems the product does not support.',
+      },
+    ],
+    icon: 'ri-funds-box-line',
   },
   {
     slug: 'ai-automation',
@@ -470,7 +573,7 @@ export const services: Service[] = [
       timeline:
         'Peregrine sets the timeline for cloud and DevOps work after assessing your current hosting, release process, costs and incidents. The migration plan then moves one environment at a time, each verified before the next, with a rollback plan for every step. Work runs in two-week sprints and ends with load tests and a handover.',
       cost:
-        'Peregrine works on cloud and DevOps as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on the current setup, how much moves and how much is automated. A single performance fix can get a scoped estimate within 48 hours. For infrastructure in context, see [[guide]].',
+        'Peregrine works on cloud and DevOps as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on the current setup, how much moves and how much is automated. A single performance fix can get a scoped estimate. For infrastructure in context, see [[guide]].',
       work:
         'Three published case studies show Peregrine\'s cloud and DevOps work: a real estate SaaS split into USA, Canada and staging environments with Elasticsearch, Redis and a CDN; an edtech platform with an event-driven AWS video pipeline delivering HLS; and a self-storage platform load-tested against 45,000 simulated units before rollout.',
     },
@@ -507,9 +610,9 @@ export const services: Service[] = [
     slug: 'odoo-erp',
     name: 'Odoo ERP',
     serviceType: 'Odoo ERP implementation and integration',
-    title: 'Odoo Custom Modules & API Integration',
+    title: 'Odoo Integration & Custom Module Development',
     metaDescription:
-      'Odoo custom module and API integration development: new modules, workflow changes and integrations with your website, e-commerce, payment and finance systems.',
+      'Odoo integration and custom module development: connect Odoo to your website, e-commerce, payment, shipping and finance systems through its external API.',
     h1: 'Odoo Custom Module and API Integration Development',
     // Capability page: the owner has no Odoo project to publish yet, so the page makes no
     // project claims and cites no case studies. Add case studies here once they exist.
@@ -551,9 +654,9 @@ export const services: Service[] = [
       { title: 'Migrate and test', body: 'Trial migrations and user testing with real scenarios before the cut-over date.' },
       { title: 'Go live and support', body: 'Phased go-live, one module or department at a time, with training and documentation for your team.' },
     ],
-    stack: ['Odoo', 'Python', 'PostgreSQL', 'XML-RPC / JSON-RPC APIs', 'REST integrations', 'Next.js dashboards'],
+    stack: ['Odoo', 'Python', 'PostgreSQL', 'Odoo external API (JSON-2, XML-RPC, JSON-RPC)', 'REST integrations', 'Next.js dashboards'],
     caseStudies: [],
-    guides: [],
+    guides: ['odoo-implementation-cost'],
     answers: {
       includes:
         'Peregrine\'s Odoo service covers custom Odoo modules in Python, integrations between Odoo and websites, e-commerce, payment, shipping and finance systems through Odoo\'s external API, configuration of the HR, CRM, Inventory and Accounting modules, and data migration from spreadsheets or legacy systems, with trial migrations before cut-over.',
@@ -568,7 +671,7 @@ export const services: Service[] = [
       delivered: 'Custom Odoo modules, API integrations, HR, CRM, Inventory and Accounting configuration, and data migration',
       // TODO(owner): typical timeline for this service; omitted until stated on the site.
     },
-    updated: '2026-09-30',
+    updated: '2026-10-09',
     faq: [
       {
         question: 'Which Odoo modules do your custom modules and integrations cover?',
@@ -584,7 +687,7 @@ export const services: Service[] = [
       },
       {
         question: 'Can Odoo connect to our existing systems?',
-        answer: 'Yes. Odoo exposes an external API (XML-RPC and JSON-RPC), and integrations can be built for e-commerce, CRM, payments, shipping and finance systems. Where a system has no API, file-based exchange is an option.',
+        answer: 'Yes. Odoo exposes an external API: the JSON-2 API introduced in Odoo 19, and the older XML-RPC and JSON-RPC APIs, which Odoo has scheduled for removal. Odoo makes external API access available on its Custom plan only. Integrations can be built for e-commerce, CRM, payments, shipping and finance systems; where a system has no API, file-based exchange is an option.',
       },
       {
         question: 'How long does a custom Odoo module or integration take?',
@@ -594,6 +697,11 @@ export const services: Service[] = [
     icon: 'ri-stack-line',
   },
 ];
+
+/** Every service page: core services first, then technology pages. */
+export const services: Service[] = [...coreServiceList, ...technologyServices];
+export const coreServices = coreServiceList;
+export { technologyServices };
 
 export function getService(slug: string): Service {
   const service = services.find((s) => s.slug === slug);

@@ -10,11 +10,10 @@ export const metadata: Metadata = {
   title: 'Legal Document Automation & E-Signature',
   description:
     'How we built a legal document automation platform for 15K+ documents a month, with contract templates, clause libraries and multi-party e-signature.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Legal Document Automation for Contract Generation & E-Signature | Peregrine IT Solutions',
-    description: 'How we built a legal document automation platform processing 15K+ documents/month with DocuSign integration and SOC2 compliance.',
+    description: 'How we built a legal document automation platform processing 15K+ documents/month with DocuSign integration and SOC2-ready audit trails.',
     type: 'article',
     url: 'https://peregrine-it.com/case-studies/legal-document-automation-platform',
     siteName: 'Peregrine IT Solutions',
@@ -23,14 +22,14 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — Legal Document Automation for Contract Generation & E-Signature',
-    description: 'Legal document automation processing 15K+ documents/month with 40% faster turnaround and SOC2 compliance.',
+    description: 'Legal document automation processing 15K+ documents/month with 40% faster turnaround and SOC2-ready audit trails.',
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/legal-document-automation-platform' },
 };
 
 export default function LegalDocumentAutomationPlatform() {
   return (
-    <div className="case-study-detail csd-gold">
+    <main className="case-study-detail csd-gold">
       <CaseStudySchema slug="legal-document-automation-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -53,7 +52,7 @@ export default function LegalDocumentAutomationPlatform() {
 
           <p className="csd-hero-sub">
             How we built a legal document automation platform processing 15K+ documents/month — with
-            contract templates, clause libraries, multi-party e-signature, and SOC2-compliant audit
+            contract templates, clause libraries, multi-party e-signature, and SOC2-ready audit
             trails.
           </p>
 
@@ -123,7 +122,7 @@ export default function LegalDocumentAutomationPlatform() {
           </div>
           <div className="csd-stat-card">
             <div className="csd-stat-number">SOC2</div>
-            <div className="csd-stat-label">Compliant</div>
+            <div className="csd-stat-label">Ready</div>
           </div>
           <div className="csd-stat-card">
             <div className="csd-stat-number">Multi-Party</div>
@@ -383,7 +382,7 @@ export default function LegalDocumentAutomationPlatform() {
             <div className="csd-result-card">
               <div className="csd-result-before">5–7 days per document</div>
               <div className="csd-result-after">40% faster</div>
-              <div className="csd-result-label">Average turnaround cut by nearly half</div>
+              <div className="csd-result-label">Average document turnaround</div>
             </div>
             <div className="csd-result-card">
               <div className="csd-result-before">15K+ documents/month</div>
@@ -404,15 +403,7 @@ export default function LegalDocumentAutomationPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We went from hunting for clauses in old Word files to having a single source of
-            truth. The multi-party e-signature alone eliminated two weeks per complex deal. Our
-            clients trust the audit trail.&rdquo;
-          </div>
-          <div className="csd-quote-author">— General Counsel, Legal Services Firm</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -429,7 +420,7 @@ export default function LegalDocumentAutomationPlatform() {
             complete until we receive the webhook. Duplicate webhook delivery is handled idempotently.
           </p>
           <p>
-            SOC2 compliance was baked in from the start. Every document access, template edit, and
+            SOC2 readiness was built in from the start. Every document access, template edit, and
             envelope action is logged with user ID, timestamp, and IP. Retention policies in S3
             ensure signed documents are preserved per client requirements. When auditors came, the
             data was already there.
@@ -463,6 +454,6 @@ export default function LegalDocumentAutomationPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

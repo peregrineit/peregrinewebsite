@@ -5,7 +5,11 @@ import Image from 'next/image';
 import { QuickProjectForm, StrategyCallForm } from './LeadForms';
 import { officeAddressLine, officeMapsUrl } from '@/data/company';
 
-export default function Footer() {
+type NavItem = { slug: string; name: string };
+
+// `services` and `industries` are passed from the server layout as slug/name pairs, so
+// this client component does not pull the data files into the browser bundle.
+export default function Footer({ services, industries }: { services: NavItem[]; industries: NavItem[] }) {
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
     services: false,
     industries: false,
@@ -115,12 +119,10 @@ export default function Footer() {
                     </button>
                   </div>
                   <div className={`footer-section-content ${expandedSections.services ? 'expanded' : ''}`}>
-                    <Link href="/services/saas-development" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>SaaS Development</Link>
-                    <Link href="/services/api-integration" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>API Integration</Link>
-                    <Link href="/services/mls-idx-integration" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>MLS &amp; IDX Integration</Link>
-                    <Link href="/services/ai-automation" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>AI Automation</Link>
-                    <Link href="/services/cloud-devops" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Cloud &amp; DevOps</Link>
-                    <Link href="/services/odoo-erp" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Odoo ERP</Link>
+                    {services.map((sv) => (
+                      <Link key={sv.slug} href={`/services/${sv.slug}`} className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>{sv.name}</Link>
+                    ))}
+                    <Link href="/services#technologies" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Next.js, React, Shopify, Laravel, WordPress</Link>
                     <Link href="/services" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>All Services</Link>
                   </div>
                 </div>
@@ -134,10 +136,10 @@ export default function Footer() {
                     </button>
                   </div>
                   <div className={`footer-section-content ${expandedSections.industries ? 'expanded' : ''}`}>
-                    <Link href="/industries/real-estate" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Real Estate Platforms &amp; CRMs</Link>
-                    <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Marketplaces &amp; Portals</a>
-                    <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Logistics &amp; Operations Systems</a>
-                    <a href="/#sec-logistics" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Data-Heavy SaaS Products</a>
+                    {industries.map((i) => (
+                      <Link key={i.slug} href={`/industries/${i.slug}`} className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>{i.name}</Link>
+                    ))}
+                    <Link href="/industries" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>All Industries</Link>
                   </div>
                 </div>
                 <div className="dfs-wrap-7 footer-section-item">
@@ -152,7 +154,6 @@ export default function Footer() {
                   <div className={`footer-section-content ${expandedSections.company ? 'expanded' : ''}`}>
                     <Link href="/about" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>About Us</Link>
                     <Link href="/case-studies" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Case Studies</Link>
-                    <Link href="/industries" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Industries</Link>
                     <Link href="/contact" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Contact</Link>
                     <Link href="/blog" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Guides</Link>
                     <a href="https://calendly.com/mukesh-peregrine-it/30min" target="_blank" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Careers</a>
@@ -170,7 +171,7 @@ export default function Footer() {
                   </div>
                   <div className={`footer-section-content ${expandedSections.contact ? 'expanded' : ''}`}>
                     <a href="https://calendly.com/mukesh-peregrine-it/30min" target="_blank" className="dfs-link-1-cta" style={{ color: '#0e7490', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Book a Strategy Call</a>
-                    <a href="#" id="quick-project-btn-footer-col" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Small task? Get a scoped estimate within 48 hours</a>
+                    <a href="#" id="quick-project-btn-footer-col" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Small task? Get a scoped estimate</a>
                     <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.6rem', lineHeight: '1.5' }}>Real engineers reply — not sales</p>
                     <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>Daily overlap with North American &amp; European business hours</p>
                     <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>Technical conversations are with engineers, not sales</p>

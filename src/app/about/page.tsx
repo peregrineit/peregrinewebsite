@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../components/JsonLd';
 import TeamGrid from '../components/TeamGrid';
-import { services } from '@/data/services';
+import { coreServices as services } from '@/data/services';
 import { caseStudies } from '@/data/case-studies';
 import { team } from '@/data/team';
 import { officeAddressLine } from '@/data/company';
@@ -28,6 +28,17 @@ export const metadata: Metadata = {
     images: [{ url: '/ogimage.png', width: 1200, height: 630, alt: 'Peregrine IT Solutions' }],
   },
 };
+
+// Clients named on the homepage, with their own websites.
+const NAMED_CLIENTS: [string, string][] = [
+  ['Easy Agent PRO', 'https://www.easyagentpro.com'],
+  ['BrokerLinx', 'https://www.brokerlinx.com'],
+  ['Kypiq', 'https://www.kypiq.com'],
+  ['Search Realty', 'https://www.searchrealty.ca'],
+  ['Bahia International Realty', 'https://www.bahiainternationalrealty.com'],
+  ['Torrins', 'https://www.torrins.com'],
+  ['MM Nova Tech', 'https://www.mmnovatech.com'],
+];
 
 export default function AboutPage() {
   const schema = {
@@ -77,17 +88,21 @@ export default function AboutPage() {
         <div className="cp-container cp-narrow">
           <span className="cp-label">Company facts</span>
           <h2>Who Is Peregrine IT Solutions?</h2>
-          {/* Entity facts, all already on the site.
-              TODO(owner): founding year: owner proposed 2018 but marked it [confirm]; add
-              "founded in 2018" here and Organization.foundingDate in layout.tsx once confirmed.
-              Team size "25+" confirmed by the owner (2026-09-30); also Organization.numberOfEmployees. */}
+          {/* Entity facts. Founding year (2018) and team size (25+) confirmed by the owner
+              (2026-09-30); they also appear as Organization.foundingDate / numberOfEmployees. */}
           <p className="cp-answer">
-            Peregrine IT Solutions (legal name Peregrine IT Solutions LLP) is a software engineering firm with a team of
-            25+, founded and led by {team[0].name}, {team[0].role}. Its office is at {officeAddressLine}. Most clients are B2B companies
+            Peregrine IT Solutions (legal name Peregrine IT Solutions LLP) is a software engineering firm founded in
+            2018, with a team of 25+, led by {team[0].name}, {team[0].role}. Its office is at {officeAddressLine}. Most clients are B2B companies
             in the United States and Canada, with real estate and proptech a large share of the work alongside SaaS,
             logistics, healthcare, HR, insurance, legal, education, e-commerce and manufacturing. Clients named on this
-            site include W3|re, Easy Agent PRO, BrokerLinx, Kypiq, Search Realty, Bahia International Realty, Torrins
-            and MM Nova Tech.
+            site include <Link href="/case-studies/w3re-ai-real-estate-platform">W3|re</Link>,{' '}
+            {NAMED_CLIENTS.map(([name, href], i) => (
+              <span key={name}>
+                {i === NAMED_CLIENTS.length - 1 ? 'and ' : ''}
+                <a href={href} target="_blank" rel="noopener noreferrer">{name}</a>
+                {i < NAMED_CLIENTS.length - 1 ? ', ' : '.'}
+              </span>
+            ))}
           </p>
         </div>
       </section>

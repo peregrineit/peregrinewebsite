@@ -7,10 +7,9 @@ import '../../css/case-study-detail.css';
 import CaseStudyGlance from '../../components/CaseStudyGlance';
 
 export const metadata: Metadata = {
-  title: 'Recruitment ATS with Resume Parsing',
+  title: 'ATS SaaS with Resume Parsing: Case Study',
   description:
-    'How we built a recruitment ATS for 200+ companies and 80K+ candidates, with resume parsing, interview scheduling and a 65% cut in time-to-hire.',
-  robots: { index: true, follow: true },
+    'Case study: a multi-tenant ATS SaaS for 200+ companies and 80K+ candidates, with resume parsing, candidate pipelines and a 65% cut in time-to-hire.',
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Recruitment ATS for Applicant Tracking & Hiring | Peregrine IT Solutions',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function RecruitmentAtsPlatform() {
   return (
-    <div className="case-study-detail csd-teal">
+    <main className="case-study-detail csd-teal">
       <CaseStudySchema slug="recruitment-ats-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -401,15 +400,7 @@ export default function RecruitmentAtsPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;The resume parsing alone saves our recruiters hours every day. We went from
-            searching through email to having a searchable talent pool. Calendly integration
-            eliminated the scheduling chaos.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Head of Talent, Staffing Company</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -461,6 +452,6 @@ export default function RecruitmentAtsPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

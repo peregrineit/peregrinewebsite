@@ -1,22 +1,27 @@
 import type { NextConfig } from "next";
 
 // Content-Security-Policy, sent as Report-Only for now: violations are reported in the
-// browser console without blocking anything. Third-party origins actually used at
-// runtime: cdnjs (GSAP, anime, Typed, Waypoints, lottie-web) and jsDelivr (CounterUp),
-// homepage only. Switch to an enforced CSP once the reports are clean.
+// browser console and to /api/csp-report without blocking anything. Third-party origins actually used at
+// runtime: cdnjs (lottie-web, homepage only) and, only when NEXT_PUBLIC_GA_ID is set,
+// Google Analytics 4. Switch to an enforced CSP once the reports are clean.
 const cspReportOnly = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net",
+  "script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.googletagmanager.com",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
+  "img-src 'self' data: blob: https://*.google-analytics.com https://www.googletagmanager.com",
   "font-src 'self' data:",
   "media-src 'self'",
-  "connect-src 'self'",
+  "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com",
   "frame-src 'none'",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'self'",
+  // Violations are posted to our own endpoint and appear in the server log as
+  // "CSP violation" (src/app/api/csp-report/route.ts). report-uri is the widely
+  // supported form; report-to is the newer one and uses Reporting-Endpoints below.
+  "report-uri /api/csp-report",
+  "report-to csp",
 ].join("; ");
 
 const securityHeaders = [
@@ -26,6 +31,7 @@ const securityHeaders = [
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()" },
+  { key: "Reporting-Endpoints", value: 'csp="/api/csp-report"' },
   { key: "Content-Security-Policy-Report-Only", value: cspReportOnly },
 ];
 

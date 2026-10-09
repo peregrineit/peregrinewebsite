@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Real-Time Collaboration for Docs & Chat',
   description:
     'How we built a real-time collaboration platform for 5K+ workspaces and 25K users, with presence, permissions, offline sync and sub-100ms sync latency.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Real-Time Collaboration Tool for Documents & Chat | Peregrine IT Solutions',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function RealtimeCollaborationTool() {
   return (
-    <div className="case-study-detail csd-purple">
+    <main className="case-study-detail csd-purple">
       <CaseStudySchema slug="realtime-collaboration-tool" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -53,7 +52,7 @@ export default function RealtimeCollaborationTool() {
 
           <p className="csd-hero-sub">
             How we built a real-time collaboration platform for 5K+ workspaces and 25K users — with
-            operational transform, presence, permissions, and offline sync achieving &lt;100ms sync
+            CRDT-based conflict resolution, presence, permissions, and offline sync achieving &lt;100ms sync
             latency.
           </p>
 
@@ -157,7 +156,7 @@ export default function RealtimeCollaborationTool() {
               <div className="csd-cs-card-icon">
                 <i className="ri-file-edit-line" />
               </div>
-              <h3>Operational Transform</h3>
+              <h3>Conflict-Free Merging</h3>
               <p>
                 When two users edit the same paragraph simultaneously, changes had to merge
                 correctly. Plain last-write-wins caused overwrites. OT or CRDT was required for
@@ -403,14 +402,7 @@ export default function RealtimeCollaborationTool() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;The real-time sync feels like magic — we went from 2–3 second lag to sub-100ms.
-            Offline support was the killer feature for our remote teams. No more lost edits.&rdquo;
-          </div>
-          <div className="csd-quote-author">— CTO, Productivity Startup</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -464,6 +456,6 @@ export default function RealtimeCollaborationTool() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

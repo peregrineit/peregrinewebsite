@@ -173,3 +173,41 @@ a.cp-card:hover { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 10px 30px
 @media (max-width: 767px) {
   .cp-glance th { width: 38%; }
 }
+
+/* Closing consultation block: context on the left, the short form on the right. */
+.cp-consult { display: grid; gap: 32px; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; }
+.cp-consult-points { margin: 0 0 16px; padding-left: 20px; list-style: disc; }
+.cp-consult-points li { margin-bottom: 8px; line-height: 1.6; color: var(--cp-text); }
+@media (max-width: 899px) {
+  .cp-consult { grid-template-columns: 1fr; }
+}
+
+/* Link list inside a card (industry hub: the case studies behind each industry). */
+.cp-card-list { margin: 12px 0 0; padding-left: 18px; list-style: disc; }
+.cp-card-list li { margin-bottom: 6px; font-size: 15px; line-height: 1.5; color: var(--cp-muted); }
+.cp-card-list li a { display: inline; }
+.cp-card h3 a { color: #fff; }
+.cp-page a.cp-tag { color: var(--cp-accent); text-decoration: none; }
+.cp-page a.cp-tag:hover { border-color: rgba(34, 211, 238, 0.5); text-decoration: none; }
+
+/* MLS/IDX cost calculator (/tools/mls-idx-cost-calculator) */
+.cp-calc { display: grid; gap: 28px; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; }
+.cp-calc fieldset { border: 1px solid var(--cp-border); border-radius: 14px; padding: 18px 20px; margin: 0 0 18px; background: var(--cp-card); }
+.cp-calc legend { padding: 0 8px; color: #fff; font-weight: 700; font-size: 16px; }
+.cp-calc fieldset > p { font-size: 14px; margin: 0 0 12px; }
+.cp-calc select, .cp-calc input[type="number"] {
+  width: 100%; background: #0b1220; color: var(--cp-text); border: 1px solid var(--cp-border);
+  border-radius: 10px; padding: 11px 12px; font-size: 15px; min-height: 44px;
+}
+.cp-calc-row { display: grid; gap: 8px; margin-bottom: 14px; }
+.cp-calc-board { font-weight: 600; color: #e2e8f0; font-size: 15px; }
+.cp-calc-count { display: grid; gap: 6px; font-size: 14px; color: var(--cp-muted); max-width: 220px; }
+.cp-calc-result { position: sticky; top: 96px; background: #111827; border: 1px solid var(--cp-border); border-radius: 16px; padding: 24px; }
+.cp-calc-lines { margin: 0; padding-left: 18px; list-style: disc; }
+.cp-calc-lines li { margin-bottom: 10px; font-size: 14px; line-height: 1.55; color: var(--cp-text); }
+.cp-calc-lines li a { display: inline; }
+@media (max-width: 899px) {
+  .cp-calc { grid-template-columns: 1fr; }
+  .cp-calc-result { position: static; }
+}
+.cp-prose code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: rgba(51, 65, 85, 0.6); padding: 1px 6px; border-radius: 5px; color: #e2e8f0; }

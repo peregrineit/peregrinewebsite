@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Multi-Location Clinic Management System',
   description:
     'How we built a HIPAA-compliant practice management platform unifying patient records, telehealth, scheduling and insurance billing across 35 clinics.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Multi-Location Clinic Management System | Peregrine IT Solutions',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function MultiLocationClinicManagement() {
   return (
-    <div className="case-study-detail csd-teal">
+    <main className="case-study-detail csd-teal">
       <CaseStudySchema slug="multi-location-clinic-management" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -125,8 +124,8 @@ export default function MultiLocationClinicManagement() {
             <div className="csd-stat-label">HIPAA Uptime</div>
           </div>
           <div className="csd-stat-card">
-            <div className="csd-stat-number">40%</div>
-            <div className="csd-stat-label">Faster Billing</div>
+            <div className="csd-stat-number">18 days</div>
+            <div className="csd-stat-label">Billing Cycle (Was 45)</div>
           </div>
         </div>
 
@@ -396,22 +395,13 @@ export default function MultiLocationClinicManagement() {
             <div className="csd-result-card">
               <div className="csd-result-before">Billing cycle time</div>
               <div className="csd-result-after">45 → 18 days</div>
-              <div className="csd-result-label">40% faster insurance reimbursement</div>
+              <div className="csd-result-label">Shorter insurance reimbursement cycle</div>
             </div>
           </div>
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;The insurance billing automation alone justified the entire project. We went from an
-            18% denial rate to under 5%, and our revenue cycle improved by over $1.6 million annually.
-            But honestly, the biggest win was giving our clinicians access to complete patient histories
-            at every location.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Chief Medical Officer</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -464,6 +454,6 @@ export default function MultiLocationClinicManagement() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

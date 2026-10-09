@@ -59,6 +59,12 @@ export default function BlogIndex() {
                 <span className="cp-card-more">Read the guide <i className="ri-arrow-right-line" aria-hidden="true" /></span>
               </Link>
             ))}
+            <Link href="/tools/mls-idx-cost-calculator" className="cp-card">
+              <span className="cp-card-meta">Calculator</span>
+              <h2 style={{ fontSize: 20, margin: 0 }}>MLS and IDX Cost Calculator</h2>
+              <p>Add up published MLS license fees, IDX plugin plans and data vendor fees for your setup, per month and per year, with every figure sourced.</p>
+              <span className="cp-card-more">Open the calculator <i className="ri-arrow-right-line" aria-hidden="true" /></span>
+            </Link>
           </div>
         </div>
       </section>

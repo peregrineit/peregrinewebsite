@@ -495,3 +495,21 @@ div.footer-section .paragraph-41 {
         padding: 12px 0;
     }
 }
+
+/* Analytics consent bar (components/Tracking.tsx). Rendered only when GA4 is enabled. */
+.consent-bar {
+  position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 60; max-width: 560px;
+  background: #0f172a; color: #e5e7eb; border: 1px solid #334155; border-radius: 14px;
+  padding: 16px 18px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: center; justify-content: space-between;
+}
+.consent-bar p { margin: 0; font-size: 14px; line-height: 1.5; color: #e5e7eb !important; flex: 1 1 260px; }
+.consent-bar p a { display: inline; color: #22d3ee !important; text-decoration: underline; }
+.consent-bar-actions { display: flex; gap: 10px; }
+.consent-bar button {
+  width: auto; min-height: 44px; padding: 0 18px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer;
+  background: transparent; color: #e5e7eb; border: 1px solid #475569;
+}
+.consent-bar button.consent-accept { background: #06b6d4; border-color: #06b6d4; color: #0f172a; }
+/* Sit above the fixed mobile CTA bar. */
+@media (max-width: 767px) { .consent-bar { bottom: calc(88px + env(safe-area-inset-bottom, 0px)); } }

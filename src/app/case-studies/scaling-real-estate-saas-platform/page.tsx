@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Scaling a Real Estate SaaS Platform',
   description:
     'How we re-architected a US and Canadian property search platform to handle millions of MLS listings with sub-second search, growing from 5 agents to 200+.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Scaling a Real Estate SaaS Platform | Peregrine IT Solutions',
@@ -31,7 +30,7 @@ export const metadata: Metadata = {
 
 export default function ScalingRealEstateSaas() {
   return (
-    <div className="case-study-detail">
+    <main className="case-study-detail">
       <CaseStudySchema slug="scaling-real-estate-saas-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -409,15 +408,7 @@ export default function ScalingRealEstateSaas() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;Our agents used to complain about slow search and broken listings. After the
-            rebuild, the platform became our biggest competitive advantage — agents actually want to
-            sign up now.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Brokerage Operations Director</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY LEARNINGS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -468,6 +459,6 @@ export default function ScalingRealEstateSaas() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

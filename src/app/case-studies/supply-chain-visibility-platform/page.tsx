@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   title: 'Supply Chain Visibility & Shipment Tracking',
   description:
     'How we built a supply chain visibility platform tracking 2M+ shipments across 12 carriers, with ETA prediction, exception alerts and 45% fewer inquiries.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — Supply Chain Visibility for Shipment Tracking & Alerts | Peregrine IT Solutions',
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function SupplyChainVisibilityPlatform() {
   return (
-    <div className="case-study-detail csd-orange">
+    <main className="case-study-detail csd-orange">
       <CaseStudySchema slug="supply-chain-visibility-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -400,15 +399,7 @@ export default function SupplyChainVisibilityPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We used to spend half our day looking up tracking numbers. Now shippers see
-            everything in one place and get alerted when something goes wrong. Our support team
-            can focus on real problems.&rdquo;
-          </div>
-          <div className="csd-quote-author">— VP of Operations, 3PL</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
@@ -461,6 +452,6 @@ export default function SupplyChainVisibilityPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

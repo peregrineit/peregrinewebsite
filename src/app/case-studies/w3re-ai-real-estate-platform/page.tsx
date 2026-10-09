@@ -11,7 +11,6 @@ export const metadata: Metadata = {
   title: 'AI Multi-Market Real Estate Platform',
   description:
     'How we built an AI platform for W3|re across 4 MLS markets: natural-language search, a valuation model, a lead chatbot and a unified data pipeline.',
-  robots: { index: true, follow: true },
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — AI-Powered Multi-Market Real Estate Platform | Peregrine IT Solutions',
@@ -35,7 +34,7 @@ export const metadata: Metadata = {
 // after; reword the two sentences to say so only once confirmed.
 export default function W3reAIRealEstatePlatform() {
   return (
-    <div className="case-study-detail csd-purple">
+    <main className="case-study-detail csd-purple">
       <CaseStudySchema slug="w3re-ai-real-estate-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -112,7 +111,7 @@ export default function W3reAIRealEstatePlatform() {
           </div>
           <div className="csd-stat-card">
             <div className="csd-stat-number">3.8×</div>
-            <div className="csd-stat-label">Lead Conversion</div>
+            <div className="csd-stat-label">Lead-to-Showing Rate</div>
           </div>
           <div className="csd-stat-card">
             <div className="csd-stat-number">94%</div>
@@ -401,13 +400,7 @@ export default function W3reAIRealEstatePlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We went from juggling seven disconnected tools to having one platform that actually thinks. The AI search alone changed how our buyers find homes — they describe what they want in plain English, and the system just gets it. Our agents now spend their time closing deals instead of fighting spreadsheets.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Marcus Chen, Managing Broker & Co-Founder, W3|re</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         <CaseStudyByline />
         <RelatedCaseStudies slug="w3re-ai-real-estate-platform" />
 
@@ -434,6 +427,6 @@ export default function W3reAIRealEstatePlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
