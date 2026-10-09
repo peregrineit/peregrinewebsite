@@ -51,7 +51,7 @@ baseline is refreshed in the same pull request:**
 
 Read the diff first; the point of the check is that someone looks at it.
 
-## CI (`.github/workflows/ci.yml`)
+## CI (`docs/growth/systems/ci-workflow.yml`)
 Runs on every pull request and every push to `main`: `npm ci`, `npx tsc --noEmit -p .`, `npx eslint src`
 (errors fail, warnings do not), `npm run build`, the fee test, `npm run test:systems`,
 `python3 scripts/test_lead_api.py`, then starts the build and runs `seo_check.py` and `meta_snapshot.py`.
@@ -80,3 +80,12 @@ Actions settings allow workflows on pull requests.
   before updating the link.
 - Metadata: local build of this branch is identical to production on all 57 URLs.
 - Lead health on production: OK (custom sender, sender domain verified, environment production).
+
+## Enabling the CI workflow
+
+The workflow is committed as `docs/growth/systems/ci-workflow.yml`, not under `.github/workflows/`, because the GitHub token used for this work does not have the `workflow` scope and GitHub refuses pushes that create workflow files without it. Nothing runs until the owner enables it:
+
+1. Copy the file to `.github/workflows/ci.yml` (in GitHub's web editor, or locally after `gh auth refresh -h github.com -s workflow`).
+2. Open a pull request with that one file. The checks appear on the pull request itself.
+
+It has been dry-run command by command on macOS with Node 22; it has never run on GitHub.
