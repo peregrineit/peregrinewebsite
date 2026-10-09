@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import {
   calendlyUrl, cleanAttribution, hasSource, isExternalReferrer, nextTouches, oneLine, parseTouch, toLeadAttribution,
 } from '../src/lib/attribution.ts';
+import { createFormTracker } from '../src/lib/form-tracking.ts';
 
 let passed = 0;
 const eq = (actual, expected, name) => { assert.deepEqual(actual, expected, name); passed++; };
@@ -74,5 +75,22 @@ eq(new URL(calendlyUrl(CAL + '?month=2026-11', '/', '')).searchParams.get('month
 eq(new URL(calendlyUrl(CAL, '', '')).searchParams.get('utm_term'), 'page', 'calendly: defaults for missing page and location');
 for (const other of ['https://example.com/calendly.com', 'https://notcalendly.com/x', 'http://calendly.com/x', 'mailto:info@peregrine-it.com', '/contact', ''])
   eq(calendlyUrl(other, '/a', 'nav'), other, `calendly: ${other || 'empty'} is left alone`);
+
+// --- form start and abandonment
+const run = (steps) => { const out = []; const tr = createFormTracker((e) => out.push(`${e.event}:${e.form}:${e.page}`)); steps(tr); return out; };
+eq(run((tr) => { tr.input('strategy-call', '/contact'); tr.input('strategy-call', '/contact'); tr.input('strategy-call', '/contact'); }),
+  ['lead_form_start:strategy-call:/contact'], 'start fires once however much is typed');
+eq(run((tr) => { tr.input('strategy-call', '/contact'); tr.hidden(); tr.hidden(); tr.input('strategy-call', '/contact'); tr.hidden(); }),
+  ['lead_form_start:strategy-call:/contact', 'lead_form_abandon:strategy-call:/contact'], 'abandon fires once; typing again on the same page view restarts nothing');
+eq(run((tr) => { tr.input('strategy-call', '/contact'); tr.submitted('strategy-call'); tr.hidden(); }),
+  ['lead_form_start:strategy-call:/contact'], 'a submitted form is not abandoned');
+eq(run((tr) => { tr.hidden(); }), [], 'nothing started, nothing abandoned');
+eq(run((tr) => { tr.input('strategy-call', '/contact'); tr.input('quick-project', '/contact'); tr.submitted('quick-project'); tr.hidden(); }),
+  ['lead_form_start:strategy-call:/contact', 'lead_form_start:quick-project:/contact', 'lead_form_abandon:strategy-call:/contact'], 'forms are tracked separately');
+eq(run((tr) => { tr.input('strategy-call', '/a'); tr.input('strategy-call', '/b'); }),
+  ['lead_form_start:strategy-call:/a', 'lead_form_start:strategy-call:/b'], 'a new page view can start again');
+eq(run((tr) => { tr.input('', '/a'); tr.hidden(); }), [], 'a form without a name is ignored');
+let keys = []; createFormTracker((e) => { keys = Object.keys(e); }).input('quick-project', '/');
+eq(keys.sort(), ['event', 'form', 'page'], 'events carry form and page only');
 
 console.log(`lead client unit tests: ${passed} passed`);

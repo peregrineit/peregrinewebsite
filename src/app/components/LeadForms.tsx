@@ -1,13 +1,14 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { ctaLocationFor, getAttribution } from '@/lib/attribution';
-import { track } from '@/lib/track';
+import { formTracker, track } from '@/lib/track';
 
 // The site's two lead forms (strategy call and quick project request). Used in the
 // Footer popups, inline on /contact and at the foot of service and landing pages.
 // Both post to /api/lead with attribution (first and last touch, click ids, the CTA that
 // opened the form, pages viewed; see lib/attribution.ts) and fire
-// lead_submit / lead_error events (see docs/seo/TASKS.md).
+// lead_submit / lead_error events (see docs/seo/TASKS.md). `data-lead-form` marks a form for
+// lead_form_start / lead_form_abandon, which components/Tracking.tsx fires.
 /** `fallback` is a pre-filled mailto: link, set when the server could not accept the lead.
  *  `receipt` is what the server reported when it did: accepted by the mail provider, which
  *  is not the same as delivered. */
@@ -64,6 +65,7 @@ async function submitLead(formEl: HTMLFormElement, formData: Record<string, stri
         error: '',
         receipt: { ref: json.ref, acknowledgement: json.acknowledgement?.status || 'skipped', ids, notificationId: json.notification?.id },
       });
+      formTracker.submitted(formData.form);
       track('lead_submit', event);
     } else {
       setStatus({
@@ -157,7 +159,7 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
     {formStatus.success && formStatus.receipt ? (
       <Received receipt={formStatus.receipt} form="strategy-call">An engineer will review it and reply within 1 business day.</Received>
     ) : (
-    <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+    <form data-lead-form="strategy-call" onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const f = e.currentTarget as HTMLFormElement & Fields;
       submitLead(f, {
@@ -226,7 +228,7 @@ export function QuickProjectForm() {
     {qpFormStatus.success && qpFormStatus.receipt ? (
       <Received receipt={qpFormStatus.receipt} form="quick-project">We&apos;ll review your request and reply within 1 business day.</Received>
     ) : (
-    <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+    <form data-lead-form="quick-project" onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const f = e.currentTarget as HTMLFormElement & Fields;
       submitLead(f, {

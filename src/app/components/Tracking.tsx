@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { calendlyUrl, countPageView, locationOf, rememberAttribution, rememberCta } from '@/lib/attribution';
-import { track } from '@/lib/track';
+import { formTracker, track } from '@/lib/track';
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 const CONSENT_KEY = 'pit_analytics_consent';
@@ -104,12 +104,30 @@ export default function Tracking() {
       const guide = (e.target as Element | null)?.closest<HTMLElement>('[data-guide]')?.dataset.guide;
       if (guide) track('guide_cta_click', { guide, action: 'form' });
     };
+    // Form abandonment (lib/form-tracking.ts). Only the form's name is read, never a field.
+    const onInput = (e: Event) => {
+      const field = e.target as (Element & { name?: string }) | null;
+      const form = field?.closest?.<HTMLElement>('form[data-lead-form]');
+      // The hidden anti-spam field is filled by bots, not by a visitor starting the form.
+      if (!form || field?.name === 'pit_confirm_field') return;
+      formTracker.input(form.dataset.leadForm || '', window.location.pathname);
+    };
+    const onHidden = () => {
+      if (document.visibilityState === 'hidden') formTracker.hidden();
+    };
+    const onPageHide = () => formTracker.hidden();
+    document.addEventListener('input', onInput, true);
+    document.addEventListener('visibilitychange', onHidden);
+    window.addEventListener('pagehide', onPageHide);
     const CALENDLY_EVENTS = ['click', 'auxclick', 'contextmenu'] as const;
     CALENDLY_EVENTS.forEach((type) => document.addEventListener(type, tagCalendly, true));
     document.addEventListener('click', onClick, true);
     document.addEventListener('submit', onSubmit, true);
     return () => {
       CALENDLY_EVENTS.forEach((type) => document.removeEventListener(type, tagCalendly, true));
+      document.removeEventListener('input', onInput, true);
+      document.removeEventListener('visibilitychange', onHidden);
+      window.removeEventListener('pagehide', onPageHide);
       document.removeEventListener('click', onClick, true);
       document.removeEventListener('submit', onSubmit, true);
     };
