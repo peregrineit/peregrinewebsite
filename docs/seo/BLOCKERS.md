@@ -5,8 +5,8 @@ Work that cannot be finished without a fact, a credential or an authorization. E
 | ID | Needed from the owner | Blocks | Fallback in place |
 |---|---|---|---|
 | B1 | Merge `seo/phase-11`, then `seo/phase-12`, to `main` (production change) | everything reaching production | work continues on the branch |
-| B2 | GA4 measurement ID as `NEXT_PUBLIC_GA_ID` in Vercel, and a decision on analytics-cookie consent for visitors | GA4 reporting (T4) | events already go to Vercel Analytics; GA4 code is inert without the ID |
-| B3 | Lead destination: a CRM or automation webhook URL as `LEAD_WEBHOOK_URL`; a verified Resend sender as `LEAD_FROM_EMAIL` (needs DNS records); confirm `RESEND_API_KEY` is set in Vercel | durable lead storage, auto-reply delivery (T3, T4) | leads are emailed to info@peregrine-it.com when Resend is configured; the form now shows an error if nothing accepted the lead |
+| B2 | GA4 measurement ID as `NEXT_PUBLIC_GA_ID` in Vercel. Consent is handled by default: Consent Mode keeps analytics denied until the visitor accepts a small bar. Say so if you want a different approach (no bar, or bar only for EU visitors) | GA4 reporting (T4) | events already go to Vercel Analytics; nothing from Google loads without the ID |
+| B3 | **Must be resolved before merging (see DEPLOYMENT.md section 2).** Confirm `RESEND_API_KEY` is set in Vercel and that the Resend domain is verified, then set `LEAD_FROM_EMAIL`; optionally a CRM or automation webhook URL as `LEAD_WEBHOOK_URL` | durable lead storage, auto-reply delivery (T3, T4) | leads are emailed to info@peregrine-it.com when Resend is configured; the form now shows an error if nothing accepted the lead |
 | B4 | One response-time promise. The site says 6 hours, 1 business day and 48 hours in different places | consistent form copy (T3) | wording unchanged |
 | B5 | A real project each for Shopify, Laravel and WordPress (what was built, for what kind of client, anything measurable) | proof sections on T10, T11, T13 | capability pages that state no case study is published yet |
 | B6 | Which third-party systems have actually been integrated with Odoo. Search Console shows demand for Refurbed and OrderStream | T6 named-integration section | page names no systems |
@@ -19,3 +19,11 @@ Work that cannot be finished without a fact, a credential or an authorization. E
 
 ## Never done without explicit authorization
 Deploying or merging to `main`; sending any email or message; creating accounts; requesting reviews; purchases; changing DNS, secrets, billing or Vercel settings.
+
+## Added 2026-10-09 (review of Phases 11 and 12)
+
+| ID | Needed from the owner | Blocks | Fallback in place |
+|---|---|---|---|
+| B13 | Read the Shopify, Laravel and WordPress pages and confirm each describes a service Peregrine actually sells. They cite no project | keeping T10, T11, T13 live | pages state that no case study is published |
+| B14 | Vendor disclosure for the new investor-portal guide: any partnership or referral arrangement with AppFolio, Agora, Cash Flow Portal, Covercy, InvestNext, Juniper Square or SponsorCloud | a disclosure line on the guide | none shown; TODO(owner) in the page |
+| B15 | A CSP violation-report endpoint (a service or a small API route with storage) | enforcing the CSP | CSP stays report-only |

@@ -101,3 +101,11 @@ export function getGuide(slug: string): Guide {
 
 export const formatDate = (d: string) =>
   new Date(`${d}T00:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+
+/** The four guides shown on the homepage (a four-column grid); /blog lists them all. */
+export const homeGuides: Guide[] = [
+  'mls-idx-integration-cost',
+  'how-to-get-mls-data-access',
+  'investor-portal-vs-file-sharing',
+  'cost-to-build-a-real-estate-platform',
+].map((slug) => guides.find((g) => g.slug === slug)!);

@@ -4,7 +4,8 @@ Briefs for the next guides, in priority order. None is published yet: each needs
 
 A guide is added as `src/app/blog/<slug>/page.tsx` with metadata in `src/data/guides.ts`; `GuideLayout` supplies the byline, schema, related links and the consultation block.
 
-## 1. Investor portal vs file sharing
+## 1. Investor portal vs file sharing — PUBLISHED ON THE BRANCH (2026-10-09)
+Written as `src/app/blog/investor-portal-vs-file-sharing/page.tsx`. The brief below is kept for reference.
 - **URL:** `/blog/investor-portal-vs-file-sharing`
 - **Evidence of demand:** Search Console shows `investor portal vs file sharing` at position 82 with no page; six more investor-portal queries land on the case study.
 - **Intent:** comparison, informational. Reader is an IR lead or CFO at a real estate sponsor.

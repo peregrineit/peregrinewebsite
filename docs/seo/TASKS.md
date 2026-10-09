@@ -22,8 +22,8 @@ Per-task detail, files, hashes and tests are in `PROGRESS.md`. Blockers are in `
 | T13 | WordPress development service page | T12 | partial: capability page; project proof blocked (B5) |
 | T14 | Verified MLS-specific content | — | blocked (B8) |
 | T15 | MLS/IDX estimation calculator, from the guide's sourced fees only | T2 | done |
-| T16 | Internal linking, schema, sitemap, metadata housekeeping | T9, T12 | partial: linking, robots, sitemap, Person url, W3\|re label done. Open: CSP report-to (needs an endpoint), homepage video and logo weight, W3\|re dashboard block (B9) |
-| T17 | SEO articles from the content strategy | T8 | partial: five briefs in ARTICLES.md; writing needs sources gathered; two blocked (B6, B8) |
+| T16 | Internal linking, schema, sitemap, metadata housekeeping | T9, T12 | partial: linking, robots, sitemap, Person url, W3\|re label done. homepage video and logo weight done. Open: CSP report-to (B15), W3\|re dashboard block (B9) |
+| T17 | SEO articles from the content strategy | T8 | partial: first guide published on the branch (investor portal vs file sharing); four briefs remain in ARTICLES.md; two blocked (B6, B8) |
 | T18 | Outreach assets and list of external account actions | — | done: OUTREACH.md (nothing sent) |
 
 ## Title experiments (T1)
@@ -44,12 +44,12 @@ All titles carry the ` | Peregrine IT` suffix and are 60 characters or fewer. De
 ## Tracking events (T4)
 | Event | Fired when | Properties |
 |---|---|---|
-| `cta_open` | a `[data-open-contact]` or `[data-open-quick-project]` element is clicked | `form`, `location`, `page` |
+| `cta_open` | a `[data-open-contact]`, `#lets-talk-btn` or `[data-open-quick-project]` element is clicked | `form`, `location`, `page` |
 | `lead_submit` | a lead form succeeds | `form`, `page`, `service` |
 | `lead_error` | a lead form fails | `form`, `page`, `service` |
 | `calendly_click` | a Calendly link is clicked | `location`, `page` |
 | `email_click` | a `mailto:` link is clicked | `page` |
-| `guide_cta_click` | a CTA inside a guide's consultation block is clicked | `guide` |
+| `guide_cta_click` | a Calendly click, popup open or form submit inside a guide's consultation block | `guide`, `action` |
 | `calculator_use` | first interaction with the cost calculator | `tool` |
 
 Lead payload (email and `LEAD_WEBHOOK_URL`): `name`, `email`, `company`, `form`, `projectType`, `timeline`, `service`, `message`, `pageUrl`, `landingPage`, `referrer`, `utm`, `receivedAt`, `source`.
@@ -64,3 +64,12 @@ Lead payload (email and `LEAD_WEBHOOK_URL`): `name`, `email`, `company`, `form`,
 | 2026-10-09 | Case-study dates are not derived from git | earlier owner decision |
 | 2026-10-09 | Industry pages only where two or more case studies exist, plus self-storage | avoid thin pages |
 | 2026-10-09 | Shopify, Laravel and WordPress are capability pages with no project claims until B5 | brief approves the pages; repo has no project evidence |
+
+## Review of Phases 11 and 12 (2026-10-09)
+| ID | Item | Status |
+|---|---|---|
+| R1 | Independent code review of `origin/main...seo/phase-12`; ten findings, none critical or high | done; all fixed except the Resend sender (B3) |
+| R2 | Integration tests for the lead API against mocked Resend and webhook | done: `scripts/test_lead_api.py`, 39 checks |
+| R3 | GA4 consent | done: Consent Mode default denied + consent bar, only when the GA ID is set |
+| R4 | Media: lazy CTA video, logo weight; footer data out of the client bundle; nav wrap | done |
+| R5 | Production deployment checklist | done: `DEPLOYMENT.md` |

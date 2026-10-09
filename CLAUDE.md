@@ -6,6 +6,7 @@ Marketing site for Peregrine IT Solutions (https://peregrine-it.com). Next.js 16
 
 ## Where things are tracked
 - `docs/seo/MASTER-PLAN.md` — the 90-day plan and how the audit was reconciled with the repo.
+- `docs/seo/DEPLOYMENT.md` — production checklist: env vars, tests, rollback.
 - `docs/seo/TASKS.md` — task status. `docs/seo/ARTICLES.md` — briefs for the next guides. `docs/seo/OUTREACH.md` — outreach assets and external actions (nothing sent). `docs/seo/PROGRESS.md` — per-task log (files, hash, tests, what remains). `docs/seo/BLOCKERS.md` — what needs the owner. Update these with the work.
 - `SEO-PLAN.md` — history of Phases 1–11 and implementation notes (why things are the way they are).
 - `SEO-OFFPAGE.md` — manual off-site checklist for the owner.
@@ -31,6 +32,7 @@ npm run dev                      # dev server
 scripts/serve-local.sh           # production build served on http://localhost:3057
 python3 scripts/seo_check.py     # SEO invariants against localhost:3057 (must print FAILS: 0)
 python3 scripts/seo_check.py https://peregrine-it.com   # same checks against production
+python3 scripts/test_lead_api.py # lead API integration tests against local mocks (needs a build)
 npx tsc --noEmit -p .            # types
 npx eslint <changed files>       # lint (two old `any` errors in src/app/page.tsx are known)
 scripts/serve-local.sh stop
@@ -54,4 +56,4 @@ Run `tsc`, a build and `seo_check.py` after every change to pages, metadata or s
 | `RESEND_API_KEY` | lead notification and auto-reply email |
 | `LEAD_FROM_EMAIL` | verified sender, e.g. `Peregrine IT <hello@peregrine-it.com>`; falls back to Resend's test sender |
 | `LEAD_WEBHOOK_URL` | optional CRM/automation webhook that receives every lead as JSON |
-| `NEXT_PUBLIC_GA_ID` | optional GA4 measurement ID (`G-…`) |
+| `NEXT_PUBLIC_GA_ID` | optional GA4 measurement ID (`G-…`); enables Consent Mode and the consent bar |

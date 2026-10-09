@@ -70,3 +70,22 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 ## Phone-width pass (after T15)
 - Checked at 375 px in the browser: calculator, `/industries`, `/industries/self-storage`, `/services/shopify-development`, a case study. No horizontal overflow; calculator inputs are at least 44 px tall; the consultation block stacks to one column.
 - **Not done:** Lighthouse accessibility and performance runs on the new pages; a real-device check.
+
+## Review of Phases 11 and 12 together (2026-10-09)
+- **Review:** an independent reviewer read `origin/main...HEAD`. No critical or high defects. Fixed: honeypot field named `website` could be autofilled and silently drop a real lead; `guide_cta_click` never fired; footer pulled the data files into the client bundle; two React Native claims and three smaller statements went beyond their case studies; webhook had no timeout; a null body returned 500; calculator turned "from" and "typically" into hard bounds and scaled SimplyRETS incorrectly; form inputs had no accessible names. **Not fixable in code:** the Resend test sender (B3).
+- **Commits:** `884aa5b` (API, forms, tests), `864a9f0` (consent, guide event), `b8823a1` (media, footer props, nav), `31b7446` (claims, calculator)
+- **Tests:**
+  - `scripts/test_lead_api.py`: 39 passed. Four configurations (none, webhook, Resend mock, both), including one destination down and both down.
+  - Browser, GA4 test ID + local webhook: consent default denied, no `_ga` cookie before Accept, Accept stored and sent as a consent update; `lead_submit`, `cta_open`, `calendly_click`, `email_click` observed in `dataLayer`; the inline form showed success and the webhook received company, timeline, service and page.
+  - Headless Chrome at 1280 px: hero video gets its sources, the off-screen CTA video does not.
+  - Nav at 1024 px: no wrapped link; hamburger below 1024.
+  - `seo_check.py`: FAILS: 0; `tsc` clean; `eslint` clean on every changed file (the two `any` errors in LeadForms are fixed; two older ones remain in `src/app/page.tsx`).
+- **Remaining:** events not observed in a real GA4 property; no real Resend send (mocked); Lighthouse not re-run on the new pages.
+
+## T17 — first guide: investor portal vs file sharing
+- **Files:** `src/app/blog/investor-portal-vs-file-sharing/page.tsx`, `opengraph-image.tsx`, `src/data/guides.ts`, `services.ts`, `industries.ts`, `public/llms.txt`
+- **Commit:** `9470849`
+- **Sources:** gathered by a research pass that matched each quote against the fetched page; I re-fetched the price and plan statements myself (Agora, Cash Flow Portal, Covercy, InvestNext, SponsorCloud, Box, Dropbox, Juniper Square, Microsoft, Google; AppFolio in a browser because its price renders client-side). Two SEC quotes could not be matched against the raw page and were left out.
+- **Tests:** build; `seo_check.py` on 52 URLs FAILS: 0 (FAQPage equals the visible FAQ); 1,572 words, 40 source links to 25 pages; no dollar figure outside a source link.
+- **Remaining:** vendor disclosure (B14). The guide states that no product was evaluated. The homepage shows four chosen guides (`homeGuides`), so the four-column grid stays full; the CRM guide is reachable from /blog and its service page.
+- **Next:** owner review of DEPLOYMENT.md section 2, then merge; after that, articles 2–5.

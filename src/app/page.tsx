@@ -10,7 +10,7 @@ import BackgroundVideo from './components/BackgroundVideo';
 import HomeAnimations from './components/HomeAnimations';
 import HomeEffects from './components/HomeEffects';
 import { caseStudies, featuredCaseStudySlugs, getCaseStudy } from '@/data/case-studies';
-import { guides } from '@/data/guides';
+import { homeGuides } from '@/data/guides';
 
 // Rendered as the visible FAQ section and as FAQPage JSON-LD, so the two always match.
 // Every answer uses facts already on the site. [[guide-slug|text]] renders as a link to
@@ -837,7 +837,7 @@ export default function Home() {
               <div className="section-sub">Costs, trade-offs and build-versus-buy decisions for real estate and SaaS teams, with every figure linked to its source.</div>
             </div>
             <div className="tw-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {guides.map((g) => (
+              {homeGuides.map((g) => (
                 <Link key={g.slug} href={`/blog/${g.slug}`} className="home-guide-card">
                   <span className="home-guide-label">Guide</span>
                   <span className="home-guide-title">{g.title}</span>
