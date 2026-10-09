@@ -31,11 +31,24 @@ export const FREE_MAIL_DOMAINS = new Set([
   'shaw.ca', 'rogers.com', 'bell.net', 'sympatico.ca', 'telus.net', 'comcast.net', 'verizon.net', 'att.net', 'sbcglobal.net', 'cox.net',
 ]);
 
+/**
+ * Throwaway-mailbox services: a short, explicit list, not a lookup. An address here is the
+ * one negative signal about the sender rather than the request, and it is sized so that no
+ * combination of other signals reaches "high".
+ */
+export const DISPOSABLE_MAIL_DOMAINS = new Set([
+  'mailinator.com', 'guerrillamail.com', 'guerrillamail.net', 'sharklasers.com', 'yopmail.com', '10minutemail.com',
+  'tempmail.com', 'temp-mail.org', 'trashmail.com', 'getnada.com', 'maildrop.cc', 'dispostable.com', 'throwawaymail.com',
+  'fakeinbox.com', 'mintemail.com', 'emailondeck.com', 'mohmal.com', 'moakt.com',
+]);
+
 /** The forms' own placeholder for an empty message (components/LeadForms.tsx). */
 const DEFAULT_MESSAGE = 'Strategy call request';
 
+/** This score or more is high. */
 export const HIGH_AT = 5;
-export const LOW_AT = 0;
+/** This score or less is low: low takes a net negative, never the mere absence of positives. */
+export const LOW_AT = -1;
 
 export function emailDomain(email: string): string {
   return email.slice(email.lastIndexOf('@') + 1).trim().toLowerCase();
@@ -45,12 +58,19 @@ export function emailDomain(email: string): string {
  * Points:
  *   timeline   asap +2 · 1-2-months +1 · 2-6-months 0 · exploring -1 · anything else 0
  *   company    given +1
- *   email      business domain +1 · free-mail 0
+ *   email      business domain +1 · free-mail 0 · disposable-mailbox domain -3
  *   message    400+ characters +2 · 120+ +1 · under 30 (or the default text) -1
  *   form       strategy-call +1 (asked for a call and chose a project type) · other 0
  *   service    sent from a service, industry or guide page +1
- * Score 5 or more = high, 0 or less = low, otherwise normal.
+ * Score 5 or more = high, -1 or less = low, otherwise normal (0 is normal).
  * A filled anti-spam field is always low, whatever the score.
+ *
+ * Why these bands: a lead with nothing for or against it (free-mail address, no rush, a
+ * sentence or two) scores 0 and must read as an ordinary enquiry, so "low" needs an actual
+ * negative: "just exploring", a near-empty message, or a throwaway address, not outweighed
+ * by anything else. A free-mail address is never negative: many owners of small firms
+ * write from one. The quick-project form has no company field and is rarely on a service
+ * page, so its leads sit around 0 to 3 and are normal unless something is against them.
  */
 export function leadPriority(input: PriorityInput): PriorityResult {
   let score = 0;
@@ -70,7 +90,8 @@ export function leadPriority(input: PriorityInput): PriorityResult {
   if ((input.company || '').trim()) add(1, 'company given');
 
   const domain = emailDomain(input.email);
-  if (FREE_MAIL_DOMAINS.has(domain)) add(0, 'free-mail address');
+  if (DISPOSABLE_MAIL_DOMAINS.has(domain)) add(-3, 'disposable email domain');
+  else if (FREE_MAIL_DOMAINS.has(domain)) add(0, 'free-mail address');
   else add(1, 'business email domain');
 
   const message = input.message.trim();
