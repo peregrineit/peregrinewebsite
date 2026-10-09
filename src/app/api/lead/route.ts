@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { cleanAttribution, type LeadAttribution } from "@/lib/attribution";
 
 // Lead intake for the two site forms (components/LeadForms.tsx).
 //
@@ -35,9 +36,8 @@ interface LeadData {
   timeline?: string;
   service?: string;
   pageUrl?: string;
-  landingPage?: string;
-  referrer?: string;
-  utm?: string;
+  /** How the visitor arrived. Every field is cleaned by lib/attribution.ts. */
+  attribution: LeadAttribution;
   /** The hidden field had a value: probably a bot, possibly browser autofill. */
   spamSuspected: boolean;
 }
@@ -118,6 +118,8 @@ async function sendEmail(
 
 function notificationEmail(lead: LeadData) {
   const line = (label: string, value?: string) => `${label}: ${value || "Not provided"}`;
+  const at = lead.attribution;
+  const clickIds = (["gclid", "msclkid", "fbclid"] as const).filter((k) => at[k]).map((k) => `${k}=${at[k]}`).join(" ");
   const text = [
     "New Project Inquiry",
     "",
@@ -137,9 +139,16 @@ function notificationEmail(lead: LeadData) {
     line("Service", lead.service),
     "",
     line("Page URL", lead.pageUrl),
-    line("Landing page", lead.landingPage),
-    line("Referrer", lead.referrer),
-    line("UTM", lead.utm),
+    line("Landing page", at.landingPage),
+    line("Referrer", at.referrer),
+    line("UTM", at.utm),
+    line("Click IDs", clickIds),
+    line("First visit", at.firstTouchAt ? at.firstTouchAt.slice(0, 10) : ""),
+    line("First landing page", at.firstLandingPage),
+    line("First referrer", at.firstReferrer),
+    line("First UTM", at.firstUtm),
+    line("Form opened from", at.ctaLocation),
+    line("Pages viewed this visit", at.pagesViewed ? String(at.pagesViewed) : ""),
     "",
     "Message:",
     lead.message,
@@ -169,12 +178,18 @@ https://peregrine-it.com`,
   };
 }
 
+/** The lead as the webhook receives it: flat, so a spreadsheet receiver can map keys to columns. */
+function webhookBody(lead: LeadData) {
+  const { attribution, ...rest } = lead;
+  return { receivedAt: new Date().toISOString(), source: "peregrine-it.com", ...rest, ...attribution };
+}
+
 async function postToWebhook(url: string, lead: LeadData): Promise<Outcome> {
   try {
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json", "Idempotency-Key": `lead-${lead.ref}` },
-      body: JSON.stringify({ receivedAt: new Date().toISOString(), source: "peregrine-it.com", ...lead }),
+      body: JSON.stringify(webhookBody(lead)),
       // A hung CRM must not stall the visitor's response.
       signal: AbortSignal.timeout(5000),
     });
@@ -284,9 +299,7 @@ export async function POST(request: NextRequest) {
       timeline: clean(raw.timeline, 60) || clean(raw.budget, 60),
       service: clean(raw.service, 100),
       pageUrl: clean(raw.pageUrl, 500),
-      landingPage: clean(raw.landingPage, 500),
-      referrer: clean(raw.referrer, 500),
-      utm: clean(raw.utm, 500),
+      attribution: cleanAttribution(raw),
       // Honeypot. A filled field used to return a silent "success" with nothing sent, which
       // also swallowed real visitors whose browser autofilled it. Now the lead still goes to
       // the inbox, marked, and only the acknowledgement (which a bot could aim at a third

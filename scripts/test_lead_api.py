@@ -111,6 +111,11 @@ LEAD = {"form": "strategy-call", "service": "service:saas-development", "name": 
         "pageUrl": "http://localhost/services/saas-development", "landingPage": "/blog/mls-idx-integration-cost",
         "referrer": "https://www.google.com/", "utm": "utm_source=test"}
 
+# Attribution fields added in sprint 2 (src/lib/attribution.ts). Sent as the form sends them.
+ATTR = {"lastTouchAt": "2026-10-10T09:30:00.000Z", "firstLandingPage": "/services/mls-idx-integration", "firstReferrer": "https://www.bing.com/",
+        "firstUtm": "utm_source=newsletter&utm_medium=email", "firstTouchAt": "2026-09-01T12:00:00.000Z", "gclid": "Cj0KCQ-test_1.x",
+        "msclkid": "abc123", "fbclid": "IwAR0-test", "ctaLocation": "service:saas-development", "pagesViewed": 4}
+
 fails, passed, ipn = [], 0, [0]
 def ip():
     ipn[0] += 1; return f"10.0.{ipn[0] // 250}.{ipn[0] % 250 + 1}"
@@ -167,6 +172,29 @@ def run():
             check("webhook: receivedAt + source + ref", "receivedAt" in h[0] and h[0].get("source") == "peregrine-it.com" and h[0].get("ref") == b.get("ref"))
             check("webhook: idempotency key carries the reference", h[0].get("_key") == f"lead-{b.get('ref')}")
             check("webhook: honeypot field not forwarded", "pit_confirm_field" not in h[0] and "website" not in h[0])
+        # attribution: first and last touch, click ids, CTA location, pages viewed
+        reset(); s, b = post({**LEAD, **ATTR}, ip()); h = state["hooks"]
+        check("attribution: accepted with the new fields", s == 200 and len(h) == 1, f"got {s}")
+        if h:
+            for k, v in ATTR.items():
+                check(f"attribution: webhook field {k}", h[0].get(k) == v, f"got {h[0].get(k)!r}")
+            check("attribution: webhook payload stays flat (no nested object)", "attribution" not in h[0] and h[0].get("landingPage") == LEAD["landingPage"])
+        reset(); s, b = post(LEAD, ip()); h = state["hooks"]
+        check("attribution: fields are optional; absent ones arrive empty, pagesViewed 0",
+              s == 200 and h and h[0].get("gclid") == "" and h[0].get("firstTouchAt") == "" and h[0].get("ctaLocation") == "" and h[0].get("pagesViewed") == 0, f"got {h[:1]}")
+        reset(); s, b = post({**LEAD, "gclid": "x" * 300, "msclkid": "bad id\nPriority: high", "fbclid": {"a": 1}, "firstTouchAt": "yesterday",
+                              "lastTouchAt": "2026-10-10T09:30:00.000Z\nX", "ctaLocation": "hero\r\nName: Injected <b>", "pagesViewed": 10 ** 9,
+                              "firstLandingPage": "/a" * 400, "firstReferrer": "https://e.example/\nBcc: x", "firstUtm": 12}, ip()); h = state["hooks"]
+        check("attribution: hostile values are still a lead", s == 200 and len(h) == 1, f"got {s}")
+        if h:
+            g = h[0]
+            check("attribution: click ids over-long or outside the token alphabet are cut or dropped", len(g.get("gclid")) == 200 and g.get("msclkid") == "" and g.get("fbclid") == "", f"got {g.get('msclkid')!r} {g.get('fbclid')!r}")
+            check("attribution: malformed times are dropped", g.get("firstTouchAt") == "" and g.get("lastTouchAt") == "", f"got {g.get('firstTouchAt')!r} {g.get('lastTouchAt')!r}")
+            check("attribution: CTA location is one line, limited alphabet", g.get("ctaLocation") == "hero Name: Injected b", f"got {g.get('ctaLocation')!r}")
+            check("attribution: pagesViewed is clamped", g.get("pagesViewed") == 999, f"got {g.get('pagesViewed')!r}")
+            check("attribution: long and multi-line strings are cut to one line", len(g.get("firstLandingPage")) == 500 and "\n" not in g.get("firstReferrer") and g.get("firstUtm") == "", f"got {g.get('firstReferrer')!r}")
+        reset(); s, b = post({**LEAD, "pagesViewed": "7"}, ip())
+        check("attribution: pagesViewed sent as text is read as a number", s == 200 and state["hooks"][-1].get("pagesViewed") == 7)
         s, _ = post({**LEAD, "budget": "2-6-months", "timeline": ""}, ip())
         check("webhook: legacy `budget` maps to timeline", s == 200 and state["hooks"][-1].get("timeline") == "2-6-months")
         reset(hook_fail=True)
@@ -191,6 +219,7 @@ def run():
             check("resend: from is LEAD_FROM_EMAIL on both", n[0].get("from") == FROM and a[0].get("from") == FROM, f"got {n[0].get('from')}")
             check("resend: reply-to is the lead", n[0].get("reply_to") in ("lead@example.com", ["lead@example.com"]), f"got {n[0].get('reply_to')}")
             check("resend: body has attribution", all(x in n[0].get("text", "") for x in ("Acme", "asap", "/blog/mls-idx-integration-cost", "utm_source=test", "service:saas-development")))
+            check("resend: acknowledgement carries no attribution", "utm_source" not in a[0].get("text", "") and "google.com" not in a[0].get("text", ""))
             check("resend: acknowledgement to the lead, with the reference", a[0]["to"] == "lead@example.com" and b["ref"] in a[0].get("text", ""))
             check("resend: reference in subject, body and response", f"[{b['ref']}]" in n[0].get("subject", "") and f"Reference: {b['ref']}" in n[0].get("text", ""))
             check("resend: provider message ids returned, one per email",
@@ -207,6 +236,16 @@ def run():
             ev = get(f"/api/lead?delivery={ids}")["events"]
             check("delivery: notification delivered and acknowledgement bounced are told apart", [e["lastEvent"] for e in ev] == ["delivered", "bounced"], f"got {ev}")
             check("delivery: malformed ids are ignored", get("/api/lead?delivery=abc,../x")["events"] == [])
+
+        # attribution in the notification body
+        reset(); s, b = post({**LEAD, **ATTR, "ctaLocation": "hero\nName: Injected"}, ip()); n = to_notify(); text = n[0].get("text", "") if n else ""
+        check("attribution: notification lists first touch, click ids, CTA location and pages viewed",
+              all(x in text for x in ("First visit: 2026-09-01", "First landing page: /services/mls-idx-integration", "First referrer: https://www.bing.com/",
+                                      "First UTM: utm_source=newsletter&utm_medium=email", "Click IDs: gclid=Cj0KCQ-test_1.x msclkid=abc123 fbclid=IwAR0-test",
+                                      "Pages viewed this visit: 4")), text)
+        check("attribution: a new field cannot start a line of its own in the email", "Form opened from: hero Name: Injected" in text and "\nName: Injected" not in text, text)
+        check("attribution: the response to the visitor carries none of it", "gclid" not in json.dumps(b) and "bing.com" not in json.dumps(b))
+        check("log: attribution is not logged", "Cj0KCQ-test_1.x" not in app_log() and "bing.com" not in app_log())
 
         # duplicates: the same submission sent twice
         reset(); sid = str(uuid.uuid4())

@@ -5,7 +5,11 @@
  * Not deployed by this repo.
  */
 var COLUMNS = ['receivedAt', 'ref', 'name', 'email', 'company', 'form', 'projectType', 'timeline',
-  'service', 'message', 'pageUrl', 'landingPage', 'referrer', 'utm', 'source'];
+  'service', 'message', 'pageUrl', 'landingPage', 'referrer', 'utm', 'source',
+  // Added in sprint 2. New columns go at the end so an existing sheet keeps its layout;
+  // add these headings to row 1 of a sheet that already has rows.
+  'lastTouchAt', 'firstLandingPage', 'firstReferrer', 'firstUtm', 'firstTouchAt', 'gclid', 'msclkid', 'fbclid',
+  'ctaLocation', 'pagesViewed'];
 
 function doPost(e) {
   var lead = JSON.parse(e.postData.contents);

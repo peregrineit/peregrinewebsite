@@ -1,10 +1,12 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { getAttribution, track } from '@/lib/track';
+import { ctaLocationFor, getAttribution } from '@/lib/attribution';
+import { track } from '@/lib/track';
 
 // The site's two lead forms (strategy call and quick project request). Used in the
 // Footer popups, inline on /contact and at the foot of service and landing pages.
-// Both post to /api/lead with attribution (landing page, referrer, UTM) and fire
+// Both post to /api/lead with attribution (first and last touch, click ids, the CTA that
+// opened the form, pages viewed; see lib/attribution.ts) and fire
 // lead_submit / lead_error events (see docs/seo/TASKS.md).
 /** `fallback` is a pre-filled mailto: link, set when the server could not accept the lead.
  *  `receipt` is what the server reported when it did: accepted by the mail provider, which
@@ -34,7 +36,7 @@ type Fields = Record<string, HTMLInputElement | HTMLSelectElement | HTMLTextArea
 // so a retry reaches the server as the same submission and cannot produce a second email.
 const pendingIds: Record<string, string> = {};
 
-async function submitLead(formData: Record<string, string>, setStatus: (s: Status) => void) {
+async function submitLead(formEl: HTMLFormElement, formData: Record<string, string>, setStatus: (s: Status) => void) {
   setStatus({ loading: true, success: false, error: '' });
   const page = window.location.pathname;
   const event = { form: formData.form, page, service: formData.service || '' };
@@ -43,7 +45,12 @@ async function submitLead(formData: Record<string, string>, setStatus: (s: Statu
     const res = await fetch('/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...formData, submissionId, ...getAttribution(), pageUrl: window.location.href }),
+      body: JSON.stringify({
+        ...formData,
+        submissionId,
+        ...getAttribution(ctaLocationFor(formEl, formData.form)),
+        pageUrl: window.location.href,
+      }),
     });
     const json = await res.json();
     // The server gave a definite answer; the next attempt is a new submission.
@@ -153,7 +160,7 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
     <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const f = e.currentTarget as HTMLFormElement & Fields;
-      submitLead({
+      submitLead(f, {
         form: 'strategy-call',
         service,
         name: f.scName.value,
@@ -222,7 +229,7 @@ export function QuickProjectForm() {
     <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const f = e.currentTarget as HTMLFormElement & Fields;
-      submitLead({
+      submitLead(f, {
         form: 'quick-project',
         name: f.qpName.value,
         email: f.qpEmail.value,

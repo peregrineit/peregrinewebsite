@@ -2,7 +2,9 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
-import { rememberAttribution, track } from '@/lib/track';
+import { usePathname } from 'next/navigation';
+import { countPageView, locationOf, rememberAttribution, rememberCta } from '@/lib/attribution';
+import { track } from '@/lib/track';
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 const CONSENT_KEY = 'pit_analytics_consent';
@@ -46,29 +48,32 @@ function ConsentBar() {
   );
 }
 
-// Nearest meaningful container, so reports say where on the page a CTA was clicked.
-function locationOf(el: Element) {
-  const tagged = el.closest<HTMLElement>('[data-cta-location]');
-  if (tagged) return tagged.dataset.ctaLocation || '';
-  if (el.closest('nav')) return 'nav';
-  if (el.closest('.footer-section')) return 'footer';
-  return el.closest('section[id], div[id]')?.id || 'page';
-}
+// Every element that opens the quick-project popup (the same list as components/Footer.tsx).
+const QUICK_TRIGGERS = '[data-open-quick-project], #quick-project-btn, #quick-project-btn-footer, #quick-project-btn-footer-col';
 
 /** Site-wide click tracking (delegated, so no page needs its own handlers) and optional GA4
  *  with Consent Mode. Without NEXT_PUBLIC_GA_ID nothing from Google loads and no bar shows. */
 export default function Tracking() {
+  const pathname = usePathname();
+  // Pages viewed this tab session: the first load and every client-side navigation.
+  useEffect(() => {
+    countPageView();
+  }, [pathname]);
+
   useEffect(() => {
     rememberAttribution();
     const onClick = (e: MouseEvent) => {
       const target = e.target as Element | null;
       if (!target?.closest) return;
       const page = window.location.pathname;
-      const cta = target.closest('[data-open-contact], #lets-talk-btn, [data-open-quick-project]');
+      const cta = target.closest(`[data-open-contact], #lets-talk-btn, ${QUICK_TRIGGERS}`);
       if (cta) {
-        const form = cta.matches('[data-open-quick-project]') ? 'quick-project' : 'strategy-call';
+        const form = cta.matches(QUICK_TRIGGERS) ? 'quick-project' : 'strategy-call';
         const guide = cta.closest<HTMLElement>('[data-guide]')?.dataset.guide;
-        track('cta_open', { form, location: locationOf(cta), page });
+        const location = locationOf(cta);
+        // Sent with the lead if this popup form is submitted (lib/attribution.ts).
+        rememberCta(form, location);
+        track('cta_open', { form, location, page });
         if (guide) track('guide_cta_click', { guide, action: 'popup' });
         return;
       }
