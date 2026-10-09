@@ -114,12 +114,13 @@ async function main() {
   };
 
   // ---------------------------------------------------------------- 1. arrival
-  await goto(`${APP}/services/saas-development?utm_source=test-src&utm_medium=cpc&gclid=G-123_x`, 'https://www.google.com/');
+  await goto(`${APP}/services/saas-development?utm_source=test-src&utm_medium=cpc&gclid=G-123_x`, 'https://www.google.com/search?q=private+search+words');
   const last = await js(`JSON.parse(sessionStorage.getItem('pit_attribution'))`);
-  const first = await js(`JSON.parse(localStorage.getItem('pit_first_touch'))`);
-  check('arrival: last touch in sessionStorage', last && last.landingPage === '/services/saas-development' && last.utm === 'utm_source=test-src&utm_medium=cpc'
-    && last.gclid === 'G-123_x' && last.referrer === 'https://www.google.com/', JSON.stringify(last));
-  check('arrival: first touch in localStorage, same arrival', JSON.stringify(first) === JSON.stringify(last), JSON.stringify(first));
+  const first = await js(`JSON.parse(sessionStorage.getItem('pit_first_touch'))`);
+  check('arrival: last touch in sessionStorage, referrer without its query string', last && last.landingPage === '/services/saas-development' && last.utm === 'utm_source=test-src&utm_medium=cpc'
+    && last.gclid === 'G-123_x' && last.referrer === 'https://www.google.com/search', JSON.stringify(last));
+  check('arrival: first touch in sessionStorage, same arrival', JSON.stringify(first) === JSON.stringify(last), JSON.stringify(first));
+  check('arrival: without an analytics choice nothing is written to localStorage', (await js(`localStorage.length`)) === 0, await js(`JSON.stringify(Object.keys(localStorage))`));
   check('arrival: one page viewed', (await js(`sessionStorage.getItem('pit_pages_viewed')`)) === '1');
   check('arrival: no cookie is set', (await js(`document.cookie`)) === '', await js(`document.cookie`));
   check('arrival: nothing was posted', posts.length === 0 && hooks.length === 0);
@@ -176,7 +177,7 @@ async function main() {
   await waitFor(() => js(`document.body.innerText.includes('Request received')`), 'the success message');
   const body = posts.at(-1) || {};
   check('submit: the POST carries last touch, first touch and click id',
-    body.landingPage === '/services/saas-development' && body.utm === 'utm_source=test-src&utm_medium=cpc' && body.referrer === 'https://www.google.com/'
+    body.landingPage === '/services/saas-development' && body.utm === 'utm_source=test-src&utm_medium=cpc' && body.referrer === 'https://www.google.com/search'
     && body.firstLandingPage === '/services/saas-development' && body.firstUtm === body.utm && body.gclid === 'G-123_x'
     && /^\d{4}-\d\d-\d\dT/.test(body.firstTouchAt) && /^\d{4}-\d\d-\d\dT/.test(body.lastTouchAt), JSON.stringify(body));
   check('submit: inline form reports where it sits', body.ctaLocation === 'inline:service:saas-development', body.ctaLocation);
@@ -234,6 +235,17 @@ async function main() {
   await waitFor(() => js(`document.body.innerText.includes('Request received')`), 'the success message after the retry');
   const errs = await events('lead_error');
   check('retry: lead_error carried the HTTP status', errs.length === 1 && errs[0].props.status === 502, JSON.stringify(errs));
+
+  // ---------------------------------------------------------------- 7. the first touch follows the analytics choice
+  await js(`localStorage.setItem('pit_analytics_consent', 'granted')`);
+  await goto(`${APP}/services`);
+  const keptFirst = await js(`JSON.parse(localStorage.getItem('pit_first_touch'))`);
+  check('consent accepted: the first touch is now also in localStorage', keptFirst && keptFirst.gclid === 'G-123_x' && keptFirst.landingPage === '/services/saas-development', JSON.stringify(keptFirst));
+  await js(`localStorage.setItem('pit_analytics_consent', 'denied')`);
+  await goto(`${APP}/contact`);
+  check('consent declined: the localStorage record is deleted on the next page', (await js(`localStorage.getItem('pit_first_touch')`)) === null
+    && (await js(`sessionStorage.getItem('pit_first_touch')`)) !== null);
+  check('consent: still no cookie', (await js(`document.cookie`)) === '');
   ws.close();
 }
 

@@ -1,8 +1,18 @@
 // How a visitor arrived, kept in the browser until they submit a lead form.
 //
-// Nothing here sets a cookie or sends anything on its own. The values sit in
-// sessionStorage (this tab) and localStorage (this browser) and leave the browser only
-// inside the POST to /api/lead that the visitor triggers by submitting a form.
+// Nothing here sets a cookie or sends anything on its own. The values leave the browser
+// only inside the POST to /api/lead that the visitor triggers by submitting a form.
+//
+// Where they are kept depends on the visitor's analytics choice (`pit_analytics_consent`,
+// set by the consent bar in components/Tracking.tsx):
+//   - no choice, or declined: sessionStorage only. Everything, click ids included, is gone
+//     when the tab closes, and any first-touch record in localStorage is deleted.
+//   - accepted: the first touch is also kept in localStorage for at most 90 days (deleted
+//     when read after that), so a later visit can still be tied to the first one.
+// The consent bar only exists when GA4 is configured, so without NEXT_PUBLIC_GA_ID nobody
+// can accept and the first touch never outlives the session.
+// Referrers are stored as origin + path; the query string, which can hold a search phrase
+// or a token, is dropped.
 // Rules and field list: docs/growth/lead/ARCHITECTURE.md.
 //
 // This file has no imports so the pure functions can be unit-tested with
@@ -56,6 +66,17 @@ export function isExternalReferrer(referrer: string, currentHost: string): boole
   }
 }
 
+/** A referrer reduced to origin + path: no query string, no fragment, no credentials. */
+export function stripReferrer(referrer: string): string {
+  if (!referrer) return '';
+  try {
+    const url = new URL(referrer);
+    return `${url.protocol}//${url.host}${url.pathname}`;
+  } catch {
+    return '';
+  }
+}
+
 /** Reads one arrival from a page URL and its referrer. Pure. */
 export function parseTouch(url: string, referrer: string, now: Date): Touch {
   let pathname = '/';
@@ -74,7 +95,7 @@ export function parseTouch(url: string, referrer: string, now: Date): Touch {
   return {
     at: now.toISOString(),
     landingPage: pathname,
-    referrer,
+    referrer: stripReferrer(referrer),
     utm,
     gclid: params.get('gclid') || '',
     msclkid: params.get('msclkid') || '',
@@ -87,7 +108,7 @@ export function hasSource(touch: Touch, currentHost: string): boolean {
   return Boolean(touch.utm || touch.gclid || touch.msclkid || touch.fbclid) || isExternalReferrer(touch.referrer, currentHost);
 }
 
-/** First touches older than this are replaced, so the stored value does not live for ever. */
+/** With consent, the longest a first touch is kept in localStorage. Older ones are deleted when read. */
 export const FIRST_TOUCH_MAX_AGE_DAYS = 90;
 
 export function isFresh(touch: Partial<Touch> | null, now: Date): touch is Touch {
@@ -235,37 +256,101 @@ export function calendlyUrl(href: string, page: string, location: string): strin
 // ---------------------------------------------------------------------------
 
 const LAST_KEY = 'pit_attribution'; // sessionStorage (name kept from the first version)
-const FIRST_KEY = 'pit_first_touch'; // localStorage
+const FIRST_KEY = 'pit_first_touch'; // sessionStorage always; localStorage only with consent
 const PAGES_KEY = 'pit_pages_viewed'; // sessionStorage
 const CTA_KEY = 'pit_cta'; // sessionStorage
+/** Written by the consent bar (components/Tracking.tsx): 'granted' or 'denied'. */
+export const CONSENT_KEY = 'pit_analytics_consent';
 
-function read<T>(storage: () => Storage, key: string): T | null {
+/** The part of the Storage interface used here, so tests can pass a stand-in. */
+export type StorageLike = { getItem(key: string): string | null; setItem(key: string, value: string): void; removeItem(key: string): void };
+
+function read<T>(storage: StorageLike | null, key: string): T | null {
   try {
-    const value = JSON.parse(storage().getItem(key) || 'null');
+    const value = JSON.parse(storage?.getItem(key) || 'null');
     return value && typeof value === 'object' ? (value as T) : null;
   } catch {
     return null;
   }
 }
-function write(storage: () => Storage, key: string, value: unknown) {
+function write(storage: StorageLike | null, key: string, value: unknown) {
   try {
-    storage().setItem(key, JSON.stringify(value));
+    storage?.setItem(key, JSON.stringify(value));
   } catch {
     // Attribution is optional.
   }
 }
+function remove(storage: StorageLike | null, key: string) {
+  try {
+    storage?.removeItem(key);
+  } catch {
+    // Nothing to do.
+  }
+}
+
+/** True only for an explicit "granted". No choice yet is not consent. */
+export function hasConsent(local: StorageLike | null): boolean {
+  try {
+    return local?.getItem(CONSENT_KEY) === 'granted';
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * The first touch that may be used right now, enforcing the storage rules as it reads:
+ *  - without consent the localStorage record is deleted and only the session's is used;
+ *  - with consent the localStorage record is used if it is younger than 90 days, deleted
+ *    if it is older, and the session's first touch is copied there when there is none
+ *    (the visitor accepted during this visit).
+ * Call it on page load, when the visitor makes a consent choice, and before a submit.
+ */
+export function readFirstTouch(local: StorageLike | null, session: StorageLike | null, now: Date): Touch | null {
+  const inSession = read<Touch>(session, FIRST_KEY);
+  if (!hasConsent(local)) {
+    remove(local, FIRST_KEY);
+    return inSession;
+  }
+  const kept = read<Touch>(local, FIRST_KEY);
+  if (isFresh(kept, now)) return kept;
+  remove(local, FIRST_KEY);
+  if (inSession) write(local, FIRST_KEY, inSession);
+  return inSession;
+}
+
+/** Records one page load. All storage decisions are here and in readFirstTouch. */
+export function syncTouches(env: { local: StorageLike | null; session: StorageLike | null; href: string; referrer: string; host: string; now: Date }) {
+  const current = parseTouch(env.href, env.referrer, env.now);
+  const stored = { first: readFirstTouch(env.local, env.session, env.now), last: read<Touch>(env.session, LAST_KEY) };
+  const next = nextTouches(stored, current, env.host, env.now);
+  if (next.first !== stored.first) {
+    write(env.session, FIRST_KEY, next.first);
+    if (hasConsent(env.local)) write(env.local, FIRST_KEY, next.first);
+  }
+  if (next.last !== stored.last) write(env.session, LAST_KEY, next.last);
+}
+
+function storages(): { local: StorageLike | null; session: StorageLike | null } {
+  // Reading the property itself can throw when storage is blocked.
+  let local: StorageLike | null = null;
+  let session: StorageLike | null = null;
+  try { local = window.localStorage; } catch { /* blocked */ }
+  try { session = window.sessionStorage; } catch { /* blocked */ }
+  return { local, session };
+}
 const session = () => window.sessionStorage;
-const local = () => window.localStorage;
 
 /** Call once per full page load. */
 export function rememberAttribution() {
   if (typeof window === 'undefined') return;
-  const now = new Date();
-  const current = parseTouch(window.location.href, document.referrer, now);
-  const stored = { first: read<Touch>(local, FIRST_KEY), last: read<Touch>(session, LAST_KEY) };
-  const next = nextTouches(stored, current, window.location.hostname, now);
-  if (next.first !== stored.first) write(local, FIRST_KEY, next.first);
-  if (next.last !== stored.last) write(session, LAST_KEY, next.last);
+  syncTouches({ ...storages(), href: window.location.href, referrer: document.referrer, host: window.location.hostname, now: new Date() });
+}
+
+/** Call right after the visitor accepts or declines analytics: keeps or deletes the stored first touch accordingly. */
+export function applyConsentChoice() {
+  if (typeof window === 'undefined') return;
+  const { local, session: tab } = storages();
+  readFirstTouch(local, tab, new Date());
 }
 
 /** Call on every page view (first load and each client-side navigation). */
@@ -291,7 +376,7 @@ export function locationOf(el: Element): string {
 /** Remembers which CTA opened a popup form. */
 export function rememberCta(form: string, location: string) {
   if (typeof window === 'undefined') return;
-  write(session, CTA_KEY, { form, location, page: window.location.pathname });
+  write(storages().session, CTA_KEY, { form, location, page: window.location.pathname });
 }
 
 /**
@@ -300,7 +385,7 @@ export function rememberCta(form: string, location: string) {
  */
 export function ctaLocationFor(formEl: Element, form: string): string {
   if (formEl.closest('.popup-overlay')) {
-    const cta = read<{ form: string; location: string }>(session, CTA_KEY);
+    const cta = read<{ form: string; location: string }>(storages().session, CTA_KEY);
     return cta && cta.form === form && typeof cta.location === 'string' ? cta.location : 'popup';
   }
   return `inline:${locationOf(formEl)}`;
@@ -314,5 +399,6 @@ export function getAttribution(ctaLocation = ''): LeadAttribution {
   } catch {
     // Optional.
   }
-  return toLeadAttribution(read<Touch>(local, FIRST_KEY), read<Touch>(session, LAST_KEY), ctaLocation, pages);
+  const { local, session: tab } = storages();
+  return toLeadAttribution(readFirstTouch(local, tab, new Date()), read<Touch>(tab, LAST_KEY), ctaLocation, pages);
 }

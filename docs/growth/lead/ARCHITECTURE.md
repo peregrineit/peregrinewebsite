@@ -1,6 +1,6 @@
 # Lead capture: architecture, data flow and retention
 
-**Written:** 2026-10-10 (Growth Sprint 2, stream A) · **Branch:** `growth/s2-lead` · **Nothing here is deployed.**
+**Written:** 2026-10-10 (Growth Sprint 2, stream A; revised the same day after review, see "Changes after review") · **Branch:** `growth/s2-lead` · **Nothing here is deployed.**
 
 This describes the code as it is on this branch. The incident history and the three delivery states are in `docs/seo/LEAD-DELIVERY.md`; that behaviour is unchanged.
 
@@ -20,26 +20,28 @@ Everything else (attribution, Calendly parameters, form events, priority, webhoo
 ```
 Browser                                              Server: POST /api/lead                    Destinations
 -------                                              ----------------------                    ------------
-page load   -> first touch  (localStorage)
+page load   -> first touch  (sessionStorage; localStorage too only if analytics were accepted)
             -> last touch   (sessionStorage)
             -> page views   (sessionStorage)
 CTA click   -> CTA location (sessionStorage)
-                                                                                    
+
 submit form -> JSON: fields + attribution ---------> 1 parse, rate limit (5 / IP / 10 min)
-               + submissionId                        2 clean and length-limit every field
-                                                     3 validate name, email, message
-                                                     4 priority = f(fields)            (no I/O)
-                                                     5 in parallel, 5 s webhook budget:
-                                                         notification email ---------------> Resend -> info@peregrine-it.com
-                                                         webhook (1 retry, signed) --------> LEAD_WEBHOOK_URL (e.g. Google Sheet)
-                                                     6 accepted = email accepted OR webhook accepted
+               + submissionId                        2 clean every field: one line each, message multi-line
+                                                     3 reference = hash(submissionId + cleaned content)
+                                                     4 validate name, email, message
+                                                     5 priority = f(fields)            (no I/O)
+                                                     6 in parallel:
+                                                         notification email (8 s limit) ---> Resend -> info@peregrine-it.com
+                                                         webhook (1 retry, signed, 5 s) ---> LEAD_WEBHOOK_URL (e.g. Google Sheet)
+                                                     7 accepted = email accepted OR webhook accepted
                                                         not accepted -> HTTP 502, nothing below runs
-                                                     7 in parallel:
-                                                         acknowledgement email ------------> Resend -> the visitor
+                                                     8 as soon as accepted (see "Time limits"):
                                                          store write (if switched on) -----> Vercel Blob
-                                                     8 one log line, no personal data -----> Vercel runtime log
-                                                     9 respond: ref, per-step status
-                                                    10 after the response, only if the
+                                                       when both of step 6 have answered:
+                                                         acknowledgement email (5 s limit) -> Resend -> the visitor
+                                                     9 one log line, no personal data -----> Vercel runtime log
+                                                    10 respond: ref, per-step status
+                                                    11 after the response, only if the
                                                        notification failed: alert --------> LEAD_ALERT_WEBHOOK_URL
 ```
 
@@ -51,13 +53,21 @@ Nothing is sent to the server before the visitor submits a form. The analytics e
 
 | Key | Where | Content | Lifetime as far as this code controls it |
 |---|---|---|---|
-| `pit_first_touch` | localStorage | time, landing path, referrer, `utm_*`, `gclid`, `msclkid`, `fbclid` of the first arrival | replaced when older than 90 days; otherwise until the visitor clears site data |
+| `pit_first_touch` | sessionStorage, always | time, landing path, referrer (origin and path only), `utm_*`, `gclid`, `msclkid`, `fbclid` of the first arrival in this tab session | until the tab is closed |
+| `pit_first_touch` | localStorage, **only while `pit_analytics_consent` is `granted`** | the same record, so a later visit can be tied to the first | at most 90 days: deleted when read after that. Deleted as soon as the choice is `denied`, and on the next page load if the choice is missing |
 | `pit_attribution` | sessionStorage | the same fields for the last touch: the first arrival of this tab session, replaced by a later full page load that has campaign tags, a click id or a referrer from another site | until the tab is closed |
 | `pit_pages_viewed` | sessionStorage | a number: page views in this tab (first load and each client-side navigation, capped at 999) | until the tab is closed |
 | `pit_cta` | sessionStorage | which CTA last opened a popup form: form name, location, page path | until the tab is closed |
 | `pit_analytics_consent` | localStorage | `granted` or `denied` (existed before this sprint) | until cleared |
 
-The values are not cleared after a submit: a second enquiry in the same visit should carry the same source.
+Rules the code enforces (`readFirstTouch` and `syncTouches` in `src/lib/attribution.ts`):
+
+- **Without an explicit "accept" on the analytics bar, nothing about the arrival is written to localStorage.** First touch, last touch and click ids live in sessionStorage and end with the tab. If a first-touch record is found in localStorage without consent, it is deleted, not used.
+- **With consent**, the first touch is also kept in localStorage for at most 90 days. An older record is deleted when it is read.
+- **Declining, or withdrawing an earlier acceptance,** deletes the localStorage record at once (the consent bar calls `applyConsentChoice()`), and so does any page load on which the choice is not `granted`.
+- **Referrers are stored as origin + path.** The query string and fragment (search phrases, tokens) are dropped before anything is stored.
+- The consent bar exists only when `NEXT_PUBLIC_GA_ID` is set. Without it nobody can accept, so the first touch never outlives the session. "First touch" then means "first arrival in this tab session".
+- The session values are not cleared after a submit: a second enquiry in the same visit carries the same source.
 
 ### Fields in the POST
 
@@ -75,7 +85,34 @@ Attribution fields (all optional; the server accepts a lead without any of them)
 | `ctaLocation` | for a popup form, the location of the CTA that opened it (`nav`, `footer`, a section id, a `data-cta-location` value); for an inline form, `inline:<where it sits>` | one line, 80 characters, letters, digits and `_ : . / # -` and spaces |
 | `pagesViewed` | page views in the session up to the submit | integer 0 to 999 |
 
-"One line" means control characters, including line breaks, are replaced by a space, so a field cannot start a line of its own in the notification email. `utm` no longer contains `gclid`; it has its own field.
+"One line" (`oneLine()` in `src/lib/attribution.ts`) means: CR, LF, NEL (U+0085), U+2028, U+2029 and tab become one space; other control characters, zero-width characters (U+200B to U+200F, U+2060 to U+2064, U+FEFF) and bidirectional overrides, embeddings and isolates (U+202A to U+202E, U+2066 to U+2069, U+061C) are removed. It applies to **every** field printed as `Label: value`: `name`, `email`, `company`, `form`, `projectType`, `timeline`, `service`, `pageUrl` and all attribution fields. So no field can add a line to the notification or to the acknowledgement (which is sent to an address the submitter chose and contains the name).
+
+`message` is the one multi-line field. Its line breaks are normalized to LF, the same invisible characters are removed, and in the notification it is printed last, under the line `----- Message, exactly as typed by the visitor. Every line of it starts with ">" -----`, with each line prefixed `> `. A line in the message that reads `Priority: High` therefore appears as `> Priority: High`, below the delimiter.
+
+`utm` no longer contains `gclid`; it has its own field.
+
+**Anti-spam field.** `pit_confirm_field` flags the lead (`[Possible spam]`, no acknowledgement, priority low) when it holds anything other than nothing, `null` or a blank string. That includes non-string values such as `true`, `1`, `0`, `[]` or an object, which only a script sends.
+
+### Reference and duplicates
+
+The 8-character reference is the first 8 hex characters of SHA-256 over the form's `submissionId` and the cleaned content (every form field and every attribution field). Without a valid `submissionId` it is random. Every idempotency key (`lead-notify-<ref>`, `lead-ack-<ref>`, webhook `Idempotency-Key: lead-<ref>`, alert `lead-alert-<ref>`) and the store path derive from it.
+
+- **Identical retry** (same id, same content; the form keeps its id after a network error or any 5xx): same reference, same keys. Resend returns the first message instead of sending again; the store object is replaced by an identical one; a receiver that deduplicates on `ref` keeps one row.
+- **Edited retry** (same id, the visitor changed something first): a new reference, delivered as a new message. So the visible reference changes when the content changes.
+- A reused key with a different payload cannot occur, because the content is part of the reference. That matters: Resend answers such a request with HTTP 409 `invalid_idempotent_request` (its documentation, read 2026-10-10) rather than sending it.
+
+### Time limits
+
+What the visitor can wait for, at most:
+
+| Step | Limit | On expiry |
+|---|---|---|
+| Notification email (retry included) | 8 s | reported `failed`, reason `timeout`; the send may still complete at Resend, which is why a retry reuses the key |
+| Webhook (retry and backoff included) | 5 s | reported `failed`, reason `webhook timed out` |
+| Store write | 3 s, and never past 5.5 s after the request started | reported `failed`, reason `store timed out` |
+| Acknowledgement email (retry included) | 5 s, after the two above have answered | reported `failed`; the visitor is told to keep the reference |
+
+The webhook and the store share one deadline. The store write starts as soon as the lead is accepted: immediately when both the email and the webhook have answered; otherwise once one of them has accepted and at least 2 s have passed since the request started, without waiting for the other. In that case the stored object records the silent one as `"pending"`. A hung webhook and a hung store together hold the response for about 5.5 s (it was 8 s). The worst case overall is a slow notification (8 s) followed by a slow acknowledgement (5 s).
 
 ### Priority
 
@@ -90,6 +127,7 @@ Attribution fields (all optional; the server accepts a lead without any of them)
 | Company given | +1 |
 | Email on a business domain (not in the free-mail list in the file) | +1 |
 | Email on a free-mail domain | 0 |
+| Email on a disposable-mailbox domain (short explicit list in the file) | -3 |
 | Message of 400 characters or more | +2 |
 | Message of 120 to 399 characters | +1 |
 | Message of 30 to 119 characters | 0 |
@@ -97,7 +135,9 @@ Attribution fields (all optional; the server accepts a lead without any of them)
 | Strategy-call form | +1 |
 | Sent from a service, industry or guide page (`service` not empty) | +1 |
 
-Score 5 or more is **high**, 0 or less is **low**, otherwise **normal**. Range -2 to 8. A filled anti-spam field is always **low**.
+Score 5 or more is **high**, -1 or less is **low**, otherwise **normal** (0 is normal). Range -5 to 8. A filled anti-spam field is always **low**.
+
+Why these bands: a lead with nothing for or against it (free-mail address, "2-6 months", a sentence or two) scores 0 and is an ordinary enquiry, so low needs an actual negative that nothing offsets: "just exploring", a near-empty message, or a throwaway address. A free-mail address is never negative. The quick-project form has no company field and is rarely on a service page, so its leads score about 0 to 3 and are normal unless something counts against them. The disposable penalty is sized so that no combination of other signals reaches high (the maximum with one is 4).
 
 It appears as `Priority: High (timeline ASAP +2; company given +1; ...)` in the notification email, as `priority` and `priorityReasons` in the webhook payload and the stored object, and as `priority` in the log line. It is never in the response to the visitor, never in the acknowledgement, and it does not change whether or how a lead is delivered. The thresholds are a first guess with no lead data behind them; change them in the file, the test and this table together.
 
@@ -119,8 +159,8 @@ It appears as `Priority: High (timeline ASAP +2; company given +1; ...)` in the 
 
 - **Switch:** the adapter runs only when `LEAD_STORE=vercel-blob` **and** `BLOB_READ_WRITE_TOKEN` are both set. One without the other, or any other `LEAD_STORE` value, is the no-op store and the API behaves exactly as before.
 - **Rule:** a store write is a record of a lead that was already accepted. It is not acceptance. The visitor is told "received" only when the notification email or the webhook accepted the lead; if neither did, the response is the 502 it always was and **nothing is stored**. Reason: nobody is notified when an object appears in a Blob store, so a store-only lead would be one the visitor believes was received and nobody reads.
-- **Failure:** a failed or slow write (3 second limit, no retry) is logged (`Lead accepted with a failed step`, with the reason) and reported (`store.status: "failed"`). It never fails the lead.
-- **Object:** `leads/<yyyy-mm>/<ref>-<32 hex>.json` containing the webhook body plus `delivery: { notification, webhook }`. The 32 hex characters are an HMAC of the reference keyed with the store token: not guessable from the reference the visitor sees, and the same for a retry of the same submission, so a retry replaces its own object. The path is never logged or returned.
+- **Failure:** a failed or slow write (3 second limit, shortened by the deadline it shares with the webhook, see "Time limits"; no retry) is logged (`Lead accepted with a failed step`, with the reason) and reported (`store.status: "failed"`). It never fails the lead.
+- **Object:** `leads/<yyyy-mm>/<ref>-<32 hex>.json` containing the webhook body plus `delivery: { notification, webhook }` (each `accepted`, `failed`, `skipped`, or `pending` if that destination had not answered when the object was written). The 32 hex characters are an HMAC of the reference keyed with the store token: not guessable from the reference the visitor sees, and the same for an identical retry of the same submission, so that retry replaces its own object. An edited retry has a new reference and is a second object. The path is never logged or returned.
 - **Access:** sent as `private` by default, which needs a **private** Blob store (reads then need the token). `LEAD_STORE_BLOB_ACCESS=public` exists for a public store, where the unguessable path is the only protection; a private store is the recommendation.
 - **Interface used:** `PUT <api>/?pathname=<path>` with `authorization: Bearer <token>`, `x-api-version`, `x-vercel-blob-access`, `x-content-type`, `x-add-random-suffix: 0`, `x-allow-overwrite: 1`. Vercel's documentation (`vercel.com/docs/vercel-blob`, read 2026-10-10) describes the SDK only; this is the request the `@vercel/blob` SDK source makes (`packages/blob/src/put.ts`, `api.ts`, API version 12, base `https://vercel.com/api/blob`). It is not the older `https://blob.vercel-storage.com/<path>` form. Because it is undocumented it can change; the effect would be failed writes in the log, not lost leads. If the owner prefers a supported interface, swap the adapter's `fetch` for the SDK's `put()` (one dependency).
 - **Status:** `GET /api/lead` reports `store` (`none` or `vercel-blob`) and `durableStorage` (`none`, `webhook`, `vercel-blob`, `webhook+vercel-blob`) for what is configured; the POST response reports what was actually written for that lead.
@@ -187,7 +227,7 @@ No variable's value is ever returned by `GET /api/lead` or written to the log.
 
 | Destination | Holds | Retention controlled by this code | Who controls it in practice |
 |---|---|---|---|
-| Visitor's browser | first and last touch, page-view count, CTA location, consent choice | first touch replaced after 90 days; session values end with the tab | the visitor (clear site data) |
+| Visitor's browser | first and last touch, page-view count, CTA location, consent choice | sessionStorage values end with the tab. The localStorage first touch exists only while analytics are accepted, for at most 90 days, and is deleted when that choice changes | the visitor (the consent bar; clear site data) |
 | Notification email in `info@peregrine-it.com` | the whole lead: name, email, company, message, form fields, page URL, attribution, priority, reference | none | the mailbox owner (Google Workspace retention and manual deletion) |
 | Acknowledgement email in the visitor's inbox | their name as typed, the reference, the reply-time sentence | none | the visitor |
 | Resend | both emails as sent (recipient, subject, body) and their delivery events | none | Resend's retention for the account's plan; the owner can delete from the Resend dashboard. **TODO(owner): confirm the plan's retention period before quoting one in the policy** |
@@ -207,7 +247,7 @@ This is a proposal. It has not been reviewed by a lawyer, and the published page
 
 > **Enquiry forms.** When you send us a project request through a form on this site, we receive what you typed (your name, email address, company if you gave one, the project type and timeline you chose, and your message) together with the address of the page you sent it from.
 >
-> **How you found us.** With your request we also receive: the page on which you first arrived and the site that referred you, for your first visit and for the visit in which you wrote to us; any campaign tags (`utm` parameters) and advertising click identifiers (`gclid`, `msclkid`, `fbclid`) that were in the address of those pages; which button or section of the page you used to open the form; and how many pages you viewed in that visit. Until you submit a form this information stays in your browser's local and session storage and is not sent to us. We do not use cookies for it. It is stored in your browser for up to 90 days, or until you clear the site's data. If you never submit a form, we never receive it.
+> **How you found us.** With your request we also receive: the page on which you first arrived and the address of the site that referred you (without any search terms or other parameters in that address), for your first visit and for the visit in which you wrote to us; any campaign tags (`utm` parameters) and advertising click identifiers (`gclid`, `msclkid`, `fbclid`) that were in the address of the page you arrived on; which button or section of the page you used to open the form; and how many pages you viewed in that visit. Until you submit a form this information stays in your browser and is not sent to us. We do not use cookies for it. It is held in your browser's session storage and disappears when you close the tab. Only if you have accepted analytics cookies do we also keep the record of your first visit in your browser's local storage, for up to 90 days, so that a later visit can be connected to it; if you decline or later withdraw that acceptance, the record is deleted. If you never submit a form, we never receive any of it.
 >
 > **What we do with it.** We use your request to reply to you, and the information about how you found us to understand which pages and channels lead to enquiries. We sort incoming requests by urgency using only what you wrote in the form (for example the timeline you selected). This sorting decides the order in which we read requests and nothing else; every request is read by a person.
 >
@@ -218,16 +258,30 @@ This is a proposal. It has not been reviewed by a lawyer, and the published page
 > **Booking a call.** Links to our Calendly page include the address of the page you were on and the name of the link you used. They identify our page, not you.
 
 Points for the owner while reviewing:
-- The published policy says analytics data is collected "through cookies and similar technologies". The first-touch record in local storage is a "similar technology"; the paragraph above describes it specifically. In jurisdictions that apply consent rules to local storage as well as cookies (the EU and UK), storing the first touch before consent may need the same consent as analytics cookies. The site's market is the US and Canada; if EU visitors matter, gate `rememberAttribution()` on the existing consent choice. That is a product decision, not made here.
+- Storage before consent: the code now writes nothing about the arrival to localStorage unless the visitor accepted analytics, and sessionStorage is cleared by the browser when the tab closes. Whether session storage of a campaign tag needs consent in the EU or UK is a legal question this document does not answer; the site's market is the US and Canada.
+- "Accepted analytics cookies" in the draft refers to the existing consent bar, which only appears when GA4 is configured (`NEXT_PUBLIC_GA_ID`). If GA4 is never enabled, drop that sentence: the first-visit record then never leaves session storage.
 - The published policy lists "Phone number (if provided)"; no form on the site asks for one.
+
+## Changes after review (2026-10-10)
+
+| # | Finding | Change |
+|---|---|---|
+| 1 | Hung webhook plus hung store answered after 8 s | one shared deadline, about 5.5 s; see "Time limits" |
+| 2 | Resend calls had no timeout | 8 s for the notification, 5 s for the acknowledgement; `failed` with reason `timeout` |
+| 3 | A 200 HTML page from the webhook counted as accepted | `text/html` 2xx and JSON `ok:false` are refused; the Sheet script always answers JSON |
+| 4 | Neutral leads were low priority; a throwaway address could be high | low needs -1 or less; disposable-mailbox list at -3 |
+| 5 | A name with line breaks forged lines in both emails | every single-line field is forced onto one line; the message is delimited and prefixed |
+| 6 | Edited retry with the same `submissionId` was dropped and overwrote the stored object | reference derived from id and content; the reference changes when the content changes |
+| 7 | Non-string anti-spam value not flagged; Blob URL override could carry the token elsewhere; retry undocumented | all three addressed (anti-spam field above, env table, "Webhook") |
+| 8 | First touch persisted in localStorage before consent, with click ids and full referrer | sessionStorage only without consent; localStorage for 90 days with it; referrer cut to origin + path |
 
 ## Tests
 
 | Command | Covers | Result on this branch |
 |---|---|---|
-| `python3 scripts/test_lead_api.py` (needs `npm run build`) | the API against local mocks of Resend, the webhook, the alert endpoint and the Blob API: every pre-existing check, plus attribution cleaning, priority, retry and budget, signature (verified by the Node reference verifier), store switch and failure modes, owner alert | 181 passed |
-| `node --experimental-strip-types scripts/test_lead_priority.mjs` | every scoring rule and threshold | 36 passed |
-| `node --experimental-strip-types scripts/test_lead_client.mjs` | touch parsing, first/last touch rules, server-side cleaning, Calendly URL rewriting, the form start/abandon state machine | 45 passed |
-| `node scripts/test_lead_browser.mjs` (needs a build and an installed Chrome) | headless Chrome over the DevTools protocol: storage after a real arrival with UTM, click id and referrer; no cookie; page-view count across a client-side navigation; Calendly hrefs after a click on four pages and after a context-menu event; the server-rendered ConsultationCta link; `lead_form_start` once; the POST body of an inline and a popup form; `lead_form_abandon` on a real unload | 33 passed |
+| `python3 scripts/test_lead_api.py` (needs `npm run build`) | the API against local mocks of Resend, the webhook, the alert endpoint and the Blob API: every pre-existing check, plus attribution cleaning, priority, retry and budget, signature (verified by the Node reference verifier), store switch and failure modes, owner alert | 229 passed |
+| `node --experimental-strip-types scripts/test_lead_priority.mjs` | every scoring rule and threshold | 54 passed |
+| `node --experimental-strip-types scripts/test_lead_client.mjs` | touch parsing, first/last touch rules, the three consent states for first-touch storage, referrer stripping, server-side cleaning, Calendly URL rewriting, the form start/abandon state machine, the Blob URL rule in production, and the Sheet script run with stand-ins for the Apps Script services | 87 passed |
+| `node scripts/test_lead_browser.mjs` (needs a build and an installed Chrome) | headless Chrome over the DevTools protocol: storage after a real arrival with UTM, click id and referrer; no cookie; page-view count across a client-side navigation; Calendly hrefs after a click on four pages and after a context-menu event; the server-rendered ConsultationCta link; `lead_form_start` once; the POST body of an inline and a popup form; `lead_form_abandon` on a real unload; a retry after a 502 reusing its submission id; localStorage empty without consent, filled after accepting, emptied after declining | 39 passed |
 
 Not verified anywhere: a real Resend send, a real Vercel Blob write, the Apps Script receiver, Calendly actually recording the UTM parameters on a booking, GA4 or Vercel Analytics receiving an event sent during page unload, and any browser other than Chrome.

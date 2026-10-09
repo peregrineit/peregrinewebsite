@@ -5,7 +5,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import {
-  calendlyUrl, cleanAttribution, hasSource, isExternalReferrer, multiLine, nextTouches, oneLine, parseTouch, toLeadAttribution,
+  CONSENT_KEY, calendlyUrl, cleanAttribution, hasConsent, hasSource, isExternalReferrer, multiLine, nextTouches, oneLine, parseTouch, readFirstTouch,
+  stripReferrer, syncTouches, toLeadAttribution,
 } from '../src/lib/attribution.ts';
 import { createFormTracker } from '../src/lib/form-tracking.ts';
 import { blobApiUrl, blobPath, getLeadStore } from '../src/lib/lead-store.ts';
@@ -48,6 +49,68 @@ t = nextTouches({ first: ad, last: null }, direct, HOST, new Date(Date.UTC(2027,
 eq(t.first, direct, 'first touch older than 90 days is replaced');
 t = nextTouches({ first: { landingPage: '/x' }, last: null }, direct, HOST, day(2));
 eq(t.first, direct, 'corrupt stored first touch is replaced');
+
+// --- referrers are stored without their query string
+eq(stripReferrer('https://www.google.com/search?q=private+words&token=abc#frag'), 'https://www.google.com/search', 'referrer: query string and fragment dropped');
+eq(stripReferrer('https://user:pw@partner.example:8443/a/b?x=1'), 'https://partner.example:8443/a/b', 'referrer: credentials dropped, port kept');
+eq(stripReferrer('android-app://com.google.android.gm/'), 'android-app://com.google.android.gm/', 'referrer: app referrers survive');
+eq([stripReferrer(''), stripReferrer('not a url')], ['', ''], 'referrer: empty or malformed is empty');
+eq(parseTouch('https://peregrine-it.com/', 'https://www.bing.com/search?q=secret', day(1)).referrer, 'https://www.bing.com/search', 'a touch never holds a referrer query string');
+
+// --- where the first touch may be kept: the three consent states
+const store = (init = {}) => { const m = new Map(Object.entries(init)); return { getItem: (k) => (m.has(k) ? m.get(k) : null), setItem: (k, v) => { m.set(k, String(v)); }, removeItem: (k) => { m.delete(k); }, has: (k) => m.has(k), json: (k) => JSON.parse(m.get(k) ?? 'null') }; };
+const visit = (local, session, href, referrer, now) => syncTouches({ local, session, href, referrer, host: HOST, now });
+const AD_URL = 'https://peregrine-it.com/services/saas-development?utm_source=google&gclid=Cj0-x_1';
+const FIRST = 'pit_first_touch', LAST = 'pit_attribution';
+
+// 1. no choice made
+let local = store(), session = store();
+visit(local, session, AD_URL, 'https://www.google.com/search?q=x', day(1));
+eq(hasConsent(local), false, 'no choice: not consent');
+eq(local.has(FIRST), false, 'no choice: nothing is written to localStorage');
+eq([session.json(FIRST).gclid, session.json(FIRST).referrer, session.json(LAST).gclid], ['Cj0-x_1', 'https://www.google.com/search', 'Cj0-x_1'], 'no choice: first and last touch are in sessionStorage, click id included');
+eq(readFirstTouch(local, session, day(1)).landingPage, '/services/saas-development', 'no choice: the session first touch is what a submit sends');
+session = store();                                        // the tab is closed; a new visit
+visit(local, session, 'https://peregrine-it.com/contact', '', day(5));
+eq([session.json(FIRST).landingPage, session.json(FIRST).gclid], ['/contact', ''], 'no choice: a new session knows nothing of the old one; the click id did not outlive it');
+local = store({ [FIRST]: JSON.stringify(ad) }); session = store();   // a record left by an earlier version or an earlier consent
+visit(local, session, 'https://peregrine-it.com/contact', '', day(5));
+eq([local.has(FIRST), session.json(FIRST).landingPage], [false, '/contact'], 'no choice: a first touch found in localStorage is deleted, not used');
+
+// 2. accepted
+local = store({ [CONSENT_KEY]: 'granted' }); session = store();
+visit(local, session, AD_URL, 'https://www.google.com/', day(1));
+eq([hasConsent(local), local.json(FIRST).gclid, session.json(FIRST).gclid], [true, 'Cj0-x_1', 'Cj0-x_1'], 'accepted: first touch is kept in localStorage too');
+session = store();
+visit(local, session, 'https://peregrine-it.com/contact', '', day(20));
+eq([local.json(FIRST).landingPage, session.json(LAST).landingPage, readFirstTouch(local, session, day(20)).gclid], ['/services/saas-development', '/contact', 'Cj0-x_1'],
+  'accepted: a later visit keeps the first touch and gets its own last touch');
+session = store();
+const later = new Date(Date.UTC(2027, 0, 2));             // 93 days after the first touch
+eq([readFirstTouch(local, session, later), local.has(FIRST)], [null, false], 'accepted: a record older than 90 days is deleted when read');
+local = store({ [CONSENT_KEY]: 'granted', [FIRST]: JSON.stringify(ad) });
+visit(local, session, 'https://peregrine-it.com/blog/x', '', later);
+eq([local.json(FIRST).landingPage, local.json(FIRST).gclid], ['/blog/x', ''], 'accepted: after 90 days the next visit starts a new first touch');
+local = store(); session = store();                       // accepts during the visit
+visit(local, session, AD_URL, '', day(1));
+local.setItem(CONSENT_KEY, 'granted'); readFirstTouch(local, session, day(1));
+eq(local.json(FIRST).gclid, 'Cj0-x_1', 'accepted during the visit: the session first touch is copied to localStorage');
+
+// 3. declined, and withdrawn after accepting
+local = store({ [CONSENT_KEY]: 'denied' }); session = store();
+visit(local, session, AD_URL, '', day(1));
+eq([local.has(FIRST), session.json(FIRST).gclid], [false, 'Cj0-x_1'], 'declined: sessionStorage only');
+local = store({ [CONSENT_KEY]: 'granted' }); session = store();
+visit(local, session, AD_URL, '', day(1));
+local.setItem(CONSENT_KEY, 'denied'); readFirstTouch(local, session, day(1));
+eq(local.has(FIRST), false, 'withdrawn: the localStorage record is deleted as soon as the choice changes');
+local = store({ [CONSENT_KEY]: 'granted' }); session = store(); visit(local, session, AD_URL, '', day(1));
+local.removeItem(CONSENT_KEY); session = store(); visit(local, session, 'https://peregrine-it.com/', '', day(2));
+eq([local.has(FIRST), session.json(FIRST).landingPage], [false, '/'], 'consent cleared: the record is deleted on the next page load');
+// storage that throws or is missing
+const broken = { getItem() { throw new Error('blocked'); }, setItem() { throw new Error('blocked'); }, removeItem() { throw new Error('blocked'); } };
+visit(broken, broken, AD_URL, '', day(1)); visit(null, null, AD_URL, '', day(1));
+eq([hasConsent(broken), readFirstTouch(null, null, day(1))], [false, null], 'blocked or missing storage: no throw, no consent, no touch');
 
 // --- what the form sends
 eq(toLeadAttribution(ad, bing, 'hero', 3), {

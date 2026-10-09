@@ -3,7 +3,7 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
-import { calendlyUrl, countPageView, locationOf, rememberAttribution, rememberCta } from '@/lib/attribution';
+import { applyConsentChoice, calendlyUrl, countPageView, locationOf, rememberAttribution, rememberCta } from '@/lib/attribution';
 import { formTracker, track } from '@/lib/track';
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
@@ -32,6 +32,9 @@ function ConsentBar() {
   const choose = (value: Consent) => {
     try { localStorage.setItem(CONSENT_KEY, value); } catch { /* choice lasts for this page only */ }
     window.gtag?.('consent', 'update', { analytics_storage: value });
+    // The same choice governs the first-touch record: kept in localStorage only when
+    // accepted, deleted from it when declined (lib/attribution.ts).
+    applyConsentChoice();
     setClosed(true);
   };
   return (
