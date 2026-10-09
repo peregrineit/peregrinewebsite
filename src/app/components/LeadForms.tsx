@@ -35,6 +35,8 @@ type Fields = Record<string, HTMLInputElement | HTMLSelectElement | HTMLTextArea
 
 // One id per attempt, kept while the outcome is unknown (network error, gateway timeout)
 // so a retry reaches the server as the same submission and cannot produce a second email.
+// The server pairs the id with the content: if the visitor edits the form before retrying,
+// it is treated as a new message with a new reference.
 const pendingIds: Record<string, string> = {};
 
 async function submitLead(formEl: HTMLFormElement, formData: Record<string, string>, setStatus: (s: Status) => void) {

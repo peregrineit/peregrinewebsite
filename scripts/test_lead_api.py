@@ -25,7 +25,7 @@ MOCK = f"http://127.0.0.1:{MOCK_PORT}"
 FROM = "Peregrine IT <hello@test.invalid>"
 NOTIFY = "info@peregrine-it.com"
 
-DEFAULTS = dict(emails=[], attempts=0, hooks=[], keys={}, events={}, fail=None, fail_once=None, fail_ack=None,
+DEFAULTS = dict(emails=[], attempts=0, hooks=[], keys={}, key_bodies={}, events={}, fail=None, fail_once=None, fail_ack=None,
                 hook_fail=False, hook_sleep=0, hook_plan=[], hook_attempts=[], email_sleep=0, ack_sleep=0,
                 alerts=[], alert_fail=False, alert_sleep=0,
                 blobs={}, blob_puts=[], blob_fail=None, blob_sleep=0, blob_wrong_path=False)
@@ -36,6 +36,8 @@ ERRORS = {
     401: {"statusCode": 401, "name": "invalid_api_key", "message": "API key is invalid"},
     429: {"statusCode": 429, "name": "rate_limit_exceeded", "message": "Too many requests."},
     500: {"statusCode": 500, "name": "internal_server_error", "message": "Something went wrong."},
+    # https://resend.com/docs/dashboard/emails/idempotency-keys (read 2026-10-10): same key, different payload.
+    409: {"statusCode": 409, "name": "invalid_idempotent_request", "message": "This idempotency key has already been used on a request that had a different payload."},
 }
 
 class Mock(http.server.BaseHTTPRequestHandler):
@@ -60,10 +62,12 @@ class Mock(http.server.BaseHTTPRequestHandler):
             if code:
                 return self._send(code, ERRORS[code])
             key = self.headers.get("Idempotency-Key")
-            if key and key in state["keys"]:      # Resend returns the first response again
-                return self._send(200, {"id": state["keys"][key]})
+            if key and key in state["keys"]:
+                if state["key_bodies"][key] != body:   # as Resend documents: a reused key with another payload is refused
+                    return self._send(409, ERRORS[409])
+                return self._send(200, {"id": state["keys"][key]})   # same payload: the first response again
             mid = str(uuid.uuid4())
-            if key: state["keys"][key] = mid
+            if key: state["keys"][key] = mid; state["key_bodies"][key] = body
             state["emails"].append({**body, "to": to, "_id": mid, "_key": key})
             return self._send(200, {"id": mid})
         if self.path.startswith("/alert"):
@@ -360,7 +364,7 @@ def run():
         # duplicates: the same submission sent twice
         reset(); sid = str(uuid.uuid4())
         s1, b1 = post({**LEAD, "submissionId": sid}, ip()); s2, b2 = post({**LEAD, "submissionId": sid}, ip())
-        check("duplicate: same submissionId -> same reference", s1 == s2 == 200 and b1["ref"] == b2["ref"] == sid.replace("-", "")[:8], f"got {b1.get('ref')} {b2.get('ref')}")
+        check("duplicate: same submissionId -> same reference", s1 == s2 == 200 and b1["ref"] == b2["ref"] and re.fullmatch(r"[0-9a-f]{8}", b1["ref"]), f"got {b1.get('ref')} {b2.get('ref')}")
         check("duplicate: one notification and one acknowledgement in total", len(to_notify()) == 1 and len(to_visitor()) == 1, f"got {len(to_notify())} + {len(to_visitor())}")
         check("duplicate: second response returns the first message ids", b1["notification"]["id"] == b2["notification"]["id"])
 
@@ -461,6 +465,19 @@ def run():
               and all(i < mark for i, l in enumerate(lines) if l.startswith(("Priority:", "Reference:", "Email:"))), text)
         check("forging: bidi override removed from the message", "\u202e" not in text)
         if state["hooks"]: check("forging: webhook message keeps real line breaks only", state["hooks"][0].get("message") == "First line of a real message.\nPriority: High (verified)\nReference: 00000000\nEmail: ceo@victim.example\nNew Project Inquiry", repr(state["hooks"][0].get("message")))
+        # same submissionId, edited content (network error, the visitor changes the message, retries): a new message
+        reset(); sid = str(uuid.uuid4())
+        s1, b1 = post({**LEAD, "submissionId": sid}, ip()); s2, b2 = post({**LEAD, "submissionId": sid, "message": LEAD["message"] + " Edited after the first try."}, ip())
+        n, h = to_notify(), state["hooks"]
+        check("edited retry: both accepted", s1 == s2 == 200, f"got {s1} {s2} {b2}")
+        check("edited retry: two notifications, the second with the edited message", len(n) == 2 and "Edited after the first try." in n[-1].get("text", "") and "Edited" not in n[0].get("text", ""), f"got {len(n)}")
+        check("edited retry: the reference changes with the content", b1.get("ref") != b2.get("ref") and len(b2.get("ref", "")) == 8, f"got {b1.get('ref')} {b2.get('ref')}")
+        check("edited retry: idempotency keys differ, so nothing is deduplicated away", len(n) == 2 and n[0]["_key"] != n[1]["_key"] and len(to_visitor()) == 2)
+        check("edited retry: two webhook deliveries with different keys and references", len(h) == 2 and h[0]["_key"] != h[1]["_key"] and h[0]["ref"] != h[1]["ref"], f"got {len(h)}")
+        s3, b3 = post({**LEAD, "submissionId": sid}, ip())
+        check("identical retry: same reference, no further email", s3 == 200 and b3.get("ref") == b1.get("ref") and len(to_notify()) == 2 and b3["notification"]["id"] == b1["notification"]["id"], f"got {s3} {b3}")
+        s4, b4 = post({**LEAD, "submissionId": sid, "pagesViewed": 9, "utm": "utm_source=other"}, ip())
+        check("retry with different attribution: never a reused key with another payload (no 409 from Resend)", s4 == 200 and b4["notification"]["status"] == "accepted" and "invalid_idempotent_request" not in app_log(), f"got {s4} {b4}")
         reset(fail=500, hook_fail=True)
         s, b = post(LEAD, ip()); check("both: everything down -> 502", s == 502 and b.get("success") is False, f"got {s}")
     finally: stop_app(app)
@@ -518,6 +535,10 @@ def run():
         reset(); sid = str(uuid.uuid4())
         post({**LEAD, "submissionId": sid}, ip()); s, b = post({**LEAD, "submissionId": sid}, ip())
         check("store: a repeated submission is still one object", s == 200 and len(state["blobs"]) == 1 and len(state["blob_puts"]) == 2 and b.get("store") == {"status": "stored"}, f"got {len(state['blobs'])}")
+        s, b = post({**LEAD, "submissionId": sid, "company": "Acme Edited"}, ip())
+        check("store: an edited retry of the same submission is a second object, not an overwrite",
+              s == 200 and len(state["blobs"]) == 2 and sorted(o.get("company") for o in state["blobs"].values()) == ["Acme", "Acme Edited"], f"got {len(state['blobs'])}")
+        state["blobs"].clear(); post({**LEAD, "submissionId": sid}, ip())
         post(LEAD, ip()); suffixes = {p.rsplit("-", 1)[1] for p in state["blobs"]}
         check("store: a different lead gets a different path", len(state["blobs"]) == 2 and len(suffixes) == 2)
         reset(); s, b = post({**LEAD, "pit_confirm_field": "x"}, ip())

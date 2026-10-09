@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { after, NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { cleanAttribution, multiLine, oneLine, type LeadAttribution } from "@/lib/attribution";
@@ -333,13 +334,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Too many requests. Please try again in a few minutes." }, { status: 429 });
     }
 
-    // The form sends one id per attempt and reuses it when it retries, so a retry maps to
-    // the same reference and the same idempotency keys.
-    const submissionId = clean(raw.submissionId, 64);
-    ref = (UUID.test(submissionId) ? submissionId : crypto.randomUUID()).replace(/-/g, "").slice(0, 8);
-
-    const fields: LeadData = {
-      ref,
+    const content: Omit<LeadData, "ref"> = {
       // Every field printed as "Label: value" is forced onto one line (lib/attribution.ts), so
       // a value cannot forge a line of the notification ("Priority: ...", "Email: ...") or add
       // text to the acknowledgement, which goes to an address the submitter chose.
@@ -361,6 +356,22 @@ export async function POST(request: NextRequest) {
       // party) is withheld.
       spamSuspected: Boolean(clean(raw[HONEYPOT_FIELD])),
     };
+
+    // Reference. The form sends one submissionId per attempt and reuses it when it retries.
+    // The reference, and with it every idempotency key (`lead-notify-<ref>`, `lead-ack-<ref>`,
+    // `lead-<ref>`) and the store path, is derived from that id AND the cleaned content:
+    //   - an identical retry gets the same reference, so nothing is sent or stored twice;
+    //   - a retry the visitor edited first (network error, changed message, send again) gets
+    //     a new reference and is delivered as the new message it is. Before, it reused the
+    //     keys: the mail provider dropped it or refused it (Resend answers 409 to a reused
+    //     key with a different payload) and it overwrote the first stored object.
+    // "Content" is everything that ends up in the notification, attribution included, so one
+    // key never stands for two different payloads.
+    const submissionId = clean(raw.submissionId, 64).toLowerCase();
+    ref = UUID.test(submissionId)
+      ? createHash("sha256").update(`${submissionId}\n${JSON.stringify(content)}`).digest("hex").slice(0, 8)
+      : crypto.randomUUID().replace(/-/g, "").slice(0, 8);
+    const fields: LeadData = { ref, ...content };
 
     const lead: QualifiedLead = { ...fields, priority: leadPriority(fields) };
 
