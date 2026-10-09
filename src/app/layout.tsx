@@ -80,17 +80,17 @@ export const metadata: Metadata = {
 
   icons: {
     icon: [
-      { url: "/favicons/favicon.ico?v=4", sizes: "any" },
-      { url: "/favicons/favicon-16x16.png?v=4", sizes: "16x16", type: "image/png" },
-      { url: "/favicons/favicon-32x32.png?v=4", sizes: "32x32", type: "image/png" },
-      { url: "/favicons/favicon-48x48.png?v=4", sizes: "48x48", type: "image/png" },
-      { url: "/favicons/favicon-64x64.png?v=4", sizes: "64x64", type: "image/png" },
-      { url: "/favicons/favicon-128x128.png?v=4", sizes: "128x128", type: "image/png" },
-      { url: "/favicons/favicon-192x192.png?v=4", sizes: "192x192", type: "image/png" },
-      { url: "/favicons/favicon-256x256.png?v=4", sizes: "256x256", type: "image/png" },
-      { url: "/favicons/favicon-512x512.png?v=4", sizes: "512x512", type: "image/png" },
+      { url: "/favicons/favicon.ico?v=5", sizes: "any" },
+      { url: "/favicons/favicon-16x16.png?v=5", sizes: "16x16", type: "image/png" },
+      { url: "/favicons/favicon-32x32.png?v=5", sizes: "32x32", type: "image/png" },
+      { url: "/favicons/favicon-48x48.png?v=5", sizes: "48x48", type: "image/png" },
+      { url: "/favicons/favicon-64x64.png?v=5", sizes: "64x64", type: "image/png" },
+      { url: "/favicons/favicon-128x128.png?v=5", sizes: "128x128", type: "image/png" },
+      { url: "/favicons/favicon-192x192.png?v=5", sizes: "192x192", type: "image/png" },
+      { url: "/favicons/favicon-256x256.png?v=5", sizes: "256x256", type: "image/png" },
+      { url: "/favicons/favicon-512x512.png?v=5", sizes: "512x512", type: "image/png" },
     ],
-    apple: { url: "/favicons/favicon-180x180.png?v=4", sizes: "180x180", type: "image/png" },
+    apple: { url: "/favicons/favicon-180x180.png?v=5", sizes: "180x180", type: "image/png" },
   },
   manifest: "/site.webmanifest",
 
