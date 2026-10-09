@@ -25,5 +25,5 @@ Deploying or merging to `main`; sending any email or message; creating accounts;
 | ID | Needed from the owner | Blocks | Fallback in place |
 |---|---|---|---|
 | B13 | Read the Shopify, Laravel and WordPress pages and confirm each describes a service Peregrine actually sells. They cite no project | keeping T10, T11, T13 live | pages state that no case study is published |
-| B14 | Vendor disclosure for the new investor-portal guide: any partnership or referral arrangement with AppFolio, Agora, Cash Flow Portal, Covercy, InvestNext, Juniper Square or SponsorCloud | a disclosure line on the guide | none shown; TODO(owner) in the page |
+| B14 | Vendor disclosure for the new guides (investor portals and self-storage software name many vendors): any partnership or referral arrangement with AppFolio, Agora, Cash Flow Portal, Covercy, InvestNext, Juniper Square or SponsorCloud | a disclosure line on the guide | none shown; TODO(owner) in the page |
 | B15 | Resolved in code 2026-10-09: `/api/csp-report` logs violations to the Vercel log. Remaining owner step after deploy: read the log for "CSP violation" for two weeks, then authorize enforcing the policy | enforcing the CSP | CSP stays report-only |

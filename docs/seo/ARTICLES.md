@@ -24,7 +24,8 @@ Written as `src/app/blog/investor-portal-vs-file-sharing/page.tsx`. The brief be
 - **Links:** to `/services/investor-portal-development`, the case study, `/industries/real-estate`.
 - **After publishing:** add the slug to `guides` on the investor portal service and to the real-estate industry.
 
-## 2. RESO Web API vs RETS: migration guide
+## 2. RESO Web API vs RETS: migration guide — PUBLISHED ON THE BRANCH (2026-10-09)
+Written as `src/app/blog/reso-web-api-vs-rets/page.tsx`. The brief below is kept for reference.
 - **URL:** `/blog/reso-web-api-vs-rets`
 - **Evidence:** the MLS service page ranks for `mls idx api`; the cost guide already cites NAR policy 7.90, RESO's deprecation statement and ARMLS's RETS shutdown date.
 - **Intent:** informational, technical. Reader maintains a RETS integration.
@@ -33,7 +34,8 @@ Written as `src/app/blog/investor-portal-vs-file-sharing/page.tsx`. The brief be
 - **To gather:** RESO's own documentation for the Web API and Data Dictionary versions; published RETS retirement dates from individual MLSs.
 - **Do not include:** how long a migration takes, unless the owner supplies Peregrine's own experience (B8).
 
-## 3. IDX vendor vs custom build
+## 3. IDX vendor vs custom build — PUBLISHED ON THE BRANCH (2026-10-09)
+Written as `src/app/blog/idx-vendor-vs-custom-build/page.tsx`. The brief below is kept for reference.
 - **URL:** `/blog/idx-vendor-vs-custom-build`
 - **Evidence:** `idx cost per month`, `how much is idx`, `idx` impressions on the cost guide.
 - **Intent:** decision support for a brokerage outgrowing a plugin.
@@ -41,7 +43,8 @@ Written as `src/app/blog/investor-portal-vs-file-sharing/page.tsx`. The brief be
 - **Outline:** short answer; what an IDX plugin gives you; the limits (design, data ownership, multi-MLS, lead handling); cost comparison using the cost guide's sourced figures and the calculator; signs it is time to build; FAQ.
 - **Risk:** overlap with the cost guide. Keep cost detail there and link to it; this guide is about the decision.
 
-## 4. Self-storage software: build or buy
+## 4. Self-storage software: build or buy — PUBLISHED ON THE BRANCH (2026-10-09)
+Written as `src/app/blog/self-storage-software-build-vs-buy/page.tsx`. The brief below is kept for reference.
 - **URL:** `/blog/self-storage-software-build-vs-buy`
 - **Evidence:** seven self-storage queries at positions 59–90.
 - **Intent:** decision support for a multi-site operator.
@@ -50,7 +53,8 @@ Written as `src/app/blog/investor-portal-vs-file-sharing/page.tsx`. The brief be
 - **To gather:** published feature and pricing pages of the main self-storage management products.
 - **Blocked detail:** naming the smart-lock vendors (B10).
 
-## 5. MLS data in Canada: CREA DDF and board feeds
+## 5. MLS data in Canada: CREA DDF and board feeds — PUBLISHED ON THE BRANCH (2026-10-09)
+Written as `src/app/blog/mls-data-access-canada/page.tsx`. The brief below is kept for reference.
 - **URL:** `/blog/mls-data-access-canada`
 - **Evidence:** Canada is 3% of impressions against a stated core market; the cost guide cites one CREA fee.
 - **Intent:** informational for Canadian brokerages and proptech teams.

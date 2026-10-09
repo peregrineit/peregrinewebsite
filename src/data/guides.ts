@@ -136,6 +136,21 @@ export const guides: Guide[] = [
     service: 'saas-development',
     caseStudy: 'self-storage-management-platform',
   },
+  {
+    slug: 'mls-data-access-canada',
+    cta: {
+      heading: 'Building on Canadian Listing Data?',
+      text: 'Tell us which provinces and boards you need and what you are building. An engineer will tell you which feeds and agreements apply and how we would combine them.',
+    },
+    title: 'MLS Data Access in Canada: CREA DDF and Board Feeds',
+    metaTitle: 'MLS Data in Canada: CREA DDF & Board Feeds',
+    description:
+      'How listing data access works in Canada: CREA DDF channels, rules, API and technology-provider fees, plus board IDX and VOW programs, with sources.',
+    datePublished: '2026-10-09',
+    dateModified: '2026-10-09',
+    service: 'mls-idx-integration',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {

@@ -118,3 +118,26 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
   - NorthstarMLS blocks automated access, so its fees in the data-access guide could not be re-verified today.
   - The cost guide's new "priced per user" section now says some MLSs do tier vendor fees by user count and points to the data-access guide, which cites one.
 - **Next:** Q3.
+
+### Q3 — guide: RESO Web API vs RETS
+- **Files:** `src/app/blog/reso-web-api-vs-rets/`, `guides.ts`, `services.ts`, `industries.ts`, cost guide (link), `content-pages.css` (inline code style), `llms.txt`
+- **Commit:** `1519884`
+- **Tests:** 34 quoted statements re-fetched and matched by me (RESO, transport.reso.org, dd.reso.org, MLS Grid docs, Trestle docs, ARMLS, RLCAR, Metro MLS, Spark RETS docs); build; `seo_check.py` on 54 URLs FAILS: 0; 1,325 words, 48 source links; 97.4% unique against the other MLS guides.
+- **Remaining:** no statement on how long a migration takes (B8). Bridge's limits were left out because its docs could only be matched in a JavaScript bundle.
+
+### Q4 — guide: self-storage software, build or buy
+- **Files:** `src/app/blog/self-storage-software-build-vs-buy/`, `guides.ts`, `industries.ts`, `llms.txt`
+- **Commit:** `6a66eea`
+- **Tests:** 26 vendor statements re-fetched and matched by me; build; `seo_check.py` on 55 URLs FAILS: 0; 1,172 words, 35 source links; 97.4% unique against `/industries/self-storage`.
+- **Remaining:** Stora's dollar prices render client-side and vary by unit count, so the guide says "published by unit count, starting at 50 units" without a figure. Unit Trac's per-unit figure is split across markup, so only its stated minimum is quoted. Vendor disclosure is TODO(owner) (B14 now covers this guide too).
+
+### Q5 — guide: MLS data access in Canada
+- **Files:** `src/app/blog/mls-data-access-canada/`, `guides.ts`, `services.ts`, `industries.ts`, `llms.txt`
+- **Commit:** see the commit after `6a66eea`
+- **Tests:** CREA's June 2026 DDF rules PDF (10 quotes), the technology-provider pricing post and its image table (read by eye, matches), DDF API docs, PropTx IDX/VOW pages and rules PDF, OREB, BC Rules of Cooperation PDF, VREB, Repliers, SimplyRETS, RESO posts, and realtor.ca's FAQ and Pillar 9 in a browser: all matched. Build; `seo_check.py` on 56 URLs FAILS: 0; 1,541 words, 46 source links; 98.2% unique against the other MLS guides.
+- **Remaining:** no board publishes a fee, and the guide says so. Pillar 9's quoted process is about data and report requests, and the guide says no public IDX/VOW program page was found. Centris, Edmonton and Nova Scotia are named as not verified. The fee table's cells are not individually linked; the table has one source line.
+- **Also found:** the existing data-access guide cites CREA's February 2024 rules; a June 2026 revision exists (Q14).
+
+### Regression after five new guides
+- `test_lead_api.py` 39 passed; `test_mls_fees.mjs` 56 passed; `tsc` clean; `seo_check.py` on 56 URLs FAILS: 0.
+- **Next:** Q8 (draft pull request), then Q13 and Q14.

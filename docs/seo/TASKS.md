@@ -23,7 +23,7 @@ Per-task detail, files, hashes and tests are in `PROGRESS.md`. Blockers are in `
 | T14 | Verified MLS-specific content | — | blocked (B8) |
 | T15 | MLS/IDX estimation calculator, from the guide's sourced fees only | T2 | done |
 | T16 | Internal linking, schema, sitemap, metadata housekeeping | T9, T12 | partial: linking, robots, sitemap, Person url, W3\|re label done. homepage video and logo weight done. Open: CSP report-to (B15), W3\|re dashboard block (B9) |
-| T17 | SEO articles from the content strategy | T8 | partial: first guide published on the branch (investor portal vs file sharing); four briefs remain in ARTICLES.md; two blocked (B6, B8) |
+| T17 | SEO articles from the content strategy | T8 | done for every unblocked brief: five guides written on the branch; two briefs blocked (B6, B8) |
 | T18 | Outreach assets and list of external account actions | — | done: OUTREACH.md (nothing sent) |
 
 ## Title experiments (T1)
@@ -81,9 +81,9 @@ Ordered. The loop takes the first item that is `ready`, finishes it, updates thi
 |---|---|---|
 | Q1 | Code quality: remove the two remaining `any` lint errors in `src/app/page.tsx`; automated test for the calculator's fee arithmetic | done |
 | Q2 | CSP: a report endpoint (`/api/csp-report`, logs to Vercel logs) and `report-uri`/`report-to` on the report-only policy | done |
-| Q3 | Guide: RESO Web API vs RETS (research running) | ready |
-| Q4 | Guide: self-storage software, build or buy (research running) | ready |
-| Q5 | Guide: MLS data access in Canada (research running) | ready |
+| Q3 | Guide: RESO Web API vs RETS | done |
+| Q4 | Guide: self-storage software, build or buy | done |
+| Q5 | Guide: MLS data access in Canada | done |
 | Q6 | Guide: IDX vendor vs custom build (uses the cost guide's sources and the calculator) | done |
 | Q7 | Lighthouse performance and accessibility on each new page type; fix what it finds | done: nothing to fix |
 | Q8 | Release readiness: draft pull request `seo/phase-12` → `main` with the deployment checklist (draft, not to be merged without the owner) | ready |
@@ -91,3 +91,5 @@ Ordered. The loop takes the first item that is `ready`, finishes it, updates thi
 | Q10 | W3\|re dashboard block and metric windows | blocked (B9) |
 | Q11 | Team section, Odoo named integrations, first-hand MLS timelines, Shopify/Laravel/WordPress proof | blocked (B5–B8) |
 | Q12 | Merge, deploy, IndexNow resubmission, outreach | blocked: owner authorization (B1, B12) |
+| Q13 | Guide: Odoo implementation cost, from Odoo's published pricing (research running). From the content backlog in SEO-PLAN.md; does not need the named integrations in B6 | ready |
+| Q14 | Quarterly source follow-up: NAR handbook pages are login-gated and CREA's DDF rules have a June 2026 revision; update the data-access guide's citations | ready |

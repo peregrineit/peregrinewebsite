@@ -297,7 +297,7 @@ const coreServiceList: Service[] = [
       { slug: 'w3re-ai-real-estate-platform', note: 'A unified pipeline for four MLS systems (NTREIS, Stellar MLS, ARMLS and REcolorado) that normalizes schemas and deduplicates cross-listed properties.' },
       { slug: 'scaling-real-estate-saas-platform', note: 'Rebuilt the MLS sync engine for US and Canadian boards with delta detection, retry logic and per-feed error isolation, feeding Elasticsearch search for agent IDX sites.' },
     ],
-    guides: ['mls-idx-integration-cost', 'how-to-get-mls-data-access', 'idx-vendor-vs-custom-build', 'reso-web-api-vs-rets', 'cost-to-build-a-real-estate-platform'],
+    guides: ['mls-idx-integration-cost', 'how-to-get-mls-data-access', 'idx-vendor-vs-custom-build', 'reso-web-api-vs-rets', 'mls-data-access-canada', 'cost-to-build-a-real-estate-platform'],
     answers: {
       includes:
         'Peregrine\'s MLS and IDX integration service builds the full listing pipeline: feed ingestion over the RESO Web API or RETS, normalization across MLS boards, deduplication of cross-listed properties, a fast search layer, and the IDX website or app on top, with lead capture feeding your CRM. We also build and operate our own real estate product, RealFoyer.',
