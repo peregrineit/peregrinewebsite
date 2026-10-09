@@ -26,7 +26,7 @@ FROM = "Peregrine IT <hello@test.invalid>"
 NOTIFY = "info@peregrine-it.com"
 
 DEFAULTS = dict(emails=[], attempts=0, hooks=[], keys={}, events={}, fail=None, fail_once=None, fail_ack=None,
-                hook_fail=False, hook_sleep=0, hook_plan=[], hook_attempts=[],
+                hook_fail=False, hook_sleep=0, hook_plan=[], hook_attempts=[], email_sleep=0, ack_sleep=0,
                 alerts=[], alert_fail=False, alert_sleep=0,
                 blobs={}, blob_puts=[], blob_fail=None, blob_sleep=0, blob_wrong_path=False)
 state = dict(DEFAULTS, domains=[{"name": "test.invalid", "status": "verified"}])
@@ -52,6 +52,8 @@ class Mock(http.server.BaseHTTPRequestHandler):
         if self.path.startswith("/emails"):
             state["attempts"] += 1
             to = body.get("to"); to = to[0] if isinstance(to, list) else to
+            delay = state["email_sleep"] if to == NOTIFY else state["ack_sleep"]
+            if delay: time.sleep(delay)                       # a Resend call that does not come back in time
             code = state["fail"] or (state["fail_ack"] if to != NOTIFY else None)
             if state["fail_once"]:
                 code, state["fail_once"] = state["fail_once"], None
@@ -365,6 +367,16 @@ def run():
         s, b = post(LEAD, ip())
         check("ack failure: lead accepted, acknowledgement reported failed", s == 200 and b["notification"]["status"] == "accepted" and b["acknowledgement"] == {"status": "failed"}, f"got {s} {b}")
         check("ack failure: logged, not swallowed", "Lead accepted with a failed step" in app_log()[before:])
+        # Resend does not answer in time: each send has a deadline (8 s notification, 5 s acknowledgement)
+        reset(email_sleep=11); before = len(app_log()); t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
+        check("resend timeout: a notification that does not come back fails after about 8 s", s == 502 and b.get("success") is False and 7.0 < dt < 9.5, f"got {s} in {dt:.1f}s")
+        check("resend timeout: reported and logged as a timeout", "timeout" in b.get("diagnostic", {}).get("notification", "") and '"reason":"timeout"' in app_log()[before:], f"got {b}")
+        time.sleep(3.5)
+        reset(ack_sleep=8); before = len(app_log()); t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
+        check("resend timeout: a hung acknowledgement is reported failed after about 5 s; the lead stays accepted",
+              s == 200 and b.get("notification", {}).get("status") == "accepted" and b.get("acknowledgement") == {"status": "failed"} and 4.5 < dt < 6.5, f"got {s} in {dt:.1f}s {b}")
+        check("resend timeout: acknowledgement timeout is logged", "Lead accepted with a failed step" in app_log()[before:] and '"reason":"timeout"' in app_log()[before:])
+        time.sleep(3.5)
     finally: stop_app(app)
 
     # --- resend with a sender domain Resend has not verified

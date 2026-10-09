@@ -96,8 +96,31 @@ function detailOf(error: unknown): string | undefined {
  * Send one email. The idempotency key makes a repeat of the same message (our own retry,
  * a double click, a visitor's retry after a lost response) a no-op at Resend instead of
  * a second email. One retry, and only when the failure could be transient.
+ *
+ * `deadlineMs` covers the whole call, retry included. The Resend SDK sets no timeout of its
+ * own, so without it a stalled connection would hold the visitor's response for as long as
+ * the platform allows. A send that has not answered by then is reported as failed with the
+ * reason "timeout"; it may still go through at Resend, which is why a retry by the visitor
+ * reuses the same idempotency key (components/LeadForms.tsx keeps the submission id).
  */
 async function sendEmail(
+  resend: Resend,
+  payload: { to: string; subject: string; text: string; replyTo?: string },
+  idempotencyKey: string,
+  deadlineMs: number
+): Promise<Outcome> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<Outcome>((resolve) => {
+    timer = setTimeout(() => resolve({ status: "failed", reason: "timeout" }), deadlineMs);
+  });
+  try {
+    return await Promise.race([trySend(resend, payload, idempotencyKey), timeout]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function trySend(
   resend: Resend,
   payload: { to: string; subject: string; text: string; replyTo?: string },
   idempotencyKey: string
@@ -230,6 +253,9 @@ async function senderDomainVerified(): Promise<boolean | null> {
   return value;
 }
 
+/** Longest wait for Resend, per email, retry included. The acknowledgement gets less: the lead is already safe. */
+const NOTIFY_DEADLINE_MS = 8000;
+const ACK_DEADLINE_MS = 5000;
 /** Webhook and store together must be done this long after the request started. */
 const SHARED_DEADLINE_MS = 5500;
 /** Once the lead is accepted, the store write waits at most this long for the other destination's answer. */
@@ -353,7 +379,7 @@ export async function POST(request: NextRequest) {
     // store together hold the response for about 5.5 s at most, not 8.
     const started = Date.now();
     const notifying: Promise<Outcome> = resend
-      ? sendEmail(resend, notificationEmail(lead), `lead-notify-${ref}`)
+      ? sendEmail(resend, notificationEmail(lead), `lead-notify-${ref}`, NOTIFY_DEADLINE_MS)
       : Promise.resolve<Outcome>({ status: "skipped", reason: "RESEND_API_KEY not set" });
     const hooking: Promise<Outcome> = webhookUrl
       ? postToWebhook(webhookUrl, lead, receivedAt)
@@ -390,7 +416,7 @@ export async function POST(request: NextRequest) {
     if (!resend) acknowledging = { status: "skipped", reason: "RESEND_API_KEY not set" };
     else if (!accepted) acknowledging = { status: "skipped", reason: "lead was not accepted" };
     else if (lead.spamSuspected) acknowledging = { status: "skipped", reason: "hidden field was filled" };
-    else acknowledging = sendEmail(resend, acknowledgementEmail(lead), `lead-ack-${ref}`);
+    else acknowledging = sendEmail(resend, acknowledgementEmail(lead), `lead-ack-${ref}`, ACK_DEADLINE_MS);
 
     const storing: Promise<StoreResult> | StoreResult = accepted
       ? earlyStoring ?? saveNow()

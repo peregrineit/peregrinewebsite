@@ -54,8 +54,10 @@ async function submitLead(formEl: HTMLFormElement, formData: Record<string, stri
       }),
     });
     const json = await res.json();
-    // The server gave a definite answer; the next attempt is a new submission.
-    if (res.status < 500 || json.status) delete pendingIds[formData.form];
+    // Accepted or refused as invalid: the next attempt is a new submission. After a 5xx the id
+    // is kept: an email that timed out on our side may still have been sent, and the same id
+    // lets the mail provider recognise the retry instead of sending it twice.
+    if (res.status < 500) delete pendingIds[formData.form];
     // "accepted" = the mail provider or the webhook took the lead. Anything else is not a lead.
     if (res.ok && json.success && json.status === 'accepted' && json.ref) {
       const ids = [json.notification?.id, json.acknowledgement?.id].filter((id): id is string => typeof id === 'string');

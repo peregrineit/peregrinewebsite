@@ -31,10 +31,12 @@ const check = (name, cond, detail = '') => { if (cond) passed++; else fails.push
 
 // --- mock webhook: accepts every lead, keeps the bodies
 const hooks = [];
+let failNext = 0;   // answer this many requests with 500 first
 const mock = http.createServer((req, res) => {
   let body = '';
   req.on('data', (c) => { body += c; });
   req.on('end', () => {
+    if (failNext > 0) { failNext--; res.writeHead(500, { 'Content-Type': 'application/json' }); res.end('{"error":"mock"}'); return; }
     try { hooks.push(JSON.parse(body)); } catch { /* ignore */ }
     res.writeHead(200, { 'Content-Type': 'application/json' }); res.end('{"ok":true}');
   });
@@ -214,6 +216,24 @@ async function main() {
   check('abandon: leaving with a started, unsent form fires lead_form_abandon once, form and page only',
     abandons.length === 1 && JSON.stringify(abandons[0].props) === JSON.stringify({ form: 'quick-project', page: '/contact' }), JSON.stringify(kept));
   check('abandon: no event carries a field value', !JSON.stringify(kept).includes('TEST Abandon'));
+
+  // ---------------------------------------------------------------- 6. a retry after a server failure is the same submission
+  await goto(`${APP}/contact`);
+  const R = `${F}`;
+  failNext = 2;                       // both webhook attempts fail -> the API answers 502
+  const sent = posts.length; const stored = hooks.length;
+  await typeInto(`${R} [name=scName]`, 'TEST Retry');
+  await typeInto(`${R} [name=scEmail]`, 'retry-check@example.com');
+  await js(`(function () { var f = document.querySelector(${JSON.stringify(R)}); f.scType.value = 'other'; f.scTimeline.value = 'asap'; })()`);
+  await typeInto(`${R} [name=scMessage]`, 'Retry browser check, not a real enquiry.');
+  await js(`document.querySelector(${JSON.stringify(R)}).requestSubmit()`);
+  await waitFor(() => js(`!!document.querySelector('[data-lead-note]') && document.querySelector('[data-lead-note]').textContent.includes('HTTP 502')`), 'the 502 error');
+  await js(`document.querySelector(${JSON.stringify(R)}).requestSubmit()`);
+  await waitFor(() => hooks.length === stored + 1, 'the retried lead');
+  check('retry: after a 502 the form retries as the same submission', posts.length === sent + 2 && posts[sent].submissionId === posts[sent + 1].submissionId, JSON.stringify(posts.slice(sent).map((p) => p.submissionId)));
+  await waitFor(() => js(`document.body.innerText.includes('Request received')`), 'the success message after the retry');
+  const errs = await events('lead_error');
+  check('retry: lead_error carried the HTTP status', errs.length === 1 && errs[0].props.status === 502, JSON.stringify(errs));
   ws.close();
 }
 
