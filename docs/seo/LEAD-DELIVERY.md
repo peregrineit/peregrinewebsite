@@ -32,6 +32,33 @@ For the failed test, from the time it was submitted:
 
 None of this blocks the fix below; it decides whether the root cause is recorded as proven.
 
+## Second owner test, on the fixed build (`8097170`): "We could not send your request."
+
+**What that message proves:** the API answered 502 `not-accepted`. With no webhook configured, that happens only when **Resend rejected the notification email** (or could not be reached). So the earlier "success" on the old build did not come from Resend accepting anything: it is consistent with path A (the hidden field), and the real fault, Resend refusing the send, was hidden behind it.
+
+**What it does not prove:** why Resend refused. That is in one log line I cannot read.
+
+**Not application code, as far as can be shown locally:** the same build, run on this machine against the real Resend API with a deliberately invalid key, returned 502 and logged `"notification":{"status":"failed","reason":"validation_error (401)"}`. The request reaches Resend and Resend's error is recorded correctly.
+
+**No code was changed for this report.** A fix follows the cause.
+
+### Needed from the owner (two items, both free of personal data)
+
+1. **Vercel → peregrinewebsite → Logs**, filter text `Lead NOT accepted`, the most recent line. Paste the whole line: it contains a reference, statuses and a `reason` such as `validation_error (403)`; no name, address or message.
+2. Open `<preview>/api/lead` and paste the JSON (booleans and words only).
+
+| `reason` in the log | Cause | Class | Fix |
+|---|---|---|---|
+| `validation_error (401)` or `missing_api_key`, `invalid_api_key` | The key in Vercel's Preview scope is wrong, revoked or truncated | configuration | paste a valid key from the Resend account that owns the domain |
+| `validation_error (403)` | The key is valid but its account has not verified the domain in `LEAD_FROM_EMAIL` (a different Resend account or team, or the address is on another domain or subdomain than the verified one) | authorization | use a key from the account where `peregrine-it.com` shows Verified, or correct the address |
+| `validation_error (422)` or `invalid_from_address` | `LEAD_FROM_EMAIL` is malformed (for example stray quotes around the value, or a missing `>`) | configuration | set exactly `Peregrine IT <hello@peregrine-it.com>` with no surrounding quotes |
+| `restricted_api_key` | The key is limited to another domain | authorization | use an unrestricted or correctly scoped key |
+| `daily_quota_exceeded`, `monthly_quota_exceeded`, `rate_limit_exceeded (429)` | Plan limit | provider rejection | wait or raise the limit |
+| `invalid_idempotency_key` or anything naming the request shape | Something this code sends | application code | I fix it |
+| `fetch failed` or a timeout | Resend unreachable from Vercel | provider or network | retry; check Resend status |
+
+And from the status JSON: `senderDomainVerified: false` means the key works but its account does not have the sender's domain verified; `null` means the key is invalid or is a sending-only key; `true` rules out the first two rows.
+
 ## What the code does now (`src/app/api/lead/route.ts`)
 
 Three states, never merged:

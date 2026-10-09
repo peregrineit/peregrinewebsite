@@ -8,6 +8,7 @@
 
 - **Root cause: not proven.** Two code paths could produce that result; the evidence that separates them is in Resend's activity list and the Vercel log, which I cannot read. Details and the single evidence request: `LEAD-DELIVERY.md`.
 - **Fixed regardless (commit `fix(lead)`):** a filled hidden anti-spam field no longer returns a silent success; the acknowledgement's result is checked; success means "accepted by the mail provider", is worded "Request received", and comes with a reference; Resend message ids are logged; retries cannot duplicate; the form reports a delivery problem if Resend records one.
+- **Second owner test (fixed build): "We could not send your request."** Resend is rejecting the notification; the reason is in the Vercel log line `Lead NOT accepted`, which I cannot read. Cause classes and the two-item request are in `LEAD-DELIVERY.md`. No code change was made for it.
 - **A fresh real submission on the new preview build is required.** The earlier test ran on a build that had the defects above.
 
 ### What the fresh test must show
