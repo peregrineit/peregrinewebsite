@@ -11,10 +11,11 @@ where it matters: message ids, idempotency keys, error bodies, message status lo
   resend        RESEND_API_KEY only (RESEND_BASE_URL -> mock)
   both          both destinations
   unreachable   RESEND_BASE_URL points at a closed port
+  store         LEAD_STORE=vercel-blob + token, with the Blob API pointed at the mock
 
 Usage: python3 scripts/test_lead_api.py      (exits 1 on any failure)
 """
-import hashlib, hmac, http.server, json, os, re, subprocess, sys, threading, time, urllib.error, urllib.request, uuid
+import hashlib, hmac, http.server, json, os, re, subprocess, sys, threading, time, urllib.error, urllib.parse, urllib.request, uuid
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Ports can be overridden so several checkouts can run the suite at once.
@@ -25,7 +26,8 @@ FROM = "Peregrine IT <hello@test.invalid>"
 NOTIFY = "info@peregrine-it.com"
 
 DEFAULTS = dict(emails=[], attempts=0, hooks=[], keys={}, events={}, fail=None, fail_once=None, fail_ack=None,
-                hook_fail=False, hook_sleep=0, hook_plan=[], hook_attempts=[])
+                hook_fail=False, hook_sleep=0, hook_plan=[], hook_attempts=[],
+                blobs={}, blob_puts=[], blob_fail=None, blob_sleep=0, blob_wrong_path=False)
 state = dict(DEFAULTS, domains=[{"name": "test.invalid", "status": "verified"}])
 ERRORS = {
     422: {"statusCode": 422, "name": "validation_error", "message": "Invalid `from` field: hello@test.invalid is not allowed."},
@@ -72,6 +74,20 @@ class Mock(http.server.BaseHTTPRequestHandler):
             state["hooks"].append({**body, "_key": self.headers.get("Idempotency-Key"), "_sig": self.headers.get("X-Peregrine-Signature"), "_raw": raw})
             return self._send(200, {"ok": True})
         self._send(404, {})
+    def do_PUT(self):
+        # Stand-in for the Vercel Blob API as the @vercel/blob SDK calls it: PUT <api>/?pathname=<path>.
+        raw = self.rfile.read(int(self.headers.get("Content-Length", 0)))
+        url = urllib.parse.urlparse(self.path)
+        if url.path.rstrip("/") != "/blob": return self._send(404, {})
+        pathname = urllib.parse.parse_qs(url.query).get("pathname", [""])[0]
+        state["blob_puts"].append({"pathname": pathname, "headers": {k.lower(): v for k, v in self.headers.items()}})
+        if state["blob_sleep"]: time.sleep(state["blob_sleep"])
+        if self.headers.get("Authorization") != f"Bearer {BLOB_TOKEN}": return self._send(403, {"error": {"code": "forbidden"}})
+        if state["blob_fail"]: return self._send(state["blob_fail"], {"error": {"code": "mock_failure"}})
+        if pathname in state["blobs"] and self.headers.get("x-allow-overwrite") != "1": return self._send(400, {"error": {"code": "blob_already_exists"}})
+        state["blobs"][pathname] = json.loads(raw)
+        if state["blob_wrong_path"]: pathname = "somewhere/else.json"
+        self._send(200, {"url": f"https://mockstore.private.blob.vercel-storage.com/{pathname}", "pathname": pathname, "contentType": "application/json"})
     def _send(self, code, obj):
         data = json.dumps(obj).encode()
         try:
@@ -135,6 +151,8 @@ def reset(**kw):
 def to_notify(): return [e for e in state["emails"] if e["to"] == NOTIFY]
 def to_visitor(): return [e for e in state["emails"] if e["to"] != NOTIFY]
 
+BLOB_TOKEN = "vercel_blob_rw_mockstore_notARealToken"
+STORE_ENV = {"LEAD_STORE": "vercel-blob", "BLOB_READ_WRITE_TOKEN": BLOB_TOKEN, "LEAD_STORE_BLOB_API_URL": MOCK + "/blob"}
 SECRET = "test-shared-secret-not-a-real-one"
 def verifier(secret, header, raw):
     """Exit code of the reference Node verifier (0 = valid) for a captured request."""
@@ -381,6 +399,82 @@ def run():
         reset(fail=500, hook_fail=True)
         s, b = post(LEAD, ip()); check("both: everything down -> 502", s == 502 and b.get("success") is False, f"got {s}")
     finally: stop_app(app)
+    # --- durable store behind its switch (src/lib/lead-store.ts). MOCK ONLY: the adapter has
+    #     never been run against the real Vercel Blob API.
+    reset(); app = start_app({**RESEND_ENV, **HOOK_ENV, **STORE_ENV})
+    try:
+        st = get(); check("store: status names the store, never the token",
+                          st.get("store") == "vercel-blob" and st.get("durableStorage") == "webhook+vercel-blob" and BLOB_TOKEN not in json.dumps(st) and "mockstore" not in json.dumps(st), f"got {st}")
+        s, b = post({**LEAD, **ATTR}, ip()); blobs = state["blobs"]; ref = b.get("ref", "")
+        check("store: accepted lead is written once", s == 200 and len(blobs) == 1 and len(state["blob_puts"]) == 1, f"got {s}, {len(blobs)} objects")
+        check("store: response reports the write", b.get("store") == {"status": "stored"} and b.get("durableStorage") == "webhook+vercel-blob", f"got {b}")
+        if blobs:
+            path, obj = next(iter(blobs.items())); hd = state["blob_puts"][0]["headers"]
+            m = re.fullmatch(r"leads/\d{4}-\d{2}/" + re.escape(ref) + r"-([0-9a-f]{32})\.json", path)
+            check("store: path holds the reference and a 128-bit unguessable suffix", m is not None, f"got {path}")
+            check("store: private access, no second random suffix, JSON content type",
+                  hd.get("x-vercel-blob-access") == "private" and hd.get("x-add-random-suffix") == "0" and hd.get("x-content-type") == "application/json" and hd.get("x-api-version"), f"got {hd}")
+            check("store: object holds the lead", all(obj.get(k) == LEAD[k] for k in ("name", "email", "company", "message", "form", "service", "timeline", "pageUrl")) and obj.get("ref") == ref, f"got {obj}")
+            check("store: object holds the attribution", all(obj.get(k) == v for k, v in ATTR.items()) and obj.get("landingPage") == LEAD["landingPage"] and obj.get("utm") == LEAD["utm"])
+            check("store: object holds priority, time and how delivery went", obj.get("priority") == "high" and re.match(r"\d{4}-\d\d-\d\dT", obj.get("receivedAt", ""))
+                  and obj.get("delivery") == {"notification": "accepted", "webhook": "accepted"}, f"got {obj.get('delivery')}")
+            check("store: same receivedAt in the store and the webhook", state["hooks"] and state["hooks"][0].get("receivedAt") == obj.get("receivedAt"))
+            if m:
+                check("store: neither the path nor the token reaches the visitor or the log", m.group(1) not in json.dumps(b) and m.group(1) not in app_log()
+                      and BLOB_TOKEN not in app_log() and "Lead accepted" in app_log())
+        # the same submission twice replaces its own object; another lead gets another path
+        reset(); sid = str(uuid.uuid4())
+        post({**LEAD, "submissionId": sid}, ip()); s, b = post({**LEAD, "submissionId": sid}, ip())
+        check("store: a repeated submission is still one object", s == 200 and len(state["blobs"]) == 1 and len(state["blob_puts"]) == 2 and b.get("store") == {"status": "stored"}, f"got {len(state['blobs'])}")
+        post(LEAD, ip()); suffixes = {p.rsplit("-", 1)[1] for p in state["blobs"]}
+        check("store: a different lead gets a different path", len(state["blobs"]) == 2 and len(suffixes) == 2)
+        reset(); s, b = post({**LEAD, "pit_confirm_field": "x"}, ip())
+        check("store: a suspected-spam lead is stored too, marked", s == 200 and len(state["blobs"]) == 1 and next(iter(state["blobs"].values())).get("spamSuspected") is True)
+        # a failing store never fails the lead
+        for label, kw, reason in (("500", {"blob_fail": 500}, "store responded 500"), ("403", {"blob_fail": 403}, "store responded 403"),
+                                  ("unconfirmed write", {"blob_wrong_path": True}, "store did not confirm the write")):
+            reset(**kw); before = len(app_log()); s, b = post(LEAD, ip())
+            check(f"store {label}: lead still accepted, write reported failed", s == 200 and b.get("success") is True and b.get("store") == {"status": "failed"} and b.get("durableStorage") == "webhook", f"got {s} {b}")
+            check(f"store {label}: both emails and the webhook still went out", len(state["emails"]) == 2 and len(state["hooks"]) == 1)
+            check(f"store {label}: failure is logged with its reason", "Lead accepted with a failed step" in app_log()[before:] and reason in app_log()[before:], app_log()[before:][-300:])
+        reset(blob_sleep=6); t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
+        check("store hangs: lead accepted, write gives up after about 3 s", s == 200 and b.get("store") == {"status": "failed"} and dt < 4.5 and "store timed out" in app_log(), f"got {s} in {dt:.1f}s")
+        time.sleep(3.5)
+        # the rule: a store is a record of an accepted lead, never acceptance
+        reset(fail=500, hook_fail=True); s, b = post(LEAD, ip())
+        check("store: email and webhook both down -> 502 and nothing is stored", s == 502 and b.get("success") is False and not state["blob_puts"], f"got {s}, {len(state['blob_puts'])} writes")
+        reset(fail=500); s, b = post(LEAD, ip()); obj = next(iter(state["blobs"].values()), {})
+        check("store: email down, webhook accepted -> stored, and the object says the email failed", s == 200 and obj.get("delivery") == {"notification": "failed", "webhook": "accepted"}, f"got {s} {obj.get('delivery')}")
+    finally: stop_app(app)
+
+    # --- store with email only: the store is the durable record, the email is the acceptance
+    reset(); app = start_app({**RESEND_ENV, **STORE_ENV})
+    try:
+        st = get(); check("store+email: ok comes from the email; storage is the store", st.get("ok") is True and st.get("durableStorage") == "vercel-blob", f"got {st}")
+        s, b = post(LEAD, ip()); check("store+email: accepted and stored", s == 200 and len(state["blobs"]) == 1 and b.get("durableStorage") == "vercel-blob", f"got {s} {b}")
+        reset(fail=500); s, b = post(LEAD, ip())
+        check("store+email: email down -> 502, nothing stored (a store write is not acceptance)", s == 502 and not state["blob_puts"], f"got {s}")
+    finally: stop_app(app)
+
+    # --- store alone: not a destination
+    reset(); app = start_app(STORE_ENV)
+    try:
+        st = get(); check("store alone: status is not ok", st.get("ok") is False and st.get("store") == "vercel-blob", f"got {st}")
+        s, b = post(LEAD, ip()); check("store alone: 502 and nothing stored", s == 502 and not state["blob_puts"], f"got {s}")
+    finally: stop_app(app)
+
+    # --- the switch: both LEAD_STORE and the token are needed
+    for label, env in (("token without LEAD_STORE", {"BLOB_READ_WRITE_TOKEN": BLOB_TOKEN, "LEAD_STORE_BLOB_API_URL": MOCK + "/blob"}),
+                       ("LEAD_STORE without token", {"LEAD_STORE": "vercel-blob", "LEAD_STORE_BLOB_API_URL": MOCK + "/blob"}),
+                       ("unknown LEAD_STORE", {**STORE_ENV, "LEAD_STORE": "s3"})):
+        reset(); app = start_app({**HOOK_ENV, **env})
+        try:
+            st = get(); s, b = post(LEAD, ip())
+            check(f"switch off ({label}): nothing is written, behaviour as before",
+                  st.get("store") == "none" and st.get("durableStorage") == "webhook" and s == 200 and not state["blob_puts"]
+                  and b.get("store") == {"status": "skipped"} and b.get("durableStorage") == "webhook", f"got {st} {s} {b}")
+        finally: stop_app(app)
+
     server.shutdown()
     try: os.remove(LOG)
     except OSError: pass

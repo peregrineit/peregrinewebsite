@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { cleanAttribution, type LeadAttribution } from "@/lib/attribution";
 import { leadPriority, priorityLine, type PriorityResult } from "@/lib/lead-priority";
+import { getLeadStore, type StoreResult } from "@/lib/lead-store";
 import { deliverWebhook, type Outcome } from "@/lib/lead-webhook";
 
 // Lead intake for the two site forms (components/LeadForms.tsx).
@@ -16,9 +17,14 @@ import { deliverWebhook, type Outcome } from "@/lib/lead-webhook";
 // Acceptance rule: the visitor is told the request was received only when the
 // notification email was accepted by Resend or the webhook accepted the lead.
 //
-// There is no durable storage in this app (no database; Vercel has no writable disk).
-// The record of a lead is the notification email, Resend's own log and, when
+// A store write (lib/lead-store.ts, off by default) is a record of an accepted lead. It is
+// never acceptance on its own: nobody is notified when an object lands in a store.
+//
+// By default there is no durable storage in this app (no database; Vercel has no writable
+// disk). The record of a lead is the notification email, Resend's own log and, when
 // LEAD_WEBHOOK_URL is set, whatever that webhook writes to (docs/seo/LEAD-DELIVERY.md).
+// With LEAD_STORE=vercel-blob and a token, each accepted lead is also written to Vercel
+// Blob. Data flow and every variable: docs/growth/lead/ARCHITECTURE.md.
 
 const NOTIFY_TO = "info@peregrine-it.com";
 /** Must match the hidden input in components/LeadForms.tsx. */
@@ -180,10 +186,10 @@ https://peregrine-it.com`,
 }
 
 /** The lead as the webhook receives it: flat, so a spreadsheet receiver can map keys to columns. */
-function webhookBody(lead: QualifiedLead) {
+function webhookBody(lead: QualifiedLead, receivedAt: string) {
   const { attribution, priority, ...rest } = lead;
   return {
-    receivedAt: new Date().toISOString(),
+    receivedAt,
     source: "peregrine-it.com",
     ...rest,
     ...attribution,
@@ -193,8 +199,13 @@ function webhookBody(lead: QualifiedLead) {
 }
 
 /** One delivery per lead: retry, time budget and signature are in lib/lead-webhook.ts. */
-function postToWebhook(url: string, lead: QualifiedLead): Promise<Outcome> {
-  return deliverWebhook(url, JSON.stringify(webhookBody(lead)), `lead-${lead.ref}`, { secret: process.env.LEAD_WEBHOOK_SECRET });
+function postToWebhook(url: string, lead: QualifiedLead, receivedAt: string): Promise<Outcome> {
+  return deliverWebhook(url, JSON.stringify(webhookBody(lead, receivedAt)), `lead-${lead.ref}`, { secret: process.env.LEAD_WEBHOOK_SECRET });
+}
+
+/** Where a lead is (or would be) durably recorded: "none", "webhook", "vercel-blob" or "webhook+vercel-blob". */
+function durable(webhook: boolean, store: string | false): string {
+  return [webhook && "webhook", store].filter(Boolean).join("+") || "none";
 }
 
 // Whether Resend reports the sender's domain as verified. Asked of Resend itself, so it
@@ -249,6 +260,7 @@ export async function GET(request: NextRequest) {
 
   const resend = Boolean(process.env.RESEND_API_KEY);
   const webhook = Boolean(process.env.LEAD_WEBHOOK_URL);
+  const store = getLeadStore().name;
   return NextResponse.json(
     {
       // A destination is configured. Not proof that anything has been delivered.
@@ -260,7 +272,10 @@ export async function GET(request: NextRequest) {
       webhook,
       // Requests to the webhook carry an HMAC signature (LEAD_WEBHOOK_SECRET is set).
       webhookSigned: webhook && Boolean(process.env.LEAD_WEBHOOK_SECRET),
-      durableStorage: webhook ? "webhook" : "none",
+      // "none" unless LEAD_STORE=vercel-blob and its token are both set. A store alone does
+      // not make `ok` true: a lead still needs the email or the webhook to be accepted.
+      store,
+      durableStorage: durable(webhook, store !== "none" && store),
       environment: process.env.VERCEL_ENV || "local",
     },
     { headers }
@@ -319,23 +334,34 @@ export async function POST(request: NextRequest) {
 
     const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
     const webhookUrl = process.env.LEAD_WEBHOOK_URL;
+    const store = getLeadStore();
+    const receivedAt = new Date().toISOString();
 
     const [notification, webhook] = await Promise.all([
       resend
         ? sendEmail(resend, notificationEmail(lead), `lead-notify-${ref}`)
         : Promise.resolve<Outcome>({ status: "skipped", reason: "RESEND_API_KEY not set" }),
       webhookUrl
-        ? postToWebhook(webhookUrl, lead)
+        ? postToWebhook(webhookUrl, lead, receivedAt)
         : Promise.resolve<Outcome>({ status: "skipped", reason: "LEAD_WEBHOOK_URL not set" }),
     ]);
 
     const accepted = notification.status === "accepted" || webhook.status === "accepted";
 
-    let acknowledgement: Outcome;
-    if (!resend) acknowledgement = { status: "skipped", reason: "RESEND_API_KEY not set" };
-    else if (!accepted) acknowledgement = { status: "skipped", reason: "lead was not accepted" };
-    else if (lead.spamSuspected) acknowledgement = { status: "skipped", reason: "hidden field was filled" };
-    else acknowledgement = await sendEmail(resend, acknowledgementEmail(lead), `lead-ack-${ref}`);
+    let acknowledging: Promise<Outcome> | Outcome;
+    if (!resend) acknowledging = { status: "skipped", reason: "RESEND_API_KEY not set" };
+    else if (!accepted) acknowledging = { status: "skipped", reason: "lead was not accepted" };
+    else if (lead.spamSuspected) acknowledging = { status: "skipped", reason: "hidden field was filled" };
+    else acknowledging = sendEmail(resend, acknowledgementEmail(lead), `lead-ack-${ref}`);
+
+    // The durable record, only for a lead something has accepted (lib/lead-store.ts explains
+    // why a store write is not acceptance). Written alongside the acknowledgement so it adds
+    // no time of its own; it has its own 3 s limit.
+    const storing: Promise<StoreResult> | StoreResult = accepted
+      ? store.save({ ...webhookBody(lead, receivedAt), delivery: { notification: notification.status, webhook: webhook.status } })
+      : { status: "skipped", reason: store.name === "none" ? "no store configured" : "lead was not accepted" };
+
+    const [acknowledgement, stored] = await Promise.all([acknowledging, storing]);
 
     // One line per lead, no personal data: reference, per-message outcome and provider ids.
     const record = {
@@ -348,7 +374,8 @@ export async function POST(request: NextRequest) {
       notification,
       acknowledgement,
       webhook,
-      durableStorage: webhook.status === "accepted" ? "webhook" : "none",
+      store: stored,
+      durableStorage: durable(webhook.status === "accepted", stored.status === "stored" && store.name),
     };
 
     if (!accepted) {
@@ -368,7 +395,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (notification.status === "failed" || acknowledgement.status === "failed" || webhook.status === "failed") {
+    if (notification.status === "failed" || acknowledgement.status === "failed" || webhook.status === "failed" || stored.status === "failed") {
       console.error("Lead accepted with a failed step", JSON.stringify(record));
     } else {
       console.log("Lead accepted", JSON.stringify(record));
@@ -383,6 +410,7 @@ export async function POST(request: NextRequest) {
       notification: publicOutcome(notification),
       acknowledgement: publicOutcome(acknowledgement),
       webhook: { status: webhook.status },
+      store: { status: stored.status },
       durableStorage: record.durableStorage,
     });
   } catch (err) {
