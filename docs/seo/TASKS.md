@@ -96,3 +96,15 @@ Ordered. The loop takes the first item that is `ready`, finishes it, updates thi
 | Q15 | Brokerage CRM development landing page (content backlog in SEO-PLAN.md) | blocked: no published case study is about a CRM build, so the page would rest on claims (same rule as B5) |
 | Q16 | "Odoo for real estate" page (content backlog) | blocked: no Odoo project to cite (B6) |
 | Q17 | US-dollar Odoo plan prices in the Odoo cost guide | blocked: Odoo prices by visitor country and this machine is in India; needs a check from a US connection |
+
+## Release validation and next phase (2026-10-09)
+| ID | Item | Status |
+|---|---|---|
+| R6 | Release validation of Phases 11 and 12: build, types, lint, 57-URL SEO check, 41 lead tests, 56 fee tests, Lighthouse on 12 pages, responsive, Consent Mode and GA4 events | done; defects fixed (`641cb6e`) |
+| R7 | Production readiness: Vercel and Resend configuration | blocked on access (B18, B19); email fallback and `/api/lead` status endpoint shipped |
+| R8 | GO/NO-GO report with deploy and rollback steps | done: `GO-NO-GO.md` |
+| P4.1 | Internal linking: related guides, guide links from cited case studies, homepage service cards linked, hub counts from data, dead newsletter form removed | done (`af7afcc`) |
+| P4.2 | Accuracy review of existing content against the case studies | done; owner items in B20–B22 |
+| P4.3 | Outreach prospect criteria and two more drafts (nothing sent) | done: `OUTREACH.md` |
+| P4.4 | Search Console monitoring and post-deploy validation plan | done: `MONITORING.md` |
+| P4.5 | New MLS, Shopify, Laravel, WordPress content | blocked (B5, B8, B13): no verified project facts; no page added for page count |

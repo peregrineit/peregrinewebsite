@@ -171,3 +171,26 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 - **Every remaining row in the loop queue is blocked** on the owner, on production data or on a US network check: Q9 (CSP enforcement needs production reports), Q10 (W3|re, B9), Q11 (team, Odoo integrations, MLS timelines, Shopify/Laravel/WordPress proof: B5–B8), Q12 (merge, deploy, IndexNow, outreach: B1, B12), Q15 and Q16 (no case study to build on), Q17 (B16).
 - **The loop has stopped itself** as instructed. Restart it with `/loop` after any blocker is cleared; it will read this file and the queue and continue.
 - **State of the branch:** `seo/phase-12`, draft PR #7, 57 sitemap URLs, 10 guides, all tests passing.
+
+## Next phase (2026-10-09)
+
+### R6 — release validation
+- **Commit:** `641cb6e`
+- **Defects found and fixed:** the 19 case-study pages had no `<main>` landmark (Lighthouse accessibility 98, now 100); a failed form submission gave the visitor no other way to reach us (now a prefilled email link); nothing let the owner confirm lead configuration without reading secrets (now `GET /api/lead`, booleans only); `seo_check.py` did not check schema references, robots.txt, llms.txt or a contact path (now does).
+- **Results:** in `GO-NO-GO.md` section 1.
+
+### R7 — production readiness
+- **Could not be completed.** No access to the site's Vercel project or to Resend from this machine (B19). Public DNS has no Resend records for the domain (B18). Previews need a Vercel sign-in, so no delivery test was run. No customer data was sent anywhere; all delivery tests use a local mock.
+
+### P4.1 — internal linking and conversion paths
+- **Commit:** `af7afcc`
+- **Files:** `guides.ts` (`related`, `guidesForCaseStudy`), `GuideLayout.tsx`, `RelatedCaseStudies.tsx`, `page.tsx`, `CaseStudiesClient.tsx`
+- **What changed:** each guide shows one or two related guides; a case study links to the guides that cite it; the six homepage service cards went nowhere (`href="#"`) and now open the matching service page; the case-study hub's industry counts were hardcoded and wrong (3, 1, 1, 1, 2, 1) and are now computed (4, 3, 3, 4, 3, 4); the hub's "Subscribe" form had no handler and promised weekly updates, so it is removed.
+- **Tests:** `tsc` clean; ESLint 0 errors; `seo_check.py` FAILS: 0 on 57 URLs; 41 lead tests; 56 fee tests.
+
+### P4.2 — accuracy review
+- An independent read of the site against its own case studies; each finding checked by hand. Fixed where no fact was needed (above). The rest are the owner's to settle: B4, B11, B20, B21, B22.
+- **Not changed on purpose:** case-study figures, testimonials and homepage claims. Choosing which of two conflicting numbers is right would be inventing a fact.
+
+## Loop status
+- Every remaining item needs the owner: the E1 lead check, the merge, and the facts in BLOCKERS.md. No new article was written: the unblocked topics are covered and the rest have no verified material.

@@ -54,6 +54,50 @@ Use it only for the seven clients whose testimonials are on the site (Easy Agent
 >
 > Mukesh Swami, Peregrine IT Solutions
 
+## Prospect criteria (added 2026-10-09)
+
+The prospect list itself is `~/Code/peregrine-it.com-audit/LINK-PROSPECTS.md` (tiers 1–4, with `link-prospects.csv`). Use these rules to add to it or cut from it. Nothing has been contacted.
+
+**Qualifies when all of these hold:**
+1. The page's readers are people who buy or specify software in real estate, proptech, self-storage or B2B SaaS in the US or Canada, or it is a directory of firms that do this work.
+2. Peregrine has a real connection: a client, a platform it builds on, a body it could truthfully join, or a page whose topic one of the sourced guides answers better than what is linked now.
+3. The link would be editorial or a genuine listing. No payment for placement, no link exchange, no "write for us" networks, no sites that sell guest posts.
+4. The page is indexed and gets search traffic (check in Ahrefs or Search Console links before spending time).
+
+**Order of effort:** properties you control → clients with a published case study or testimonial → qualification-gated listings (RESO, MLS vendor lists, Odoo partners) → resource pages that already cite MLS or IDX costs → general agency directories (Clutch, GoodFirms) last.
+
+**Skip:** general "top 10 agencies" lists that charge, directories outside software or real estate, any site where the listing needs a claim Peregrine cannot back (certified partner, award, review count).
+
+**What to offer, by prospect type:**
+| Prospect | Asset | Ask |
+|---|---|---|
+| Page listing IDX or MLS costs | cost guide, calculator | reference it as a source |
+| Page explaining RETS retirement or RESO Web API | `/blog/reso-web-api-vs-rets` | add as further reading |
+| Canadian real estate tech page | `/blog/mls-data-access-canada` | add as further reading |
+| Self-storage operator association or blog | `/blog/self-storage-software-build-vs-buy` | reference; no vendor is paid or favored in it |
+| Client | their case study | a "built by" credit |
+
+### Draft: correction offer (not sent)
+Use when a page cites an MLS or vendor fee that the guide shows has changed.
+> Subject: A fee on [page title] looks out of date
+>
+> Hi [name],
+>
+> Your page [URL] lists [fee as they state it]. [MLS or vendor] now publishes [current figure] here: [primary source URL]. We track these in a sourced table at https://peregrine-it.com/blog/mls-idx-integration-cost in case it saves you the lookups next time.
+>
+> Mukesh Swami, Peregrine IT Solutions
+
+Send only when both figures have been re-checked on the day. Fill the brackets from the primary source, never from memory.
+
+### Draft: RETS migration resource (not sent)
+> Subject: RESO Web API migration notes for [page]
+>
+> Hi [name],
+>
+> [Page URL] still describes RETS feeds. We wrote up what changes when a board moves to the RESO Web API (authentication, replication, field names), with links to RESO's own documentation: https://peregrine-it.com/blog/reso-web-api-vs-rets. Use anything from it that helps your readers.
+>
+> Mukesh Swami, Peregrine IT Solutions
+
 ## External actions that need the owner's authorization
 
 | # | Action | Why it needs you | Status |

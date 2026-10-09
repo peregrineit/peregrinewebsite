@@ -17,7 +17,9 @@
 | CTA background video loads only when scrolled near | Low | Verified in headless Chrome |
 | Phase 11: founded 2018, PIN 201301, IP ownership FAQ, founder photo | Low | Owner-confirmed facts |
 
-## 2. Before merging: lead delivery (do not skip)
+## 2. Lead delivery (do not skip; before merging or straight after)
+
+The decision and the evidence are in `GO-NO-GO.md`. If a submission fails, the visitor now sees the error and a prefilled "Send it by email instead" link. `GET /api/lead` returns the configuration as booleans (`ok`, `resend`, `sender`, `webhook`) and never a value.
 
 The API delivers each lead to every configured destination and shows the visitor an error if **none** accepts it.
 
@@ -69,7 +71,7 @@ python3 scripts/test_lead_api.py
 node --experimental-strip-types scripts/test_mls_fees.mjs
 ```
 
-Expected: no type errors; `seo_check.py` prints `FAILS: 0` for 57 URLs; `test_lead_api.py` prints `39 passed, 0 failed`; `test_mls_fees.mjs` prints `56 passed`.
+Expected: no type errors; `seo_check.py` prints `FAILS: 0` for 57 URLs; `test_lead_api.py` prints `41 passed, 0 failed`; `test_mls_fees.mjs` prints `56 passed`.
 
 Manual, on the Vercel Preview URL:
 1. Submit the form on a service page; the success message shows and the email arrives with company, timeline, service, landing page and UTM.
@@ -95,6 +97,7 @@ python3 scripts/seo_check.py https://peregrine-it.com
 - Submit one real test lead on production and confirm delivery.
 - Resubmit all sitemap URLs to IndexNow (the footer and nav changed on every page).
 - In Search Console, submit the sitemap again and request indexing for the new pages you care about most: `/industries/self-storage`, `/services/investor-portal-development`, `/tools/mls-idx-cost-calculator`, and the six new guides under `/blog/`.
+- Follow `MONITORING.md` for the day-0 and weekly checks.
 - Watch Vercel → Logs for `Lead not delivered` or `Lead notification email failed` during the first day.
 - Filter the same logs for `CSP violation`. After two clean weeks the report-only policy can be enforced.
 - Re-pull Search Console at week 3 for the title experiments.
