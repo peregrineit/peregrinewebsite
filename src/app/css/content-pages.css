@@ -211,3 +211,26 @@ a.cp-card:hover { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 10px 30px
   .cp-calc-result { position: static; }
 }
 .cp-prose code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: rgba(51, 65, 85, 0.6); padding: 1px 6px; border-radius: 5px; color: #e2e8f0; }
+
+/* Buyer guidance blocks (service and industry pages, /services, /contact) */
+.cp-checks { margin: 0 0 14px; padding: 0; list-style: none; }
+.cp-checks li { position: relative; padding-left: 26px; margin-bottom: 10px; font-size: 15px; line-height: 1.6; color: var(--cp-text); }
+.cp-checks li::before {
+  content: ''; position: absolute; left: 3px; top: 8px; width: 10px; height: 6px;
+  border-left: 2px solid var(--cp-accent); border-bottom: 2px solid var(--cp-accent); transform: rotate(-45deg);
+}
+.cp-checks-no li::before { top: 12px; height: 0; border-left: 0; border-bottom-color: var(--cp-muted); transform: none; }
+.cp-checks li a, .cp-factors dd a, .cp-related li a, .cp-proof a { display: inline; }
+.cp-card .cp-checks:last-child { margin-bottom: 0; }
+.cp-factors { margin: 0; border-top: 1px solid var(--cp-border); }
+.cp-factors > div { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 4px 24px; padding: 14px 0; border-bottom: 1px solid var(--cp-border); }
+.cp-factors dt { color: #fff; font-weight: 700; font-size: 15px; }
+.cp-factors dd { margin: 0; color: var(--cp-text); font-size: 15px; line-height: 1.6; }
+.cp-page .cp-card .cp-proof { margin-top: 10px; font-size: 14px; }
+.cp-related { margin: 0; padding-left: 20px; list-style: disc; }
+.cp-related li { margin-bottom: 10px; line-height: 1.6; color: var(--cp-text); }
+.cp-jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.cp-jump a { min-height: 44px; display: inline-flex; align-items: center; }
+@media (max-width: 767px) {
+  .cp-factors > div { grid-template-columns: 1fr; }
+}

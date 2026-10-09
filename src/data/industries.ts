@@ -8,6 +8,8 @@
 //   figures, clients, vendors or results. Verticals with one case study are listed on
 //   the hub (`singleCaseStudyVerticals`) and link straight to that case study.
 
+import type { BuyerGuide } from './services';
+
 export interface Industry {
   slug: string;
   /** Short name for cards, breadcrumbs and links. */
@@ -31,7 +33,9 @@ export interface Industry {
   /** Mention RealFoyer, Peregrine's own real estate product. */
   ownProduct?: boolean;
   /** Optional "what we build" cards for landing-page style industries. */
-  whatWeBuild?: { title: string; body: string }[];
+  whatWeBuild?: { title: string; body: string; proof?: string[] }[];
+  /** Buyer guidance: fit, scope inputs, first phase and scoping-call checklist. */
+  buyer?: BuyerGuide;
   /** Optional FAQ; rendered visibly and as FAQPage JSON-LD from the same array. */
   faq?: { question: string; answer: string }[];
   cta: { heading: string; text: string };
@@ -84,14 +88,17 @@ export const industries: Industry[] = [
       {
         title: 'Reservations, units and leases',
         body: 'Tenants, units, leases, payments and facility settings in one data store, with each operator\'s data isolated from every other operator\'s. In our case study this replaced separate reservation, billing and access systems that were reconciled by hand every morning.',
+        proof: ['self-storage-management-platform'],
       },
       {
         title: 'Automated billing with Stripe',
         body: 'Recurring billing on Stripe with automatic retries. A failed autopay is detected immediately, retried with exponential backoff, and facility managers are alerted only when a person needs to step in.',
+        proof: ['self-storage-management-platform'],
       },
       {
         title: 'Smart-lock and gate access',
         body: 'An IoT bridge that puts different lock hardware, whether Bluetooth LE, Wi-Fi or cellular, behind one API. When a tenant pays, access is granted automatically; when a lease expires, the lock deactivates. The case study platform integrated three lock vendors this way.',
+        proof: ['self-storage-management-platform'],
       },
       {
         title: 'Multi-site occupancy and revenue dashboards',
@@ -129,6 +136,40 @@ export const industries: Industry[] = [
           'It depends on the number of facilities, the lock hardware and what has to be migrated. The project in our case study ran for 10 months in four phases, with 10 pilot sites before the full rollout. That is one project, not a typical timeline; the discovery sprint sets yours.',
       },
     ],
+    // Vendor-neutral buying guidance. The one statement about Peregrine's work (first
+    // phase) restates the self-storage case study: Phase 1 mapped workflows and lock vendor
+    // APIs; rollout began with 10 pilot sites.
+    buyer: {
+      fit: [
+        'Reservations, billing and access control run in separate systems that staff reconcile by hand.',
+        'Facilities use different gate or lock hardware and you need one way to grant, revoke and audit access.',
+        'You need live occupancy and revenue across the portfolio, not periodic reports.',
+        'You are building self-storage software as a product for other operators.',
+      ],
+      notFit: [
+        { text: 'An off-the-shelf facility management system fits your processes and works with your locks. Buy it:', link: { href: '/blog/self-storage-software-build-vs-buy', label: 'self-storage software, build or buy' } },
+        { text: 'You run a few facilities on one lock vendor with standard billing. Custom software is unlikely to pay for itself.' },
+      ],
+      scope: [
+        { factor: 'Facilities and units', effect: 'The number of facilities and units, and the states they are in, since late-fee and lien rules differ by state.' },
+        { factor: 'Lock and gate hardware', effect: 'The number of vendors, how each connects (keypad, Bluetooth, Wi-Fi, cellular) and whether each offers an API. Every vendor is its own integration.' },
+        { factor: 'Billing rules', effect: 'Autopay, proration, late fees, retries on failed payments, protection plans and taxes. The rules, not the payment provider, are the work.' },
+        { factor: 'Systems being replaced', effect: 'What each current system can export, and how tenants, leases, balances and access codes are migrated while facilities stay open.' },
+        { factor: 'Apps', effect: 'A tenant mobile app, a manager portal, a website reservation flow and a kiosk are separate clients on one backend.' },
+        { factor: 'Reporting', effect: 'Portfolio occupancy and revenue, alerts, and any pricing rules that depend on them.' },
+        { factor: 'Rollout', effect: 'How many pilot sites, and how facilities are switched over without interrupting access for tenants.' },
+      ],
+      firstPhase:
+        'A sensible first phase is discovery across a few representative facilities: the workflows, the lock vendor APIs and the data held in each current system, ending in a written architecture. The project in our case study began that way and went live at 10 pilot sites before the full rollout.',
+      bring: [
+        'The number of facilities and units, and the states they are in.',
+        'The lock and gate hardware at each facility, by vendor and model, and whether the vendor offers an API.',
+        'The software used today for reservations, billing and access, and what each can export.',
+        'Your billing rules: autopay, late fees, proration and what happens when a payment fails.',
+        'Who uses the system (tenants, facility managers, corporate) and what each needs from it.',
+        'Rollout constraints, such as facilities that cannot change during a busy season.',
+      ],
+    },
     cta: {
       heading: 'Planning Self-Storage Software?',
       text: 'Tell us how many facilities you run, which lock hardware they use and which systems you want to replace. An engineer will tell you how we would approach it.',
