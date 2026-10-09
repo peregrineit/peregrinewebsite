@@ -663,7 +663,7 @@ export default function Home() {
               </div>
               <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="testimonial-category">Lead Automation System</span>
-                <a href="https://www.brokerlinx.com" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="1127" height="801" src="/logos/brokerlinx.jpg" alt="BrokerLinx" className="testimonial-logo" /></a>
+                <a href="https://www.brokerlinx.com" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="136" height="96" src="/logos/brokerlinx.webp" alt="BrokerLinx" className="testimonial-logo" /></a>
                 <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;We were drowning in inbound leads with no structured way to route or follow up on them. The team built a custom automation layer on top of our CRM — auto-assigning leads, triggering follow-up sequences, and giving agents mobile access to their pipeline. Response time dropped from hours to minutes. They delivered two weeks ahead of schedule and came in under budget.&rdquo;</p>
                 <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>William Betancourt</p>
                 <p style={{ color: '#64748b', fontSize: '0.8rem' }}>Founder, BrokerLinx</p>

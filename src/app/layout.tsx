@@ -3,6 +3,8 @@ import Script from "next/script";
 import { Inter, IBM_Plex_Sans_Arabic, Manrope, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { coreServices } from "@/data/services";
+import { industries } from "@/data/industries";
 import Tracking from "./components/Tracking";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -225,7 +227,10 @@ export default function RootLayout({
         />
         <Navbar />
         {children}
-        <Footer />
+        <Footer
+          services={coreServices.map(({ slug, name }) => ({ slug, name }))}
+          industries={industries.map(({ slug, name }) => ({ slug, name }))}
+        />
         <MobileFloatingButtons />
         <SpeedInsights />
         <Analytics />

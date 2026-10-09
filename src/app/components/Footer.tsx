@@ -4,10 +4,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { QuickProjectForm, StrategyCallForm } from './LeadForms';
 import { officeAddressLine, officeMapsUrl } from '@/data/company';
-import { industries } from '@/data/industries';
-import { coreServices as services } from '@/data/services';
 
-export default function Footer() {
+type NavItem = { slug: string; name: string };
+
+// `services` and `industries` are passed from the server layout as slug/name pairs, so
+// this client component does not pull the data files into the browser bundle.
+export default function Footer({ services, industries }: { services: NavItem[]; industries: NavItem[] }) {
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
     services: false,
     industries: false,
