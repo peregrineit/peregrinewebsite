@@ -37,7 +37,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'custom-saas-vs-off-the-shelf-crm-for-brokerages',
-    related: ['idx-vendor-vs-custom-build', 'self-storage-software-build-vs-buy'],
+    related: ['idx-vendor-vs-custom-build', 'self-storage-software-build-vs-buy', 'laravel-upgrade-checklist'],
     cta: {
       heading: 'Deciding Between a CRM Subscription and a Custom Build?',
       text: 'Tell us how your brokerage works today and where the current tools fall short. An engineer will tell you plainly whether custom is worth it.',
@@ -165,7 +165,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'odoo-implementation-cost',
-    related: ['custom-saas-vs-off-the-shelf-crm-for-brokerages'],
+    related: ['custom-saas-vs-off-the-shelf-crm-for-brokerages', 'laravel-upgrade-checklist'],
     cta: {
       heading: 'Budgeting an Odoo Project?',
       text: 'Tell us which Odoo apps you need, which systems Odoo has to connect to and what you want customized. An engineer will tell you what that means for plan, hosting and upkeep.',
@@ -194,6 +194,22 @@ export const guides: Guide[] = [
     dateModified: '2026-10-10',
     service: 'mls-idx-integration',
     caseStudy: 'scaling-real-estate-saas-platform',
+  },
+  {
+    slug: 'laravel-upgrade-checklist',
+    related: ['odoo-implementation-cost', 'custom-saas-vs-off-the-shelf-crm-for-brokerages'],
+    cta: {
+      heading: 'Planning a Laravel Upgrade?',
+      text: 'Tell us your Laravel and PHP versions, the packages you depend on and how much of the code is tested. An engineer will tell you which route fits and where the risk is.',
+    },
+    title: 'Laravel Upgrade and Modernization Checklist: Upgrade in Place, Replace in Stages or Rewrite',
+    metaTitle: 'Laravel Upgrade & Modernization Checklist',
+    description:
+      'A phase-by-phase Laravel upgrade checklist from the official support policy and upgrade guides, plus a decision table: upgrade, replace in stages or rewrite.',
+    datePublished: '2026-10-10',
+    dateModified: '2026-10-10',
+    service: 'laravel-development',
+    // No caseStudy: Peregrine has no published Laravel case study. The guide makes no project claims.
   },
 ];
 
