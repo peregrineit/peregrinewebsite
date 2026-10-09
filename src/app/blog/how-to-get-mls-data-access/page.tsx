@@ -12,7 +12,8 @@ const ARMLS = 'https://armls.com/data-feeds-vendor-info';
 const MLSPIN = 'https://www.mlspin.com/resources/data-services';
 const NORTHSTAR = 'https://northstarmls.com/third-party-data-usage/';
 const RECO = 'https://cdn.recolorado.com/files/data/Participant-Pricing-Schedule.pdf';
-const CREA = 'https://www.crea.ca/files/technology/english/DDFR-Policy-and-Rules-February-2024-ENG.pdf';
+// CREA's DDF Policy and Rules, June 2026 revision (replaces the February 2024 PDF cited before).
+const CREA = 'https://us.v-cdn.net/6029909/uploads/WCDHHJMCZ480/ddf-28r-29-policy-and-rules-june-2026-eng.pdf';
 const MLSGRID_FAQ = 'https://www.mlsgrid.com/faq';
 const MLSGRID_GUIDE = 'https://www.mlsgrid.com/s/MLS-Grid-Data-Consumer-Access-Guide.pdf';
 const TRESTLE_FAQ = 'https://trestle-documentation.corelogic.com/support/faq/';
@@ -94,7 +95,7 @@ export default function Guide() {
             <tr><td>MLS PIN</td><td>Broker; vendor</td><td><Src href={MLSPIN}>$100 per month (broker); $525 per month (vendor)</Src></td></tr>
             <tr><td>NorthstarMLS</td><td>New vendor</td><td><Src href={NORTHSTAR}>One-time $1,000 development fee and $500 startup fee</Src>, then <Src href={NORTHSTAR}>$125 to $500 per month by number of users, billed by MLS Grid</Src></td></tr>
             <tr><td>REcolorado</td><td>IDX content; VOW</td><td><Src href={RECO}>$500 + $150 per month (IDX); $1,500 + $500 per month (VOW)</Src>. The schedule has no effective date; confirm current fees.</td></tr>
-            <tr><td>CREA DDF® (Canada)</td><td>Technology provider</td><td>A company must enter <Src href={CREA}>a data access agreement with CREA</Src></td></tr>
+            <tr><td>CREA DDF® (Canada)</td><td>Technology provider</td><td>A company must enter <Src href={CREA}>a data access agreement with REALTOR.ca Canada Inc.</Src>; fees are in our <Link href="/blog/mls-data-access-canada">guide to MLS data access in Canada</Link></td></tr>
             <tr><td>Trestle</td><td>Per connection</td><td><Src href={TRESTLE_PRICING}>$30 per month (broker data feeds), $100 per month (other feeds); technology providers $100 to $175 per connection per month</Src>, plus MLS fees</td></tr>
             <tr><td>MLS Grid</td><td>Platform</td><td><Src href={MLSGRID_FAQ}>No platform fee beyond the MLS&apos;s license fee</Src></td></tr>
             <tr><td>Bridge Interactive</td><td>Platform</td><td><Src href={BRIDGE_DOCS}>No additional service fees; MLSs may charge their own</Src></td></tr>
@@ -138,7 +139,10 @@ export default function Guide() {
 
       <p className="cp-note">
         Requirements and fees were taken from the linked MLS, NAR, RESO, MLS Grid, Trestle and Bridge pages on September 30,
-        2026. Policies and fees change and differ by MLS; confirm them with each MLS before you apply.
+        2026. On October 9, 2026 the CREA citation was updated to CREA&apos;s June 2026 rules. On that date NAR&apos;s
+        policy handbook required a member login and NorthstarMLS&apos;s page could not be reached, so the NAR and
+        NorthstarMLS statements are as read on September 30. Policies and fees change and differ by MLS; confirm them
+        with each MLS before you apply.
       </p>
       <p>
         Planning an MLS integration? See our <Link href="/services/mls-idx-integration">RESO Web API and MLS data feed

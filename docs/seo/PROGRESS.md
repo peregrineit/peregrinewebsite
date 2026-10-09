@@ -149,3 +149,25 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 - **Mechanism:** Claude Code `/loop` in self-paced mode (ScheduleWakeup), started 2026-10-09 in this session. Each wake-up re-reads `CLAUDE.md` and `docs/seo/`, takes the first `ready` row in the loop queue, and pushes to `seo/phase-12`. It runs only while this Claude Code session stays open.
 - **Iteration 1 completed:** Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8.
 - **Queue now:** Q13 (Odoo implementation cost guide; research running) and Q14 (data-access guide citation follow-up) are `ready`. Q9–Q12 are blocked on the owner or on production data.
+
+## Loop iteration 2 (2026-10-09)
+
+### Q13 — guide: Odoo implementation cost
+- **Files:** `src/app/blog/odoo-implementation-cost/`, `guides.ts` (`caseStudy` is now optional), `GuideLayout.tsx`, `services.ts` (Odoo guide link, API facts, `updated`), `llms.txt`
+- **Commit:** `e8db863`
+- **Verification:** the research reported US-dollar plan prices from an Internet Archive capture. When I fetched that capture it was the page served to **Canada** (CAD), so the USD plan prices were not confirmed and are not in the guide. Verified by me and used: CAD plan prices from that capture; USD Success Pack prices from a US capture dated 2026-08-09; Odoo.sh annual-billing prices in a browser; 20 quotes from Odoo's pricing, documentation and Enterprise agreement; Clutch's ERP consulting rate in a browser. One Odoo.sh sizing quote did not match and was left out.
+- **Tests:** build; `seo_check.py` on 57 URLs FAILS: 0; 1,567 words, 52 source links.
+- **Also changed:** the Odoo service page named only XML-RPC and JSON-RPC. It now names the JSON-2 API (new in Odoo 19), says the older APIs are scheduled for removal, and that Odoo limits external API access to its Custom plan.
+- **Remaining:** USD plan prices (B16). The Success Pack capture is two months old and the guide says so.
+
+### Q14 — data-access guide citations
+- **Files:** `src/app/blog/how-to-get-mls-data-access/page.tsx`, `guides.ts`
+- **What changed:** CREA citation now points to the June 2026 rules and uses their wording ("REALTOR.ca Canada Inc."); links the Canada guide for fees; the note states that NAR's handbook required a login and NorthstarMLS could not be reached on October 9. `dateModified` is 2026-10-09.
+- **Tests:** `seo_check.py` FAILS: 0; `test_lead_api.py` 39 passed; `test_mls_fees.mjs` 56 passed; `tsc` clean.
+- **Remaining:** NAR and NorthstarMLS statements could not be re-verified (B17).
+
+## Loop status (final for this run)
+- **Iteration 2 completed:** Q13, Q14.
+- **Every remaining row in the loop queue is blocked** on the owner, on production data or on a US network check: Q9 (CSP enforcement needs production reports), Q10 (W3|re, B9), Q11 (team, Odoo integrations, MLS timelines, Shopify/Laravel/WordPress proof: B5–B8), Q12 (merge, deploy, IndexNow, outreach: B1, B12), Q15 and Q16 (no case study to build on), Q17 (B16).
+- **The loop has stopped itself** as instructed. Restart it with `/loop` after any blocker is cleared; it will read this file and the queue and continue.
+- **State of the branch:** `seo/phase-12`, draft PR #7, 57 sitemap URLs, 10 guides, all tests passing.

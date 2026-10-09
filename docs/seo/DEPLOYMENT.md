@@ -2,7 +2,7 @@
 
 **Status:** not merged, not deployed. `seo/phase-12` contains `seo/phase-11`, so one pull request from `seo/phase-12` into `main` ships both. Merging to `main` triggers the Vercel production deploy.
 
-**Footprint (vs `main`):** 75+ files, no new npm dependencies, no database, no data migration. 13 new URLs (39 → 52 in the sitemap); no URL removed or renamed.
+**Footprint (vs `main`):** 75+ files, no new npm dependencies, no database, no data migration. 18 new URLs (39 → 57 in the sitemap); no URL removed or renamed.
 
 ## 1. What changes for visitors
 
@@ -11,7 +11,7 @@
 | Lead forms report an error when no destination accepts the lead | **High if Resend is misconfigured** | Before, the form said "sent" even when the email failed. See section 2 |
 | Consultation block with the short form on every guide, service, industry and calculator page | Low | Same form and API as the popup |
 | Nav gains Industries and Guides; the desktop bar now starts at 1024 px (hamburger below that) | Low | Checked at 375, 900, 1024 and 1280 px |
-| 13 new pages: 5 industries, investor portal service, 5 technology services, calculator, 1 guide | Low | All in sitemap and llms.txt |
+| 18 new pages: 5 industries, investor portal service, 5 technology services, calculator, 6 guides | Low | All in sitemap and llms.txt |
 | 7 titles and descriptions changed | Low | Experiments; baselines in TASKS.md |
 | GA4 and the consent bar | None until `NEXT_PUBLIC_GA_ID` is set | Nothing from Google loads without it |
 | CTA background video loads only when scrolled near | Low | Verified in headless Chrome |
@@ -69,7 +69,7 @@ python3 scripts/test_lead_api.py
 node --experimental-strip-types scripts/test_mls_fees.mjs
 ```
 
-Expected: no type errors; `seo_check.py` prints `FAILS: 0` for 52 URLs; `test_lead_api.py` prints `39 passed, 0 failed`; `test_mls_fees.mjs` prints `56 passed`.
+Expected: no type errors; `seo_check.py` prints `FAILS: 0` for 57 URLs; `test_lead_api.py` prints `39 passed, 0 failed`; `test_mls_fees.mjs` prints `56 passed`.
 
 Manual, on the Vercel Preview URL:
 1. Submit the form on a service page; the success message shows and the email arrives with company, timeline, service, landing page and UTM.
@@ -91,10 +91,10 @@ Manual, on the Vercel Preview URL:
 python3 scripts/seo_check.py https://peregrine-it.com
 ```
 
-- Expect `FAILS: 0` on 52 URLs.
+- Expect `FAILS: 0` on 57 URLs.
 - Submit one real test lead on production and confirm delivery.
 - Resubmit all sitemap URLs to IndexNow (the footer and nav changed on every page).
-- In Search Console, submit the sitemap again and request indexing for the new pages you care about most: `/industries/self-storage`, `/services/investor-portal-development`, `/tools/mls-idx-cost-calculator`, `/blog/investor-portal-vs-file-sharing`.
+- In Search Console, submit the sitemap again and request indexing for the new pages you care about most: `/industries/self-storage`, `/services/investor-portal-development`, `/tools/mls-idx-cost-calculator`, and the six new guides under `/blog/`.
 - Watch Vercel → Logs for `Lead not delivered` or `Lead notification email failed` during the first day.
 - Filter the same logs for `CSP violation`. After two clean weeks the report-only policy can be enforced.
 - Re-pull Search Console at week 3 for the title experiments.

@@ -91,5 +91,8 @@ Ordered. The loop takes the first item that is `ready`, finishes it, updates thi
 | Q10 | W3\|re dashboard block and metric windows | blocked (B9) |
 | Q11 | Team section, Odoo named integrations, first-hand MLS timelines, Shopify/Laravel/WordPress proof | blocked (B5–B8) |
 | Q12 | Merge, deploy, IndexNow resubmission, outreach | blocked: owner authorization (B1, B12) |
-| Q13 | Guide: Odoo implementation cost, from Odoo's published pricing (research running). From the content backlog in SEO-PLAN.md; does not need the named integrations in B6 | ready |
-| Q14 | Quarterly source follow-up: NAR handbook pages are login-gated and CREA's DDF rules have a June 2026 revision; update the data-access guide's citations | ready |
+| Q13 | Guide: Odoo implementation cost, from Odoo's published pricing | done |
+| Q14 | Source follow-up on the data-access guide: CREA citation moved to the June 2026 rules; NAR login wall and NorthstarMLS noted | done |
+| Q15 | Brokerage CRM development landing page (content backlog in SEO-PLAN.md) | blocked: no published case study is about a CRM build, so the page would rest on claims (same rule as B5) |
+| Q16 | "Odoo for real estate" page (content backlog) | blocked: no Odoo project to cite (B6) |
+| Q17 | US-dollar Odoo plan prices in the Odoo cost guide | blocked: Odoo prices by visitor country and this machine is in India; needs a check from a US connection |

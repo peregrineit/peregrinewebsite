@@ -73,7 +73,7 @@ export const guides: Guide[] = [
     description:
       'The licenses, broker sponsorship, agreements, platforms (MLS Grid, Trestle, Bridge), fees and compliance rules for getting MLS data into your app, with sources.',
     datePublished: '2026-09-30',
-    dateModified: '2026-09-30',
+    dateModified: '2026-10-09',
     service: 'mls-idx-integration',
     caseStudy: 'w3re-ai-real-estate-platform',
   },
