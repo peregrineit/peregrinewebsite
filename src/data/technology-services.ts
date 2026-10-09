@@ -106,7 +106,7 @@ export const technologyServices: Service[] = [
       },
       {
         question: 'Do you build the backend as well?',
-        answer: 'Yes. In our published case studies the Next.js frontend sits on a Node.js API with PostgreSQL or MongoDB, plus Redis and Elasticsearch where search and caching need them. We can also build a Next.js frontend on an API you already have.',
+        answer: 'Yes. In our published case studies the Next.js frontend sits on a Node.js backend (one stack also lists Python) with PostgreSQL or MongoDB, plus Redis and Elasticsearch where search and caching need them. We can also build a Next.js frontend on an API you already have.',
       },
       {
         question: 'Is Next.js good for SEO?',
@@ -349,7 +349,7 @@ export const technologyServices: Service[] = [
       cost:
         `Peregrine works on Laravel development as ${MODEL}. Cost depends on the size and condition of the existing codebase, the features needed and the integrations involved. We do not publish a price list. A single, well-defined task can get a scoped estimate.`,
       work:
-        'Peregrine has no published Laravel case study yet, so this page makes no project claims. The backends in our published case studies are built on Node.js; they show how we approach multi-tenancy, billing and integrations. Ask about Laravel specifically on a discovery call.',
+        'Peregrine has no published Laravel case study yet, so this page makes no project claims. Every published case study lists Node.js in its stack, and one also lists Python; they show how we approach multi-tenancy, billing and integrations. Ask about Laravel specifically on a discovery call.',
     },
     glance: {
       delivered: 'Laravel APIs and SaaS backends, admin panels, queues and integrations, and staged upgrades of older PHP applications',
@@ -374,7 +374,7 @@ export const technologyServices: Service[] = [
       },
       {
         question: 'Have you published Laravel case studies?',
-        answer: 'Not yet. The backends in our published case studies are Node.js. We will add Laravel work here when a project can be published.',
+        answer: 'Not yet. Every published case study lists Node.js in its stack, and one also lists Python. We will add Laravel work here when a project can be published.',
       },
     ],
     icon: 'ri-code-s-line',
@@ -590,8 +590,9 @@ export const technologyBuyerGuides: Record<string, BuyerGuide> = {
       'You need an API backend for a React, Next.js or mobile frontend, and your team or hosting is PHP-based.',
     ],
     notFit: [
-      // Repeats the page's own statements: published backends are Node.js; no Laravel case study.
-      { text: 'You are starting a new product with no existing PHP code, team or hosting. The backends in Peregrine\'s published case studies are Node.js, so compare both before choosing Laravel.' },
+      // Repeats the page's own statements. Source: case-studies.ts stacks (Node.js in all, Python
+      // also in w3re-ai-real-estate-platform); no Laravel case study.
+      { text: 'You are starting a new product with no existing PHP code, team or hosting. Every one of Peregrine\'s published case studies lists Node.js in its stack, and one also lists Python, so compare your options before choosing Laravel.' },
       { text: 'You need a firm with published Laravel case studies before shortlisting. Peregrine has none published yet.' },
     ],
     scope: [
