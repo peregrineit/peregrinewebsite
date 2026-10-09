@@ -5,6 +5,7 @@ import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 import CaseStudyGlance from '../../components/CaseStudyGlance';
+import CaseStudyCta from '../../components/CaseStudyCta';
 
 export const metadata: Metadata = {
   title: 'Supply Chain Visibility & Shipment Tracking',
@@ -429,28 +430,9 @@ export default function SupplyChainVisibilityPlatform() {
         <RelatedCaseStudies slug="supply-chain-visibility-platform" />
 
         {/* CTA */}
-        <div className="csd-cta-section">
-          <h2>Building a Supply Chain Visibility Platform?</h2>
-          <p>
-            We help logistics companies build production-grade tracking and visibility systems. Let&apos;s
-            talk about your architecture.
-          </p>
-          <div className="csd-cta-buttons">
-            <a href="#" data-open-contact className="csd-cta-btn">
-              Tell Us About Your Project
-              <i className="ri-arrow-right-line" />
-            </a>
-            <a
-              href="https://calendly.com/mukesh-peregrine-it/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="csd-cta-btn csd-cta-btn-secondary"
-            >
-              Book a Strategy Call
-              <i className="ri-calendar-line" />
-            </a>
-          </div>
-        </div>
+        <CaseStudyCta slug="supply-chain-visibility-platform" heading="Building a Supply Chain Visibility Platform?">
+          We help logistics companies build production-grade tracking and visibility systems. Let&apos;s talk about your architecture.
+        </CaseStudyCta>
       </div>
     </main>
   );

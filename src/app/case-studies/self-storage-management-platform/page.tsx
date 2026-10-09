@@ -5,6 +5,7 @@ import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 import CaseStudyGlance from '../../components/CaseStudyGlance';
+import CaseStudyCta from '../../components/CaseStudyCta';
 
 export const metadata: Metadata = {
   title: 'Self-Storage SaaS Case Study: 150+ Facilities',
@@ -430,28 +431,9 @@ export default function SelfStorageManagementPlatform() {
         <RelatedCaseStudies slug="self-storage-management-platform" />
 
         {/* CTA */}
-        <div className="csd-cta-section">
-          <h2>Building a Storage Management Platform?</h2>
-          <p>
-            We help PropTech and facility management companies build production-grade SaaS. Let&apos;s
-            talk about your architecture.
-          </p>
-          <div className="csd-cta-buttons">
-            <a href="#" data-open-contact className="csd-cta-btn">
-              Tell Us About Your Project
-              <i className="ri-arrow-right-line" />
-            </a>
-            <a
-              href="https://calendly.com/mukesh-peregrine-it/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="csd-cta-btn csd-cta-btn-secondary"
-            >
-              Book a Strategy Call
-              <i className="ri-calendar-line" />
-            </a>
-          </div>
-        </div>
+        <CaseStudyCta slug="self-storage-management-platform" heading="Building a Storage Management Platform?">
+          We help PropTech and facility management companies build production-grade SaaS. Let&apos;s talk about your architecture.
+        </CaseStudyCta>
       </div>
     </main>
   );

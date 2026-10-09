@@ -1031,3 +1031,55 @@
 .case-study-detail .csd-glance li { margin: 0 0 4px; }
 .case-study-detail .csd-glance li strong { color: var(--csd-accent); }
 .case-study-detail .csd-glance td a { color: var(--csd-accent); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+
+/* Closing block with the inline project form (components/CaseStudyCta.tsx). */
+.case-study-detail .csd-cta-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 40px;
+  text-align: left;
+  align-items: start;
+  padding: 48px 40px;
+}
+.case-study-detail .csd-cta-form > * { position: relative; }
+.case-study-detail .csd-cta-form p { margin-bottom: 20px; }
+.case-study-detail .csd-cta-points {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  color: #cbd5e1;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.case-study-detail .csd-cta-points li { padding-left: 22px; position: relative; margin-bottom: 8px; }
+.case-study-detail .csd-cta-points li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--csd-accent-soft);
+}
+.case-study-detail .csd-cta-points a { color: #93c5fd; text-decoration: underline; }
+.case-study-detail .csd-cta-panel {
+  background: var(--csd-dark-card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 28px;
+}
+.case-study-detail .csd-cta-panel h3 {
+  font-family: var(--font-manrope), sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 16px;
+}
+.case-study-detail .csd-cta-panel form { display: flex; flex-direction: column; gap: 12px; }
+.case-study-detail .csd-cta-panel input,
+.case-study-detail .csd-cta-panel select,
+.case-study-detail .csd-cta-panel textarea { width: 100%; font-family: var(--font-manrope), sans-serif; }
+@media (max-width: 860px) {
+  .case-study-detail .csd-cta-form { grid-template-columns: 1fr; padding: 36px 20px; gap: 28px; }
+}
