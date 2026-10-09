@@ -154,7 +154,8 @@ export default function Guide() {
         REALTOR® association MLSs to implement the{' '}
         <Src href={NAR_790}>RESO Web API by June 30, 2016</Src>. RESO describes RETS as{' '}
         <Src href={RESO}>deprecated and no longer supported</Src>, and boards have been switching it off. ARMLS, for
-        example, <Src href={ARMLS_RETS}>shut down RETS on December 15, 2023</Src>. New work should use the Web API.
+        example, <Src href={ARMLS_RETS}>shut down RETS on December 15, 2023</Src>. New work should use the Web API; our guide to{' '}
+        <Link href="/blog/reso-web-api-vs-rets">RESO Web API vs RETS</Link> covers what changes in a migration.
       </p>
 
       <h2>Development cost</h2>

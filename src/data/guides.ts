@@ -106,6 +106,21 @@ export const guides: Guide[] = [
     service: 'mls-idx-integration',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
+  {
+    slug: 'reso-web-api-vs-rets',
+    cta: {
+      heading: 'Still on a RETS Feed?',
+      text: 'Tell us which MLSs you pull from and what the data feeds today. An engineer will tell you what the move to the RESO Web API involves for your setup.',
+    },
+    title: 'RESO Web API vs RETS: What Changes and How to Migrate',
+    metaTitle: 'RESO Web API vs RETS: How to Migrate',
+    description:
+      'What changes when you move an MLS integration from RETS to the RESO Web API: authentication, queries, field names, media and sync, with sources and a checklist.',
+    datePublished: '2026-10-09',
+    dateModified: '2026-10-09',
+    service: 'mls-idx-integration',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {

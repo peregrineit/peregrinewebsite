@@ -210,3 +210,4 @@ a.cp-card:hover { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 10px 30px
   .cp-calc { grid-template-columns: 1fr; }
   .cp-calc-result { position: static; }
 }
+.cp-prose code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: rgba(51, 65, 85, 0.6); padding: 1px 6px; border-radius: 5px; color: #e2e8f0; }
