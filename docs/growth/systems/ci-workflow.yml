@@ -57,6 +57,9 @@ jobs:
         run: npm run test:systems
 
       # Starts the built app itself on its own ports, against local mocks; sends nothing outside.
+      - name: Lead priority and client unit tests
+        run: node --experimental-strip-types scripts/test_lead_priority.mjs && node --experimental-strip-types scripts/test_lead_client.mjs
+
       - name: Lead API integration tests
         run: python3 scripts/test_lead_api.py
 

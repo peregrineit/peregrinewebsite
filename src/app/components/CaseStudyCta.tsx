@@ -1,8 +1,7 @@
 import { StrategyCallForm } from './LeadForms';
+import CalendlyLink from './CalendlyLink';
 import { getCaseStudy } from '@/data/case-studies';
 import { getService } from '@/data/services';
-
-const CALENDLY = 'https://calendly.com/mukesh-peregrine-it/30min';
 
 /**
  * Closing block of a case study: the page's own heading and line, then the short
@@ -23,10 +22,10 @@ export default function CaseStudyCta({ slug, heading, children }: { slug: string
             Related service: <a href={`/services/${service.slug}`}>{service.name}</a>
           </li>
         </ul>
-        <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="csd-cta-btn csd-cta-btn-secondary">
+        <CalendlyLink location={`case-study:${slug}`} className="csd-cta-btn csd-cta-btn-secondary">
           Book a Strategy Call
           <i className="ri-calendar-line" aria-hidden="true" />
-        </a>
+        </CalendlyLink>
       </div>
       <div className="csd-cta-panel">
         <h3>Tell us about your project</h3>

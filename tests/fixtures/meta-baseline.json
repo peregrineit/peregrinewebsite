@@ -272,6 +272,46 @@
    "status": 200,
    "title": "IDX Vendor vs Custom Build: When to Switch | Peregrine IT"
   },
+  "/blog/investor-portal-security-checklist": {
+   "canonical": "https://peregrine-it.com/blog/investor-portal-security-checklist",
+   "description": "A security design checklist for LP portals: access model, threat-to-control table, MFA and session settings, audit trail and vendor questions, with sources.",
+   "h1": [
+    "Investor Portal Security Checklist: Threats, Controls and Questions to Ask"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "Investor Portal Security Design Checklist | Peregrine IT"
+  },
   "/blog/investor-portal-vs-file-sharing": {
    "canonical": "https://peregrine-it.com/blog/investor-portal-vs-file-sharing",
    "description": "When shared folders are enough for investor documents and when a portal is worth it: access control, audit trails, watermarking and published portal prices.",
@@ -312,6 +352,46 @@
    "status": 200,
    "title": "Investor Portal vs File Sharing for LPs | Peregrine IT"
   },
+  "/blog/laravel-upgrade-checklist": {
+   "canonical": "https://peregrine-it.com/blog/laravel-upgrade-checklist",
+   "description": "A phase-by-phase Laravel upgrade checklist from the official support policy and upgrade guides, plus a decision table: upgrade, replace in stages or rewrite.",
+   "h1": [
+    "Laravel Upgrade and Modernization Checklist: Upgrade in Place, Replace in Stages or Rewrite"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "Laravel Upgrade & Modernization Checklist | Peregrine IT"
+  },
   "/blog/mls-data-access-canada": {
    "canonical": "https://peregrine-it.com/blog/mls-data-access-canada",
    "description": "How listing data access works in Canada: CREA DDF channels, rules, API and technology-provider fees, plus board IDX and VOW programs, with sources.",
@@ -351,6 +431,46 @@
    "robots": "index, follow",
    "status": 200,
    "title": "MLS Data in Canada: CREA DDF & Board Feeds | Peregrine IT"
+  },
+  "/blog/mls-data-pipeline-architecture": {
+   "canonical": "https://peregrine-it.com/blog/mls-data-pipeline-architecture",
+   "description": "A reference architecture for ingesting MLS data via the RESO Web API: replication, media, normalization, duplicates, compliance checkpoints and failure modes.",
+   "h1": [
+    "MLS Data Pipeline Architecture: A Reference Design for the RESO Web API"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "MLS Data Pipeline: Reference Architecture | Peregrine IT"
   },
   "/blog/mls-idx-integration-cost": {
    "canonical": "https://peregrine-it.com/blog/mls-idx-integration-cost",
@@ -1392,12 +1512,19 @@
     "Software Development Services for Real Estate, Proptech and B2B Companies"
    ],
    "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
     "BreadcrumbList",
     "CollectionPage",
     "ContactPoint",
     "Country",
     "Country",
     "Country",
+    "FAQPage",
     "ImageObject",
     "ImageObject",
     "ListItem",
@@ -1407,6 +1534,12 @@
     "Place",
     "PostalAddress",
     "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
     "WebSite"
    ],
    "robots": "index, follow",
@@ -2008,5 +2141,5 @@
    "title": "MLS & IDX Cost Calculator: Published Fees | Peregrine IT"
   }
  },
- "source": "https://peregrine-it.com"
+ "source": "http://localhost:3057"
 }
