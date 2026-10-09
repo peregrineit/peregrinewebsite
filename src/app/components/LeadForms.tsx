@@ -1,13 +1,16 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getAttribution, track } from '@/lib/track';
 
 // The site's two lead forms (strategy call and quick project request). Used in the
 // Footer popups, inline on /contact and at the foot of service and landing pages.
 // Both post to /api/lead with attribution (landing page, referrer, UTM) and fire
 // lead_submit / lead_error events (see docs/seo/TASKS.md).
-/** `fallback` is a pre-filled mailto: link, set when the server could not deliver the lead. */
-type Status = { loading: boolean; success: boolean; error: string; fallback?: string };
+/** `fallback` is a pre-filled mailto: link, set when the server could not accept the lead.
+ *  `receipt` is what the server reported when it did: accepted by the mail provider, which
+ *  is not the same as delivered. */
+type Receipt = { ref: string; acknowledgement: string; ids: string[]; notificationId?: string };
+type Status = { loading: boolean; success: boolean; error: string; fallback?: string; receipt?: Receipt };
 const idle: Status = { loading: false, success: false, error: '' };
 
 // If nothing on the server accepted the lead (502) or the request never arrived, the
@@ -26,19 +29,33 @@ function mailtoFallback(d: Record<string, string>) {
 /** Named form controls, read by name in the submit handlers. */
 type Fields = Record<string, HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>;
 
+// One id per attempt, kept while the outcome is unknown (network error, gateway timeout)
+// so a retry reaches the server as the same submission and cannot produce a second email.
+const pendingIds: Record<string, string> = {};
+
 async function submitLead(formData: Record<string, string>, setStatus: (s: Status) => void) {
   setStatus({ loading: true, success: false, error: '' });
   const page = window.location.pathname;
   const event = { form: formData.form, page, service: formData.service || '' };
+  const submissionId = (pendingIds[formData.form] ??= crypto.randomUUID());
   try {
     const res = await fetch('/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...formData, ...getAttribution(), pageUrl: window.location.href }),
+      body: JSON.stringify({ ...formData, submissionId, ...getAttribution(), pageUrl: window.location.href }),
     });
     const json = await res.json();
-    if (res.ok && json.success) {
-      setStatus({ loading: false, success: true, error: '' });
+    // The server gave a definite answer; the next attempt is a new submission.
+    if (res.status < 500 || json.status) delete pendingIds[formData.form];
+    // "accepted" = the mail provider or the webhook took the lead. Anything else is not a lead.
+    if (res.ok && json.success && json.status === 'accepted' && json.ref) {
+      const ids = [json.notification?.id, json.acknowledgement?.id].filter((id): id is string => typeof id === 'string');
+      setStatus({
+        loading: false,
+        success: true,
+        error: '',
+        receipt: { ref: json.ref, acknowledgement: json.acknowledgement?.status || 'skipped', ids, notificationId: json.notification?.id },
+      });
       track('lead_submit', event);
     } else {
       setStatus({
@@ -58,22 +75,73 @@ async function submitLead(formData: Record<string, string>, setStatus: (s: Statu
 // Hidden from people (and from assistive technology); bots that fill every field
 // reveal themselves. The API drops any submission where it has a value. The name is
 // deliberately meaningless so autofill and password managers do not fill it.
+// It sits in a display:none wrapper: browsers and password managers skip fields that are
+// not rendered, while form-filling bots that only read the HTML still fill it.
 const Honeypot = () => (
-  <input type="text" name="pit_confirm_field" tabIndex={-1} autoComplete="off" aria-hidden="true"
-    style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
+  <div style={{ display: 'none' }} aria-hidden="true">
+    <input type="text" name="pit_confirm_field" tabIndex={-1} autoComplete="off" defaultValue="" />
+  </div>
 );
+
+const DELIVERY_PROBLEMS = ['bounced', 'failed', 'complained', 'suppressed', 'canceled'];
+
+/** Shown once the server accepted the lead. Says "received", never "delivered", unless the
+ *  mail provider itself later reports delivery; and says so plainly if it reports a problem. */
+function Received({ receipt, form, children }: { receipt: Receipt; form: string; children: React.ReactNode }) {
+  const [delivery, setDelivery] = useState<'unknown' | 'delivered' | 'problem'>('unknown');
+  useEffect(() => {
+    if (!receipt.notificationId) return;
+    let stopped = false;
+    const timers = [4000, 10000, 20000].map((ms) =>
+      setTimeout(async () => {
+        if (stopped) return;
+        try {
+          const res = await fetch(`/api/lead?delivery=${receipt.ids.join(',')}`);
+          const json: { events?: { id: string; lastEvent: string | null }[] } = await res.json();
+          const mine = json.events?.find((e) => e.id === receipt.notificationId)?.lastEvent;
+          if (stopped || !mine) return;
+          if (mine === 'delivered') setDelivery('delivered');
+          else if (DELIVERY_PROBLEMS.includes(mine)) {
+            stopped = true;
+            setDelivery('problem');
+            track('lead_delivery_failed', { form, page: window.location.pathname });
+          }
+        } catch {
+          // Unknown stays unknown.
+        }
+      }, ms)
+    );
+    return () => { stopped = true; timers.forEach(clearTimeout); };
+  }, [receipt, form]);
+
+  return (
+    <div style={{ textAlign: 'center', padding: '2rem 1rem' }} role="status">
+      <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>&#10003;</div>
+      <p style={{ color: '#22d3ee', fontWeight: '600', fontSize: '1.05rem', margin: '0 0 0.5rem' }}>Request received</p>
+      <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0 0 0.5rem' }}>{children}</p>
+      <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0' }}>
+        Reference: <strong style={{ color: '#e2e8f0' }}>{receipt.ref}</strong>
+        {receipt.acknowledgement === 'accepted' && <>. We have sent you a confirmation email; if it does not arrive, keep this reference.</>}
+        {receipt.acknowledgement === 'failed' && <>. We could not send you a confirmation email, so please keep this reference.</>}
+      </p>
+      {delivery === 'problem' && (
+        <p role="alert" style={{ color: '#f87171', fontSize: '0.85rem', margin: '0.75rem 0 0' }}>
+          Our mail system reported a problem delivering your request. Please email{' '}
+          <a href={`mailto:info@peregrine-it.com?subject=${encodeURIComponent(`Project inquiry (${receipt.ref})`)}`} style={{ color: '#22d3ee', textDecoration: 'underline', display: 'inline' }}>info@peregrine-it.com</a>{' '}
+          and quote the reference.
+        </p>
+      )}
+    </div>
+  );
+}
 
 /** `service` records which service or landing page the form sits on. */
 export function StrategyCallForm({ service = '' }: { service?: string }) {
   const [formStatus, setFormStatus] = useState<Status>(idle);
   return (
     <>
-    {formStatus.success ? (
-      <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
-        <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>&#10003;</div>
-        <p style={{ color: '#22d3ee', fontWeight: '600', fontSize: '1.05rem', margin: '0 0 0.5rem' }}>Request sent successfully!</p>
-        <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0' }}>An engineer will review it and reply within 1 business day.</p>
-      </div>
+    {formStatus.success && formStatus.receipt ? (
+      <Received receipt={formStatus.receipt} form="strategy-call">An engineer will review it and reply within 1 business day.</Received>
     ) : (
     <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -140,12 +208,8 @@ export function QuickProjectForm() {
   const [qpFormStatus, setQpFormStatus] = useState<Status>(idle);
   return (
     <>
-    {qpFormStatus.success ? (
-      <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
-        <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>&#10003;</div>
-        <p style={{ color: '#22d3ee', fontWeight: '600', fontSize: '1.05rem', margin: '0 0 0.5rem' }}>Request sent successfully!</p>
-        <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0' }}>We&apos;ll review your request and reply within 1 business day.</p>
-      </div>
+    {qpFormStatus.success && qpFormStatus.receipt ? (
+      <Received receipt={qpFormStatus.receipt} form="quick-project">We&apos;ll review your request and reply within 1 business day.</Received>
     ) : (
     <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();

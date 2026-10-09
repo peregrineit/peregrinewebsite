@@ -2,23 +2,29 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
 // Lead intake for the two site forms (components/LeadForms.tsx).
-// A lead is delivered to every configured destination:
-//   - RESEND_API_KEY     -> notification email to info@peregrine-it.com (+ auto-reply)
-//   - LEAD_WEBHOOK_URL   -> JSON POST to a CRM or automation webhook (optional)
-// The visitor only sees "sent" when at least one destination accepted the lead.
-// Vercel's filesystem is not persistent, so nothing is written to disk: the durable
-// record of a lead is the notification email and, when set, the webhook's destination
-// (docs/seo/LEAD-DELIVERY.md has a Google Sheet receiver).
+//
+// Three different things, never conflated:
+//   1. submission accepted  - this API validated the lead and gave it a reference
+//   2. provider accepted    - Resend (or the webhook) returned an id / 2xx for it
+//   3. delivered            - Resend later reports the message as delivered to the inbox
+// POST reports 1 and 2. It never says "delivered": that is only known afterwards, from
+// GET /api/lead?delivery=<message id> or the Resend dashboard.
+//
+// Acceptance rule: the visitor is told the request was received only when the
+// notification email was accepted by Resend or the webhook accepted the lead.
+//
+// There is no durable storage in this app (no database; Vercel has no writable disk).
+// The record of a lead is the notification email, Resend's own log and, when
+// LEAD_WEBHOOK_URL is set, whatever that webhook writes to (docs/seo/LEAD-DELIVERY.md).
 
 const NOTIFY_TO = "info@peregrine-it.com";
 /** Must match the hidden input in components/LeadForms.tsx. */
 const HONEYPOT_FIELD = "pit_confirm_field";
-// TODO(owner): set LEAD_FROM_EMAIL to a sender on a domain verified in Resend. The
-// fallback is Resend's test sender, which Resend only delivers to the account owner.
+// The fallback is Resend's test sender, which Resend only delivers to the account owner.
 const FROM = process.env.LEAD_FROM_EMAIL || "Peregrine IT <onboarding@resend.dev>";
 
 interface LeadData {
-  /** Short reference shared by the email, the webhook row and the server log. */
+  /** Short reference shared by the emails, the webhook row, the server log and the visitor. */
   ref: string;
   name: string;
   email: string;
@@ -32,7 +38,15 @@ interface LeadData {
   landingPage?: string;
   referrer?: string;
   utm?: string;
+  /** The hidden field had a value: probably a bot, possibly browser autofill. */
+  spamSuspected: boolean;
 }
+
+/** Outcome of one outbound message. `id` is the provider's message id, never content. */
+type Outcome =
+  | { status: "accepted"; id: string }
+  | { status: "failed"; reason: string }
+  | { status: "skipped"; reason: string };
 
 const clean = (v: unknown, max = 2000) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
@@ -56,11 +70,53 @@ function rateLimited(ip: string): boolean {
   return recent.length > MAX_PER_WINDOW;
 }
 
-async function sendNotificationEmail(resend: Resend, lead: LeadData) {
+/** Error name and status only: Resend's messages can echo addresses. */
+function describe(error: unknown): string {
+  if (error && typeof error === "object") {
+    const e = error as { name?: string; statusCode?: number | null; message?: string };
+    if (e.name && e.name !== "Error") return `${e.name}${e.statusCode ? ` (${e.statusCode})` : ""}`;
+    if (e.message) return e.message.slice(0, 80);
+  }
+  return "unknown error";
+}
+
+/**
+ * Send one email. The idempotency key makes a repeat of the same message (our own retry,
+ * a double click, a visitor's retry after a lost response) a no-op at Resend instead of
+ * a second email. One retry, and only when the failure could be transient.
+ */
+async function sendEmail(
+  resend: Resend,
+  payload: { to: string; subject: string; text: string; replyTo?: string },
+  idempotencyKey: string
+): Promise<Outcome> {
+  let reason = "unknown error";
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const { data, error } = await resend.emails.send({ from: FROM, ...payload }, { idempotencyKey });
+      if (data?.id) return { status: "accepted", id: data.id };
+      reason = error ? describe(error) : "no message id returned";
+      // A 4xx (other than rate limiting) will fail the same way again.
+      const code = error?.statusCode ?? 0;
+      if (code >= 400 && code < 500 && code !== 429) break;
+    } catch (err) {
+      reason = describe(err);
+    }
+  }
+  return { status: "failed", reason };
+}
+
+function notificationEmail(lead: LeadData) {
   const line = (label: string, value?: string) => `${label}: ${value || "Not provided"}`;
-  const body = [
+  const text = [
     "New Project Inquiry",
     "",
+    ...(lead.spamSuspected
+      ? [
+          "NOTE: the form's hidden anti-spam field was filled in. That is usually a bot and sometimes a browser's autofill. No acknowledgement was sent to this address.",
+          "",
+        ]
+      : []),
     line("Reference", lead.ref),
     line("Name", lead.name),
     line("Email", lead.email),
@@ -78,48 +134,46 @@ async function sendNotificationEmail(resend: Resend, lead: LeadData) {
     "Message:",
     lead.message,
   ].join("\n");
-
-  // One retry: a transient Resend error should not cost a lead.
-  let lastError = "";
-  for (let attempt = 0; attempt < 2; attempt++) {
-    const { error } = await resend.emails.send({
-      from: FROM,
-      to: NOTIFY_TO,
-      replyTo: lead.email,
-      subject: `New Project Inquiry – Peregrine IT [${lead.ref}]`,
-      text: body,
-    });
-    if (!error) return;
-    lastError = error.message;
-  }
-  throw new Error(lastError);
+  return {
+    to: NOTIFY_TO,
+    replyTo: lead.email,
+    subject: `${lead.spamSuspected ? "[Possible spam] " : ""}New Project Inquiry – Peregrine IT [${lead.ref}]`,
+    text,
+  };
 }
 
-async function sendAutoReply(resend: Resend, email: string, name: string) {
+function acknowledgementEmail(lead: LeadData) {
   // One reply-time promise site-wide: "within 1 business day" (owner instruction, 2026-10-09).
-  await resend.emails.send({
-    from: FROM,
-    to: email,
+  return {
+    to: lead.email,
     subject: "We received your project request",
-    text: `Hi ${name},
+    text: `Hi ${lead.name},
 
 Thanks for contacting Peregrine IT.
 An engineer will review your request and reply within 1 business day.
 
+Your reference: ${lead.ref}
+
 – Peregrine IT Team
 https://peregrine-it.com`,
-  });
+  };
 }
 
-async function postToWebhook(url: string, lead: LeadData) {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ receivedAt: new Date().toISOString(), source: "peregrine-it.com", ...lead }),
-    // A hung CRM must not stall the visitor's response.
-    signal: AbortSignal.timeout(5000),
-  });
-  if (!res.ok) throw new Error(`webhook responded ${res.status}`);
+async function postToWebhook(url: string, lead: LeadData): Promise<Outcome> {
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Idempotency-Key": `lead-${lead.ref}` },
+      body: JSON.stringify({ receivedAt: new Date().toISOString(), source: "peregrine-it.com", ...lead }),
+      // A hung CRM must not stall the visitor's response.
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!res.ok) return { status: "failed", reason: `webhook responded ${res.status}` };
+    return { status: "accepted", id: `http-${res.status}` };
+  } catch (err) {
+    const name = (err as { name?: string })?.name;
+    return { status: "failed", reason: name === "TimeoutError" || name === "AbortError" ? "webhook timed out" : "webhook unreachable" };
+  }
 }
 
 // Whether Resend reports the sender's domain as verified. Asked of Resend itself, so it
@@ -144,45 +198,72 @@ async function senderDomainVerified(): Promise<boolean | null> {
   return value;
 }
 
-// Configuration status, booleans only: lets the owner (or a deploy check) confirm that a
-// lead has somewhere to go without exposing any value. `sender` is "custom" when
-// LEAD_FROM_EMAIL is set and "resend-test-sender" otherwise; with the test sender Resend
-// delivers only to the Resend account owner's own address. `ok` means a destination is
-// configured, not that an email has been delivered: only a test submission proves that.
-export async function GET() {
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+// GET /api/lead                      configuration, booleans only, never a value.
+// GET /api/lead?delivery=<id>[,<id>] what Resend last recorded for those messages
+//                                    ("delivered", "bounced", ...). The ids are the
+//                                    unguessable ones POST returned; only the event name
+//                                    comes back. null = not known (also when the API key
+//                                    is restricted to sending and may not read messages).
+export async function GET(request: NextRequest) {
+  const headers = { "Cache-Control": "no-store" };
+  const delivery = request.nextUrl.searchParams.get("delivery");
+  if (delivery !== null) {
+    const ids = delivery.split(",").filter((id) => UUID.test(id)).slice(0, 2);
+    const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+    const events = await Promise.all(
+      ids.map(async (id) => {
+        if (!resend) return { id, lastEvent: null };
+        try {
+          const { data } = await resend.emails.get(id);
+          return { id, lastEvent: data?.last_event ?? null };
+        } catch {
+          return { id, lastEvent: null };
+        }
+      })
+    );
+    return NextResponse.json({ events }, { headers });
+  }
+
   const resend = Boolean(process.env.RESEND_API_KEY);
   const webhook = Boolean(process.env.LEAD_WEBHOOK_URL);
   return NextResponse.json(
     {
+      // A destination is configured. Not proof that anything has been delivered.
       ok: resend || webhook,
       resend,
+      // "custom" when LEAD_FROM_EMAIL is set, otherwise Resend's test sender.
       sender: process.env.LEAD_FROM_EMAIL ? "custom" : "resend-test-sender",
       senderDomainVerified: await senderDomainVerified(),
       webhook,
+      durableStorage: webhook ? "webhook" : "none",
+      environment: process.env.VERCEL_ENV || "local",
     },
-    { headers: { "Cache-Control": "no-store" } }
+    { headers }
   );
 }
 
 export async function POST(request: NextRequest) {
+  let ref = "unassigned";
   try {
     const raw = await request.json().catch(() => null);
     if (!raw || typeof raw !== "object") {
       return NextResponse.json({ error: "Invalid request." }, { status: 400 });
     }
 
-    // Honeypot: this field is hidden from people, so only bots fill it in. It has a
-    // nonsense name so browser autofill and password managers leave it alone.
-    // Answer as if it worked.
-    if (clean(raw[HONEYPOT_FIELD])) return NextResponse.json({ success: true });
-
     const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
     if (rateLimited(ip)) {
       return NextResponse.json({ error: "Too many requests. Please try again in a few minutes." }, { status: 429 });
     }
 
+    // The form sends one id per attempt and reuses it when it retries, so a retry maps to
+    // the same reference and the same idempotency keys.
+    const submissionId = clean(raw.submissionId, 64);
+    ref = (UUID.test(submissionId) ? submissionId : crypto.randomUUID()).replace(/-/g, "").slice(0, 8);
+
     const lead: LeadData = {
-      ref: crypto.randomUUID().slice(0, 8),
+      ref,
       name: clean(raw.name, 200),
       email: clean(raw.email, 320),
       message: clean(raw.message, 5000),
@@ -196,6 +277,11 @@ export async function POST(request: NextRequest) {
       landingPage: clean(raw.landingPage, 500),
       referrer: clean(raw.referrer, 500),
       utm: clean(raw.utm, 500),
+      // Honeypot. A filled field used to return a silent "success" with nothing sent, which
+      // also swallowed real visitors whose browser autofilled it. Now the lead still goes to
+      // the inbox, marked, and only the acknowledgement (which a bot could aim at a third
+      // party) is withheld.
+      spamSuspected: Boolean(clean(raw[HONEYPOT_FIELD])),
     };
 
     if (!lead.name) {
@@ -209,49 +295,65 @@ export async function POST(request: NextRequest) {
     }
 
     const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-    const webhook = process.env.LEAD_WEBHOOK_URL;
-    let emailed = false;
-    let hooked = false;
+    const webhookUrl = process.env.LEAD_WEBHOOK_URL;
 
-    if (resend) {
-      try {
-        await sendNotificationEmail(resend, lead);
-        emailed = true;
-      } catch (err) {
-        console.error("Lead notification email failed:", { ref: lead.ref, err });
-      }
-    }
-    if (webhook) {
-      try {
-        await postToWebhook(webhook, lead);
-        hooked = true;
-      } catch (err) {
-        console.error("Lead webhook failed:", { ref: lead.ref, err });
-      }
-    }
+    const [notification, webhook] = await Promise.all([
+      resend
+        ? sendEmail(resend, notificationEmail(lead), `lead-notify-${ref}`)
+        : Promise.resolve<Outcome>({ status: "skipped", reason: "RESEND_API_KEY not set" }),
+      webhookUrl
+        ? postToWebhook(webhookUrl, lead)
+        : Promise.resolve<Outcome>({ status: "skipped", reason: "LEAD_WEBHOOK_URL not set" }),
+    ]);
 
-    if (!emailed && !hooked) {
-      // Nothing received the lead. Say so instead of showing a false "sent".
-      console.error("Lead not delivered: no destination accepted it.", { ref: lead.ref, form: lead.form, pageUrl: lead.pageUrl });
+    const accepted = notification.status === "accepted" || webhook.status === "accepted";
+
+    let acknowledgement: Outcome;
+    if (!resend) acknowledgement = { status: "skipped", reason: "RESEND_API_KEY not set" };
+    else if (!accepted) acknowledgement = { status: "skipped", reason: "lead was not accepted" };
+    else if (lead.spamSuspected) acknowledgement = { status: "skipped", reason: "hidden field was filled" };
+    else acknowledgement = await sendEmail(resend, acknowledgementEmail(lead), `lead-ack-${ref}`);
+
+    // One line per lead, no personal data: reference, per-message outcome and provider ids.
+    const record = {
+      ref,
+      form: lead.form,
+      environment: process.env.VERCEL_ENV || "local",
+      sender: process.env.LEAD_FROM_EMAIL ? "custom" : "resend-test-sender",
+      spamSuspected: lead.spamSuspected,
+      notification,
+      acknowledgement,
+      webhook,
+      durableStorage: webhook.status === "accepted" ? "webhook" : "none",
+    };
+
+    if (!accepted) {
+      console.error("Lead NOT accepted by any destination", JSON.stringify(record));
       return NextResponse.json(
-        { error: `We could not send your request. Please email ${NOTIFY_TO} directly.` },
+        { success: false, status: "not-accepted", ref, error: `We could not send your request. Please email ${NOTIFY_TO} directly.` },
         { status: 502 }
       );
     }
 
-    if (resend) {
-      try {
-        await sendAutoReply(resend, lead.email, lead.name);
-      } catch (err) {
-        console.error("Auto-reply email failed:", err);
-      }
+    if (notification.status === "failed" || acknowledgement.status === "failed" || webhook.status === "failed") {
+      console.error("Lead accepted with a failed step", JSON.stringify(record));
+    } else {
+      console.log("Lead accepted", JSON.stringify(record));
     }
 
-    // No personal data in the log line: the reference ties it to the email or sheet row.
-    console.log("Lead delivered", { ref: lead.ref, form: lead.form, email: emailed, webhook: hooked });
-    return NextResponse.json({ success: true });
+    const publicOutcome = (o: Outcome) => ({ status: o.status, id: o.status === "accepted" ? o.id : undefined });
+    return NextResponse.json({
+      success: true,
+      // Accepted by the mail provider or the webhook. Not a delivery confirmation.
+      status: "accepted",
+      ref,
+      notification: publicOutcome(notification),
+      acknowledgement: publicOutcome(acknowledgement),
+      webhook: { status: webhook.status },
+      durableStorage: record.durableStorage,
+    });
   } catch (err) {
-    console.error("Lead API error:", err);
-    return NextResponse.json({ error: "Something went wrong. Please try again." }, { status: 500 });
+    console.error("Lead API error", JSON.stringify({ ref, error: describe(err) }));
+    return NextResponse.json({ success: false, status: "error", error: "Something went wrong. Please try again." }, { status: 500 });
   }
 }
