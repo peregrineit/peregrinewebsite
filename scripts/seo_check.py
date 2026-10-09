@@ -8,6 +8,8 @@ touches pages, metadata or schema, and against production after a deploy.
 import html, json, re, sys, urllib.request, urllib.error
 from concurrent.futures import ThreadPoolExecutor
 
+if len(sys.argv) > 1 and sys.argv[1] in ("-h", "--help"):
+    print(__doc__.strip()); sys.exit(0)
 BASE = (sys.argv[1] if len(sys.argv) > 1 else "http://localhost:3057").rstrip("/")
 PROD = "https://peregrine-it.com"
 SUPERLATIVES = re.compile(r"\b(best|leading)\b|#1\b", re.I)

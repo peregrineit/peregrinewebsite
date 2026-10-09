@@ -1,0 +1,83 @@
+# Checks for every pull request and every push to main.
+# No secrets, no deploy step, read-only token. Vercel deploys main on its own; this only tests.
+# Local equivalent of every step: docs/growth/systems/README.md ("CI").
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+  SITE_PORT: "3057"
+
+jobs:
+  checks:
+    name: Types, lint, build, SEO, lead and tool tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      # Next 16 needs Node >= 20.9; `node --experimental-strip-types` needs >= 22.6.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Versions
+        run: node --version && npm --version && python3 --version
+
+      - name: Install
+        run: npm ci
+
+      - name: Types
+        run: npx tsc --noEmit -p .
+
+      # ESLint exits non-zero on errors only; the known legacy <img> warnings do not fail the job.
+      - name: Lint
+        run: npx eslint src
+
+      - name: Build
+        run: npm run build
+
+      - name: Calculator fee arithmetic
+        run: node --experimental-strip-types scripts/test_mls_fees.mjs
+
+      # Hermetic: local mock servers and committed fixtures only.
+      - name: Growth-system tool tests
+        run: npm run test:systems
+
+      # Starts the built app itself on its own ports, against local mocks; sends nothing outside.
+      - name: Lead API integration tests
+        run: python3 scripts/test_lead_api.py
+
+      - name: Start the built site
+        run: |
+          npx next start -p "$SITE_PORT" > .next-start.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -sf -o /dev/null "http://localhost:$SITE_PORT/" && exit 0
+            sleep 1
+          done
+          echo "site did not start"; cat .next-start.log; exit 1
+
+      - name: SEO invariants
+        run: python3 scripts/seo_check.py "http://localhost:$SITE_PORT"
+
+      # Fails on any change to a title, description, canonical, H1, robots meta or JSON-LD type.
+      # An intended change must come with a refreshed tests/fixtures/meta-baseline.json
+      # (python3 scripts/meta_snapshot.py http://localhost:3057 --update).
+      - name: Metadata snapshot
+        run: python3 scripts/meta_snapshot.py "http://localhost:$SITE_PORT"
+
+      - name: Server log on failure
+        if: failure()
+        run: cat .next-start.log .lead-test.log 2>/dev/null || true

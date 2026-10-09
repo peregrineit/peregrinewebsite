@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:seo": "python3 scripts/seo_check.py",
+    "check:leads": "python3 scripts/lead_health.py",
+    "check:links": "python3 scripts/check_sources.py",
+    "check:meta": "python3 scripts/meta_snapshot.py",
+    "report:gsc": "python3 scripts/gsc_report.py",
+    "test:systems": "python3 scripts/test_gsc_report.py && python3 scripts/test_lead_health.py && python3 scripts/test_check_sources.py && python3 scripts/test_meta_snapshot.py"
   },
   "dependencies": {
     "@vercel/analytics": "^1.6.1",
