@@ -45,7 +45,7 @@ interface LeadData {
 /** Outcome of one outbound message. `id` is the provider's message id, never content. */
 type Outcome =
   | { status: "accepted"; id: string }
-  | { status: "failed"; reason: string }
+  | { status: "failed"; reason: string; detail?: string }
   | { status: "skipped"; reason: string };
 
 const clean = (v: unknown, max = 2000) => (typeof v === "string" ? v.trim().slice(0, max) : "");
@@ -80,6 +80,13 @@ function describe(error: unknown): string {
   return "unknown error";
 }
 
+/** The provider's own error text with every email address removed, for diagnosis. */
+function detailOf(error: unknown): string | undefined {
+  const message = (error as { message?: unknown } | null)?.message;
+  if (typeof message !== "string" || !message) return undefined;
+  return message.replace(/[^\s<>"'`]+@[^\s<>"'`]+/g, "[email]").slice(0, 200);
+}
+
 /**
  * Send one email. The idempotency key makes a repeat of the same message (our own retry,
  * a double click, a visitor's retry after a lost response) a no-op at Resend instead of
@@ -91,19 +98,22 @@ async function sendEmail(
   idempotencyKey: string
 ): Promise<Outcome> {
   let reason = "unknown error";
+  let detail: string | undefined;
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
       const { data, error } = await resend.emails.send({ from: FROM, ...payload }, { idempotencyKey });
       if (data?.id) return { status: "accepted", id: data.id };
       reason = error ? describe(error) : "no message id returned";
+      detail = detailOf(error);
       // A 4xx (other than rate limiting) will fail the same way again.
       const code = error?.statusCode ?? 0;
       if (code >= 400 && code < 500 && code !== 429) break;
     } catch (err) {
       reason = describe(err);
+      detail = detailOf(err);
     }
   }
-  return { status: "failed", reason };
+  return { status: "failed", reason, detail };
 }
 
 function notificationEmail(lead: LeadData) {
@@ -329,8 +339,17 @@ export async function POST(request: NextRequest) {
 
     if (!accepted) {
       console.error("Lead NOT accepted by any destination", JSON.stringify(record));
+      // Outside production the reason is also returned, so a failed test can be diagnosed
+      // from the browser without log access. It names the provider's error, never a value.
+      const diagnostic =
+        process.env.VERCEL_ENV === "production"
+          ? undefined
+          : {
+              notification: [notification.reason, notification.status === "failed" ? notification.detail : ""].filter(Boolean).join(": "),
+              webhook: webhook.reason,
+            };
       return NextResponse.json(
-        { success: false, status: "not-accepted", ref, error: `We could not send your request. Please email ${NOTIFY_TO} directly.` },
+        { success: false, status: "not-accepted", ref, error: `We could not send your request. Please email ${NOTIFY_TO} directly.`, diagnostic },
         { status: 502 }
       );
     }

@@ -10,7 +10,8 @@ import { getAttribution, track } from '@/lib/track';
  *  `receipt` is what the server reported when it did: accepted by the mail provider, which
  *  is not the same as delivered. */
 type Receipt = { ref: string; acknowledgement: string; ids: string[]; notificationId?: string };
-type Status = { loading: boolean; success: boolean; error: string; fallback?: string; receipt?: Receipt };
+/** `note` is the server's reference for a failed attempt, plus its diagnostic on preview builds. */
+type Status = { loading: boolean; success: boolean; error: string; fallback?: string; receipt?: Receipt; note?: string };
 const idle: Status = { loading: false, success: false, error: '' };
 
 // If nothing on the server accepted the lead (502) or the request never arrived, the
@@ -63,11 +64,17 @@ async function submitLead(formData: Record<string, string>, setStatus: (s: Statu
         success: false,
         error: json.error || 'Something went wrong.',
         fallback: res.status >= 500 ? mailtoFallback(formData) : undefined,
+        note: [
+          `HTTP ${res.status}`,
+          json.ref ? `reference ${json.ref}` : '',
+          json.diagnostic ? `email: ${json.diagnostic.notification}; webhook: ${json.diagnostic.webhook}` : '',
+        ].filter(Boolean).join(' · '),
       });
       track('lead_error', event);
     }
   } catch {
-    setStatus({ loading: false, success: false, error: 'Network error. Please try again.', fallback: mailtoFallback(formData) });
+    // No JSON came back: the request did not reach the API, or something in front of it answered.
+    setStatus({ loading: false, success: false, error: 'Network error. Please try again.', fallback: mailtoFallback(formData), note: 'no response from /api/lead' });
     track('lead_error', event);
   }
 }
@@ -189,6 +196,7 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
           {formStatus.fallback && (
             <> <a href={formStatus.fallback} style={{ color: '#22d3ee', textDecoration: 'underline', display: 'inline' }}>Send it by email instead</a></>
           )}
+          {formStatus.note && <span data-lead-note style={{ display: 'block', color: '#94a3b8', fontSize: '0.75rem', marginTop: '0.35rem' }}>{formStatus.note}</span>}
         </p>
       )}
       <button type="submit" className="newsletter-btn" disabled={formStatus.loading}
@@ -245,6 +253,7 @@ export function QuickProjectForm() {
           {qpFormStatus.fallback && (
             <> <a href={qpFormStatus.fallback} style={{ color: '#22d3ee', textDecoration: 'underline', display: 'inline' }}>Send it by email instead</a></>
           )}
+          {qpFormStatus.note && <span data-lead-note style={{ display: 'block', color: '#94a3b8', fontSize: '0.75rem', marginTop: '0.35rem' }}>{qpFormStatus.note}</span>}
         </p>
       )}
       <button type="submit" className="newsletter-btn" disabled={qpFormStatus.loading}

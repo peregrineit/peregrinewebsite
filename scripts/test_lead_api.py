@@ -26,7 +26,7 @@ DEFAULTS = dict(emails=[], attempts=0, hooks=[], keys={}, events={}, fail=None, 
                 hook_fail=False, hook_sleep=0)
 state = dict(DEFAULTS, domains=[{"name": "test.invalid", "status": "verified"}])
 ERRORS = {
-    422: {"statusCode": 422, "name": "validation_error", "message": "Invalid `from` field."},
+    422: {"statusCode": 422, "name": "validation_error", "message": "Invalid `from` field: hello@test.invalid is not allowed."},
     403: {"statusCode": 403, "name": "validation_error", "message": "The test.invalid domain is not verified."},
     401: {"statusCode": 401, "name": "invalid_api_key", "message": "API key is invalid"},
     429: {"statusCode": 429, "name": "rate_limit_exceeded", "message": "Too many requests."},
@@ -230,7 +230,10 @@ def run():
             check(f"resend {code} ({label}): 502, success false", s == 502 and b.get("success") is False and b.get("status") == "not-accepted", f"got {s} {b}")
             check(f"resend {code}: nothing sent, no acknowledgement attempted", not state["emails"] and state["attempts"] == (1 if code < 500 else 2), f"attempts {state['attempts']}")
             check(f"resend {code}: error name logged", ERRORS[code]["name"] in app_log()[before:], app_log()[before:][-200:])
-        check("log: Resend's error message (may echo addresses) is not logged", "is not verified" not in app_log() and "Invalid `from`" not in app_log())
+        check("log: Resend's error text is recorded with addresses removed", "Invalid `from` field: [email] is not allowed." in app_log() and "hello@test.invalid" not in app_log() and "domain is not verified" in app_log())
+        reset(fail=422); s, b = post(LEAD, ip())
+        check("diagnostic: outside production the 502 names the provider error, without addresses",
+              "validation_error (422)" in b.get("diagnostic", {}).get("notification", "") and "[email]" in b["diagnostic"]["notification"] and "@" not in json.dumps(b.get("diagnostic")), f"got {b}")
         # acknowledgement fails on its own
         reset(fail_ack=422); before = len(app_log())
         s, b = post(LEAD, ip())
@@ -243,6 +246,13 @@ def run():
     try:
         st = get(); check("status: unverified sender domain is reported", st.get("senderDomainVerified") is False and st.get("sender") == "custom", f"got {st}")
     finally: stop_app(app); state["domains"] = [{"name": "test.invalid", "status": "verified"}]
+
+    # --- production: no diagnostic in the response
+    reset(fail=403); app = start_app({**RESEND_ENV, "VERCEL_ENV": "production"})
+    try:
+        s, b = post(LEAD, ip()); check("production: 502 carries no diagnostic", s == 502 and "diagnostic" not in b and len(b.get("ref", "")) == 8, f"got {s} {b}")
+        check("production: the reason is still logged", "validation_error (403)" in app_log())
+    finally: stop_app(app)
 
     # --- Resend unreachable (connection refused)
     reset(); app = start_app({**RESEND_ENV, "RESEND_BASE_URL": "http://127.0.0.1:3995"})
