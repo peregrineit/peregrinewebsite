@@ -860,6 +860,11 @@ export default function Home() {
                         style={{ color: '#4f46e5', textDecoration: 'underline', display: 'inline' }}>RealFoyer</a>, a real estate
                       platform combining IDX websites, CRM and marketing tools.
                     </p>
+                    <p className="checkitem-lrg" style={{ marginTop: '0.75rem' }}>
+                      Go deeper: <Link href="/services/mls-idx-integration" style={{ color: '#4f46e5', textDecoration: 'underline', display: 'inline' }}>MLS and IDX integration</Link>
+                      {' · '}<Link href="/services/investor-portal-development" style={{ color: '#4f46e5', textDecoration: 'underline', display: 'inline' }}>investor portals</Link>
+                      {' · '}<Link href="/industries/real-estate" style={{ color: '#4f46e5', textDecoration: 'underline', display: 'inline' }}>real estate case studies</Link>
+                    </p>
                   </div>
                   <div data-w-id="f439b134-dbd1-a6a9-c41d-0daf558a5745" className="card sticky _2">
                     <div className="margin-bottom margin-xsmall">
@@ -912,6 +917,10 @@ export default function Home() {
                         <p className="checkitem-lrg"><strong>Space Utilization</strong>: Smart allocation systems for optimal space management.</p>
                       </div>
                     </div>
+                    <p className="checkitem-lrg" style={{ marginTop: '1rem' }}>
+                      Go deeper: <Link href="/industries/self-storage" style={{ color: '#4f46e5', textDecoration: 'underline', display: 'inline' }}>self-storage software</Link>
+                      {' · '}<Link href="/industries/logistics" style={{ color: '#4f46e5', textDecoration: 'underline', display: 'inline' }}>logistics case studies</Link>
+                    </p>
                   </div>
                   <div className="card sticky _3">
                     <div className="margin-bottom margin-xsmall">
@@ -964,6 +973,11 @@ export default function Home() {
                         <p className="checkitem-lrg"><strong>Demand Forecasting</strong>: Use data to predict demand and minimize stockouts or overages.</p>
                       </div>
                     </div>
+                    <p className="checkitem-lrg" style={{ marginTop: '1rem' }}>
+                      Go deeper: <Link href="/industries/logistics" style={{ color: '#4f46e5', textDecoration: 'underline', display: 'inline' }}>logistics and supply chain</Link>
+                      {' · '}<Link href="/services/api-integration" style={{ color: '#4f46e5', textDecoration: 'underline', display: 'inline' }}>API integration</Link>
+                      {' · '}<Link href="/industries" style={{ color: '#4f46e5', textDecoration: 'underline', display: 'inline' }}>all industries</Link>
+                    </p>
                   </div>
                 </div>
               </div>
