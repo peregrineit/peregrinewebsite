@@ -234,3 +234,9 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 - Local end-to-end run in a browser with a mock mail server: success path (`lead_submit`, notification to `info@peregrine-it.com`, acknowledgement to the visitor) and failure path (`lead_error`, no `lead_submit`, error and email link) both behave as designed.
 - Final checks: build, `tsc`, ESLint 0 errors, `seo_check.py` FAILS: 0 on 57 URLs, 44 lead tests, 56 fee tests.
 - **Status:** not yet ready to deploy; one real preview submission remains.
+
+### C7 — `main` (favicon fix, PR #8) merged into `seo/phase-12` (2026-10-09)
+- **Commit:** `072b05a` (merge, no conflicts).
+- **Tests on the merged build:** `tsc` clean; ESLint 0 errors; `seo_check.py` FAILS: 0 on 57 URLs; 44 lead tests; 56 fee tests; icon URLs all 200 with `?v=5`; transparent corners confirmed on the PNG and ICO files.
+- **Preview:** Vercel check passed on `072b05a`; the preview still redirects to the Vercel login, so the real lead test was not run.
+- **Status:** ready for the final email test.

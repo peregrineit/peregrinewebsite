@@ -4,7 +4,9 @@
 
 ## Decision
 
-**NOT YET READY TO DEPLOY. One step is left: a real test submission on the preview, seen to arrive.** Everything that can be checked without signing in to Vercel has passed. PR #7 stays a draft.
+**READY FOR FINAL EMAIL TEST.** All technical checks pass on the branch with `main` (including the favicon fix, PR #8) merged in. One external step is left: a real test submission on the preview, seen to arrive. PR #7 stays a draft and is not to be merged until that passes and the owner authorizes the release.
+
+**Branch state (2026-10-09):** `seo/phase-12` at `072b05a`, `main` merged in with no conflicts; PR #7 mergeable; Vercel preview check passed.
 
 ### Lead delivery evidence (updated 2026-10-09, after the owner verified the domain in Resend)
 
@@ -25,7 +27,18 @@ Either of these, nothing else. No DNS, key or Resend change is asked for.
 
 When both emails are confirmed this file changes to **READY TO DEPLOY**.
 
-### Verified locally on the final build (2026-10-09)
+### Favicon and SEO changes together (after merging `main`)
+
+| Check | Result |
+|---|---|
+| Merge of `main` (PR #8) into the branch | clean, no conflicts; 96 files differ from `main`, all Phase 11 and 12 work intact |
+| Icon links on the homepage, an industry page, a guide and a case study | all `?v=5`; `/favicon.ico` is the emblem, not the framework default |
+| Icon files | every URL returns 200; 32 px, 512 px and `favicon.ico` have transparent corners; the 180 px Apple icon and the maskable icon are white-backed by design |
+| `site.webmanifest` | lists the 192, 512 and maskable icons; all resolve |
+| Organization `logo` in the schema | points at `/favicons/favicon-512x512.png`, which exists |
+| Production today | already serves `?v=5` (PR #8 is live) |
+
+### Verified locally on the final build (2026-10-09, re-run after the merge)
 
 Run in a browser against the built site, with Resend replaced by a local mock (nothing left the machine):
 
@@ -114,7 +127,7 @@ Detail and steps: `LEAD-DELIVERY.md`.
 
 ## 4. Optional improvements (do not block)
 
-- The favicon fix is a separate pull request, #8, from `main`. It can merge before or after #7.
+- The favicon fix (PR #8) is merged to `main`, live, and included in this branch.
 
 - Case-study LCP is about 3.3 s in the local lab run (hero image); content pages are faster. Measure on production before spending time on it.
 - Enforce the CSP after two weeks of clean reports in the Vercel log (B15).
