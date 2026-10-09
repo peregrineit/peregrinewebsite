@@ -10,7 +10,8 @@ secret, an account or a paid service. Every script has `--help` and a test that 
 | Source links | `npm run check:links -- http://localhost:3057 --out-md … --out-json …` | 0 clean, 1 broken links, 2 crawl failed | `python3 scripts/test_check_sources.py` (42) |
 | Metadata snapshot | `npm run check:meta` (local build against the baseline) | 0 same, 1 differences, 2 could not run | `python3 scripts/test_meta_snapshot.py` (19) |
 | SEO invariants (existing) | `npm run check:seo` | 0 / 1 | n/a |
-| All four tool tests | `npm run test:systems` | 0 / 1 | |
+| Research datasets (structure) | `python3 scripts/test_research_data.py` | 0 / 1 | 18 checks |
+| All five test scripts | `npm run test:systems` | 0 / 1 | |
 
 ## Weekly Search Console report
 1. In Search Console → Performance, set the date range to **Last 7 days** and press **Export** (Excel or CSV; both work).
