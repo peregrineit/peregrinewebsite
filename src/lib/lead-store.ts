@@ -66,8 +66,18 @@ export function blobPath(ref: string, receivedAt: string, token: string): string
   return `leads/${receivedAt.slice(0, 7)}/${ref}-${suffix}.json`;
 }
 
-export function vercelBlobStore(config: { token: string; apiUrl?: string; access?: string }): LeadStore {
-  const apiUrl = (config.apiUrl || BLOB_API_URL).replace(/\/+$/, "");
+/**
+ * The Blob API base URL. LEAD_STORE_BLOB_API_URL exists so the tests can point the adapter
+ * at a mock. Every request carries the store's bearer token, so in production the override
+ * is ignored: a mistyped or planted value must not be able to send the token to another host.
+ */
+export function blobApiUrl(env: Record<string, string | undefined>): string {
+  const override = env.VERCEL_ENV === "production" ? "" : (env.LEAD_STORE_BLOB_API_URL || "").trim();
+  return (override || BLOB_API_URL).replace(/\/+$/, "");
+}
+
+export function vercelBlobStore(config: { token: string; apiUrl: string; access?: string }): LeadStore {
+  const apiUrl = config.apiUrl;
   // "private" needs a private Blob store (recommended: reads then need the token).
   // A public store rejects it, which shows up as a failed write, not as public leads.
   const access = config.access === "public" ? "public" : "private";
@@ -114,5 +124,5 @@ export function getLeadStore(env: Record<string, string | undefined> = process.e
   if (!kind) return noopStore("LEAD_STORE not set");
   if (kind !== "vercel-blob") return noopStore("LEAD_STORE has an unknown value");
   if (!env.BLOB_READ_WRITE_TOKEN) return noopStore("BLOB_READ_WRITE_TOKEN not set");
-  return vercelBlobStore({ token: env.BLOB_READ_WRITE_TOKEN, apiUrl: env.LEAD_STORE_BLOB_API_URL, access: env.LEAD_STORE_BLOB_ACCESS });
+  return vercelBlobStore({ token: env.BLOB_READ_WRITE_TOKEN, apiUrl: blobApiUrl(env), access: env.LEAD_STORE_BLOB_ACCESS });
 }

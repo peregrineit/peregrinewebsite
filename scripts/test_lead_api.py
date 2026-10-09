@@ -372,6 +372,13 @@ def run():
         reset(); s, b = post({**LEAD, "pit_confirm_field": "x"}, ip()); n = to_notify()
         check("honeypot: lead still reaches the inbox, marked", s == 200 and len(n) == 1 and n[0]["subject"].startswith("[Possible spam]"), f"got {s} {[e.get('subject') for e in n]}")
         check("honeypot: no acknowledgement is sent", not to_visitor() and b["acknowledgement"]["status"] == "skipped")
+        for value in (True, ["x"], 1, {"a": 1}, False, 0, []):
+            reset(); s, b = post({**LEAD, "pit_confirm_field": value}, ip()); n = to_notify()
+            check(f"honeypot: a non-string value ({json.dumps(value)}) is flagged and gets no acknowledgement",
+                  s == 200 and len(n) == 1 and n[0]["subject"].startswith("[Possible spam]") and not to_visitor(), f"got {s} {[e.get('subject') for e in n]} acks {len(to_visitor())}")
+        for value in ("", "   ", None):
+            reset(); s, b = post({**LEAD, "pit_confirm_field": value}, ip()); n = to_notify()
+            check(f"honeypot: an empty value ({json.dumps(value)}) is not flagged", s == 200 and len(n) == 1 and not n[0]["subject"].startswith("[Possible spam]") and len(to_visitor()) == 1)
 
         # realistic Resend failures
         reset(fail_once=500)

@@ -56,6 +56,12 @@ type QualifiedLead = LeadData & { priority: PriorityResult };
 
 const clean = (v: unknown, max = 2000) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
+/** Absent, null and a blank string are "not filled". Everything else is. */
+function honeypotFilled(value: unknown): boolean {
+  if (value === undefined || value === null) return false;
+  return typeof value === "string" ? value.trim() !== "" : true;
+}
+
 function validateEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -354,7 +360,10 @@ export async function POST(request: NextRequest) {
       // also swallowed real visitors whose browser autofilled it. Now the lead still goes to
       // the inbox, marked, and only the acknowledgement (which a bot could aim at a third
       // party) is withheld.
-      spamSuspected: Boolean(clean(raw[HONEYPOT_FIELD])),
+      // Flagged by anything a person's browser would not send: the form sends "" for an
+      // untouched field. A non-empty string, or any other type at all (true, 1, 0, [], {}),
+      // is a script.
+      spamSuspected: honeypotFilled(raw[HONEYPOT_FIELD]),
     };
 
     // Reference. The form sends one submissionId per attempt and reuses it when it retries.

@@ -109,7 +109,8 @@ It appears as `Priority: High (timeline ASAP +2; company given +1; ...)` in the 
 - **Headers:** `Idempotency-Key: lead-<ref>`; with `LEAD_WEBHOOK_SECRET` set, `X-Peregrine-Signature: sha256=<hex HMAC-SHA256 of the raw body>`.
 - **Budget:** 5 seconds for everything, retry and backoff included.
 - **Retry:** one, 300 ms later, only after a failure that came back quickly and may be transient (5xx, 408, 429, connection error), and only if at least 500 ms of the budget is left. A timeout is not retried. Other 4xx are not retried. Both attempts send identical bytes.
-- **One delivery per lead** depends on the receiver: it must treat a repeated `ref` (or `Idempotency-Key`) as the same lead. The Sheet script checks the last 20 rows for the `ref`.
+- **Receivers must deduplicate on `ref`.** Since sprint 2 the site may send the same lead twice: once more after a quick 5xx, 408, 429 or connection error, and again if the visitor retries an unchanged form after an error. Every repeat has the same `ref`, the same `Idempotency-Key` and (for the automatic retry) the same bytes. A receiver that appends a row or creates a contact for every POST will create duplicates unless it treats a repeated `ref` as the lead it already has. The Sheet script checks the last 20 rows for the `ref`. A timeout is not retried by the site.
+- **What counts as accepted:** any 2xx, except a 2xx whose `Content-Type` is `text/html` (reason `webhook answered with an HTML page`) and a 2xx JSON body containing `"ok": false` (reason `webhook answered ok:false`). An Apps Script web app answers 200 with an HTML page for a sign-in prompt or an uncaught exception, having recorded nothing; the Sheet script therefore catches its own errors and answers JSON `ok: false`. No other body is required: plain text, an empty body, or JSON without `ok` all count. A receiver that answers a successful POST with an HTML page will be treated as failing.
 - **Verifying the signature:** `docs/growth/lead/verify-signature.mjs` (Node). A Google Apps Script web app cannot read request headers, so the Sheet receiver cannot verify it; its protection is the secrecy of its URL.
 
 ### Durable store
@@ -173,7 +174,7 @@ A notification that is *skipped* because `RESEND_API_KEY` is not set does not al
 | `LEAD_STORE` | not set (no store) | **New.** `vercel-blob` selects the Blob adapter; needs the token as well |
 | `BLOB_READ_WRITE_TOKEN` | not set | **New to this app.** Vercel's read-write token for the Blob store. Used only when `LEAD_STORE=vercel-blob` |
 | `LEAD_STORE_BLOB_ACCESS` | `private` | **New.** `public` only for a public Blob store |
-| `LEAD_STORE_BLOB_API_URL` | `https://vercel.com/api/blob` | **New.** Base URL of the Blob API. Exists so the tests can point at a mock; do not set it in Vercel |
+| `LEAD_STORE_BLOB_API_URL` | `https://vercel.com/api/blob` | **New.** Base URL of the Blob API. Exists so the tests can point at a mock; do not set it in Vercel. **Ignored when `VERCEL_ENV` is `production`**, because every request to that URL carries the store token |
 | `NEXT_PUBLIC_GA_ID` | not set | GA4 and the consent bar. Unchanged |
 | `RESEND_BASE_URL` | Resend's API | Read by the Resend SDK; used by the tests only |
 | `VERCEL_ENV` | set by Vercel | `production` hides the diagnostic in a 502 response. Unchanged |

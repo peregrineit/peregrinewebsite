@@ -8,6 +8,7 @@ import {
   calendlyUrl, cleanAttribution, hasSource, isExternalReferrer, multiLine, nextTouches, oneLine, parseTouch, toLeadAttribution,
 } from '../src/lib/attribution.ts';
 import { createFormTracker } from '../src/lib/form-tracking.ts';
+import { blobApiUrl, blobPath, getLeadStore } from '../src/lib/lead-store.ts';
 
 let passed = 0;
 const eq = (actual, expected, name) => { assert.deepEqual(actual, expected, name); passed++; };
@@ -100,6 +101,17 @@ eq(run((tr) => { tr.input('strategy-call', '/a'); tr.input('strategy-call', '/b'
 eq(run((tr) => { tr.input('', '/a'); tr.hidden(); }), [], 'a form without a name is ignored');
 let keys = []; createFormTracker((e) => { keys = Object.keys(e); }).input('quick-project', '/');
 eq(keys.sort(), ['event', 'form', 'page'], 'events carry form and page only');
+
+// --- server configuration that cannot be exercised over HTTP without leaving the machine
+const REAL = 'https://vercel.com/api/blob';
+eq(blobApiUrl({}), REAL, 'blob API: default');
+eq(blobApiUrl({ LEAD_STORE_BLOB_API_URL: 'http://127.0.0.1:3073/blob/' }), 'http://127.0.0.1:3073/blob', 'blob API: override used outside production (tests)');
+eq(blobApiUrl({ VERCEL_ENV: 'preview', LEAD_STORE_BLOB_API_URL: 'http://127.0.0.1:3073/blob' }), 'http://127.0.0.1:3073/blob', 'blob API: override used on preview');
+eq(blobApiUrl({ VERCEL_ENV: 'production', LEAD_STORE_BLOB_API_URL: 'https://attacker.example/collect' }), REAL, 'blob API: override ignored in production, so the token cannot be sent elsewhere');
+eq([getLeadStore({}).name, getLeadStore({ LEAD_STORE: 'vercel-blob' }).name, getLeadStore({ BLOB_READ_WRITE_TOKEN: 't' }).name, getLeadStore({ LEAD_STORE: 's3', BLOB_READ_WRITE_TOKEN: 't' }).name,
+  getLeadStore({ LEAD_STORE: 'vercel-blob', BLOB_READ_WRITE_TOKEN: 't' }).name], ['none', 'none', 'none', 'none', 'vercel-blob'], 'store switch: needs LEAD_STORE=vercel-blob and the token');
+eq(/^leads\/2026-10\/abcd1234-[0-9a-f]{32}\.json$/.test(blobPath('abcd1234', '2026-10-10T00:00:00.000Z', 'token-a')), true, 'store path: month, reference, 128-bit suffix');
+eq(blobPath('abcd1234', '2026-10-10T00:00:00.000Z', 'token-a') === blobPath('abcd1234', '2026-10-10T00:00:00.000Z', 'token-b'), false, 'store path: the suffix depends on the token');
 
 // --- the Google Sheet receiver (scripts/lead-sheet-webhook.gs), run here with stand-ins for
 //     the Apps Script services. This checks the script's own logic, not Google.
