@@ -693,7 +693,7 @@ const coreServiceList: Service[] = [
     ],
     stack: ['Odoo', 'Python', 'PostgreSQL', 'Odoo external API (JSON-2, XML-RPC, JSON-RPC)', 'REST integrations', 'Next.js dashboards'],
     caseStudies: [],
-    guides: ['odoo-implementation-cost'],
+    guides: ['odoo-implementation-cost', 'odoo-shopify-marketplace-integration'],
     answers: {
       includes:
         'Peregrine\'s Odoo service covers custom Odoo modules in Python, integrations between Odoo and websites, e-commerce, payment, shipping and finance systems through Odoo\'s external API, configuration of the HR, CRM, Inventory and Accounting modules, and data migration from spreadsheets or legacy systems, with trial migrations before cut-over.',

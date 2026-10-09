@@ -560,6 +560,48 @@
    "status": 200,
    "title": "Odoo Implementation Cost: What to Budget | Peregrine IT"
   },
+  "/blog/odoo-shopify-marketplace-integration": {
+   "canonical": "https://peregrine-it.com/blog/odoo-shopify-marketplace-integration",
+   "description": "How to connect Odoo to Shopify or a marketplace: which system owns each record, webhooks and polling, idempotency, rate limits, mapping pitfalls, a checklist.",
+   "h1": [
+    "Odoo Integration with Shopify and Marketplaces: Ownership, Sync and Failure Handling"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "Odoo Integration: Shopify & Marketplace Sync | Peregrine IT"
+  },
   "/blog/reso-web-api-vs-rets": {
    "canonical": "https://peregrine-it.com/blog/reso-web-api-vs-rets",
    "description": "What changes when you move an MLS integration from RETS to the RESO Web API: authentication, queries, field names, media and sync, with sources and a checklist.",
@@ -2141,5 +2183,5 @@
    "title": "MLS & IDX Cost Calculator: Published Fees | Peregrine IT"
   }
  },
- "source": "http://localhost:3057"
+ "source": "http://localhost:3077"
 }

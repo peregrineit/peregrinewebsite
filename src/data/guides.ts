@@ -165,7 +165,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'odoo-implementation-cost',
-    related: ['custom-saas-vs-off-the-shelf-crm-for-brokerages', 'laravel-upgrade-checklist'],
+    related: ['odoo-shopify-marketplace-integration', 'custom-saas-vs-off-the-shelf-crm-for-brokerages', 'laravel-upgrade-checklist'],
     cta: {
       heading: 'Budgeting an Odoo Project?',
       text: 'Tell us which Odoo apps you need, which systems Odoo has to connect to and what you want customized. An engineer will tell you what that means for plan, hosting and upkeep.',
@@ -226,6 +226,22 @@ export const guides: Guide[] = [
     dateModified: '2026-10-10',
     service: 'investor-portal-development',
     caseStudy: 'proptech-investor-portal',
+  },
+  {
+    slug: 'odoo-shopify-marketplace-integration',
+    related: ['odoo-implementation-cost', 'laravel-upgrade-checklist'],
+    cta: {
+      heading: 'Connecting Odoo to a Sales Channel?',
+      text: 'Tell us which channels you sell through, which system holds stock and prices today, and where orders go wrong. An engineer will walk through ownership, sync and failure handling for your setup.',
+    },
+    title: 'Odoo Integration with Shopify and Marketplaces: Ownership, Sync and Failure Handling',
+    metaTitle: 'Odoo Integration: Shopify & Marketplace Sync',
+    description:
+      'How to connect Odoo to Shopify or a marketplace: which system owns each record, webhooks and polling, idempotency, rate limits, mapping pitfalls, a checklist.',
+    datePublished: '2026-10-10',
+    dateModified: '2026-10-10',
+    service: 'odoo-erp',
+    // No caseStudy: Peregrine has no published Odoo case study and no confirmed named integration.
   },
 ];
 
