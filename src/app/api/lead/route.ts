@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { cleanAttribution, type LeadAttribution } from "@/lib/attribution";
 import { leadPriority, priorityLine, type PriorityResult } from "@/lib/lead-priority";
+import { deliverWebhook, type Outcome } from "@/lib/lead-webhook";
 
 // Lead intake for the two site forms (components/LeadForms.tsx).
 //
@@ -45,12 +46,6 @@ interface LeadData {
 
 /** A lead plus what this API derived from it. Only for the owner; never sent to the visitor. */
 type QualifiedLead = LeadData & { priority: PriorityResult };
-
-/** Outcome of one outbound message. `id` is the provider's message id, never content. */
-type Outcome =
-  | { status: "accepted"; id: string }
-  | { status: "failed"; reason: string; detail?: string }
-  | { status: "skipped"; reason: string };
 
 const clean = (v: unknown, max = 2000) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
@@ -197,21 +192,9 @@ function webhookBody(lead: QualifiedLead) {
   };
 }
 
-async function postToWebhook(url: string, lead: QualifiedLead): Promise<Outcome> {
-  try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Idempotency-Key": `lead-${lead.ref}` },
-      body: JSON.stringify(webhookBody(lead)),
-      // A hung CRM must not stall the visitor's response.
-      signal: AbortSignal.timeout(5000),
-    });
-    if (!res.ok) return { status: "failed", reason: `webhook responded ${res.status}` };
-    return { status: "accepted", id: `http-${res.status}` };
-  } catch (err) {
-    const name = (err as { name?: string })?.name;
-    return { status: "failed", reason: name === "TimeoutError" || name === "AbortError" ? "webhook timed out" : "webhook unreachable" };
-  }
+/** One delivery per lead: retry, time budget and signature are in lib/lead-webhook.ts. */
+function postToWebhook(url: string, lead: QualifiedLead): Promise<Outcome> {
+  return deliverWebhook(url, JSON.stringify(webhookBody(lead)), `lead-${lead.ref}`, { secret: process.env.LEAD_WEBHOOK_SECRET });
 }
 
 // Whether Resend reports the sender's domain as verified. Asked of Resend itself, so it
@@ -275,6 +258,8 @@ export async function GET(request: NextRequest) {
       sender: process.env.LEAD_FROM_EMAIL ? "custom" : "resend-test-sender",
       senderDomainVerified: await senderDomainVerified(),
       webhook,
+      // Requests to the webhook carry an HMAC signature (LEAD_WEBHOOK_SECRET is set).
+      webhookSigned: webhook && Boolean(process.env.LEAD_WEBHOOK_SECRET),
       durableStorage: webhook ? "webhook" : "none",
       environment: process.env.VERCEL_ENV || "local",
     },

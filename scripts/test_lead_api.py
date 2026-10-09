@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 """Integration tests for /api/lead. Stdlib only; sends nothing to the outside world.
 
-Runs the built app (`npm run build` first) on port 3059 in several configurations, with
+Runs the built app (`npm run build` first) on port 3059 (LEAD_TEST_APP_PORT) in several configurations, with
 Resend and the CRM webhook both pointed at a local mock server that behaves like Resend
 where it matters: message ids, idempotency keys, error bodies, message status lookup.
 
   none          no RESEND_API_KEY, no LEAD_WEBHOOK_URL
   webhook       LEAD_WEBHOOK_URL only
+  signed        LEAD_WEBHOOK_URL + LEAD_WEBHOOK_SECRET
   resend        RESEND_API_KEY only (RESEND_BASE_URL -> mock)
   both          both destinations
   unreachable   RESEND_BASE_URL points at a closed port
 
 Usage: python3 scripts/test_lead_api.py      (exits 1 on any failure)
 """
-import http.server, json, os, re, subprocess, sys, threading, time, urllib.error, urllib.request, uuid
+import hashlib, hmac, http.server, json, os, re, subprocess, sys, threading, time, urllib.error, urllib.request, uuid
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Ports can be overridden so several checkouts can run the suite at once.
@@ -24,7 +25,7 @@ FROM = "Peregrine IT <hello@test.invalid>"
 NOTIFY = "info@peregrine-it.com"
 
 DEFAULTS = dict(emails=[], attempts=0, hooks=[], keys={}, events={}, fail=None, fail_once=None, fail_ack=None,
-                hook_fail=False, hook_sleep=0)
+                hook_fail=False, hook_sleep=0, hook_plan=[], hook_attempts=[])
 state = dict(DEFAULTS, domains=[{"name": "test.invalid", "status": "verified"}])
 ERRORS = {
     422: {"statusCode": 422, "name": "validation_error", "message": "Invalid `from` field: hello@test.invalid is not allowed."},
@@ -43,7 +44,8 @@ class Mock(http.server.BaseHTTPRequestHandler):
             return self._send(200, {"object": "email", "id": m.group(1), "last_event": state["events"].get(m.group(1), "sent")})
         self._send(404, {})
     def do_POST(self):
-        body = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or b"{}")
+        raw = self.rfile.read(int(self.headers.get("Content-Length", 0)))
+        body = json.loads(raw or b"{}")
         if self.path.startswith("/emails"):
             state["attempts"] += 1
             to = body.get("to"); to = to[0] if isinstance(to, list) else to
@@ -60,10 +62,14 @@ class Mock(http.server.BaseHTTPRequestHandler):
             state["emails"].append({**body, "to": to, "_id": mid, "_key": key})
             return self._send(200, {"id": mid})
         if self.path.startswith("/hook"):
-            if state["hook_sleep"]: time.sleep(state["hook_sleep"])
-            if state["hook_fail"]:
-                return self._send(500, {"error": "mock failure"})
-            state["hooks"].append({**body, "_key": self.headers.get("Idempotency-Key")})
+            # hook_attempts: every request that arrived. hooks: the ones the receiver accepted.
+            state["hook_attempts"].append({"key": self.headers.get("Idempotency-Key"), "raw": raw})
+            # hook_plan: one {"sleep": s, "status": code} per attempt, used up in order.
+            step = state["hook_plan"].pop(0) if state["hook_plan"] else {}
+            if state["hook_sleep"] or step.get("sleep"): time.sleep(state["hook_sleep"] or step["sleep"])
+            if state["hook_fail"] or step.get("status", 200) >= 300:
+                return self._send(step.get("status", 500), {"error": "mock failure"})
+            state["hooks"].append({**body, "_key": self.headers.get("Idempotency-Key"), "_sig": self.headers.get("X-Peregrine-Signature"), "_raw": raw})
             return self._send(200, {"ok": True})
         self._send(404, {})
     def _send(self, code, obj):
@@ -87,7 +93,8 @@ def post(payload, ip):
 
 LOG = os.path.join(ROOT, ".lead-test.log")
 def start_app(env_extra):
-    env = {k: v for k, v in os.environ.items() if k not in ("RESEND_API_KEY", "LEAD_WEBHOOK_URL", "LEAD_FROM_EMAIL", "RESEND_BASE_URL")}
+    env = {k: v for k, v in os.environ.items() if k not in ("RESEND_API_KEY", "LEAD_WEBHOOK_URL", "LEAD_FROM_EMAIL", "RESEND_BASE_URL", "VERCEL_ENV")
+           and not k.startswith(("LEAD_", "BLOB_"))}
     env.update(env_extra, PORT=str(APP_PORT))
     proc = subprocess.Popen(["npx", "next", "start"], cwd=ROOT, env=env, stdout=open(LOG, "w"), stderr=subprocess.STDOUT)
     for _ in range(60):
@@ -127,6 +134,11 @@ def reset(**kw):
     state.update({k: (v.copy() if isinstance(v, (list, dict)) else v) for k, v in DEFAULTS.items()}); state.update(kw)
 def to_notify(): return [e for e in state["emails"] if e["to"] == NOTIFY]
 def to_visitor(): return [e for e in state["emails"] if e["to"] != NOTIFY]
+
+SECRET = "test-shared-secret-not-a-real-one"
+def verifier(secret, header, raw):
+    """Exit code of the reference Node verifier (0 = valid) for a captured request."""
+    return subprocess.run(["node", os.path.join(ROOT, "docs/growth/lead/verify-signature.mjs"), secret, header], input=raw, capture_output=True).returncode
 
 RESEND_ENV = {"RESEND_API_KEY": "re_test_mock", "RESEND_BASE_URL": MOCK, "LEAD_FROM_EMAIL": FROM}
 HOOK_ENV = {"LEAD_WEBHOOK_URL": MOCK + "/hook"}
@@ -205,13 +217,51 @@ def run():
         check("priority: a filled anti-spam field is always low", s == 200 and state["hooks"] and state["hooks"][0].get("priority") == "low")
         s, _ = post({**LEAD, "budget": "2-6-months", "timeline": ""}, ip())
         check("webhook: legacy `budget` maps to timeline", s == 200 and state["hooks"][-1].get("timeline") == "2-6-months")
-        reset(hook_fail=True)
+        check("webhook: no signature header and status says unsigned when LEAD_WEBHOOK_SECRET is not set", h and h[0].get("_sig") is None and get().get("webhookSigned") is False)
+        reset(hook_fail=True); before = len(app_log())
         s, b = post(LEAD, ip()); check("webhook: 502 when the webhook fails and nothing else is configured", s == 502 and b.get("success") is False, f"got {s}")
+        check("webhook retry: a failing webhook is tried twice, no more", len(state["hook_attempts"]) == 2 and "webhook responded 500 after 2 attempts" in app_log()[before:], f"attempts {len(state['hook_attempts'])}")
+        # retry: one, after a quick transient failure, inside the same 5 s budget
+        reset(hook_plan=[{"status": 500}])
+        s, b = post(LEAD, ip()); at = state["hook_attempts"]
+        check("webhook retry: 500 then 200 -> accepted", s == 200 and b.get("webhook", {}).get("status") == "accepted" and b.get("durableStorage") == "webhook", f"got {s} {b}")
+        check("webhook retry: two requests, one delivery", len(at) == 2 and len(state["hooks"]) == 1, f"got {len(at)} / {len(state['hooks'])}")
+        check("webhook retry: both attempts carry the same idempotency key and the same bytes", len(at) == 2 and at[0]["key"] == at[1]["key"] == f"lead-{b.get('ref')}" and at[0]["raw"] == at[1]["raw"])
+        for code in (429, 408, 503):
+            reset(hook_plan=[{"status": code}]); s, b = post(LEAD, ip())
+            check(f"webhook retry: {code} once is retried -> accepted", s == 200 and len(state["hook_attempts"]) == 2 and len(state["hooks"]) == 1, f"got {s}")
+        for code in (400, 401, 404):
+            reset(hook_plan=[{"status": code}]); s, b = post(LEAD, ip())
+            check(f"webhook retry: {code} is not retried -> 502", s == 502 and len(state["hook_attempts"]) == 1 and not state["hooks"], f"got {s}, attempts {len(state['hook_attempts'])}")
         reset(hook_sleep=7)
         t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
         check("webhook: timeout -> 502 within about 5 s, not a hang", s == 502 and dt < 6.5, f"got {s} in {dt:.1f}s")
         check("log: webhook timeout is named", "webhook timed out" in app_log())
+        check("webhook retry: a timeout is not retried", len(state["hook_attempts"]) == 1, f"attempts {len(state['hook_attempts'])}")
         time.sleep(2.5)
+        reset(hook_plan=[{"sleep": 3, "status": 500}, {"sleep": 7}])
+        t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
+        check("webhook retry: slow failure then a hang still ends within the 5 s budget", s == 502 and 4.5 < dt < 6.5 and len(state["hook_attempts"]) == 2, f"got {s} in {dt:.1f}s, attempts {len(state['hook_attempts'])}")
+        time.sleep(5.5)
+        reset(hook_plan=[{"sleep": 4.4, "status": 500}])
+        t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
+        check("webhook retry: no second attempt when too little of the budget is left", s == 502 and dt < 5.5 and len(state["hook_attempts"]) == 1, f"got {s} in {dt:.1f}s, attempts {len(state['hook_attempts'])}")
+    finally: stop_app(app)
+
+    # --- webhook with a shared secret: every request is signed
+    reset(); app = start_app({**HOOK_ENV, "LEAD_WEBHOOK_SECRET": SECRET})
+    try:
+        st = get(); check("signature: status says signed, without the secret", st.get("webhookSigned") is True and SECRET not in json.dumps(st), f"got {st}")
+        reset(hook_plan=[{"status": 500}]); s, b = post(LEAD, ip()); h = state["hooks"]
+        check("signature: accepted (after one retry)", s == 200 and len(h) == 1 and len(state["hook_attempts"]) == 2, f"got {s}")
+        if h:
+            sig, raw = h[0].get("_sig") or "", h[0]["_raw"]
+            check("signature: header is sha256=<HMAC-SHA256 of the raw body>", sig == "sha256=" + hmac.new(SECRET.encode(), raw, hashlib.sha256).hexdigest(), f"got {sig}")
+            check("signature: reference verifier accepts it", verifier(SECRET, sig, raw) == 0)
+            check("signature: wrong secret is rejected", verifier("another-secret", sig, raw) == 1)
+            check("signature: altered body is rejected", verifier(SECRET, sig, raw.replace(b"Test Person", b"Someone Else")) == 1)
+            check("signature: missing or malformed header is rejected", verifier(SECRET, "", raw) == 1 and verifier(SECRET, sig.replace("sha256=", ""), raw) == 1 and verifier(SECRET, "sha256=zz", raw) == 1)
+        check("signature: the secret is never logged or returned", SECRET not in app_log() and SECRET not in json.dumps(b))
     finally: stop_app(app)
 
     # --- resend only (mocked)
