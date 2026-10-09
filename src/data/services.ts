@@ -653,9 +653,9 @@ const coreServiceList: Service[] = [
       { title: 'Migrate and test', body: 'Trial migrations and user testing with real scenarios before the cut-over date.' },
       { title: 'Go live and support', body: 'Phased go-live, one module or department at a time, with training and documentation for your team.' },
     ],
-    stack: ['Odoo', 'Python', 'PostgreSQL', 'XML-RPC / JSON-RPC APIs', 'REST integrations', 'Next.js dashboards'],
+    stack: ['Odoo', 'Python', 'PostgreSQL', 'Odoo external API (JSON-2, XML-RPC, JSON-RPC)', 'REST integrations', 'Next.js dashboards'],
     caseStudies: [],
-    guides: [],
+    guides: ['odoo-implementation-cost'],
     answers: {
       includes:
         'Peregrine\'s Odoo service covers custom Odoo modules in Python, integrations between Odoo and websites, e-commerce, payment, shipping and finance systems through Odoo\'s external API, configuration of the HR, CRM, Inventory and Accounting modules, and data migration from spreadsheets or legacy systems, with trial migrations before cut-over.',
@@ -670,7 +670,7 @@ const coreServiceList: Service[] = [
       delivered: 'Custom Odoo modules, API integrations, HR, CRM, Inventory and Accounting configuration, and data migration',
       // TODO(owner): typical timeline for this service; omitted until stated on the site.
     },
-    updated: '2026-09-30',
+    updated: '2026-10-09',
     faq: [
       {
         question: 'Which Odoo modules do your custom modules and integrations cover?',
@@ -686,7 +686,7 @@ const coreServiceList: Service[] = [
       },
       {
         question: 'Can Odoo connect to our existing systems?',
-        answer: 'Yes. Odoo exposes an external API (XML-RPC and JSON-RPC), and integrations can be built for e-commerce, CRM, payments, shipping and finance systems. Where a system has no API, file-based exchange is an option.',
+        answer: 'Yes. Odoo exposes an external API: the JSON-2 API introduced in Odoo 19, and the older XML-RPC and JSON-RPC APIs, which Odoo has scheduled for removal. Odoo makes external API access available on its Custom plan only. Integrations can be built for e-commerce, CRM, payments, shipping and finance systems; where a system has no API, file-based exchange is an option.',
       },
       {
         question: 'How long does a custom Odoo module or integration take?',

@@ -12,7 +12,8 @@ export interface Guide {
   dateModified: string;
   /** Service page and case study the guide links to. */
   service: string;
-  caseStudy: string;
+  /** Related case study; omitted when no published case study fits the guide. */
+  caseStudy?: string;
 }
 
 export const guides: Guide[] = [
@@ -150,6 +151,21 @@ export const guides: Guide[] = [
     dateModified: '2026-10-09',
     service: 'mls-idx-integration',
     caseStudy: 'scaling-real-estate-saas-platform',
+  },
+  {
+    slug: 'odoo-implementation-cost',
+    cta: {
+      heading: 'Budgeting an Odoo Project?',
+      text: 'Tell us which Odoo apps you need, which systems Odoo has to connect to and what you want customized. An engineer will tell you what that means for plan, hosting and upkeep.',
+    },
+    title: 'Odoo Implementation Cost: Licences, Hosting and Custom Development',
+    metaTitle: 'Odoo Implementation Cost: What to Budget',
+    description:
+      'What an Odoo implementation costs: per-user plans, Odoo.sh hosting, Success Packs and the upkeep of custom modules and integrations, from Odoo\'s own pages.',
+    datePublished: '2026-10-09',
+    dateModified: '2026-10-09',
+    service: 'odoo-erp',
+    // No caseStudy: Peregrine has no published Odoo case study.
   },
 ];
 
