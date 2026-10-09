@@ -8,6 +8,8 @@ import { getAttribution, track } from '@/lib/track';
 // lead_submit / lead_error events (see docs/seo/TASKS.md).
 type Status = { loading: boolean; success: boolean; error: string };
 const idle: Status = { loading: false, success: false, error: '' };
+/** Named form controls, read by name in the submit handlers. */
+type Fields = Record<string, HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>;
 
 async function submitLead(formData: Record<string, string>, setStatus: (s: Status) => void) {
   setStatus({ loading: true, success: false, error: '' });
@@ -34,9 +36,10 @@ async function submitLead(formData: Record<string, string>, setStatus: (s: Statu
 }
 
 // Hidden from people (and from assistive technology); bots that fill every field
-// reveal themselves. The API drops any submission where it has a value.
+// reveal themselves. The API drops any submission where it has a value. The name is
+// deliberately meaningless so autofill and password managers do not fill it.
 const Honeypot = () => (
-  <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true"
+  <input type="text" name="pit_confirm_field" tabIndex={-1} autoComplete="off" aria-hidden="true"
     style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
 );
 
@@ -52,9 +55,9 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
         <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0' }}>An engineer will review and reply within 6 hours.</p>
       </div>
     ) : (
-    <form onSubmit={(e: any) => {
+    <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const f = e.target;
+      const f = e.currentTarget as HTMLFormElement & Fields;
       submitLead({
         form: 'strategy-call',
         service,
@@ -64,14 +67,14 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
         projectType: f.scType.value,
         timeline: f.scTimeline.value,
         message: f.scMessage.value || 'Strategy call request',
-        website: f.website.value,
+        pit_confirm_field: f.pit_confirm_field.value,
       }, setFormStatus);
     }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-      <input type="text" name="scName" placeholder="Your name" required
+      <input type="text" name="scName" aria-label="Your name" placeholder="Your name" required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
-      <input type="email" name="scEmail" placeholder="Work email" required
+      <input type="email" name="scEmail" aria-label="Work email" placeholder="Work email" required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
-      <input type="text" name="scCompany" placeholder="Company (optional)" autoComplete="organization"
+      <input type="text" name="scCompany" aria-label="Company (optional)" placeholder="Company (optional)" autoComplete="organization"
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
       <Honeypot />
       <select name="scType" aria-label="Project type" required defaultValue=""
@@ -90,7 +93,7 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
         <option value="2-6-months">2–6 months</option>
         <option value="exploring">Just exploring</option>
       </select>
-      <textarea name="scMessage" placeholder="Tell us briefly what you need" rows={2}
+      <textarea name="scMessage" aria-label="What you need" placeholder="Tell us briefly what you need" rows={2}
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', resize: 'vertical' as const }} />
       {formStatus.error && (
         <p style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>{formStatus.error}</p>
@@ -119,9 +122,9 @@ export function QuickProjectForm() {
         <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0' }}>We&apos;ll scope your request and respond within 48 hours.</p>
       </div>
     ) : (
-    <form onSubmit={(e: any) => {
+    <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const f = e.target;
+      const f = e.currentTarget as HTMLFormElement & Fields;
       submitLead({
         form: 'quick-project',
         name: f.qpName.value,
@@ -129,15 +132,15 @@ export function QuickProjectForm() {
         projectType: 'Quick Project Request',
         timeline: f.qpTimeline.value,
         message: f.qpNeed.value,
-        website: f.website.value,
+        pit_confirm_field: f.pit_confirm_field.value,
       }, setQpFormStatus);
     }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-      <input type="text" name="qpName" placeholder="Your name" required
+      <input type="text" name="qpName" aria-label="Your name" placeholder="Your name" required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
-      <input type="email" name="qpEmail" placeholder="Work email" required
+      <input type="email" name="qpEmail" aria-label="Work email" placeholder="Work email" required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
       <Honeypot />
-      <textarea name="qpNeed" placeholder="What do you need help with?" rows={3} required
+      <textarea name="qpNeed" aria-label="What you need help with" placeholder="What do you need help with?" rows={3} required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', resize: 'vertical' as const }} />
       <select name="qpTimeline" aria-label="Desired timeline" required defaultValue=""
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', appearance: 'none' as const, WebkitAppearance: 'none' as const }}>

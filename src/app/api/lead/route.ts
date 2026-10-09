@@ -9,6 +9,8 @@ import { Resend } from "resend";
 // Vercel's filesystem is not persistent, so nothing is written to disk.
 
 const NOTIFY_TO = "info@peregrine-it.com";
+/** Must match the hidden input in components/LeadForms.tsx. */
+const HONEYPOT_FIELD = "pit_confirm_field";
 // TODO(owner): set LEAD_FROM_EMAIL to a sender on a domain verified in Resend. The
 // fallback is Resend's test sender, which Resend only delivers to the account owner.
 const FROM = process.env.LEAD_FROM_EMAIL || "Peregrine IT <onboarding@resend.dev>";
@@ -43,6 +45,10 @@ function rateLimited(ip: string): boolean {
   const recent = (hits.get(ip) || []).filter((t) => now - t < WINDOW_MS);
   recent.push(now);
   hits.set(ip, recent);
+  // Keep the map from growing without bound on a long-lived instance.
+  if (hits.size > 5000) {
+    for (const [key, times] of hits) if (times.every((t) => now - t >= WINDOW_MS)) hits.delete(key);
+  }
   return recent.length > MAX_PER_WINDOW;
 }
 
@@ -100,17 +106,23 @@ async function postToWebhook(url: string, lead: LeadData) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ receivedAt: new Date().toISOString(), source: "peregrine-it.com", ...lead }),
+    // A hung CRM must not stall the visitor's response.
+    signal: AbortSignal.timeout(5000),
   });
   if (!res.ok) throw new Error(`webhook responded ${res.status}`);
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const raw = await request.json();
+    const raw = await request.json().catch(() => null);
+    if (!raw || typeof raw !== "object") {
+      return NextResponse.json({ error: "Invalid request." }, { status: 400 });
+    }
 
-    // Honeypot: the "website" field is hidden from people, so only bots fill it in.
+    // Honeypot: this field is hidden from people, so only bots fill it in. It has a
+    // nonsense name so browser autofill and password managers leave it alone.
     // Answer as if it worked.
-    if (clean(raw.website)) return NextResponse.json({ success: true });
+    if (clean(raw[HONEYPOT_FIELD])) return NextResponse.json({ success: true });
 
     const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
     if (rateLimited(ip)) {
