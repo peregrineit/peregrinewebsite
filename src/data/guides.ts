@@ -69,7 +69,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'how-to-get-mls-data-access',
-    related: ['reso-web-api-vs-rets', 'mls-data-access-canada'],
+    related: ['mls-data-pipeline-architecture', 'reso-web-api-vs-rets', 'mls-data-access-canada'],
     cta: {
       heading: 'Have MLS Access and Need the Pipeline Built?',
       text: 'Tell us which boards have approved you, or which you are applying to. We build the ingestion, normalization and search on top of that access.',
@@ -101,7 +101,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'idx-vendor-vs-custom-build',
-    related: ['mls-idx-integration-cost', 'reso-web-api-vs-rets'],
+    related: ['mls-idx-integration-cost', 'reso-web-api-vs-rets', 'mls-data-pipeline-architecture'],
     cta: {
       heading: 'Deciding Whether to Move Off Your IDX Vendor?',
       text: 'Tell us which MLSs you work in and what your current IDX cannot do. An engineer will tell you whether a data vendor, a custom pipeline or staying put makes sense.',
@@ -117,7 +117,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'reso-web-api-vs-rets',
-    related: ['how-to-get-mls-data-access', 'mls-data-access-canada'],
+    related: ['mls-data-pipeline-architecture', 'how-to-get-mls-data-access', 'mls-data-access-canada'],
     cta: {
       heading: 'Still on a RETS Feed?',
       text: 'Tell us which MLSs you pull from and what the data feeds today. An engineer will tell you what the move to the RESO Web API involves for your setup.',
@@ -178,6 +178,22 @@ export const guides: Guide[] = [
     dateModified: '2026-10-09',
     service: 'odoo-erp',
     // No caseStudy: Peregrine has no published Odoo case study.
+  },
+  {
+    slug: 'mls-data-pipeline-architecture',
+    related: ['reso-web-api-vs-rets', 'how-to-get-mls-data-access', 'idx-vendor-vs-custom-build'],
+    cta: {
+      heading: 'Designing or Repairing an MLS Pipeline?',
+      text: 'Tell us which feeds you pull, how they sync today and where the data goes wrong. An engineer will tell you which parts of this architecture your setup is missing.',
+    },
+    title: 'MLS Data Pipeline Architecture: A Reference Design for the RESO Web API',
+    metaTitle: 'MLS Data Pipeline: Reference Architecture',
+    description:
+      'A reference architecture for ingesting MLS data via the RESO Web API: replication, media, normalization, duplicates, compliance checkpoints and failure modes.',
+    datePublished: '2026-10-10',
+    dateModified: '2026-10-10',
+    service: 'mls-idx-integration',
+    caseStudy: 'scaling-real-estate-saas-platform',
   },
 ];
 
