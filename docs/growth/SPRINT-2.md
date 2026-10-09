@@ -53,10 +53,14 @@ Batch 2 (as streams free up): 8 (A) · 14 as a proposal only (B) · 18 or 19 (C)
 Not started on purpose: anything needing a fact Peregrine has not confirmed (B5, B6, B8 in `docs/seo/BLOCKERS.md`).
 
 ## Status
-See "Log" below; updated by the main session as work is integrated.
+Done and integrated: 1–13, 15–26, plus item 8. Item 14 delivered as a proposal for the owner. Item 27: Lighthouse and keyboard-relevant checks run on the integrated build; real-user speed data still needed. Results, tests and pull requests: `SPRINT-2-REPORT.md`.
 
 ## Log
-- 2026-10-10: backlog written; test ports made configurable (`SERVE_PORT`, `LEAD_TEST_APP_PORT`, `LEAD_TEST_MOCK_PORT`) so the four worktrees can build and test side by side; four streams launched.
+- 2026-10-10 01:24: backlog written; ports made configurable; four streams launched.
+- Streams B, C, D first batches reviewed and integrated; B and C given second batches.
+- Stream A independently reviewed; six confirmed defects sent back and fixed with failing-first tests; integrated.
+- Stream C third batch (Odoo integration guide) integrated.
+- 02:33: full suite passes on `growth/s2-integration`; report written.
 
 ## Resume checkpoint
-If this session ends: the four branches above hold each stream's commits (local unless pushed; check `git branch -vv`). Integration order: A, D, C, B. Verify each with `npx tsc --noEmit -p .`, `scripts/serve-local.sh`, `python3 scripts/seo_check.py`, `python3 scripts/test_lead_api.py`, `node --experimental-strip-types scripts/test_mls_fees.mjs`, then open one pull request per branch against `main`.
+Sprint complete. All work is on `growth/s2-integration` (pushed) and in draft pull requests 10–14 plus the integration pull request. Integration order: A, D, C, B. Verify each with `npx tsc --noEmit -p .`, `scripts/serve-local.sh`, `python3 scripts/seo_check.py`, `python3 scripts/test_lead_api.py`, `node --experimental-strip-types scripts/test_mls_fees.mjs`, then open one pull request per branch against `main`.
