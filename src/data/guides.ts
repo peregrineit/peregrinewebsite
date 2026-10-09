@@ -37,7 +37,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'custom-saas-vs-off-the-shelf-crm-for-brokerages',
-    related: ['idx-vendor-vs-custom-build', 'self-storage-software-build-vs-buy'],
+    related: ['idx-vendor-vs-custom-build', 'self-storage-software-build-vs-buy', 'laravel-upgrade-checklist'],
     cta: {
       heading: 'Deciding Between a CRM Subscription and a Custom Build?',
       text: 'Tell us how your brokerage works today and where the current tools fall short. An engineer will tell you plainly whether custom is worth it.',
@@ -53,7 +53,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'cost-to-build-a-real-estate-platform',
-    related: ['mls-idx-integration-cost', 'investor-portal-vs-file-sharing'],
+    related: ['mls-idx-integration-cost', 'investor-portal-vs-file-sharing', 'investor-portal-security-checklist'],
     cta: {
       heading: 'Planning a Real Estate Platform?',
       text: 'Tell us the scope: MLS boards, user groups and first-release features. We will map what drives the cost for your build.',
@@ -69,7 +69,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'how-to-get-mls-data-access',
-    related: ['reso-web-api-vs-rets', 'mls-data-access-canada'],
+    related: ['mls-data-pipeline-architecture', 'reso-web-api-vs-rets', 'mls-data-access-canada'],
     cta: {
       heading: 'Have MLS Access and Need the Pipeline Built?',
       text: 'Tell us which boards have approved you, or which you are applying to. We build the ingestion, normalization and search on top of that access.',
@@ -85,7 +85,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'investor-portal-vs-file-sharing',
-    related: ['cost-to-build-a-real-estate-platform'],
+    related: ['investor-portal-security-checklist', 'cost-to-build-a-real-estate-platform'],
     cta: {
       heading: 'Outgrowing Shared Folders for Investor Reporting?',
       text: 'Tell us how your funds and investors are structured and what you send each quarter. An engineer will tell you whether an off-the-shelf portal fits or a custom one is worth it.',
@@ -101,7 +101,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'idx-vendor-vs-custom-build',
-    related: ['mls-idx-integration-cost', 'reso-web-api-vs-rets'],
+    related: ['mls-idx-integration-cost', 'reso-web-api-vs-rets', 'mls-data-pipeline-architecture'],
     cta: {
       heading: 'Deciding Whether to Move Off Your IDX Vendor?',
       text: 'Tell us which MLSs you work in and what your current IDX cannot do. An engineer will tell you whether a data vendor, a custom pipeline or staying put makes sense.',
@@ -117,7 +117,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'reso-web-api-vs-rets',
-    related: ['how-to-get-mls-data-access', 'mls-data-access-canada'],
+    related: ['mls-data-pipeline-architecture', 'how-to-get-mls-data-access', 'mls-data-access-canada'],
     cta: {
       heading: 'Still on a RETS Feed?',
       text: 'Tell us which MLSs you pull from and what the data feeds today. An engineer will tell you what the move to the RESO Web API involves for your setup.',
@@ -165,7 +165,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'odoo-implementation-cost',
-    related: ['custom-saas-vs-off-the-shelf-crm-for-brokerages'],
+    related: ['custom-saas-vs-off-the-shelf-crm-for-brokerages', 'laravel-upgrade-checklist'],
     cta: {
       heading: 'Budgeting an Odoo Project?',
       text: 'Tell us which Odoo apps you need, which systems Odoo has to connect to and what you want customized. An engineer will tell you what that means for plan, hosting and upkeep.',
@@ -178,6 +178,54 @@ export const guides: Guide[] = [
     dateModified: '2026-10-09',
     service: 'odoo-erp',
     // No caseStudy: Peregrine has no published Odoo case study.
+  },
+  {
+    slug: 'mls-data-pipeline-architecture',
+    related: ['reso-web-api-vs-rets', 'how-to-get-mls-data-access', 'idx-vendor-vs-custom-build'],
+    cta: {
+      heading: 'Designing or Repairing an MLS Pipeline?',
+      text: 'Tell us which feeds you pull, how they sync today and where the data goes wrong. An engineer will tell you which parts of this architecture your setup is missing.',
+    },
+    title: 'MLS Data Pipeline Architecture: A Reference Design for the RESO Web API',
+    metaTitle: 'MLS Data Pipeline: Reference Architecture',
+    description:
+      'A reference architecture for ingesting MLS data via the RESO Web API: replication, media, normalization, duplicates, compliance checkpoints and failure modes.',
+    datePublished: '2026-10-10',
+    dateModified: '2026-10-10',
+    service: 'mls-idx-integration',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
+  {
+    slug: 'laravel-upgrade-checklist',
+    related: ['odoo-implementation-cost', 'custom-saas-vs-off-the-shelf-crm-for-brokerages'],
+    cta: {
+      heading: 'Planning a Laravel Upgrade?',
+      text: 'Tell us your Laravel and PHP versions, the packages you depend on and how much of the code is tested. An engineer will tell you which route fits and where the risk is.',
+    },
+    title: 'Laravel Upgrade and Modernization Checklist: Upgrade in Place, Replace in Stages or Rewrite',
+    metaTitle: 'Laravel Upgrade & Modernization Checklist',
+    description:
+      'A phase-by-phase Laravel upgrade checklist from the official support policy and upgrade guides, plus a decision table: upgrade, replace in stages or rewrite.',
+    datePublished: '2026-10-10',
+    dateModified: '2026-10-10',
+    service: 'laravel-development',
+    // No caseStudy: Peregrine has no published Laravel case study. The guide makes no project claims.
+  },
+  {
+    slug: 'investor-portal-security-checklist',
+    related: ['investor-portal-vs-file-sharing', 'cost-to-build-a-real-estate-platform'],
+    cta: {
+      heading: 'Specifying or Reviewing an Investor Portal?',
+      text: 'Tell us how your funds, entities and investor roles are structured and what the portal has to hold. An engineer will walk through the access model and the controls it needs.',
+    },
+    title: 'Investor Portal Security Checklist: Threats, Controls and Questions to Ask',
+    metaTitle: 'Investor Portal Security Design Checklist',
+    description:
+      'A security design checklist for LP portals: access model, threat-to-control table, MFA and session settings, audit trail and vendor questions, with sources.',
+    datePublished: '2026-10-10',
+    dateModified: '2026-10-10',
+    service: 'investor-portal-development',
+    caseStudy: 'proptech-investor-portal',
   },
 ];
 

@@ -325,7 +325,7 @@ const coreServiceList: Service[] = [
       { slug: 'w3re-ai-real-estate-platform', note: 'A unified pipeline for four MLS systems (NTREIS, Stellar MLS, ARMLS and REcolorado) that normalizes schemas and deduplicates cross-listed properties.' },
       { slug: 'scaling-real-estate-saas-platform', note: 'Rebuilt the MLS sync engine for US and Canadian boards with delta detection, retry logic and per-feed error isolation, feeding Elasticsearch search for agent IDX sites.' },
     ],
-    guides: ['mls-idx-integration-cost', 'how-to-get-mls-data-access', 'idx-vendor-vs-custom-build', 'reso-web-api-vs-rets', 'mls-data-access-canada', 'cost-to-build-a-real-estate-platform'],
+    guides: ['mls-idx-integration-cost', 'how-to-get-mls-data-access', 'idx-vendor-vs-custom-build', 'reso-web-api-vs-rets', 'mls-data-pipeline-architecture', 'mls-data-access-canada', 'cost-to-build-a-real-estate-platform'],
     answers: {
       includes:
         'Peregrine\'s MLS and IDX integration service builds the full listing pipeline: feed ingestion over the RESO Web API or RETS, normalization across MLS boards, deduplication of cross-listed properties, a fast search layer, and the IDX website or app on top, with lead capture feeding your CRM. We also build and operate our own real estate product, RealFoyer.',
@@ -420,7 +420,7 @@ const coreServiceList: Service[] = [
     caseStudies: [
       { slug: 'proptech-investor-portal', note: 'A role-based investor portal for a real estate development firm with a $450M portfolio and 280+ investors: watermarked documents, capital calls through DocuSign and automated quarterly reporting.' },
     ],
-    guides: ['investor-portal-vs-file-sharing'],
+    guides: ['investor-portal-vs-file-sharing', 'investor-portal-security-checklist'],
     answers: {
       includes:
         'Peregrine\'s investor portal development covers role-based access modeled on your fund, co-investment and SPV structure, a document library with per-investor watermarking and an audit trail, capital calls and subscription documents with e-signature, automated distribution and performance reporting, an investor dashboard, and migration of your existing documents and investor records.',

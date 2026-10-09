@@ -340,7 +340,7 @@ export const technologyServices: Service[] = [
     ],
     stack: ['Laravel', 'PHP', 'MySQL', 'PostgreSQL', 'Redis', 'Laravel queues', 'Stripe', 'Docker', 'AWS'],
     caseStudies: [],
-    guides: [],
+    guides: ['laravel-upgrade-checklist'],
     answers: {
       includes:
         'Peregrine\'s Laravel development covers REST APIs for web and mobile frontends, multi-tenant SaaS backends with roles and Stripe billing, admin panels, queued and scheduled jobs, third-party integrations, and staged upgrades of older Laravel and PHP applications. Existing applications start with a review of the codebase, its tests and its hosting.',

@@ -239,3 +239,30 @@ a.cp-card:hover { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 10px 30px
   .cp-card-list li { margin-bottom: 14px; }
   .cp-card-list li a { display: inline-block; padding: 4px 0; }
 }
+
+/* ==== Guide diagrams (src/app/components/diagrams) — stream C block, append only ==== */
+.cp-diagram { margin: 24px 0 28px; }
+.cp-diagram svg { display: block; width: 100%; max-width: 520px; height: auto; margin: 0 auto; color: var(--cp-text); font-family: inherit; }
+.cp-diagram figcaption { font-size: 14px; color: var(--cp-muted); margin-top: 12px; text-align: center; }
+.cp-dg-box { fill: var(--cp-card); stroke: var(--cp-border); stroke-width: 1; }
+.cp-dg-source { fill: none; stroke: var(--cp-accent); stroke-width: 1.2; stroke-dasharray: 4 3; }
+.cp-dg-name { fill: #fff; font-size: 13px; font-weight: 700; }
+.cp-dg-sub { fill: var(--cp-muted); font-size: 11px; }
+.cp-dg-num { fill: none; stroke: var(--cp-accent); stroke-width: 1.2; }
+.cp-dg-numtext { fill: var(--cp-accent); font-size: 12px; font-weight: 700; }
+.cp-dg-flow { stroke: currentColor; stroke-width: 1.2; fill: none; }
+.cp-dg-arrowhead { fill: none; stroke: currentColor; stroke-width: 1.6; }
+.cp-dg-rail { stroke: var(--cp-muted); stroke-width: 1.2; }
+.cp-dg-raillabel { fill: var(--cp-muted); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; }
+.cp-dg-tap { stroke: var(--cp-muted); stroke-width: 1; stroke-dasharray: 2 3; }
+.cp-dg-dot { fill: var(--cp-bg); stroke: var(--cp-muted); stroke-width: 1.5; }
+.cp-dg-check { fill: var(--cp-bg); stroke: var(--cp-accent); stroke-width: 1.2; }
+.cp-dg-checktext { fill: var(--cp-accent); font-size: 9px; font-weight: 700; }
+.cp-prose .cp-checklist { list-style: none; padding-left: 0; }
+.cp-prose .cp-checklist li { position: relative; padding-left: 28px; }
+.cp-prose .cp-checklist li::before { content: ""; position: absolute; left: 0; top: 6px; width: 15px; height: 15px; border: 1.5px solid var(--cp-accent); border-radius: 4px; }
+/* Wide reference tables scroll sideways inside .cp-table-wrap instead of squeezing four columns into a phone. */
+.cp-prose .cp-table-wide table { min-width: 760px; }
+/* Source links inside table cells wrap with the sentence instead of dropping to their own line. */
+.cp-page .cp-prose td a.cp-src { display: inline; }
+/* ==== end of guide diagrams block ==== */
