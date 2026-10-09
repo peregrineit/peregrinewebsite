@@ -240,3 +240,10 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 - **Tests on the merged build:** `tsc` clean; ESLint 0 errors; `seo_check.py` FAILS: 0 on 57 URLs; 44 lead tests; 56 fee tests; icon URLs all 200 with `?v=5`; transparent corners confirmed on the PNG and ICO files.
 - **Preview:** Vercel check passed on `072b05a`; the preview still redirects to the Vercel login, so the real lead test was not run.
 - **Status:** ready for the final email test.
+
+## P0 — lead delivery failure on the preview (2026-10-09)
+- **Report:** success message shown; neither email arrived; `/api/lead` showed `resend: true`, `sender: custom`.
+- **Investigation (code only; no Resend or Vercel log access):** two paths to a success message existed: the hidden anti-spam field returning a silent success with nothing sent, or Resend accepting the notification with no check of what followed. Six defects recorded in `LEAD-DELIVERY.md`.
+- **Fix:** `src/app/api/lead/route.ts`, `src/app/components/LeadForms.tsx`, `scripts/test_lead_api.py`.
+- **Tests:** `test_lead_api.py` 80 passed; `tsc` clean; ESLint 0 errors; `seo_check.py` FAILS: 0 on 57 URLs; 56 fee tests; browser run with a mock mail server: receipt panel, `lead_submit`, bounce warning and `lead_delivery_failed`.
+- **Root cause:** unproven. **Status:** NO-GO until a fresh preview submission is seen to arrive.

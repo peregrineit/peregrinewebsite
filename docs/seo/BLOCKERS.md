@@ -51,3 +51,6 @@ Deploying or merging to `main`; sending any email or message; creating accounts;
 - **Release blocker:** lead delivery unverified. One consolidated request is in `GO-NO-GO.md` ("Setup request"). The preview redirects to the Vercel login, and there is no Resend or Vercel access from this machine.
 - **B11** resolved for the stats row (replaced with owner-confirmed and counted figures). Technology lists remain.
 - **B21, B23** resolved by removal: all client quotes are out of the homepage and the 19 case studies. Restoring one needs the client's written confirmation of the wording.
+
+## P0, 2026-10-09: lead delivery
+- **B25 (release blocker)** The owner's preview test showed success with no email. Needed, once: Resend → Emails status for that test, the Vercel log for `/api/lead` at that time, spam folders, and the browser used (`LEAD-DELIVERY.md`, "Evidence needed"). Then a fresh test on the new preview build.

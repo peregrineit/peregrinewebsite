@@ -47,6 +47,7 @@ All titles carry the ` | Peregrine IT` suffix and are 60 characters or fewer. De
 | `cta_open` | a `[data-open-contact]`, `#lets-talk-btn` or `[data-open-quick-project]` element is clicked | `form`, `location`, `page` |
 | `lead_submit` | a lead form succeeds | `form`, `page`, `service` |
 | `lead_error` | a lead form fails | `form`, `page`, `service` |
+| `lead_delivery_failed` | after an accepted lead, Resend reports the notification bounced or failed | `form`, `page` |
 | `calendly_click` | a Calendly link is clicked | `location`, `page` |
 | `email_click` | a `mailto:` link is clicked | `page` |
 | `guide_cta_click` | a Calendly click, popup open or form submit inside a guide's consultation block | `guide`, `action` |
@@ -113,3 +114,4 @@ Ordered. The loop takes the first item that is `ready`, finishes it, updates thi
 | C3 | Release re-validation after C1 and C2 | done: build, `tsc`, ESLint 0 errors, `seo_check.py` FAILS 0 on 57 URLs, 44 lead tests, 56 fee tests |
 | C4 | Unsupported testimonials and homepage figures replaced with client logos and verified stats; layout kept | done |
 | C5 | Real lead test on the Vercel preview | blocked: Vercel login and Resend access (setup request in GO-NO-GO.md) |
+| P0 | Lead delivery failure on the preview: success shown, no email | fix shipped on the branch; root cause unproven; needs Resend/Vercel evidence and a fresh preview test |

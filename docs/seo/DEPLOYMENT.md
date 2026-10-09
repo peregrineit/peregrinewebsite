@@ -71,7 +71,7 @@ python3 scripts/test_lead_api.py
 node --experimental-strip-types scripts/test_mls_fees.mjs
 ```
 
-Expected: no type errors; `seo_check.py` prints `FAILS: 0` for 57 URLs; `test_lead_api.py` prints `44 passed, 0 failed`; `test_mls_fees.mjs` prints `56 passed`.
+Expected: no type errors; `seo_check.py` prints `FAILS: 0` for 57 URLs; `test_lead_api.py` prints `80 passed, 0 failed`; `test_mls_fees.mjs` prints `56 passed`.
 
 Manual, on the Vercel Preview URL:
 1. Submit the form on a service page; the success message shows and the email arrives with company, timeline, service, landing page and UTM.
@@ -98,7 +98,7 @@ python3 scripts/seo_check.py https://peregrine-it.com
 - Resubmit all sitemap URLs to IndexNow (the footer and nav changed on every page).
 - In Search Console, submit the sitemap again and request indexing for the new pages you care about most: `/industries/self-storage`, `/services/investor-portal-development`, `/tools/mls-idx-cost-calculator`, and the six new guides under `/blog/`.
 - Follow `MONITORING.md` for the day-0 and weekly checks.
-- Watch Vercel → Logs for `Lead not delivered` or `Lead notification email failed` during the first day.
+- Watch Vercel → Logs for `Lead NOT accepted by any destination` or `Lead accepted with a failed step` during the first day.
 - Filter the same logs for `CSP violation`. After two clean weeks the report-only policy can be enforced.
 - Re-pull Search Console at week 3 for the title experiments.
 

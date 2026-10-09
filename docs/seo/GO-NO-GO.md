@@ -4,28 +4,32 @@
 
 ## Decision
 
-**READY FOR FINAL EMAIL TEST.** All technical checks pass on the branch with `main` (including the favicon fix, PR #8) merged in. One external step is left: a real test submission on the preview, seen to arrive. PR #7 stays a draft and is not to be merged until that passes and the owner authorizes the release.
+**NO-GO. P0 open: on the preview the form showed success and no email arrived (owner test, 2026-10-09).** PR #7 stays a draft and unmerged.
 
-**Branch state (2026-10-09):** `seo/phase-12` at `072b05a`, `main` merged in with no conflicts; PR #7 mergeable; Vercel preview check passed.
+- **Root cause: not proven.** Two code paths could produce that result; the evidence that separates them is in Resend's activity list and the Vercel log, which I cannot read. Details and the single evidence request: `LEAD-DELIVERY.md`.
+- **Fixed regardless (commit `fix(lead)`):** a filled hidden anti-spam field no longer returns a silent success; the acknowledgement's result is checked; success means "accepted by the mail provider", is worded "Request received", and comes with a reference; Resend message ids are logged; retries cannot duplicate; the form reports a delivery problem if Resend records one.
+- **A fresh real submission on the new preview build is required.** The earlier test ran on a build that had the defects above.
 
-### Lead delivery evidence (updated 2026-10-09, after the owner verified the domain in Resend)
+### What the fresh test must show
+
+On `https://peregrinewebsite-git-seo-phase-12-mukeshs-projects-36e886df.vercel.app` (signed in to Vercel), after the Vercel check passes on the latest commit:
+
+1. `/api/lead` → `"resend":true`, `"sender":"custom"`, `"environment":"preview"`, `"senderDomainVerified":true` or `null`.
+2. Submit `/contact` with "TEST" in the name. The form shows **Request received** and a **Reference**.
+3. The notification arrives at `info@peregrine-it.com` with that reference in the subject; the acknowledgement arrives at the visitor address with the same reference in the body.
+4. If either is missing: Resend → Emails → search the reference; send me the status word. The Vercel log line `Lead accepted` for that reference holds both Resend ids.
+
+Only when step 3 is confirmed does this file change to READY TO DEPLOY.
+
+### Lead delivery evidence so far
 
 | Item | Status | Evidence |
 |---|---|---|
-| Recipient is `info@peregrine-it.com` | **Verified** | fixed in `src/app/api/lead/route.ts` (`NOTIFY_TO`); the local end-to-end run sent the notification to that address |
-| Domain verified in Resend | **Owner-stated; consistent with DNS** | public DNS now has `resend._domainkey.peregrine-it.com` (DKIM key) and mail records on `send.peregrine-it.com`. On the morning of 2026-10-09 neither existed |
-| `RESEND_API_KEY` in Vercel | **Owner-stated; not seen** | no access to the project from this machine |
-| `LEAD_FROM_EMAIL` in Vercel, Preview scope | **Unknown** | not seen. Without it the code uses Resend's test sender, which delivers only to the Resend account owner's address, so the visitor acknowledgement would not arrive |
-| A real submission on the preview arrives | **Not tested** | the preview redirects to the Vercel login (checked again after the domain was verified) |
-
-### The one remaining step
-
-Either of these, nothing else. No DNS, key or Resend change is asked for.
-
-- **You (2 minutes):** signed in to Vercel, open `https://peregrinewebsite-git-seo-phase-12-mukeshs-projects-36e886df.vercel.app/api/lead`. If it shows `"sender":"custom"`, change nothing. If it shows `"sender":"resend-test-sender"`, add `LEAD_FROM_EMAIL` = `Peregrine IT <hello@peregrine-it.com>` in Vercel (Preview and Production) and redeploy the preview. Then submit the form on `/contact` with "TEST" in the name and an address you can read. Two emails should arrive: the notification at `info@peregrine-it.com` and the acknowledgement at your address.
-- **Or me:** sign in to Vercel in this app's Browser pane and name the visitor address; I run the same test and you confirm the two emails.
-
-When both emails are confirmed this file changes to **READY TO DEPLOY**.
+| Recipient is `info@peregrine-it.com` | Verified | fixed in code |
+| `RESEND_API_KEY` and `LEAD_FROM_EMAIL` reach the preview | Verified by the owner | `/api/lead` showed `resend: true`, `sender: custom` |
+| Domain verified in Resend | Owner-stated; DNS consistent | `resend._domainkey` and `send` records present |
+| Resend accepted the test emails | **Unknown** | needs Resend activity or the Vercel log |
+| Emails delivered | **No** | owner saw neither |
 
 ### Favicon and SEO changes together (after merging `main`)
 
@@ -44,13 +48,14 @@ Run in a browser against the built site, with Resend replaced by a local mock (n
 
 | Check | Result |
 |---|---|
-| Consultation form on a service page, labeled test submission | "Request sent successfully"; notification addressed to `info@peregrine-it.com` with a reference in the subject; acknowledgement addressed to the test visitor |
+| Consultation form on a service page, labeled test submission | "Request received" with a reference; notification addressed to `info@peregrine-it.com` with a reference in the subject; acknowledgement addressed to the test visitor |
 | Tracking on success | `lead_submit` fired once; no `lead_error` |
 | Failure path on `/contact` (mock rejects the email) | error message and the email link shown; `lead_error` fired; **no** `lead_submit`; no success message. The email link is not counted as a lead |
-| Status endpoint | `{"ok":true,"resend":true,"sender":"custom","senderDomainVerified":true,"webhook":false}` |
+| Status endpoint | `ok`, `resend`, `sender`, `senderDomainVerified`, `webhook`, `durableStorage`, `environment`; no values |
+| Receipt panel in the browser | "Request received", reference shown, `lead_submit` fired once; with the mock reporting a bounce the panel shows the delivery problem and `lead_delivery_failed` fires |
 | Build, TypeScript, ESLint | pass; 0 errors |
 | `seo_check.py` | FAILS: 0 on 57 URLs |
-| `test_lead_api.py` | 44 passed |
+| `test_lead_api.py` | 80 passed (Resend 401, 403, 422, 429, 500 and unreachable; acknowledgement-only failure; webhook failure and timeout; duplicates; hidden-field handling; delivery lookup; no personal data in logs) |
 | `test_mls_fees.mjs` | 56 passed |
 
 ## 1. Verified technical readiness
@@ -63,7 +68,7 @@ Run on the final local production build of the branch.
 | ESLint, whole repo | 0 errors (68 warnings, all in legacy markup: `<img>` tags) |
 | `scripts/seo_check.py`, 57 sitemap URLs | FAILS: 0 |
 | ...which covers | status, title ≤ 60, description length, uniqueness, self-canonical, one H1, heading order, image alt, JSON-LD parses, 152 schema nodes with 393 `@id` references all resolving, FAQ schema equals visible FAQ, sitemap `lastmod` equals `dateModified`, robots.txt, llms.txt matches the sitemap, internal links resolve, at least 2 inbound links per page, a contact path on every page |
-| Lead API integration tests (mock Resend and webhook) | 44 passed |
+| Lead API integration tests (mock Resend and webhook) | 80 passed |
 | Calculator fee arithmetic | 56 passed |
 | Lighthouse mobile, 12 pages (local) | Accessibility 100 and SEO 100 on all; Performance 92 homepage, 96 content pages, about 90 case studies; CLS 0 |
 | Responsive | no horizontal overflow on 18 page types at 375 px and 11 at 1280 px; nav does not wrap |

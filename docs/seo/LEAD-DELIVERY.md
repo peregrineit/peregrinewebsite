@@ -1,22 +1,59 @@
-# Lead delivery: how it works and how to configure it
+# Lead delivery: how it works, the P0 of 2026-10-09, and how to verify it
 
-## What the code does (verified by reading `src/app/api/lead/route.ts` and `package.json`)
+## P0: form showed success, no email arrived (preview, 2026-10-09)
 
-- **Email provider:** Resend, and only Resend. `resend` is the only mail dependency; there is no SMTP, SendGrid or other provider in the code or its history.
-- **Recipient:** `info@peregrine-it.com`, fixed in code (`NOTIFY_TO`). Not an environment variable.
-- **Sender:** `LEAD_FROM_EMAIL` if set; otherwise Resend's test sender `onboarding@resend.dev`, which Resend delivers only to the Resend account owner's own address.
-- **Second destination (optional):** `LEAD_WEBHOOK_URL`, a JSON POST with a 5-second timeout.
-- **Success rule:** the visitor sees "sent" only when the email or the webhook accepted the lead. The notification email is retried once. Otherwise the API returns 502 and the form shows an error with an email link. **That link is a last resort for the visitor. It is not a delivered lead and is not counted as one** (`lead_error` is tracked, not `lead_submit`).
-- **Persistence:** none in the app. Vercel has no writable disk and the project has no database. The durable record is the email in the inbox, the copy Resend keeps in its dashboard, and the webhook's destination if one is set.
-- **Reference:** each lead gets an 8-character reference that appears in the email subject, the webhook payload and the server log (the log carries no personal data), so the three can be reconciled.
+**Observed by the owner:** `/api/lead` reported `resend: true`, `sender: custom`; the contact form showed its success message; neither the notification nor the acknowledgement arrived.
 
-## What is not known
+**Root cause: not proven.** No Resend activity or Vercel log was available to me. Reading the code that produced that preview (`72a9276`) there were exactly two ways to get a success message, and they are told apart by evidence only the owner can read (next section):
 
-| Question | Evidence so far | How to settle it |
+| Path | What happened in the code | Would explain both emails missing? |
 |---|---|---|
-| Is `RESEND_API_KEY` set in Vercel production? | Unknown. No access to the project from this machine; no `.env` file in the repo | `/api/lead` → `resend: true` |
-| Is the sender domain verified in Resend? | Unknown. Public DNS shows no `resend._domainkey.peregrine-it.com` and no `send.peregrine-it.com` records, which is a hint and not proof: the account could use a subdomain or custom record names | `/api/lead` → `senderDomainVerified: true` (the app asks Resend). `null` means the key is restricted to sending; check Resend → Domains instead |
-| Do emails arrive today on production? | Unknown. Production's current code reports success even when Resend rejects | One test submission |
+| **A. Hidden anti-spam field had a value** | The API returned `{success: true}` at once, sent nothing and logged nothing. Meant for bots, but a browser's autofill or a password manager filling the off-screen field triggers it for a real person | **Yes, completely.** Nothing reached Resend |
+| **B. Resend accepted the notification** | The API returned success as soon as Resend returned no error for the first email. It never looked at what happened afterwards (delivered, bounced, spam) | Only if both messages were then lost, bounced or put in spam |
+
+**Defects confirmed by reading the code, whichever path it was:**
+1. A filled hidden field produced a false success with nothing sent and no log line (path A).
+2. The acknowledgement's result was never checked: the SDK returns errors instead of throwing, and the code only caught exceptions. A rejected acknowledgement was invisible.
+3. "Success" meant "Resend returned no error for the notification", and the form said "Request sent successfully".
+4. Resend's message ids were discarded, so a submission could not be matched to Resend's activity log.
+5. The webhook alone could produce a success (by design, but unstated to the visitor).
+6. Retries had no idempotency key, so a retry after a lost response could send a second email.
+
+### Evidence needed from the owner (one request)
+
+For the failed test, from the time it was submitted:
+
+1. **Resend → Emails** (activity list). Are there two entries, one to `info@peregrine-it.com` and one to the test address?
+   - **No entries:** path A (or the key in Vercel belongs to a different Resend account than the one with the verified domain).
+   - **Entries exist:** send me each one's status word only (Delivered, Bounced, Complained, Delivery Delayed, Suppressed). No content.
+2. **Vercel → peregrinewebsite → Logs**, filter `/api/lead`, same time. Is there a `Lead delivered` line (the old build's wording)? Present = path B; a `POST 200` with no such line = path A.
+3. Spam folders of both inboxes.
+4. Which browser was used, and whether autofill or a password manager filled the form.
+
+None of this blocks the fix below; it decides whether the root cause is recorded as proven.
+
+## What the code does now (`src/app/api/lead/route.ts`)
+
+Three states, never merged:
+
+| State | Meaning | Where it shows |
+|---|---|---|
+| **Submission accepted** | validated, given an 8-character reference | response `ref`; log |
+| **Provider accepted** | Resend returned a message id, or the webhook returned 2xx | response `notification.status`, `acknowledgement.status`, `webhook.status`; ids in the log |
+| **Delivered** | Resend later records `delivered` for the message | `GET /api/lead?delivery=<id>`; the form checks it for the notification; Resend dashboard |
+
+- **Acceptance rule:** the form shows "Request received" only when the notification was accepted by Resend **or** the webhook accepted the lead. Otherwise HTTP 502, `success: false`, and the error with the email link. The email link is not a lead.
+- **The API never says delivered.** The form says "Request received" and shows the reference. It then asks the API what Resend recorded for the notification; if Resend reports a bounce or failure, the visitor is told and `lead_delivery_failed` is tracked.
+- **Notification and acknowledgement are tracked separately.** An acknowledgement failure is reported in the response, shown to the visitor ("we could not send you a confirmation email, keep this reference") and logged.
+- **Hidden field:** a filled field no longer returns a silent success. The lead still goes to the inbox with `[Possible spam]` in the subject and no acknowledgement is sent (a bot could otherwise use the acknowledgement to mail a third party). The field now sits in a `display: none` wrapper, which browsers and password managers skip.
+- **Duplicates:** the form sends one `submissionId` per attempt and reuses it while the outcome is unknown. The reference and the Resend idempotency keys (`lead-notify-<ref>`, `lead-ack-<ref>`) derive from it, so a retry is the same message to Resend.
+- **Retries:** one, only for errors that can be transient (5xx, 429, network). A 4xx is not retried.
+- **Log line per lead** (`Lead accepted`, `Lead accepted with a failed step`, `Lead NOT accepted by any destination`): reference, form, environment, sender type, each message's status and Resend id, failure reason as error name and status. No name, address or message text.
+- **Durable storage: none in this app.** There is no database and Vercel has no writable disk. The response and `GET /api/lead` say `durableStorage: "none"` unless the webhook accepted the lead. The record is the email in the inbox, Resend's own log, and the webhook destination if configured.
+- **Preview:** sending happens in any environment that has `RESEND_API_KEY`. `GET /api/lead` now reports `environment`.
+- **Provider:** Resend only. **Recipient:** `info@peregrine-it.com`, fixed in code.
+
+`GET /api/lead?delivery=` needs an API key allowed to read emails. With a "Sending access" key it returns `null` and the form simply shows no delivery line; nothing breaks.
 
 ## Minimal steps: production sender and recipient
 
@@ -25,7 +62,7 @@
 3. **Vercel → peregrinewebsite → Settings → Environment Variables** (Production and Preview):
    - `RESEND_API_KEY`: confirm it exists.
    - `LEAD_FROM_EMAIL` = `Peregrine IT <hello@peregrine-it.com>` (any address on the verified domain; the mailbox need not exist, replies go to the visitor's address or to the `Reply-To`).
-4. Redeploy. Open `/api/lead`. Expected: `{"ok":true,"resend":true,"sender":"custom","senderDomainVerified":true,"webhook":false}`.
+4. Redeploy. Open `/api/lead`. Expected: `"ok":true`, `"resend":true`, `"sender":"custom"`, `"senderDomainVerified":true` (or `null` with a sending-only key).
 5. Submit the form once. Pass = the notification is in `info@peregrine-it.com` **and** the auto-reply is in the address you typed. Check spam on both.
 
 The recipient needs no configuration. To change it, edit `NOTIFY_TO` in the route.
@@ -44,4 +81,4 @@ With both set, a lead is recorded when either works, and the visitor sees an err
 
 ## After it works
 
-Vercel → Logs: `Lead delivered` lines carry the reference and which destination accepted it; `Lead not delivered` and `Lead notification email failed` are the ones to act on.
+Vercel → Logs: `Lead accepted` lines carry the reference and each message's Resend id; `Lead NOT accepted by any destination` and `Lead accepted with a failed step` are the ones to act on.

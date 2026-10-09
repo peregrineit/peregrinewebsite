@@ -14,7 +14,7 @@ For use after PR #7 is merged. Nothing here has been run against production yet.
 | 6 | Search Console | Sitemaps → resubmit; URL Inspection → Request indexing for `/industries/self-storage`, `/services/investor-portal-development`, `/tools/mls-idx-cost-calculator`, and the six new guides | "URL is on Google" within days |
 | 7 | Rich results | Rich Results Test on one service page, one guide, one case study | no errors |
 | 8 | Speed | three mobile PageSpeed runs each on `/`, one guide, one case study | compare with Phase 9: homepage main-thread 1.13 s |
-| 9 | Logs | Vercel → Logs, filter `Lead not delivered`, `Lead notification email failed`, `CSP violation` | none of the first two |
+| 9 | Logs | Vercel → Logs, filter `Lead NOT accepted`, `failed step`, `CSP violation` | none of the first two |
 
 ## Weekly, for six weeks (Search Console)
 
@@ -37,7 +37,7 @@ Weekly: count of enquiries received at `info@peregrine-it.com`, and for each, th
 
 ## Stop-and-fix triggers
 
-- Any `Lead not delivered` log line.
+- Any `Lead NOT accepted` or `failed step` log line, or a `lead_delivery_failed` event.
 - `seo_check.py` on production reports a failure.
 - A previously indexed URL leaves the index.
 - Homepage position for the brand name drops.
