@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { cleanAttribution, type LeadAttribution } from "@/lib/attribution";
 import { leadPriority, priorityLine, type PriorityResult } from "@/lib/lead-priority";
@@ -272,6 +272,8 @@ export async function GET(request: NextRequest) {
       webhook,
       // Requests to the webhook carry an HMAC signature (LEAD_WEBHOOK_SECRET is set).
       webhookSigned: webhook && Boolean(process.env.LEAD_WEBHOOK_SECRET),
+      // Someone is told when the notification email fails but the lead was still accepted.
+      ownerAlert: Boolean(process.env.LEAD_ALERT_WEBHOOK_URL),
       // "none" unless LEAD_STORE=vercel-blob and its token are both set. A store alone does
       // not make `ok` true: a lead still needs the email or the webhook to be accepted.
       store,
@@ -399,6 +401,33 @@ export async function POST(request: NextRequest) {
       console.error("Lead accepted with a failed step", JSON.stringify(record));
     } else {
       console.log("Lead accepted", JSON.stringify(record));
+    }
+
+    // Owner alert. The lead is held by the webhook (and perhaps the store) but the email
+    // that tells the owner about it was refused, so without this nobody is told. The alert
+    // must not depend on what just failed, so it does not use Resend: it is a small POST to
+    // LEAD_ALERT_WEBHOOK_URL (for example the Sheet script, which then mails the owner
+    // through Google). It carries the reference and the reason, no personal data, and is
+    // sent after the response so it cannot delay the visitor. Without that variable there
+    // is no alert channel, only the error-level log line above.
+    const alertUrl = process.env.LEAD_ALERT_WEBHOOK_URL;
+    if (notification.status === "failed" && alertUrl) {
+      const alert = JSON.stringify({
+        event: "lead_notification_failed",
+        ref,
+        receivedAt,
+        source: "peregrine-it.com",
+        environment: record.environment,
+        form: lead.form,
+        priority: lead.priority.priority,
+        heldBy: record.durableStorage,
+        reason: notification.reason,
+      });
+      after(async () => {
+        const sent = await deliverWebhook(alertUrl, alert, `lead-alert-${ref}`, { secret: process.env.LEAD_WEBHOOK_SECRET });
+        if (sent.status === "accepted") console.log("Lead alert sent", JSON.stringify({ ref }));
+        else console.error("Lead alert FAILED", JSON.stringify({ ref, reason: sent.status === "failed" ? sent.reason : sent.status }));
+      });
     }
 
     const publicOutcome = (o: Outcome) => ({ status: o.status, id: o.status === "accepted" ? o.id : undefined });

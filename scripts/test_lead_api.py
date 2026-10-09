@@ -27,6 +27,7 @@ NOTIFY = "info@peregrine-it.com"
 
 DEFAULTS = dict(emails=[], attempts=0, hooks=[], keys={}, events={}, fail=None, fail_once=None, fail_ack=None,
                 hook_fail=False, hook_sleep=0, hook_plan=[], hook_attempts=[],
+                alerts=[], alert_fail=False, alert_sleep=0,
                 blobs={}, blob_puts=[], blob_fail=None, blob_sleep=0, blob_wrong_path=False)
 state = dict(DEFAULTS, domains=[{"name": "test.invalid", "status": "verified"}])
 ERRORS = {
@@ -63,6 +64,11 @@ class Mock(http.server.BaseHTTPRequestHandler):
             if key: state["keys"][key] = mid
             state["emails"].append({**body, "to": to, "_id": mid, "_key": key})
             return self._send(200, {"id": mid})
+        if self.path.startswith("/alert"):
+            if state["alert_sleep"]: time.sleep(state["alert_sleep"])
+            if state["alert_fail"]: return self._send(500, {"error": "mock failure"})
+            state["alerts"].append({**body, "_sig": self.headers.get("X-Peregrine-Signature"), "_raw": raw})
+            return self._send(200, {"ok": True})
         if self.path.startswith("/hook"):
             # hook_attempts: every request that arrived. hooks: the ones the receiver accepted.
             state["hook_attempts"].append({"key": self.headers.get("Idempotency-Key"), "raw": raw})
@@ -388,6 +394,7 @@ def run():
                           and st.get("webhook") is True and "re_test_mock" not in json.dumps(st) and MOCK not in json.dumps(st), f"got {st}")
         s, b = post(LEAD, ip()); check("both: 200, 2 emails, 1 webhook, storage webhook", s == 200 and len(state["emails"]) == 2 and len(state["hooks"]) == 1 and b["durableStorage"] == "webhook")
         reset(fail=500)
+        check("alert: status says no alert channel when LEAD_ALERT_WEBHOOK_URL is not set", st.get("ownerAlert") is False)
         s, b = post(LEAD, ip())
         check("both: Resend down, webhook receives -> accepted, email reported failed", s == 200 and len(state["hooks"]) == 1 and b["notification"] == {"status": "failed"} and b["acknowledgement"] == {"status": "failed"}, f"got {s} {b}")
         reset(hook_fail=True)
@@ -399,6 +406,33 @@ def run():
         reset(fail=500, hook_fail=True)
         s, b = post(LEAD, ip()); check("both: everything down -> 502", s == 502 and b.get("success") is False, f"got {s}")
     finally: stop_app(app)
+    # --- owner alert: the email failed but the webhook holds the lead
+    reset(); app = start_app({**RESEND_ENV, **HOOK_ENV, "LEAD_ALERT_WEBHOOK_URL": MOCK + "/alert", "LEAD_WEBHOOK_SECRET": SECRET})
+    try:
+        st = get(); check("alert: status says an alert channel is configured, without its URL", st.get("ownerAlert") is True and MOCK not in json.dumps(st), f"got {st}")
+        s, b = post(LEAD, ip()); time.sleep(1.0)
+        check("alert: none when everything worked", s == 200 and not state["alerts"])
+        reset(fail_ack=422); s, b = post(LEAD, ip()); time.sleep(1.0)
+        check("alert: none when only the visitor's acknowledgement failed", s == 200 and not state["alerts"])
+        reset(fail=500, hook_fail=True); s, b = post(LEAD, ip()); time.sleep(1.0)
+        check("alert: none when nothing accepted the lead (the visitor was told)", s == 502 and not state["alerts"])
+        reset(fail=500, alert_sleep=2); t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
+        check("alert: sent after the response, so a slow alert does not delay the visitor", s == 200 and dt < 1.5, f"got {s} in {dt:.1f}s")
+        for _ in range(40):
+            if state["alerts"]: break
+            time.sleep(0.25)
+        al = state["alerts"]
+        check("alert: one alert when the notification failed and the webhook accepted", len(al) == 1 and len(state["hooks"]) == 1, f"got {len(al)}")
+        if al:
+            check("alert: names the reference, the reason and where the lead is held",
+                  al[0].get("event") == "lead_notification_failed" and al[0].get("ref") == b.get("ref") and "internal_server_error" in al[0].get("reason", "") and al[0].get("heldBy") == "webhook", f"got {al[0]}")
+            check("alert: carries no personal data", not any(x in al[0]["_raw"].decode() for x in ("Test Person", "lead@example.com", "Integration test message", "Acme")))
+            check("alert: signed like the lead webhook", verifier(SECRET, al[0].get("_sig") or "", al[0]["_raw"]) == 0)
+        time.sleep(0.5); check("alert: logged", "Lead alert sent" in app_log())
+        reset(fail=500, alert_fail=True); s, b = post(LEAD, ip()); time.sleep(1.5)
+        check("alert: a failing alert endpoint is logged and changes nothing for the visitor", s == 200 and "Lead alert FAILED" in app_log(), f"got {s}")
+    finally: stop_app(app)
+
     # --- durable store behind its switch (src/lib/lead-store.ts). MOCK ONLY: the adapter has
     #     never been run against the real Vercel Blob API.
     reset(); app = start_app({**RESEND_ENV, **HOOK_ENV, **STORE_ENV})

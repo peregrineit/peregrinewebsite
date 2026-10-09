@@ -79,12 +79,14 @@ async function submitLead(formEl: HTMLFormElement, formData: Record<string, stri
           json.diagnostic ? `email: ${json.diagnostic.notification}; webhook: ${json.diagnostic.webhook}` : '',
         ].filter(Boolean).join(' · '),
       });
-      track('lead_error', event);
+      // `status` is the HTTP status: 400 validation, 429 rate limit, 502 nothing accepted the lead.
+      track('lead_error', { ...event, status: res.status });
     }
   } catch {
     // No JSON came back: the request did not reach the API, or something in front of it answered.
     setStatus({ loading: false, success: false, error: 'Network error. Please try again.', fallback: mailtoFallback(formData), note: 'no response from /api/lead' });
-    track('lead_error', event);
+    // 0 = no HTTP response at all.
+    track('lead_error', { ...event, status: 0 });
   }
 }
 
