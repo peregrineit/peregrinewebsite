@@ -3,7 +3,7 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
-import { countPageView, locationOf, rememberAttribution, rememberCta } from '@/lib/attribution';
+import { calendlyUrl, countPageView, locationOf, rememberAttribution, rememberCta } from '@/lib/attribution';
 import { track } from '@/lib/track';
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
@@ -87,14 +87,29 @@ export default function Tracking() {
       }
       else if (href.startsWith('mailto:')) track('email_click', { page });
     };
+    // Booking attribution: every Calendly link, wherever it is written, leaves the site with
+    // the page and the CTA location as UTM parameters (lib/attribution.ts). Done here, once,
+    // because the links are hardcoded in many pages. Runs in the capture phase, before the
+    // browser follows the link; auxclick and contextmenu cover middle-click and
+    // "open in new tab" / "copy link address".
+    const tagCalendly = (e: Event) => {
+      const link = (e.target as Element | null)?.closest?.<HTMLAnchorElement>('a[href]');
+      if (!link) return;
+      const href = link.getAttribute('href') || '';
+      const tagged = calendlyUrl(href, window.location.pathname, locationOf(link));
+      if (tagged !== href) link.setAttribute('href', tagged);
+    };
     // A form submitted inside a guide's consultation block counts as a guide CTA.
     const onSubmit = (e: Event) => {
       const guide = (e.target as Element | null)?.closest<HTMLElement>('[data-guide]')?.dataset.guide;
       if (guide) track('guide_cta_click', { guide, action: 'form' });
     };
+    const CALENDLY_EVENTS = ['click', 'auxclick', 'contextmenu'] as const;
+    CALENDLY_EVENTS.forEach((type) => document.addEventListener(type, tagCalendly, true));
     document.addEventListener('click', onClick, true);
     document.addEventListener('submit', onSubmit, true);
     return () => {
+      CALENDLY_EVENTS.forEach((type) => document.removeEventListener(type, tagCalendly, true));
       document.removeEventListener('click', onClick, true);
       document.removeEventListener('submit', onSubmit, true);
     };
