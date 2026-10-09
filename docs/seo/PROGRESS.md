@@ -141,3 +141,11 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 ### Regression after five new guides
 - `test_lead_api.py` 39 passed; `test_mls_fees.mjs` 56 passed; `tsc` clean; `seo_check.py` on 56 URLs FAILS: 0.
 - **Next:** Q8 (draft pull request), then Q13 and Q14.
+
+### Q8 — release readiness
+- Draft pull request opened: https://github.com/peregrineit/peregrinewebsite/pull/7 (`seo/phase-12` → `main`, draft). Not merged; merging is the owner's decision (B1) after DEPLOYMENT.md section 2.
+
+## Loop status
+- **Mechanism:** Claude Code `/loop` in self-paced mode (ScheduleWakeup), started 2026-10-09 in this session. Each wake-up re-reads `CLAUDE.md` and `docs/seo/`, takes the first `ready` row in the loop queue, and pushes to `seo/phase-12`. It runs only while this Claude Code session stays open.
+- **Iteration 1 completed:** Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8.
+- **Queue now:** Q13 (Odoo implementation cost guide; research running) and Q14 (data-access guide citation follow-up) are `ready`. Q9–Q12 are blocked on the owner or on production data.

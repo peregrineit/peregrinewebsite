@@ -86,7 +86,7 @@ Ordered. The loop takes the first item that is `ready`, finishes it, updates thi
 | Q5 | Guide: MLS data access in Canada | done |
 | Q6 | Guide: IDX vendor vs custom build (uses the cost guide's sources and the calculator) | done |
 | Q7 | Lighthouse performance and accessibility on each new page type; fix what it finds | done: nothing to fix |
-| Q8 | Release readiness: draft pull request `seo/phase-12` → `main` with the deployment checklist (draft, not to be merged without the owner) | ready |
+| Q8 | Release readiness: draft pull request `seo/phase-12` → `main` with the deployment checklist (draft, not to be merged without the owner) | done: PR #7 (draft) |
 | Q9 | Enforce the CSP | blocked: needs clean reports from production after Q2 ships |
 | Q10 | W3\|re dashboard block and metric windows | blocked (B9) |
 | Q11 | Team section, Odoo named integrations, first-hand MLS timelines, Shopify/Laravel/WordPress proof | blocked (B5–B8) |
