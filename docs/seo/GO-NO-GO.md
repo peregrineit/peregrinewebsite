@@ -9,6 +9,7 @@
 - **Root cause: not proven.** Two code paths could produce that result; the evidence that separates them is in Resend's activity list and the Vercel log, which I cannot read. Details and the single evidence request: `LEAD-DELIVERY.md`.
 - **Fixed regardless (commit `fix(lead)`):** a filled hidden anti-spam field no longer returns a silent success; the acknowledgement's result is checked; success means "accepted by the mail provider", is worded "Request received", and comes with a reference; Resend message ids are logged; retries cannot duplicate; the form reports a delivery problem if Resend records one.
 - **Second owner test (fixed build): "We could not send your request."** Resend is rejecting the notification; the reason is in the Vercel log line `Lead NOT accepted`, which I cannot read. Cause classes and the two-item request are in `LEAD-DELIVERY.md`. No code change was made for it.
+- **Log export (owner, 2026-10-10):** no `POST /api/lead` among 53 rows; preview status `senderDomainVerified: true`. The error text shown can only come from this API's 502, so the POST happened and the export does not cover it (window, retention or filter; see `LEAD-DELIVERY.md`). The form now shows the HTTP status, the reference and, on preview builds, Resend's error with addresses removed. Delivery logic was not changed.
 - **A fresh real submission on the new preview build is required.** The earlier test ran on a build that had the defects above.
 
 ### What the fresh test must show
@@ -56,7 +57,7 @@ Run in a browser against the built site, with Resend replaced by a local mock (n
 | Receipt panel in the browser | "Request received", reference shown, `lead_submit` fired once; with the mock reporting a bounce the panel shows the delivery problem and `lead_delivery_failed` fires |
 | Build, TypeScript, ESLint | pass; 0 errors |
 | `seo_check.py` | FAILS: 0 on 57 URLs |
-| `test_lead_api.py` | 80 passed (Resend 401, 403, 422, 429, 500 and unreachable; acknowledgement-only failure; webhook failure and timeout; duplicates; hidden-field handling; delivery lookup; no personal data in logs) |
+| `test_lead_api.py` | 83 passed (Resend 401, 403, 422, 429, 500 and unreachable; acknowledgement-only failure; webhook failure and timeout; duplicates; hidden-field handling; delivery lookup; no personal data in logs) |
 | `test_mls_fees.mjs` | 56 passed |
 
 ## 1. Verified technical readiness
@@ -69,7 +70,7 @@ Run on the final local production build of the branch.
 | ESLint, whole repo | 0 errors (68 warnings, all in legacy markup: `<img>` tags) |
 | `scripts/seo_check.py`, 57 sitemap URLs | FAILS: 0 |
 | ...which covers | status, title ≤ 60, description length, uniqueness, self-canonical, one H1, heading order, image alt, JSON-LD parses, 152 schema nodes with 393 `@id` references all resolving, FAQ schema equals visible FAQ, sitemap `lastmod` equals `dateModified`, robots.txt, llms.txt matches the sitemap, internal links resolve, at least 2 inbound links per page, a contact path on every page |
-| Lead API integration tests (mock Resend and webhook) | 80 passed |
+| Lead API integration tests (mock Resend and webhook) | 83 passed |
 | Calculator fee arithmetic | 56 passed |
 | Lighthouse mobile, 12 pages (local) | Accessibility 100 and SEO 100 on all; Performance 92 homepage, 96 content pages, about 90 case studies; CLS 0 |
 | Responsive | no horizontal overflow on 18 page types at 375 px and 11 at 1280 px; nav does not wrap |

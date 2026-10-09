@@ -71,7 +71,7 @@ python3 scripts/test_lead_api.py
 node --experimental-strip-types scripts/test_mls_fees.mjs
 ```
 
-Expected: no type errors; `seo_check.py` prints `FAILS: 0` for 57 URLs; `test_lead_api.py` prints `80 passed, 0 failed`; `test_mls_fees.mjs` prints `56 passed`.
+Expected: no type errors; `seo_check.py` prints `FAILS: 0` for 57 URLs; `test_lead_api.py` prints `83 passed, 0 failed`; `test_mls_fees.mjs` prints `56 passed`.
 
 Manual, on the Vercel Preview URL:
 1. Submit the form on a service page; the success message shows and the email arrives with company, timeline, service, landing page and UTM.

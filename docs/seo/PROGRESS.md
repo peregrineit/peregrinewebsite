@@ -247,3 +247,8 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 - **Fix:** `src/app/api/lead/route.ts`, `src/app/components/LeadForms.tsx`, `scripts/test_lead_api.py`.
 - **Tests:** `test_lead_api.py` 80 passed; `tsc` clean; ESLint 0 errors; `seo_check.py` FAILS: 0 on 57 URLs; 56 fee tests; browser run with a mock mail server: receipt panel, `lead_submit`, bounce warning and `lead_delivery_failed`.
 - **Root cause:** unproven. **Status:** NO-GO until a fresh preview submission is seen to arrive.
+
+### P0 follow-up — failed POST missing from the log export (2026-10-10)
+- **Finding:** the error text shown exists only in this API's 502 response on preview builds, and every 502 logs first; so the request happened and the export does not cover it. Cause of Resend's refusal still unknown.
+- **Change (diagnostics only):** a failed submission shows HTTP status and reference; preview builds add the provider's error with addresses removed; the same text is in the log. Delivery logic untouched.
+- **Tests:** 83 lead tests; `tsc`; ESLint 0 errors; `seo_check.py` FAILS: 0; 56 fee tests. Shown in a browser against the real Resend API with an invalid key: `HTTP 502 · reference … · email: validation_error (401): API key is invalid`.

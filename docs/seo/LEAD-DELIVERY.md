@@ -59,6 +59,41 @@ None of this blocks the fix below; it decides whether the root cause is recorded
 
 And from the status JSON: `senderDomainVerified: false` means the key works but its account does not have the sender's domain verified; `null` means the key is invalid or is a sending-only key; `true` rules out the first two rows.
 
+## Why the failed POST is not in the Vercel log export (2026-10-10)
+
+**Owner's findings:** the export (53 rows, October 9) has `GET /api/lead` 200 and CSP warnings, no `POST /api/lead`. The preview reports `resend: true`, `sender: custom`, `senderDomainVerified: true`.
+
+**What the code review establishes (facts, from the source):**
+
+| Question | Finding |
+|---|---|
+| Does the form validate before sending? | Browser validation only: name, email, project type and timeline are `required`. A message under 10 characters is rejected by the server with a different text ("Message must be at least 10 characters") |
+| Endpoint and method | One call site: `fetch('/api/lead', { method: 'POST' })` in `LeadForms.tsx`, same origin. No other form, `action` attribute, middleware or rewrite |
+| Where can "We could not send your request" come from? | **Only** from this API's HTTP 502 response. The text does not exist in client code, and it does not exist on `main` (production). So when that text was shown, a POST reached `/api/lead` on a preview build and was answered 502 |
+| Does a 502 always write a log line? | Yes. Every 502 runs `console.error` first: `Lead not delivered…` on the build before `616e559`, `Lead NOT accepted by any destination {…}` after. Sanitized: reference, statuses, provider error name. Confirmed locally against the real Resend API |
+| What does `senderDomainVerified: true` rule out? | An invalid key, a sending-only key, and a key whose account lacks the sender's domain. It does **not** show that a send succeeds |
+
+**So the POST happened and the export does not contain it.** That is a property of the export, not of the request. Which of these applies is not known:
+
+1. **Time window.** The fixed build was pushed at 22:16 IST on October 9 (16:46 UTC). A test after that is at the very end of October 9 or on October 10 in the log's time zone.
+2. **Retention.** Vercel keeps runtime logs for a short period on the Hobby plan (about an hour) and longer on paid plans. A later export no longer has the row.
+3. **Deployment or environment filter.** Each push creates a new preview deployment. A view filtered to one deployment or to Production omits the others.
+4. **Row or level filter.** The 502 line is at error level; a text or level filter can hide it.
+
+**Not established:** why Resend refused the notification. No evidence of the failing POST has been seen by me.
+
+### How to capture the evidence (new preview build, no log access needed)
+
+The form now prints what the API answered. After the Vercel check passes on the latest commit:
+
+1. Open `https://peregrinewebsite-git-seo-phase-12-mukeshs-projects-36e886df.vercel.app/contact`, hard-refresh, submit with "TEST" in the name and a message of 10+ characters.
+2. If it fails, a grey line appears under the error, for example:
+   `HTTP 502 · reference d0b2c113 · email: validation_error (401): API key is invalid; webhook: LEAD_WEBHOOK_URL not set`
+   Send me that line. It carries no address and no secret. (The provider detail is shown on preview builds only; production shows the status and reference.)
+3. Optional cross-check: browser DevTools → Network → the `lead` request → status code and response body; and in Vercel → Logs, with Environment = Preview and the time range set to the last 30 minutes, search the reference.
+
+If the line says `no response from /api/lead`, the request never reached the API (something in front answered); then the Network tab's status code for `lead` is the evidence.
+
 ## What the code does now (`src/app/api/lead/route.ts`)
 
 Three states, never merged:
