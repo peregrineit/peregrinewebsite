@@ -79,7 +79,7 @@ export const industries: Industry[] = [
       'One platform for reservations, Stripe billing, smart-lock access and multi-site occupancy dashboards.',
     caseStudies: ['self-storage-management-platform'],
     services: ['saas-development', 'api-integration', 'cloud-devops'],
-    guides: [],
+    guides: ['self-storage-software-build-vs-buy'],
     whatWeBuild: [
       {
         title: 'Reservations, units and leases',

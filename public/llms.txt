@@ -56,6 +56,7 @@ Industry pages exist only where published case studies back them; every figure o
 - [How to get MLS data access for your app](https://peregrine-it.com/blog/how-to-get-mls-data-access): license types, broker sponsorship, agreements, MLS Grid / Trestle / Bridge, fees and compliance rules, with sources
 - [RESO Web API vs RETS: what changes and how to migrate](https://peregrine-it.com/blog/reso-web-api-vs-rets): authentication, queries, field names, media and sync compared; platform limits for MLS Grid and Trestle; published RETS shutdown dates; a migration checklist
 - [IDX vendor or custom build: when to switch](https://peregrine-it.com/blog/idx-vendor-vs-custom-build): IDX plugin vs data vendor API vs direct MLS feeds, signs it is time to build, and what changes in cost, with sourced figures
+- [Self-storage management software: build or buy?](https://peregrine-it.com/blog/self-storage-software-build-vs-buy): what ten products list on their own sites (pricing, APIs, access-control integrations), where multi-site operators hit limits, and three options: standardize, extend through an API, or build
 - [Investor portal vs file sharing](https://peregrine-it.com/blog/investor-portal-vs-file-sharing): what shared folders cover, where they stop (audit trails, watermarking, per-investor data) and published investor-portal prices, with sources
 
 ## Selected case studies

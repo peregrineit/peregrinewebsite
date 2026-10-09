@@ -121,6 +121,21 @@ export const guides: Guide[] = [
     service: 'mls-idx-integration',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
+  {
+    slug: 'self-storage-software-build-vs-buy',
+    cta: {
+      heading: 'Weighing a Custom Self-Storage Platform?',
+      text: 'Tell us how many facilities you run, which software and lock hardware they use, and what you cannot do today. An engineer will tell you whether a product, its API or a build fits.',
+    },
+    title: 'Self-Storage Management Software: Build or Buy?',
+    metaTitle: 'Self-Storage Software: Build or Buy?',
+    description:
+      'When off-the-shelf self-storage software is enough, when to extend it through its API, and when a multi-site operator should build, with vendor facts sourced.',
+    datePublished: '2026-10-09',
+    dateModified: '2026-10-09',
+    service: 'saas-development',
+    caseStudy: 'self-storage-management-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {
