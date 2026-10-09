@@ -84,6 +84,18 @@ export const STAGES: PipelineStage[] = [
   },
 ];
 
+/**
+ * Lowercases the first letter so a label can continue a sentence, unless the first word is
+ * an acronym or mixed-case name (HTTP, URLs, ModificationTimestamp), which keeps its case.
+ * The rest of the label is never changed.
+ */
+export function lowerFirst(label: string): string {
+  const first = label.split(/[\s:,]/, 1)[0];
+  const rest = first.slice(1);
+  if (rest !== rest.toLowerCase()) return label;
+  return label.charAt(0).toLowerCase() + label.slice(1);
+}
+
 // Geometry, in viewBox units.
 const W = 360;
 const BOX_X = 12;

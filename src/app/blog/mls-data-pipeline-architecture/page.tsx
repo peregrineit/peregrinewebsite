@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import GuideLayout, { GuideFaq, Src, guideMetadata } from '../../components/GuideLayout';
-import MlsPipelineDiagram, { STAGES } from '../../components/diagrams/MlsPipelineDiagram';
+import MlsPipelineDiagram, { STAGES, lowerFirst } from '../../components/diagrams/MlsPipelineDiagram';
 
 const SLUG = 'mls-data-pipeline-architecture';
 export const metadata = guideMetadata(SLUG);
@@ -60,8 +60,8 @@ export default function Guide() {
         {STAGES.map((s) => (
           <li key={s.n}>
             <strong>{s.name}.</strong> {s.text}
-            {s.check && <> <em>Compliance checkpoint:</em> {s.check.toLowerCase()}.</>}
-            {s.signal && <> <em>Monitoring signal:</em> {s.signal.charAt(0).toLowerCase() + s.signal.slice(1)}.</>}
+            {s.check && <> <em>Compliance checkpoint:</em> {lowerFirst(s.check)}.</>}
+            {s.signal && <> <em>Monitoring signal:</em> {lowerFirst(s.signal)}.</>}
           </li>
         ))}
       </ol>
