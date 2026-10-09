@@ -53,7 +53,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'cost-to-build-a-real-estate-platform',
-    related: ['mls-idx-integration-cost', 'investor-portal-vs-file-sharing'],
+    related: ['mls-idx-integration-cost', 'investor-portal-vs-file-sharing', 'investor-portal-security-checklist'],
     cta: {
       heading: 'Planning a Real Estate Platform?',
       text: 'Tell us the scope: MLS boards, user groups and first-release features. We will map what drives the cost for your build.',
@@ -85,7 +85,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'investor-portal-vs-file-sharing',
-    related: ['cost-to-build-a-real-estate-platform'],
+    related: ['investor-portal-security-checklist', 'cost-to-build-a-real-estate-platform'],
     cta: {
       heading: 'Outgrowing Shared Folders for Investor Reporting?',
       text: 'Tell us how your funds and investors are structured and what you send each quarter. An engineer will tell you whether an off-the-shelf portal fits or a custom one is worth it.',
@@ -210,6 +210,22 @@ export const guides: Guide[] = [
     dateModified: '2026-10-10',
     service: 'laravel-development',
     // No caseStudy: Peregrine has no published Laravel case study. The guide makes no project claims.
+  },
+  {
+    slug: 'investor-portal-security-checklist',
+    related: ['investor-portal-vs-file-sharing', 'cost-to-build-a-real-estate-platform'],
+    cta: {
+      heading: 'Specifying or Reviewing an Investor Portal?',
+      text: 'Tell us how your funds, entities and investor roles are structured and what the portal has to hold. An engineer will walk through the access model and the controls it needs.',
+    },
+    title: 'Investor Portal Security Checklist: Threats, Controls and Questions to Ask',
+    metaTitle: 'Investor Portal Security Design Checklist',
+    description:
+      'A security design checklist for LP portals: access model, threat-to-control table, MFA and session settings, audit trail and vendor questions, with sources.',
+    datePublished: '2026-10-10',
+    dateModified: '2026-10-10',
+    service: 'investor-portal-development',
+    caseStudy: 'proptech-investor-portal',
   },
 ];
 

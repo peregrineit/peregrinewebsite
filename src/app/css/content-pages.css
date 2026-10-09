@@ -233,4 +233,8 @@ a.cp-card:hover { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 10px 30px
 .cp-prose .cp-checklist { list-style: none; padding-left: 0; }
 .cp-prose .cp-checklist li { position: relative; padding-left: 28px; }
 .cp-prose .cp-checklist li::before { content: ""; position: absolute; left: 0; top: 6px; width: 15px; height: 15px; border: 1.5px solid var(--cp-accent); border-radius: 4px; }
+/* Wide reference tables scroll sideways inside .cp-table-wrap instead of squeezing four columns into a phone. */
+.cp-prose .cp-table-wide table { min-width: 760px; }
+/* Source links inside table cells wrap with the sentence instead of dropping to their own line. */
+.cp-page .cp-prose td a.cp-src { display: inline; }
 /* ==== end of guide diagrams block ==== */
