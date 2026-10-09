@@ -1,4 +1,4 @@
-import type { Service } from './services';
+import type { BuyerGuide, Service } from './services';
 import { caseStudies } from './case-studies';
 
 // Technology service pages (/services/<slug>, group: 'technology'). They use the same
@@ -41,10 +41,12 @@ export const technologyServices: Service[] = [
       {
         title: 'Server-rendered storefronts and public pages',
         body: 'Pages that have to rank and load fast: storefronts, listing and property pages, career pages and catalogs. Our marketplace case study uses a server-rendered Next.js storefront in Arabic and English with a true right-to-left layout.',
+        proof: ['multi-vendor-ecommerce-marketplace'],
       },
       {
         title: 'Portals and dashboards',
         body: 'Signed-in applications with a personalized view per user and role-based access: investor portals, shipper portals, clinician dashboards and claims workspaces all appear in our case studies as Next.js apps.',
+        proof: ['proptech-investor-portal'],
       },
       {
         title: 'Admin consoles and internal tools',
@@ -57,6 +59,7 @@ export const technologyServices: Service[] = [
       {
         title: 'Performance work on existing Next.js apps',
         body: 'Incremental static regeneration, dynamic imports and image delivery through a CDN. That is how the frontend in our real estate SaaS case study was optimized before launch.',
+        proof: ['scaling-real-estate-saas-platform'],
       },
     ],
     process: [
@@ -87,7 +90,7 @@ export const technologyServices: Service[] = [
     glance: {
       delivered: 'Next.js web application: server-rendered pages, portals and dashboards, admin tools, with the API and data layer behind them',
     },
-    updated: '2026-10-09',
+    updated: '2026-10-10',
     faq: [
       {
         question: 'When is Next.js a good choice?',
@@ -103,7 +106,7 @@ export const technologyServices: Service[] = [
       },
       {
         question: 'Do you build the backend as well?',
-        answer: 'Yes. In our published case studies the Next.js frontend sits on a Node.js API with PostgreSQL or MongoDB, plus Redis and Elasticsearch where search and caching need them. We can also build a Next.js frontend on an API you already have.',
+        answer: 'Yes. In our published case studies the Next.js frontend sits on a Node.js backend (one stack also lists Python) with PostgreSQL or MongoDB, plus Redis and Elasticsearch where search and caching need them. We can also build a Next.js frontend on an API you already have.',
       },
       {
         question: 'Is Next.js good for SEO?',
@@ -131,18 +134,22 @@ export const technologyServices: Service[] = [
       {
         title: 'Offline-first field and driver apps',
         body: 'Apps that keep working without a signal and sync when it returns. Our fleet tracking case study has a React Native driver app with offline sync, proof-of-delivery photos and turn-by-turn navigation.',
+        proof: ['logistics-fleet-tracking-platform'],
       },
       {
         title: 'Tablet point-of-sale and kitchen displays',
         body: 'React Native apps on tablets with a local database, so orders can be taken and paid for during an outage. Our restaurant POS case study stores orders in SQLite on the device and syncs them later.',
+        proof: ['restaurant-pos-ordering-system'],
       },
       {
         title: 'Customer and tenant apps',
         body: 'Consumer-facing apps for ordering, payments and live tracking, and a tenant app that controls a smart lock over Bluetooth or remotely, as in our food delivery and self-storage case studies.',
+        proof: ['food-delivery-aggregator-platform', 'self-storage-management-platform'],
       },
       {
         title: 'Video and subscription apps',
         body: 'Streaming video playback with workout sync and an offline mode, as built for the subscription app in our fitness case study.',
+        proof: ['fitness-wellness-subscription-app'],
       },
       {
         title: 'React web apps and shared components',
@@ -177,7 +184,7 @@ export const technologyServices: Service[] = [
     glance: {
       delivered: 'React web apps and React Native mobile apps for iOS and Android, with the shared API behind them',
     },
-    updated: '2026-10-09',
+    updated: '2026-10-10',
     faq: [
       {
         question: 'What is the difference between React and React Native?',
@@ -262,7 +269,7 @@ export const technologyServices: Service[] = [
     glance: {
       delivered: 'Custom Shopify apps, ERP and fulfillment integrations, theme customization, headless storefronts and migrations',
     },
-    updated: '2026-10-09',
+    updated: '2026-10-10',
     faq: [
       {
         question: 'When does a store need a custom Shopify app?',
@@ -342,12 +349,12 @@ export const technologyServices: Service[] = [
       cost:
         `Peregrine works on Laravel development as ${MODEL}. Cost depends on the size and condition of the existing codebase, the features needed and the integrations involved. We do not publish a price list. A single, well-defined task can get a scoped estimate.`,
       work:
-        'Peregrine has no published Laravel case study yet, so this page makes no project claims. The backends in our published case studies are built on Node.js; they show how we approach multi-tenancy, billing and integrations. Ask about Laravel specifically on a discovery call.',
+        'Peregrine has no published Laravel case study yet, so this page makes no project claims. Every published case study lists Node.js in its stack, and one also lists Python; they show how we approach multi-tenancy, billing and integrations. Ask about Laravel specifically on a discovery call.',
     },
     glance: {
       delivered: 'Laravel APIs and SaaS backends, admin panels, queues and integrations, and staged upgrades of older PHP applications',
     },
-    updated: '2026-10-09',
+    updated: '2026-10-10',
     faq: [
       {
         question: 'Can you take over an existing Laravel application?',
@@ -367,7 +374,7 @@ export const technologyServices: Service[] = [
       },
       {
         question: 'Have you published Laravel case studies?',
-        answer: 'Not yet. The backends in our published case studies are Node.js. We will add Laravel work here when a project can be published.',
+        answer: 'Not yet. Every published case study lists Node.js in its stack, and one also lists Python. We will add Laravel work here when a project can be published.',
       },
     ],
     icon: 'ri-code-s-line',
@@ -409,6 +416,7 @@ export const technologyServices: Service[] = [
       {
         title: 'Migration from WordPress to a custom platform',
         body: 'When a product has outgrown WordPress, building the purpose-built application that replaces it. In our EdTech case study the client\'s content lived in separate systems, some in WordPress and some in Google Drive, with progress tracked in spreadsheets, before we built a custom learning platform.',
+        proof: ['edtech-learning-platform'],
       },
     ],
     process: [
@@ -435,7 +443,7 @@ export const technologyServices: Service[] = [
     glance: {
       delivered: 'Custom WordPress themes and plugins, headless WordPress with Next.js, performance and security work, and migration to a custom platform',
     },
-    updated: '2026-10-09',
+    updated: '2026-10-10',
     faq: [
       {
         question: 'When should a site move off WordPress?',
@@ -473,3 +481,170 @@ const STACK_PAGES: [RegExp, string][] = [
 export function technologyPageFor(stackItem: string): string | undefined {
   return STACK_PAGES.find(([pattern]) => pattern.test(stackItem))?.[1];
 }
+
+// Buyer guidance for the technology pages (see the note above `coreBuyerGuides` in
+// services.ts). Vendor-neutral. The Shopify, Laravel and WordPress entries add no project
+// claims; where they mention Peregrine they repeat the page's own "no case study is
+// published" statement.
+export const technologyBuyerGuides: Record<string, BuyerGuide> = {
+  'nextjs-development': {
+    fit: [
+      'Public pages must load fast and be indexed by search engines, and the same product has a signed-in application behind them.',
+      'You are building a portal or dashboard that shows a different view to each user or role.',
+      'You serve many branded sites from one codebase, each with its own theme, domain and content.',
+      'An existing Next.js or React app is slow, hard to change or several versions behind.',
+    ],
+    notFit: [
+      { text: 'The app lives entirely behind a login and has no public pages. A plain React single-page app can be simpler.' },
+      { text: 'The site is a mostly static brochure. It may not need a framework at all.' },
+      { text: 'You need native iOS and Android apps:', link: { href: '/services/react-development', label: 'React and React Native development' } },
+    ],
+    scope: [
+      { factor: 'Page types', effect: 'The number of distinct templates, not the number of pages. Ten thousand listing pages are one page type.' },
+      { factor: 'Data freshness', effect: 'Whether each page type can be static, cached and revalidated, or must be rendered on every request decides the rendering and caching design.' },
+      { factor: 'Backend', effect: 'Building on an API you already have is much smaller than building the API, authentication and data layer as well.' },
+      { factor: 'Tenancy', effect: 'Per-tenant themes, content and custom domains add routing, configuration and testing for every tenant variation.' },
+      { factor: 'Integrations', effect: 'Payments, search, a content system, analytics and third-party APIs are each their own piece of work.' },
+      { factor: 'Languages', effect: 'Each language adds content and routing; right-to-left languages add layout work as well.' },
+      { factor: 'Existing code', effect: 'The Next.js version, which router the app uses and how much is covered by tests set the cost of changing it.' },
+      { factor: 'URLs to preserve', effect: 'A rebuild of a site with search traffic needs every old URL mapped to a new one.' },
+    ],
+    firstPhase:
+      'A sensible first phase is a rendering and data plan for each page type, then the shared components and the one or two page types that carry the product. A performance budget set at this point costs far less than fixing speed after launch.',
+    bring: [
+      'A list of page types and who uses each.',
+      'Which pages must be indexed by search engines and which sit behind a login.',
+      'API documentation for the backend, or a note that none exists yet.',
+      'Designs or a design system, if you have them.',
+      'Hosting constraints: a platform you must use or cannot use.',
+      'For an existing app: repository access, the Next.js version and what is slow or blocked.',
+    ],
+  },
+  'react-development': {
+    fit: [
+      'The product needs iOS and Android apps and a web app working against the same data.',
+      'Staff or customers must keep working without a signal: drivers, field teams, tablet point-of-sale.',
+      'The app has to use device hardware such as the camera, location, Bluetooth, push notifications or payments.',
+      'You have a web product with an API and want to add a mobile app to it.',
+    ],
+    notFit: [
+      { text: 'The product depends on the newest platform features or on heavy graphics. Fully native apps are the safer choice.' },
+      { text: 'You need only a web app whose public pages must rank in search:', link: { href: '/services/nextjs-development', label: 'Next.js development' } },
+    ],
+    scope: [
+      { factor: 'Platforms', effect: 'iOS, Android, tablets and web, and how far back in operating system versions the app must run.' },
+      { factor: 'Offline behavior', effect: 'What must work without a connection, and how conflicts are settled when devices sync. This is often the largest single driver.' },
+      { factor: 'Device features', effect: 'Bluetooth, camera, background location, push notifications and payments each need testing on the real hardware.' },
+      { factor: 'Backend', effect: 'Whether an API exists already, and whether the app needs live updates such as tracking or order status.' },
+      { factor: 'Roles and apps', effect: 'A customer app, a driver app and a staff app are three products that share a backend, not one.' },
+      { factor: 'Distribution', effect: 'Public app stores, private distribution inside a company, and in-app purchases follow different rules and review steps.' },
+      { factor: 'Existing code', effect: 'For an app that already exists: its React Native version and how many native modules it depends on.' },
+    ],
+    firstPhase:
+      'A sensible first phase is the few screens people use every day, running on real devices against the real API, including the hardest offline or hardware case. Once that case works, the rest of the app is ordinary work.',
+    bring: [
+      'The platforms and devices in scope, including specific hardware such as tablets, scanners or locks.',
+      'What must keep working without a connection.',
+      'API documentation, or a description of the backend the app will use.',
+      'The user roles and what each does most often.',
+      'Designs or wireframes, if they exist.',
+      'Whether your company already has Apple Developer and Google Play accounts.',
+    ],
+  },
+  'shopify-development': {
+    fit: [
+      'The store needs logic that no App Store app provides, or several apps are chained together to approximate it.',
+      'Shopify has to exchange orders, inventory, products or customers with an ERP, accounting or warehouse system, and manual exports are causing errors.',
+      'You want a custom storefront while Shopify keeps handling checkout and payments.',
+      'You are moving to Shopify from another platform and need products, customers, order history and URLs carried over.',
+    ],
+    notFit: [
+      { text: 'A theme from the Shopify Theme Store and existing apps cover what you need. A store-setup specialist will be quicker.' },
+      { text: 'The main need is marketing, merchandising or conversion work, not engineering.' },
+      // Repeats the page's own statement: no Shopify case study is published.
+      { text: 'You need a firm with published Shopify case studies before shortlisting. Peregrine has none published yet.' },
+    ],
+    scope: [
+      { factor: 'Type of work', effect: 'A theme change, a custom app, an integration and a headless storefront are different sizes and are scoped separately.' },
+      { factor: 'Shopify plan', effect: 'Some features, such as certain checkout customizations, are limited to Shopify Plus.' },
+      { factor: 'Systems to connect', effect: 'Whether each system has an API, and which system owns products, stock levels, prices and customers.' },
+      { factor: 'Catalog and order volume', effect: 'The number of products and variants, orders on a normal day and at peak. These decide how API rate limits and sync timing are handled.' },
+      { factor: 'Existing apps and theme', effect: 'Installed apps and earlier theme customizations that have to keep working alongside the new code.' },
+      { factor: 'Migration', effect: 'Catalog size, customer accounts, order history, and the number of URLs that need redirects.' },
+    ],
+    firstPhase:
+      'A sensible first phase is one flow end to end on a development store. For an integration that means a single record type, such as orders, moving in one direction with retries and a reconciliation report. Two-way sync and further record types follow once that flow is stable.',
+    bring: [
+      'Your Shopify plan, the store URL and a list of installed apps.',
+      'The systems Shopify must connect to, and their API documentation if any.',
+      'Which system should own products, stock levels, prices and customers.',
+      'Order volume on a normal day and on your busiest day, and the size of the catalog.',
+      'A written description or screenshots of what happens today and what you want instead.',
+      'Dates to avoid for go-live, such as a sale period.',
+    ],
+  },
+  'laravel-development': {
+    fit: [
+      'You have a Laravel application in production and need features, fixes or an upgrade without stopping its use.',
+      'An older Laravel or plain PHP application has fallen behind supported versions.',
+      'You need an API backend for a React, Next.js or mobile frontend, and your team or hosting is PHP-based.',
+    ],
+    notFit: [
+      // Repeats the page's own statements. Source: case-studies.ts stacks (Node.js in all, Python
+      // also in w3re-ai-real-estate-platform); no Laravel case study.
+      { text: 'You are starting a new product with no existing PHP code, team or hosting. Every one of Peregrine\'s published case studies lists Node.js in its stack, and one also lists Python, so compare your options before choosing Laravel.' },
+      { text: 'You need a firm with published Laravel case studies before shortlisting. Peregrine has none published yet.' },
+    ],
+    scope: [
+      { factor: 'Laravel and PHP versions', effect: 'How far the application is behind the current release. Upgrades go one major version at a time.' },
+      { factor: 'Test coverage', effect: 'Code without tests needs tests around the risky parts before it can be changed safely.' },
+      { factor: 'Dependencies', effect: 'The number of packages, and whether any are abandoned or have been modified in place.' },
+      { factor: 'Size of the application', effect: 'Models, routes, queued jobs and scheduled tasks, and whether it serves pages itself or is an API for other clients.' },
+      { factor: 'Integrations', effect: 'Payment, email and third-party APIs the application depends on, each of which has to be retested after an upgrade.' },
+      { factor: 'Hosting and deployment', effect: 'Whether a staging environment and a deployment pipeline exist or releases are done by hand on the server.' },
+      { factor: 'Data', effect: 'Database size, and schema changes that need planning to avoid downtime.' },
+    ],
+    firstPhase:
+      'For an existing application, a sensible first phase is a codebase and hosting review that ends in a written list: versions, dependencies, test coverage, risks and a staged order of work. For a new build it is the data model and one complete workflow through the API.',
+    bring: [
+      'Read access to the repository, or the composer.json and composer.lock files if access has to wait.',
+      'The Laravel and PHP versions and where the application is hosted.',
+      'How deployments are done today, and whether a staging environment exists.',
+      'What is failing or blocked: errors, slow pages, features that cannot be added.',
+      'The third-party services the application depends on.',
+      'Who maintains it today and what documentation exists.',
+    ],
+  },
+  'wordpress-development': {
+    fit: [
+      'The site needs a theme, blocks or a plugin built for your content and processes instead of adapted from general-purpose ones.',
+      'WordPress has to exchange data with a CRM, payment provider or internal system.',
+      'Editors want to keep WordPress while the public site needs faster pages or a design the theme cannot deliver.',
+      'The site has become an application, with logins, custom data and plugins acting as business logic, and you are weighing a move to a purpose-built platform.',
+    ],
+    notFit: [
+      { text: 'You need a brochure site on a stock theme. A WordPress freelancer or a site builder will cost less.' },
+      { text: 'The need is ongoing content, SEO or design work, not engineering.' },
+      // Repeats the page's own statement: no WordPress build is published as a case study.
+      { text: 'You need a firm with published WordPress builds before shortlisting. Peregrine has none published.' },
+    ],
+    scope: [
+      { factor: 'Type of work', effect: 'A theme or blocks, a plugin, an integration, a headless frontend, performance work and a migration are different sizes.' },
+      { factor: 'Content model', effect: 'The number of content types, templates and languages, and how much existing content has to be restructured.' },
+      { factor: 'Plugins', effect: 'How many are active, which of them hold business logic, and which can be removed.' },
+      { factor: 'Integrations', effect: 'The systems involved, whether each has an API, and the direction data moves.' },
+      { factor: 'URLs and search traffic', effect: 'The number of URLs that change, each of which needs a redirect so links and rankings carry over.' },
+      { factor: 'Hosting', effect: 'Host limits, whether a staging environment exists, and how changes reach the live site.' },
+    ],
+    firstPhase:
+      'A sensible first phase is an audit of the theme, plugins, hosting and content model that separates what to fix from what to replace, followed by one contained change on a staging copy. For a slow site, measure before changing anything.',
+    bring: [
+      'The site URL, the hosting provider and whether a staging environment exists.',
+      'The active theme (and whether it is custom) and the list of active plugins.',
+      'Who edits the site and what they find hard today.',
+      'The systems WordPress has to connect to.',
+      'For a redesign or migration: a URL export and the pages that bring the most search traffic.',
+      'For performance work: the pages that are slow and any measurements you already have.',
+    ],
+  },
+};
