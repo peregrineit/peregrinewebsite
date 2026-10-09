@@ -1,6 +1,6 @@
 import { after, NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { cleanAttribution, type LeadAttribution } from "@/lib/attribution";
+import { cleanAttribution, multiLine, oneLine, type LeadAttribution } from "@/lib/attribution";
 import { leadPriority, priorityLine, type PriorityResult } from "@/lib/lead-priority";
 import { getLeadStore, STORE_TIMEOUT_MS, type StoreResult } from "@/lib/lead-store";
 import { deliverWebhook, type Outcome } from "@/lib/lead-webhook";
@@ -180,8 +180,11 @@ function notificationEmail(lead: QualifiedLead) {
     line("Form opened from", at.ctaLocation),
     line("Pages viewed this visit", at.pagesViewed ? String(at.pagesViewed) : ""),
     "",
-    "Message:",
-    lead.message,
+    // The message is the one part the visitor controls line by line. It comes last, after a
+    // delimiter, and each of its lines is prefixed, so nothing in it can pass for a line of
+    // the block above.
+    "----- Message, exactly as typed by the visitor. Every line of it starts with \">\" -----",
+    ...lead.message.split("\n").map((l) => (l ? `> ${l}` : ">")),
   ].join("\n");
   return {
     to: NOTIFY_TO,
@@ -337,16 +340,20 @@ export async function POST(request: NextRequest) {
 
     const fields: LeadData = {
       ref,
-      name: clean(raw.name, 200),
-      email: clean(raw.email, 320),
-      message: clean(raw.message, 5000),
-      form: clean(raw.form, 60),
-      company: clean(raw.company, 200),
-      projectType: clean(raw.projectType, 100),
+      // Every field printed as "Label: value" is forced onto one line (lib/attribution.ts), so
+      // a value cannot forge a line of the notification ("Priority: ...", "Email: ...") or add
+      // text to the acknowledgement, which goes to an address the submitter chose.
+      name: oneLine(raw.name, 200),
+      email: oneLine(raw.email, 320),
+      // The only multi-line field. It is quoted line by line in the notification.
+      message: multiLine(raw.message, 5000),
+      form: oneLine(raw.form, 60),
+      company: oneLine(raw.company, 200),
+      projectType: oneLine(raw.projectType, 100),
       // Older clients sent the timeline in `budget`.
-      timeline: clean(raw.timeline, 60) || clean(raw.budget, 60),
-      service: clean(raw.service, 100),
-      pageUrl: clean(raw.pageUrl, 500),
+      timeline: oneLine(raw.timeline, 60) || oneLine(raw.budget, 60),
+      service: oneLine(raw.service, 100),
+      pageUrl: oneLine(raw.pageUrl, 500),
       attribution: cleanAttribution(raw),
       // Honeypot. A filled field used to return a silent "success" with nothing sent, which
       // also swallowed real visitors whose browser autofilled it. Now the lead still goes to

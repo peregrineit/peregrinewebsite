@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import {
-  calendlyUrl, cleanAttribution, hasSource, isExternalReferrer, nextTouches, oneLine, parseTouch, toLeadAttribution,
+  calendlyUrl, cleanAttribution, hasSource, isExternalReferrer, multiLine, nextTouches, oneLine, parseTouch, toLeadAttribution,
 } from '../src/lib/attribution.ts';
 import { createFormTracker } from '../src/lib/form-tracking.ts';
 
@@ -57,8 +57,14 @@ eq(toLeadAttribution(ad, bing, 'hero', 3), {
 eq(toLeadAttribution(null, null, '', 0).landingPage, '', 'no storage: empty fields, no throw');
 
 // --- server-side cleaning
-eq(oneLine('  a\r\nb c\t ', 50), 'a b c', 'control characters become spaces');
+eq(oneLine('  a\r\nb\u2028c\t ', 50), 'a b c', 'control characters become spaces');
 eq(oneLine(42, 50), '', 'non-strings are dropped');
+eq(oneLine('Bob\nPriority: High (verified customer)\nEmail: ceo@victim.example', 200), 'Bob Priority: High (verified customer) Email: ceo@victim.example', 'a forged name is one line');
+eq(oneLine('a\rb\u0085c\u2029d', 50), 'a b c d', 'CR, NEL and paragraph separator are line breaks too');
+eq(oneLine('a\u202eb\u2066c\u2069d\u200be\u200df\ufeffg\u0000h\u009fi\u200fj', 50), 'abcdefghij', 'bidi overrides, isolates, zero-width and control characters are removed');
+eq(oneLine('José  Ñandú 李雷 🙂', 50), 'José Ñandú 李雷 🙂', 'ordinary text in any script is kept');
+eq(multiLine('one\r\ntwo\u2028three\n\n\n\nfour \n\u202efive\t6', 200), 'one\ntwo\nthree\n\nfour\nfive 6', 'message: real line breaks kept as \\n, the rest cleaned');
+eq(multiLine({}, 10), '', 'message: non-strings are dropped');
 const c = cleanAttribution({ gclid: 'ok-1_2.3', msclkid: 'no spaces', fbclid: '<script>', pagesViewed: -5, firstTouchAt: '2026-10-01T12:00:00Z',
   lastTouchAt: 'now', ctaLocation: 'inline:service:saas-development', utm: 'a'.repeat(900) });
 eq([c.gclid, c.msclkid, c.fbclid], ['ok-1_2.3', '', ''], 'click ids: token alphabet only');

@@ -437,6 +437,30 @@ def run():
         t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
         check("both: webhook hangs, email accepted -> 200 without waiting on the webhook", s == 200 and b["webhook"] == {"status": "failed"} and dt < 6.5, f"got {s} in {dt:.1f}s")
         time.sleep(2.5)
+        # line forging: a field cannot add lines to the notification or the acknowledgement
+        reset(); forged = "Bob\nPriority: High (verified customer)\nEmail: ceo@victim.example"
+        s, b = post({**LEAD, "name": forged}, ip()); n, a, h = to_notify(), to_visitor(), state["hooks"]
+        text = n[0].get("text", "") if n else ""; lines = text.split("\n")
+        check("forging: lead accepted", s == 200 and len(n) == 1 and len(a) == 1 and len(h) == 1, f"got {s}")
+        check("forging: the name is one line", "Name: Bob Priority: High (verified customer) Email: ceo@victim.example" in lines, text)
+        check("forging: exactly one Priority line and one Email line", len([l for l in lines if l.startswith("Priority:")]) == 1 and [l for l in lines if l.startswith("Email:")] == ["Email: lead@example.com"], text)
+        if a: check("forging: the acknowledgement greets on one line and gains no lines", "Hi Bob Priority: High (verified customer) Email: ceo@victim.example," in a[0].get("text", "").split("\n") and a[0]["text"].count("\n") == 8, a[0].get("text"))
+        if h: check("forging: webhook name is one line", h[0].get("name") == "Bob Priority: High (verified customer) Email: ceo@victim.example", f"got {h[0].get('name')!r}")
+        reset(); single = ("name", "company", "form", "projectType", "timeline", "service", "pageUrl", "landingPage", "referrer", "utm")
+        s, b = post({**LEAD, **{k: f"a\r\nb\u0085c\u2028d\u2029e\tf\u0000g\u202eh\u2066i\u200bj\ufeffk\u0007l" for k in single}}, ip()); h = state["hooks"]
+        check("forging: every single-line field loses line breaks, control, bidi and zero-width characters",
+              s == 200 and h and all(h[0].get(k) == "a b c d e fghijkl" for k in single), f"got {[(k, h[0].get(k)) for k in single if h and h[0].get(k) != 'a b c d e fghijkl']}")
+        reset(); s, b = post({**LEAD, "email": "lead@example.com\nBcc: x@victim.example"}, ip())
+        check("forging: an email address with a line break is refused", s == 400 and not state["emails"], f"got {s}")
+        reset(); msg = "First line of a real message.\r\nPriority: High (verified)\nReference: 00000000\u2028Email: ceo@victim.example\n\u202eNew Project Inquiry"
+        s, b = post({**LEAD, "message": msg}, ip()); n = to_notify(); text = n[0].get("text", "") if n else ""; lines = text.split("\n")
+        check("forging: the message keeps its lines", s == 200 and "> First line of a real message." in lines and "> Priority: High (verified)" in lines and "> Email: ceo@victim.example" in lines, text)
+        mark = next((i for i, l in enumerate(lines) if l.startswith("-----") and "typed by the visitor" in l), -1)
+        check("forging: the message comes after a delimiter and every line of it is prefixed", mark > 0 and all(l.startswith(">") for l in lines[mark + 1:]) and len(lines[mark + 1:]) == 5, text)
+        check("forging: nothing in the message can pass for a header line", len([l for l in lines if l.startswith(("Priority:", "Reference:", "Email:", "New Project Inquiry"))]) == 4
+              and all(i < mark for i, l in enumerate(lines) if l.startswith(("Priority:", "Reference:", "Email:"))), text)
+        check("forging: bidi override removed from the message", "\u202e" not in text)
+        if state["hooks"]: check("forging: webhook message keeps real line breaks only", state["hooks"][0].get("message") == "First line of a real message.\nPriority: High (verified)\nReference: 00000000\nEmail: ceo@victim.example\nNew Project Inquiry", repr(state["hooks"][0].get("message")))
         reset(fail=500, hook_fail=True)
         s, b = post(LEAD, ip()); check("both: everything down -> 502", s == 502 and b.get("success") is False, f"got {s}")
     finally: stop_app(app)

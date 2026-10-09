@@ -144,10 +144,37 @@ export function toLeadAttribution(
 // Server side: nothing from the browser is trusted.
 // ---------------------------------------------------------------------------
 
-/** One line of text: control characters removed, trimmed, cut to `max`. */
+// Characters that end a line in at least one mail client, terminal or spreadsheet.
+const LINE_BREAKS = /\r\n?|[\n\u0085\u2028\u2029]/g;
+// Everything else that is invisible or reorders text: C0 and C1 controls (tab and line feed
+// are handled separately), zero-width characters, and the bidirectional overrides, embeddings
+// and isolates that can make "Priority: Low" display as something else.
+const INVISIBLE = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f\u061c\u200b-\u200f\u202a-\u202e\u2060-\u2069\ufeff]/g;
+
+/**
+ * One line of text: every kind of line break and tab becomes a single space, invisible and
+ * direction-changing characters are removed, then it is trimmed and cut to `max`. Used for
+ * every field that is printed as "Label: value", so a value cannot add a line of its own.
+ */
 export function oneLine(value: unknown, max: number): string {
   if (typeof value !== 'string') return '';
-  return value.replace(/[\u0000-\u001f\u007f\u2028\u2029]+/g, ' ').trim().slice(0, max);
+  return value.replace(LINE_BREAKS, ' ').replace(/\t/g, ' ').replace(INVISIBLE, '').replace(/ {2,}/g, ' ').trim().slice(0, max);
+}
+
+/**
+ * Free text that may span lines (the message): every kind of line break becomes "\n", the
+ * same invisible characters are removed, runs of blank lines are shortened to one.
+ */
+export function multiLine(value: unknown, max: number): string {
+  if (typeof value !== 'string') return '';
+  return value
+    .replace(LINE_BREAKS, '\n')
+    .replace(/\t/g, ' ')
+    .replace(INVISIBLE, '')
+    .replace(/[ ]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+    .slice(0, max);
 }
 
 const isoTime = (value: unknown) => {
