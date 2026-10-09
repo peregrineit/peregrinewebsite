@@ -1,9 +1,8 @@
 
 'use client';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { preload } from 'react-dom';
 import Image from 'next/image';
-import Script from 'next/script'; // Ensure Script is available if we use it, though we stripped scripts
 import Link from 'next/link';
 import CaseStudyCard from './components/CaseStudyCard';
 import BackgroundVideo from './components/BackgroundVideo';
@@ -108,30 +107,6 @@ export default function Home() {
   // The hero video's poster is the LCP element (mobile and desktop).
   preload('/media/hero-lines-poster.webp', { as: 'image', fetchPriority: 'high' });
 
-  useEffect(() => {
-    // Category filter logic (specific to case-studies)
-    const buttons = document.querySelectorAll('.category-btn');
-    const articles = document.querySelectorAll('.article-card');
-    if (buttons.length > 0) {
-      buttons.forEach(button => {
-        button.addEventListener('click', () => {
-          const category = button.getAttribute('data-category');
-          buttons.forEach((btn: any) => btn.className = 'category-btn flex items-center gap-2.5 px-6 py-2.5 rounded-lg whitespace-nowrap transition-all cursor-pointer font-medium text-sm bg-slate-800 text-gray-400 hover:bg-slate-700 hover:text-white border border-white/5 hover:border-white/10');
-          button.className = 'category-btn flex items-center gap-2.5 px-6 py-2.5 rounded-lg whitespace-nowrap transition-all cursor-pointer font-medium text-sm bg-cyan-600 text-white shadow-lg shadow-cyan-500/20';
-          articles.forEach((article: any) => {
-            if (category === 'all' || article.getAttribute('data-category') === category) {
-              article.style.display = '';
-              article.style.opacity = '0';
-              setTimeout(() => article.style.opacity = '1', 50);
-            } else {
-              article.style.display = 'none';
-            }
-          });
-        });
-      });
-    }
-
-  }, []);
 
 
 

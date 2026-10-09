@@ -33,8 +33,9 @@ scripts/serve-local.sh           # production build served on http://localhost:3
 python3 scripts/seo_check.py     # SEO invariants against localhost:3057 (must print FAILS: 0)
 python3 scripts/seo_check.py https://peregrine-it.com   # same checks against production
 python3 scripts/test_lead_api.py # lead API integration tests against local mocks (needs a build)
+node --experimental-strip-types scripts/test_mls_fees.mjs   # calculator fee arithmetic
 npx tsc --noEmit -p .            # types
-npx eslint <changed files>       # lint (two old `any` errors in src/app/page.tsx are known)
+npx eslint <changed files>       # lint (0 errors expected; legacy `<img>` warnings are known)
 scripts/serve-local.sh stop
 ```
 Run `tsc`, a build and `seo_check.py` after every change to pages, metadata or schema.

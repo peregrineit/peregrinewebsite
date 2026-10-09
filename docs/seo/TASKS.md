@@ -73,3 +73,21 @@ Lead payload (email and `LEAD_WEBHOOK_URL`): `name`, `email`, `company`, `form`,
 | R3 | GA4 consent | done: Consent Mode default denied + consent bar, only when the GA ID is set |
 | R4 | Media: lazy CTA video, logo weight; footer data out of the client bundle; nav wrap | done |
 | R5 | Production deployment checklist | done: `DEPLOYMENT.md` |
+
+## Loop queue (autonomous execution, started 2026-10-09)
+Ordered. The loop takes the first item that is `ready`, finishes it, updates this table, PROGRESS.md and BLOCKERS.md, pushes, and moves on. It stops when every row is `done` or `blocked`.
+
+| ID | Item | Status |
+|---|---|---|
+| Q1 | Code quality: remove the two remaining `any` lint errors in `src/app/page.tsx`; automated test for the calculator's fee arithmetic | done |
+| Q2 | CSP: a report endpoint (`/api/csp-report`, logs to Vercel logs) and `report-uri`/`report-to` on the report-only policy | done |
+| Q3 | Guide: RESO Web API vs RETS (research running) | ready |
+| Q4 | Guide: self-storage software, build or buy (research running) | ready |
+| Q5 | Guide: MLS data access in Canada (research running) | ready |
+| Q6 | Guide: IDX vendor vs custom build (uses the cost guide's sources and the calculator) | ready |
+| Q7 | Lighthouse performance and accessibility on each new page type; fix what it finds | ready |
+| Q8 | Release readiness: draft pull request `seo/phase-12` → `main` with the deployment checklist (draft, not to be merged without the owner) | ready |
+| Q9 | Enforce the CSP | blocked: needs clean reports from production after Q2 ships |
+| Q10 | W3\|re dashboard block and metric windows | blocked (B9) |
+| Q11 | Team section, Odoo named integrations, first-hand MLS timelines, Shopify/Laravel/WordPress proof | blocked (B5–B8) |
+| Q12 | Merge, deploy, IndexNow resubmission, outreach | blocked: owner authorization (B1, B12) |

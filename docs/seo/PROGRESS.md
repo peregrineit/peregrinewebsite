@@ -89,3 +89,18 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 - **Tests:** build; `seo_check.py` on 52 URLs FAILS: 0 (FAQPage equals the visible FAQ); 1,572 words, 40 source links to 25 pages; no dollar figure outside a source link.
 - **Remaining:** vendor disclosure (B14). The guide states that no product was evaluated. The homepage shows four chosen guides (`homeGuides`), so the four-column grid stays full; the CRM guide is reachable from /blog and its service page.
 - **Next:** owner review of DEPLOYMENT.md section 2, then merge; after that, articles 2–5.
+
+## Loop iteration 1 (2026-10-09)
+
+### Q1 — code quality
+- **Files:** `src/app/page.tsx`, `scripts/test_mls_fees.mjs`
+- **What changed:** removed a dead category-filter effect from the homepage (it looked for buttons that only exist on /case-studies, and carried the last two `any` lint errors) and two unused imports. Added unit tests for every fee formula in the calculator.
+- **Tests:** `node --experimental-strip-types scripts/test_mls_fees.mjs` → 56 passed; `eslint src/app/page.tsx` → 0 errors (68 pre-existing warnings, mostly `<img>` in legacy markup); `tsc` clean.
+- **Remaining:** the 68 lint warnings are untouched.
+
+### Q2 — CSP reporting
+- **Files:** `src/app/api/csp-report/route.ts`, `next.config.ts`
+- **What changed:** the report-only policy now has `report-uri` and `report-to`; violations are logged as `CSP violation {directive, blocked, page, source}`.
+- **Tests:** build; headers present on `/`; legacy, Reporting-API and malformed bodies each return 204; `seo_check.py` FAILS: 0; `test_lead_api.py` 39 passed.
+- **Remaining:** enforcing the policy needs two weeks of production reports (Q9).
+- **Next:** Q7 while the research for Q3–Q5 runs.
