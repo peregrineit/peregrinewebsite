@@ -76,6 +76,21 @@ export const guides: Guide[] = [
     service: 'mls-idx-integration',
     caseStudy: 'w3re-ai-real-estate-platform',
   },
+  {
+    slug: 'investor-portal-vs-file-sharing',
+    cta: {
+      heading: 'Outgrowing Shared Folders for Investor Reporting?',
+      text: 'Tell us how your funds and investors are structured and what you send each quarter. An engineer will tell you whether an off-the-shelf portal fits or a custom one is worth it.',
+    },
+    title: 'Investor Portal vs File Sharing: What Real Estate Firms Need for LP Reporting',
+    metaTitle: 'Investor Portal vs File Sharing for LPs',
+    description:
+      'When shared folders are enough for investor documents and when a portal is worth it: access control, audit trails, watermarking and published portal prices.',
+    datePublished: '2026-10-09',
+    dateModified: '2026-10-09',
+    service: 'investor-portal-development',
+    caseStudy: 'proptech-investor-portal',
+  },
 ];
 
 export function getGuide(slug: string): Guide {

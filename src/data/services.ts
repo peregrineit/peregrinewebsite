@@ -389,7 +389,7 @@ const coreServiceList: Service[] = [
     caseStudies: [
       { slug: 'proptech-investor-portal', note: 'A role-based investor portal for a real estate development firm with a $450M portfolio and 280+ investors: watermarked documents, capital calls through DocuSign and automated quarterly reporting.' },
     ],
-    guides: [],
+    guides: ['investor-portal-vs-file-sharing'],
     answers: {
       includes:
         'Peregrine\'s investor portal development covers role-based access modeled on your fund, co-investment and SPV structure, a document library with per-investor watermarking and an audit trail, capital calls and subscription documents with e-signature, automated distribution and performance reporting, an investor dashboard, and migration of your existing documents and investor records.',
