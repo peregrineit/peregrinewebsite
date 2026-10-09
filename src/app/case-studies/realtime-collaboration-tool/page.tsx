@@ -52,7 +52,7 @@ export default function RealtimeCollaborationTool() {
 
           <p className="csd-hero-sub">
             How we built a real-time collaboration platform for 5K+ workspaces and 25K users — with
-            operational transform, presence, permissions, and offline sync achieving &lt;100ms sync
+            CRDT-based conflict resolution, presence, permissions, and offline sync achieving &lt;100ms sync
             latency.
           </p>
 
@@ -156,7 +156,7 @@ export default function RealtimeCollaborationTool() {
               <div className="csd-cs-card-icon">
                 <i className="ri-file-edit-line" />
               </div>
-              <h3>Operational Transform</h3>
+              <h3>Conflict-Free Merging</h3>
               <p>
                 When two users edit the same paragraph simultaneously, changes had to merge
                 correctly. Plain last-write-wins caused overwrites. OT or CRDT was required for

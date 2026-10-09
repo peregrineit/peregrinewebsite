@@ -80,7 +80,7 @@ export const technologyServices: Service[] = [
       timeline:
         'Peregrine sets the timeline for a Next.js project in the discovery sprint, because it depends on the number of page types, the integrations and whether a backend already exists. For reference, a typical SaaS MVP from Peregrine ships in 4 to 6 weeks and complex platforms take 8 to 12 weeks.',
       cost:
-        `Peregrine works on Next.js development as ${MODEL}. Cost depends on the number of page types, the integrations behind them and whether we are also building the backend. We do not publish a price list. A single, well-defined task can get a scoped estimate within 48 hours.`,
+        `Peregrine works on Next.js development as ${MODEL}. Cost depends on the number of page types, the integrations behind them and whether we are also building the backend. We do not publish a price list. A single, well-defined task can get a scoped estimate.`,
       work:
         `${NEXT_COUNT} of Peregrine's ${TOTAL} published case studies use Next.js. Five are listed here: a bilingual marketplace storefront, agent IDX websites for a real estate SaaS, an investor portal, a recruiter portal with branded career pages, and an insurance claims workspace. Each case study describes the architecture around the frontend.`,
     },
@@ -170,7 +170,7 @@ export const technologyServices: Service[] = [
       timeline:
         'Peregrine sets the timeline for a React or React Native project in the discovery sprint. It depends on how many platforms are in scope, what has to work offline and which device features are involved, such as Bluetooth, camera or payments. App store review also adds time that neither of us controls.',
       cost:
-        `Peregrine works on React and React Native development as ${MODEL}. Cost depends on the platforms, the offline requirements, device features and whether the backend exists already. We do not publish a price list. A single, well-defined task can get a scoped estimate within 48 hours.`,
+        `Peregrine works on React and React Native development as ${MODEL}. Cost depends on the platforms, the offline requirements, device features and whether the backend exists already. We do not publish a price list. A single, well-defined task can get a scoped estimate.`,
       work:
         `${RN_COUNT} of Peregrine's ${TOTAL} published case studies describe a React Native app. They are listed here: an offline-first driver app, a tablet point-of-sale that works offline, customer, driver and kitchen apps for food delivery, a tenant app with smart-lock control, and a fitness subscription app with video.`,
     },
@@ -340,7 +340,7 @@ export const technologyServices: Service[] = [
       timeline:
         'Peregrine sets the timeline for Laravel work after reviewing the codebase or the requirements. An upgrade depends on how many versions behind the application is and how well it is tested; new work depends on the features and integrations. We split both into stages that can be released separately.',
       cost:
-        `Peregrine works on Laravel development as ${MODEL}. Cost depends on the size and condition of the existing codebase, the features needed and the integrations involved. We do not publish a price list. A single, well-defined task can get a scoped estimate within 48 hours.`,
+        `Peregrine works on Laravel development as ${MODEL}. Cost depends on the size and condition of the existing codebase, the features needed and the integrations involved. We do not publish a price list. A single, well-defined task can get a scoped estimate.`,
       work:
         'Peregrine has no published Laravel case study yet, so this page makes no project claims. The backends in our published case studies are built on Node.js; they show how we approach multi-tenancy, billing and integrations. Ask about Laravel specifically on a discovery call.',
     },

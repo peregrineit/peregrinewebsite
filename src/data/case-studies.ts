@@ -214,7 +214,7 @@ export const caseStudies: CaseStudy[] = [
       industryIcon: "ri-funds-box-line",
       duration: "6 month project",
       summary: "How we built a secure, role-based portal for 280+ investors — with document management, milestone tracking, and automated distribution reporting across a $450M portfolio.",
-      badges: ["$450M AUM", "85% time saved"],
+      badges: ["$450M AUM", "3 weeks → 2 hours"],
     },
     glance: {
       client: "A real estate development firm",
@@ -263,13 +263,13 @@ export const caseStudies: CaseStudy[] = [
       flow: "200+ Restaurants → Real-Time Dispatch",
       industryIcon: "ri-restaurant-2-line",
       duration: "11 month project",
-      summary: "How we built a FoodTech aggregator with 200+ restaurants, 50K+ orders/month, and real-time driver dispatch achieving <3min delivery.",
+      summary: "How we built a FoodTech aggregator with 200+ restaurants, 50K+ orders/month, and real-time driver dispatch, with <3min average delivery in the pilot zone.",
       badges: ["50K+ orders/mo", "Real-time"],
     },
     glance: {
       client: "A regional food delivery operator",
       duration: "11 Months",
-      results: [["200+", "Restaurants"], ["50K+", "Orders/Month"], ["<3min", "Avg Delivery"]],
+      results: [["200+", "Restaurants"], ["50K+", "Orders/Month"], ["<3min", "Avg Delivery (Pilot)"]],
     },
   },
   {
@@ -363,13 +363,13 @@ export const caseStudies: CaseStudy[] = [
       flow: "15K+ docs · DocuSign · SOC2",
       industryIcon: "ri-file-text-line",
       duration: "9 month project",
-      summary: "How we built a legal document automation platform processing 15K+ documents/month with multi-party e-signature and SOC2 compliance.",
+      summary: "How we built a legal document automation platform processing 15K+ documents/month with multi-party e-signature and SOC2-ready audit trails.",
       badges: ["40% faster", "SOC2"],
     },
     glance: {
       client: "A mid-market legal services firm",
       duration: "9 Months",
-      results: [["15K+", "Documents/Month"], ["40%", "Faster Turnaround"], ["SOC2", "Compliant"]],
+      results: [["15K+", "Documents/Month"], ["40%", "Faster Turnaround"], ["SOC2", "Ready"]],
     },
   },
   {

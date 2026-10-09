@@ -122,7 +122,7 @@ export default function FoodDeliveryAggregatorPlatform() {
           </div>
           <div className="csd-stat-card">
             <div className="csd-stat-number">&lt;3min</div>
-            <div className="csd-stat-label">Avg Delivery</div>
+            <div className="csd-stat-label">Avg Delivery (Pilot Zone)</div>
           </div>
           <div className="csd-stat-card">
             <div className="csd-stat-number">Real-Time</div>

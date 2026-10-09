@@ -72,7 +72,7 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
       <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
         <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>&#10003;</div>
         <p style={{ color: '#22d3ee', fontWeight: '600', fontSize: '1.05rem', margin: '0 0 0.5rem' }}>Request sent successfully!</p>
-        <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0' }}>An engineer will review and reply within 6 hours.</p>
+        <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0' }}>An engineer will review it and reply within 1 business day.</p>
       </div>
     ) : (
     <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
@@ -144,7 +144,7 @@ export function QuickProjectForm() {
       <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
         <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>&#10003;</div>
         <p style={{ color: '#22d3ee', fontWeight: '600', fontSize: '1.05rem', margin: '0 0 0.5rem' }}>Request sent successfully!</p>
-        <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0' }}>We&apos;ll scope your request and respond within 48 hours.</p>
+        <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0' }}>We&apos;ll review your request and reply within 1 business day.</p>
       </div>
     ) : (
     <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
@@ -188,7 +188,7 @@ export function QuickProjectForm() {
         {qpFormStatus.loading ? 'Sending...' : 'Send Request'}
       </button>
       <p style={{ color: '#94a3b8', fontSize: '0.8rem', textAlign: 'center', margin: '0' }}>
-        We&apos;ll scope your request and respond within 48 hours.
+        We&apos;ll review your request and reply within 1 business day.
       </p>
     </form>
     )}

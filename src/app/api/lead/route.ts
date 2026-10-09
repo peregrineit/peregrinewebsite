@@ -6,7 +6,9 @@ import { Resend } from "resend";
 //   - RESEND_API_KEY     -> notification email to info@peregrine-it.com (+ auto-reply)
 //   - LEAD_WEBHOOK_URL   -> JSON POST to a CRM or automation webhook (optional)
 // The visitor only sees "sent" when at least one destination accepted the lead.
-// Vercel's filesystem is not persistent, so nothing is written to disk.
+// Vercel's filesystem is not persistent, so nothing is written to disk: the durable
+// record of a lead is the notification email and, when set, the webhook's destination
+// (docs/seo/LEAD-DELIVERY.md has a Google Sheet receiver).
 
 const NOTIFY_TO = "info@peregrine-it.com";
 /** Must match the hidden input in components/LeadForms.tsx. */
@@ -16,6 +18,8 @@ const HONEYPOT_FIELD = "pit_confirm_field";
 const FROM = process.env.LEAD_FROM_EMAIL || "Peregrine IT <onboarding@resend.dev>";
 
 interface LeadData {
+  /** Short reference shared by the email, the webhook row and the server log. */
+  ref: string;
   name: string;
   email: string;
   message: string;
@@ -57,6 +61,7 @@ async function sendNotificationEmail(resend: Resend, lead: LeadData) {
   const body = [
     "New Project Inquiry",
     "",
+    line("Reference", lead.ref),
     line("Name", lead.name),
     line("Email", lead.email),
     line("Company", lead.company),
@@ -74,19 +79,24 @@ async function sendNotificationEmail(resend: Resend, lead: LeadData) {
     lead.message,
   ].join("\n");
 
-  const { error } = await resend.emails.send({
-    from: FROM,
-    to: NOTIFY_TO,
-    replyTo: lead.email,
-    subject: "New Project Inquiry – Peregrine IT",
-    text: body,
-  });
-  if (error) throw new Error(error.message);
+  // One retry: a transient Resend error should not cost a lead.
+  let lastError = "";
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const { error } = await resend.emails.send({
+      from: FROM,
+      to: NOTIFY_TO,
+      replyTo: lead.email,
+      subject: `New Project Inquiry – Peregrine IT [${lead.ref}]`,
+      text: body,
+    });
+    if (!error) return;
+    lastError = error.message;
+  }
+  throw new Error(lastError);
 }
 
 async function sendAutoReply(resend: Resend, email: string, name: string) {
-  // TODO(owner): confirm the response-time promise (B3 in docs/seo/BLOCKERS.md). The forms and
-  // this email currently state different times.
+  // One reply-time promise site-wide: "within 1 business day" (owner instruction, 2026-10-09).
   await resend.emails.send({
     from: FROM,
     to: email,
@@ -94,7 +104,7 @@ async function sendAutoReply(resend: Resend, email: string, name: string) {
     text: `Hi ${name},
 
 Thanks for contacting Peregrine IT.
-An engineer will review your request and reply within 6 hours.
+An engineer will review your request and reply within 1 business day.
 
 – Peregrine IT Team
 https://peregrine-it.com`,
@@ -112,10 +122,33 @@ async function postToWebhook(url: string, lead: LeadData) {
   if (!res.ok) throw new Error(`webhook responded ${res.status}`);
 }
 
+// Whether Resend reports the sender's domain as verified. Asked of Resend itself, so it
+// does not rest on a DNS guess. null = could not be checked (no key, the test sender,
+// or an API key restricted to sending, which may not list domains).
+let domainCheck: { at: number; value: boolean | null } | null = null;
+async function senderDomainVerified(): Promise<boolean | null> {
+  if (!process.env.RESEND_API_KEY || !process.env.LEAD_FROM_EMAIL) return null;
+  if (domainCheck && Date.now() - domainCheck.at < 5 * 60 * 1000) return domainCheck.value;
+  let value: boolean | null = null;
+  try {
+    const domain = FROM.match(/@([^>\s]+)/)?.[1]?.toLowerCase();
+    const { data, error } = await new Resend(process.env.RESEND_API_KEY).domains.list();
+    if (domain && !error && data) {
+      const match = data.data.find((d) => domain === d.name.toLowerCase() || domain.endsWith(`.${d.name.toLowerCase()}`));
+      value = match ? match.status === "verified" : false;
+    }
+  } catch {
+    value = null;
+  }
+  domainCheck = { at: Date.now(), value };
+  return value;
+}
+
 // Configuration status, booleans only: lets the owner (or a deploy check) confirm that a
-// lead has somewhere to go without exposing any value. `sender` is "verified-domain"
-// when LEAD_FROM_EMAIL is set and "resend-test-sender" otherwise; with the test sender
-// Resend delivers only to the Resend account owner's own address.
+// lead has somewhere to go without exposing any value. `sender` is "custom" when
+// LEAD_FROM_EMAIL is set and "resend-test-sender" otherwise; with the test sender Resend
+// delivers only to the Resend account owner's own address. `ok` means a destination is
+// configured, not that an email has been delivered: only a test submission proves that.
 export async function GET() {
   const resend = Boolean(process.env.RESEND_API_KEY);
   const webhook = Boolean(process.env.LEAD_WEBHOOK_URL);
@@ -123,7 +156,8 @@ export async function GET() {
     {
       ok: resend || webhook,
       resend,
-      sender: process.env.LEAD_FROM_EMAIL ? "verified-domain" : "resend-test-sender",
+      sender: process.env.LEAD_FROM_EMAIL ? "custom" : "resend-test-sender",
+      senderDomainVerified: await senderDomainVerified(),
       webhook,
     },
     { headers: { "Cache-Control": "no-store" } }
@@ -148,6 +182,7 @@ export async function POST(request: NextRequest) {
     }
 
     const lead: LeadData = {
+      ref: crypto.randomUUID().slice(0, 8),
       name: clean(raw.name, 200),
       email: clean(raw.email, 320),
       message: clean(raw.message, 5000),
@@ -175,28 +210,29 @@ export async function POST(request: NextRequest) {
 
     const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
     const webhook = process.env.LEAD_WEBHOOK_URL;
-    let delivered = false;
+    let emailed = false;
+    let hooked = false;
 
     if (resend) {
       try {
         await sendNotificationEmail(resend, lead);
-        delivered = true;
+        emailed = true;
       } catch (err) {
-        console.error("Lead notification email failed:", err);
+        console.error("Lead notification email failed:", { ref: lead.ref, err });
       }
     }
     if (webhook) {
       try {
         await postToWebhook(webhook, lead);
-        delivered = true;
+        hooked = true;
       } catch (err) {
-        console.error("Lead webhook failed:", err);
+        console.error("Lead webhook failed:", { ref: lead.ref, err });
       }
     }
 
-    if (!delivered) {
+    if (!emailed && !hooked) {
       // Nothing received the lead. Say so instead of showing a false "sent".
-      console.error("Lead not delivered: no destination accepted it.", { form: lead.form, pageUrl: lead.pageUrl });
+      console.error("Lead not delivered: no destination accepted it.", { ref: lead.ref, form: lead.form, pageUrl: lead.pageUrl });
       return NextResponse.json(
         { error: `We could not send your request. Please email ${NOTIFY_TO} directly.` },
         { status: 502 }
@@ -211,6 +247,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // No personal data in the log line: the reference ties it to the email or sheet row.
+    console.log("Lead delivered", { ref: lead.ref, form: lead.form, email: emailed, webhook: hooked });
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error("Lead API error:", err);

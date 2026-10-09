@@ -124,8 +124,8 @@ export default function MultiLocationClinicManagement() {
             <div className="csd-stat-label">HIPAA Uptime</div>
           </div>
           <div className="csd-stat-card">
-            <div className="csd-stat-number">40%</div>
-            <div className="csd-stat-label">Faster Billing</div>
+            <div className="csd-stat-number">18 days</div>
+            <div className="csd-stat-label">Billing Cycle (Was 45)</div>
           </div>
         </div>
 
@@ -395,7 +395,7 @@ export default function MultiLocationClinicManagement() {
             <div className="csd-result-card">
               <div className="csd-result-before">Billing cycle time</div>
               <div className="csd-result-after">45 → 18 days</div>
-              <div className="csd-result-label">40% faster insurance reimbursement</div>
+              <div className="csd-result-label">Shorter insurance reimbursement cycle</div>
             </div>
           </div>
         </div>

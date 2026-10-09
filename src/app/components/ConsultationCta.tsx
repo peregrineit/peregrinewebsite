@@ -19,7 +19,7 @@ export default function ConsultationCta({ heading, text, source, guide }: { head
             <ul className="cp-consult-points">
               <li>A 30-minute technical discovery call with an engineer, not a salesperson.</li>
               <li>Fixed-scope projects, monthly retainers, or a combination, agreed after the call.</li>
-              <li>Small, well-defined tasks get a scoped estimate within 48 hours.</li>
+              <li>Small, well-defined tasks get a scoped estimate. We reply within 1 business day.</li>
             </ul>
             <p>
               Prefer to pick a time?{' '}

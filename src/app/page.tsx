@@ -19,7 +19,7 @@ import { homeGuides } from '@/data/guides';
 const faqs = [
   {
     question: "How does an engagement with Peregrine start?",
-    answer: "An engagement with Peregrine IT Solutions starts with a 30-minute technical discovery call with an engineer, not a salesperson. Larger builds then begin with a discovery sprint that maps requirements, designs the architecture and produces a written technical plan. Smaller, well-defined tasks can go through the quick project form for a scoped estimate within 48 hours.",
+    answer: "An engagement with Peregrine IT Solutions starts with a 30-minute technical discovery call with an engineer, not a salesperson. Larger builds then begin with a discovery sprint that maps requirements, designs the architecture and produces a written technical plan. Smaller, well-defined tasks can go through the quick project form for a scoped estimate.",
   },
   {
     question: "Where is Peregrine's team based, and do your hours overlap with the US and Canada?",
@@ -755,21 +755,13 @@ export default function Home() {
                   </svg>
                     <p id="w-node-ef8198ef-7ccb-6626-617b-4431a7f17cb0-098fe091" className="checkitem-lrg">Full source code ownership and documentation handoff on every project</p>
                   </div>
-                  <div id="w-node-ef8198ef-7ccb-6626-617b-4431a7f17cb2-098fe091" className="w-layout-hflex check-list-item"><svg
-                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="svg-checkicon">
-                    <path fillRule="evenodd" clipRule="evenodd"
-                      d="M19.916 4.62592C20.2607 4.85568 20.3538 5.32134 20.124 5.66598L11.124 19.166C10.9994 19.3529 10.7975 19.4742 10.5739 19.4963C10.3503 19.5184 10.1286 19.4392 9.96967 19.2803L3.96967 13.2803C3.67678 12.9874 3.67678 12.5125 3.96967 12.2196C4.26256 11.9267 4.73744 11.9267 5.03033 12.2196L10.3834 17.5727L18.876 4.83393C19.1057 4.48929 19.5714 4.39616 19.916 4.62592Z"
-                      fill="currentColor"></path>
-                  </svg>
-                    <p id="w-node-ef8198ef-7ccb-6626-617b-4431a7f17cb5-098fe091" className="checkitem-lrg">AWS, Azure, and GCP certified engineers across the team</p>
-                  </div>
                   <div id="w-node-_62763973-10c7-b349-7314-34ca65059aa3-098fe091" className="w-layout-hflex check-list-item">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="svg-checkicon">
                       <path fillRule="evenodd" clipRule="evenodd"
                         d="M19.916 4.62592C20.2607 4.85568 20.3538 5.32134 20.124 5.66598L11.124 19.166C10.9994 19.3529 10.7975 19.4742 10.5739 19.4963C10.3503 19.5184 10.1286 19.4392 9.96967 19.2803L3.96967 13.2803C3.67678 12.9874 3.67678 12.5125 3.96967 12.2196C4.26256 11.9267 4.73744 11.9267 5.03033 12.2196L10.3834 17.5727L18.876 4.83393C19.1057 4.48929 19.5714 4.39616 19.916 4.62592Z"
                         fill="currentColor"></path>
                     </svg>
-                    <p id="w-node-_62763973-10c7-b349-7314-34ca65059aa6-098fe091" className="checkitem-lrg">Post-launch support and SLA-backed maintenance for production systems</p>
+                    <p id="w-node-_62763973-10c7-b349-7314-34ca65059aa6-098fe091" className="checkitem-lrg">Post-launch support and maintenance for production systems</p>
                   </div>
                 </div>
               </div>
@@ -1194,7 +1186,7 @@ export default function Home() {
                       <path d="m13 17 5-5-5-5"></path>
                     </svg>
                   </a>
-                  <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.85rem' }}>Scoped work — we respond with an estimate within 48 hours</p>
+                  <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.85rem' }}>Scoped work — we reply within 1 business day</p>
                 </div>
               </div>
 

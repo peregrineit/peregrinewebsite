@@ -171,7 +171,7 @@ export default function Footer({ services, industries }: { services: NavItem[]; 
                   </div>
                   <div className={`footer-section-content ${expandedSections.contact ? 'expanded' : ''}`}>
                     <a href="https://calendly.com/mukesh-peregrine-it/30min" target="_blank" className="dfs-link-1-cta" style={{ color: '#0e7490', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Book a Strategy Call</a>
-                    <a href="#" id="quick-project-btn-footer-col" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Small task? Get a scoped estimate within 48 hours</a>
+                    <a href="#" id="quick-project-btn-footer-col" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Small task? Get a scoped estimate</a>
                     <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.6rem', lineHeight: '1.5' }}>Real engineers reply — not sales</p>
                     <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>Daily overlap with North American &amp; European business hours</p>
                     <p style={{ color: '#6b7280', fontSize: '0.78em', marginTop: '0.15rem', lineHeight: '1.5' }}>Technical conversations are with engineers, not sales</p>

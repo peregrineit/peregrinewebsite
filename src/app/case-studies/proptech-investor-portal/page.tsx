@@ -125,8 +125,8 @@ export default function PropTechInvestorPortal() {
             <div className="csd-stat-label">Document Delivery</div>
           </div>
           <div className="csd-stat-card">
-            <div className="csd-stat-number">85%</div>
-            <div className="csd-stat-label">Time Saved on Reporting</div>
+            <div className="csd-stat-number">2 hrs</div>
+            <div className="csd-stat-label">Quarterly Report Prep (Was 3 Weeks)</div>
           </div>
         </div>
 
@@ -396,7 +396,7 @@ export default function PropTechInvestorPortal() {
             <div className="csd-result-card">
               <div className="csd-result-before">Quarterly report preparation</div>
               <div className="csd-result-after">3 weeks → 2 hours</div>
-              <div className="csd-result-label">85% time saved on IR reporting</div>
+              <div className="csd-result-label">Time to prepare the quarterly investor report</div>
             </div>
             <div className="csd-result-card">
               <div className="csd-result-before">Document security</div>

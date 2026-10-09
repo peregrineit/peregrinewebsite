@@ -19,12 +19,19 @@ APP = f"http://127.0.0.1:{APP_PORT}"
 MOCK = f"http://127.0.0.1:{MOCK_PORT}"
 FROM = "Peregrine IT <hello@test.invalid>"
 
-state = {"emails": [], "hooks": [], "resend_fail": False, "hook_fail": False}
+state = {"emails": [], "hooks": [], "resend_fail": False, "resend_fail_once": False, "hook_fail": False, "domains": [{"name": "test.invalid", "status": "verified"}]}
 
 class Mock(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path.startswith("/domains"):
+            return self._send(200, {"object": "list", "has_more": False, "data": state["domains"]})
+        self._send(404, {})
     def do_POST(self):
         body = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or b"{}")
         if self.path.startswith("/emails"):
+            if state["resend_fail_once"]:
+                state["resend_fail_once"] = False
+                return self._send(500, {"name": "application_error", "message": "mock transient failure", "statusCode": 500})
             if state["resend_fail"]:
                 return self._send(422, {"name": "validation_error", "message": "mock failure", "statusCode": 422})
             state["emails"].append(body)
@@ -79,7 +86,7 @@ def check(name, cond, detail=""):
     global passed
     if cond: passed += 1
     else: fails.append(f"{name} {detail}")
-def reset(): state.update(emails=[], hooks=[], resend_fail=False, hook_fail=False)
+def reset(): state.update(emails=[], hooks=[], resend_fail=False, resend_fail_once=False, hook_fail=False)
 
 RESEND_ENV = {"RESEND_API_KEY": "re_test_mock", "RESEND_BASE_URL": MOCK, "LEAD_FROM_EMAIL": FROM}
 HOOK_ENV = {"LEAD_WEBHOOK_URL": MOCK + "/hook"}
@@ -91,7 +98,7 @@ def run():
     # --- none: nothing configured -> honest error, never a false "sent"
     app = start_app({})
     try:
-        check("none: status endpoint reports nothing configured", status() == {"ok": False, "resend": False, "sender": "resend-test-sender", "webhook": False}, f"got {status()}")
+        check("none: status endpoint reports nothing configured", status() == {"ok": False, "resend": False, "sender": "resend-test-sender", "senderDomainVerified": None, "webhook": False}, f"got {status()}")
         s, b = post(LEAD, ip()); check("none: 502 when no destination", s == 502 and "info@peregrine-it.com" in b.get("error", ""), f"got {s} {b}")
         s, b = post({**LEAD, "pit_confirm_field": "http://spam"}, ip()); check("honeypot: 200 and dropped", s == 200 and b.get("success") is True, f"got {s}")
         s, b = post({**LEAD, "email": "nope"}, ip()); check("validation: bad email 400", s == 400)
@@ -112,7 +119,7 @@ def run():
         if h:
             for k in ("name", "email", "company", "form", "projectType", "timeline", "service", "message", "pageUrl", "landingPage", "referrer", "utm"):
                 check(f"webhook: field {k}", h[0].get(k) == LEAD[k], f"got {h[0].get(k)!r}")
-            check("webhook: receivedAt + source", "receivedAt" in h[0] and h[0].get("source") == "peregrine-it.com")
+            check("webhook: receivedAt + source + ref", "receivedAt" in h[0] and h[0].get("source") == "peregrine-it.com" and len(h[0].get("ref", "")) == 8)
             check("webhook: honeypot field not forwarded", "pit_confirm_field" not in h[0] and "website" not in h[0])
         s, _ = post({**LEAD, "budget": "2-6-months", "timeline": ""}, ip())
         check("webhook: legacy `budget` maps to timeline", s == 200 and state["hooks"][-1].get("timeline") == "2-6-months")
@@ -134,14 +141,23 @@ def run():
             check("resend: reply-to is the lead", n.get("reply_to") in ("lead@example.com", ["lead@example.com"]), f"got {n.get('reply_to')}")
             check("resend: body has attribution", all(x in n.get("text", "") for x in ("Acme", "asap", "/blog/mls-idx-integration-cost", "utm_source=test", "service:saas-development")))
             check("resend: auto-reply to the lead", a.get("to") in ("lead@example.com", ["lead@example.com"]))
+            check("resend: subject carries the lead reference", "[" in n.get("subject", "") and f"Reference: " in n.get("text", ""), f"got {n.get('subject')}")
+        reset(); state["resend_fail_once"] = True
+        s, b = post(LEAD, ip()); check("resend: one transient failure is retried -> 200", s == 200 and len(state["emails"]) == 2, f"got {s} {len(state['emails'])}")
         reset(); state["resend_fail"] = True
         s, b = post(LEAD, ip()); check("resend: 502 when Resend rejects and nothing else is configured", s == 502, f"got {s} {b}")
     finally: stop_app(app)
 
+    # --- resend with a sender domain Resend has not verified
+    reset(); state["domains"] = [{"name": "test.invalid", "status": "pending"}]; app = start_app(RESEND_ENV)
+    try:
+        st = status(); check("status: unverified sender domain is reported", st.get("senderDomainVerified") is False and st.get("sender") == "custom", f"got {st}")
+    finally: stop_app(app); state["domains"] = [{"name": "test.invalid", "status": "verified"}]
+
     # --- both
     reset(); app = start_app({**RESEND_ENV, **HOOK_ENV})
     try:
-        st = status(); check("both: status endpoint reports both, no secret values", st == {"ok": True, "resend": True, "sender": "verified-domain", "webhook": True}, f"got {st}")
+        st = status(); check("both: status endpoint reports both, no secret values", st == {"ok": True, "resend": True, "sender": "custom", "senderDomainVerified": True, "webhook": True}, f"got {st}")
         s, _ = post(LEAD, ip()); check("both: 200, 2 emails, 1 webhook", s == 200 and len(state["emails"]) == 2 and len(state["hooks"]) == 1)
         reset(); state["resend_fail"] = True
         s, _ = post(LEAD, ip()); check("both: Resend down, webhook still receives -> 200", s == 200 and len(state["hooks"]) == 1, f"got {s}")

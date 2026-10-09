@@ -442,7 +442,7 @@ export default function HRPayrollSaaSPlatform() {
           <p>
             The audit trail was non-negotiable for compliance. Every change to an employee record,
             tax config, or pay run is logged with user ID, timestamp, and before/after JSON. That
-            gave auditors a complete picture and the client confidence to pass SOC 2. Document
+            gave auditors a complete picture and the client confidence going into a SOC 2 audit. Document
             retention for 7 years was implemented with lifecycle policies and encrypted storage.
           </p>
         </div>

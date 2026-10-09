@@ -8,7 +8,7 @@ Engineers work directly with client teams in sprint-based delivery, with daily o
 
 - Every project starts with a 30-minute technical discovery call with an engineer, not a salesperson.
 - Larger builds begin with a discovery sprint (requirements, architecture, written technical plan); development runs in two-week sprints with weekly demos.
-- Small, well-defined tasks get a scoped estimate within 48 hours through the quick project form.
+- Small, well-defined tasks get a scoped estimate through the quick project form. Enquiries get a reply within 1 business day.
 - Engagement model: fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Pricing is scoped per project; no price list is published.
 - IP ownership: once the work is paid for, the client owns the IP rights to what Peregrine builds.
 - A typical SaaS MVP ships in 4 to 6 weeks; complex platforms take 8 to 12 weeks.

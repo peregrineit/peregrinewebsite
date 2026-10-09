@@ -44,13 +44,14 @@ export interface Service {
 }
 
 /** Shared by every service page. Facts only from the existing site (discovery call,
- *  discovery sprint, 2-week sprints with weekly demos, 48-hour scoped estimates). */
+ *  discovery sprint, 2-week sprints with weekly demos, scoped estimates). The only
+ *  reply-time promise on the site is "within 1 business day". */
 export const engagement = {
   heading: 'How an Engagement Works',
   paragraphs: [
     'Every project starts with a 30-minute technical discovery call with an engineer, not a salesperson. We use it to understand the system you have, the outcome you need and whether we are the right team for it.',
     'Larger builds begin with a discovery sprint: we map requirements, design the architecture and hand you a written technical plan before development starts. Development then runs in two-week sprints with weekly demos, so you see working software early and can change priorities at each checkpoint.',
-    'Smaller, well-defined tasks such as a single integration, a performance fix or an automation can be requested through the quick project form, and we reply with a scoped estimate within 48 hours.',
+    'Smaller, well-defined tasks such as a single integration, a performance fix or an automation can be requested through the quick project form, and we reply within 1 business day and follow with a scoped estimate.',
   ],
   pricingNote: 'Pricing is scoped per project after the discovery call.',
 };
@@ -70,7 +71,7 @@ export const ipFaq = {
 
 /** Direct answer for "How does a <service> project start?"; the same facts as `engagement`. */
 export const startAnswer = (name: string) =>
-  `A Peregrine ${name} project starts with a 30-minute technical discovery call with an engineer, not a salesperson. Larger builds then begin with a discovery sprint that maps requirements, designs the architecture and produces a written technical plan. Smaller, well-defined tasks can use the quick project form for a scoped estimate within 48 hours.`;
+  `A Peregrine ${name} project starts with a 30-minute technical discovery call with an engineer, not a salesperson. Larger builds then begin with a discovery sprint that maps requirements, designs the architecture and produces a written technical plan. Smaller, well-defined tasks can use the quick project form for a scoped estimate.`;
 
 const coreServiceList: Service[] = [
   {
@@ -217,7 +218,7 @@ const coreServiceList: Service[] = [
       timeline:
         'Peregrine sets the timeline for an API integration after mapping every system involved: its authentication, endpoints, rate limits, webhook support and data formats. The number of vendors and the quality of their sandboxes drive the schedule. Work then runs in two-week sprints with weekly demos, and rollout starts with a pilot group.',
       cost:
-        'Peregrine works on API integration as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on how many systems are involved and how reliable their APIs are. A single, well-defined integration can get a scoped estimate within 48 hours. For CRM build-or-buy economics, see [[guide]].',
+        'Peregrine works on API integration as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on how many systems are involved and how reliable their APIs are. A single, well-defined integration can get a scoped estimate. For CRM build-or-buy economics, see [[guide]].',
       work:
         'Three published case studies show Peregrine\'s API integration work: a supply chain platform normalizing 12 carrier APIs with retry queues and per-carrier rate limits, an HR and payroll SaaS integrated with ADP, QuickBooks and DocuSign, and a legal document platform whose DocuSign webhooks keep multi-party signing moving during outages.',
     },
@@ -572,7 +573,7 @@ const coreServiceList: Service[] = [
       timeline:
         'Peregrine sets the timeline for cloud and DevOps work after assessing your current hosting, release process, costs and incidents. The migration plan then moves one environment at a time, each verified before the next, with a rollback plan for every step. Work runs in two-week sprints and ends with load tests and a handover.',
       cost:
-        'Peregrine works on cloud and DevOps as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on the current setup, how much moves and how much is automated. A single performance fix can get a scoped estimate within 48 hours. For infrastructure in context, see [[guide]].',
+        'Peregrine works on cloud and DevOps as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on the current setup, how much moves and how much is automated. A single performance fix can get a scoped estimate. For infrastructure in context, see [[guide]].',
       work:
         'Three published case studies show Peregrine\'s cloud and DevOps work: a real estate SaaS split into USA, Canada and staging environments with Elasticsearch, Redis and a CDN; an edtech platform with an event-driven AWS video pipeline delivering HLS; and a self-storage platform load-tested against 45,000 simulated units before rollout.',
     },
