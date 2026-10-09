@@ -58,3 +58,9 @@ Deploying or merging to `main`; sending any email or message; creating accounts;
 ## Update 2026-10-10
 - **B3, B18, B19, B25 resolved for Preview:** real submission delivered (reference `0a3efc8a`), notification and confirmation both received. Remaining owner check: `RESEND_API_KEY` and `LEAD_FROM_EMAIL` include the Production scope (GO-NO-GO.md).
 - **B1** is the only release step left: authorization to merge PR #7.
+
+## After release (2026-10-10)
+- **B1 resolved:** PR #7 merged and live.
+- **B26** Search Console data: the connected SEO tool's plan does not include Search Console, and no Google credentials exist on this machine. Needed: weekly exports, or a read-only service account (`MONITORING.md`).
+- **B27** One "TEST" lead on production `/contact`, to confirm delivery on the live site (configuration reports correctly).
+- Still open and unchanged: B2 (GA4 ID), B5–B10, B13, B14, B16, B17, B20 (real estate SaaS duration; removed percentages), B22 (business hours wording), B23 (which client quotes are confirmed), B24 (Google Sheet lead record).

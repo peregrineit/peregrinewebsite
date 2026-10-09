@@ -261,3 +261,13 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 
 ## Loop status
 - Stopped. The only remaining step is the owner's authorization to merge PR #7.
+
+## Post-deployment (2026-10-10)
+- **Merge commit:** `48ed23f` (PR #7), deployed to production by Vercel.
+- **Verified on production:** `seo_check.py` FAILS: 0 on 57 URLs; no `noindex`, canonicals match the sitemap; `robots.txt` and redirects correct; lead status endpoint reports Resend configured with a verified custom sender in the production environment; all new pages 200; calculator computes; homepage as released; IndexNow accepted 57 URLs; Lighthouse accessibility, best practices and SEO 100 on five pages.
+- **No deployment defect found.**
+- **Looked into and not acted on:** case-study lab LCP (3.7 s simulated). First paint on this machine was too variable across runs and pages to call it a site defect; real-user data in Vercel Speed Insights should decide.
+- **Blocked:** Search Console (no access), so sitemap submission, indexing status and the data-driven queue wait on the owner (B26).
+
+## Loop status
+- Waiting on data. Nothing further is safe or useful to change without new Search Console numbers or an owner answer in BLOCKERS.md.

@@ -1,7 +1,7 @@
 # SEO tasks
 
 **Status key:** `done` · `in progress` · `ready` · `partial` (shipped what is verifiable; rest blocked) · `blocked`
-**Branch:** `seo/phase-12`, stacked on `seo/phase-11`. Merge order: 11, then 12.
+**Released:** Phases 11 and 12 are on `main` (`48ed23f`). New work goes on a new branch from `main`.
 Per-task detail, files, hashes and tests are in `PROGRESS.md`. Blockers are in `BLOCKERS.md`.
 
 | ID | Task | Depends on | Status |
@@ -115,4 +115,8 @@ Ordered. The loop takes the first item that is `ready`, finishes it, updates thi
 | C4 | Unsupported testimonials and homepage figures replaced with client logos and verified stats; layout kept | done |
 | C5 | Real lead test on the Vercel preview | done by the owner 2026-10-10: passed |
 | P0 | Lead delivery failure on the preview | closed 2026-10-10: real preview submission delivered (reference `0a3efc8a`). The second failure's cause was never captured |
-| REL | Release of PR #7 | ready; waiting for the owner's authorization to merge |
+| REL | Release of PR #7 | done: merged 2026-10-09 as `48ed23f`, live |
+| PD1 | Post-deployment verification (57 URLs, indexing readiness, lead configuration, new pages, IndexNow, Lighthouse) | done 2026-10-10: no defect found (`MONITORING.md`) |
+| PD2 | Search Console: sitemap submission, indexing requests, fresh performance data | blocked: no Search Console access from this machine; owner steps in `MONITORING.md` |
+| PD3 | Next improvement queue N1–N7 | waiting on data; triggers in `MONITORING.md` |
+| PD4 | One "TEST" lead on production `/contact` | owner |
