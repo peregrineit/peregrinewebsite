@@ -16,7 +16,8 @@ Usage: python3 scripts/test_lead_api.py      (exits 1 on any failure)
 import http.server, json, os, re, subprocess, sys, threading, time, urllib.error, urllib.request, uuid
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-APP_PORT, MOCK_PORT = 3059, 3997
+# Ports can be overridden so several checkouts can run the suite at once.
+APP_PORT = int(os.environ.get("LEAD_TEST_APP_PORT", 3059)); MOCK_PORT = int(os.environ.get("LEAD_TEST_MOCK_PORT", 3997))
 APP = f"http://127.0.0.1:{APP_PORT}"
 MOCK = f"http://127.0.0.1:{MOCK_PORT}"
 FROM = "Peregrine IT <hello@test.invalid>"
@@ -255,7 +256,7 @@ def run():
     finally: stop_app(app)
 
     # --- Resend unreachable (connection refused)
-    reset(); app = start_app({**RESEND_ENV, "RESEND_BASE_URL": "http://127.0.0.1:3995"})
+    reset(); app = start_app({**RESEND_ENV, "RESEND_BASE_URL": f"http://127.0.0.1:{MOCK_PORT + 2}"})
     try:
         s, b = post(LEAD, ip()); check("resend unreachable: 502, success false", s == 502 and b.get("success") is False, f"got {s} {b}")
     finally: stop_app(app)
