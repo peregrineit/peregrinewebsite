@@ -252,3 +252,12 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 - **Finding:** the error text shown exists only in this API's 502 response on preview builds, and every 502 logs first; so the request happened and the export does not cover it. Cause of Resend's refusal still unknown.
 - **Change (diagnostics only):** a failed submission shows HTTP status and reference; preview builds add the provider's error with addresses removed; the same text is in the log. Delivery logic untouched.
 - **Tests:** 83 lead tests; `tsc`; ESLint 0 errors; `seo_check.py` FAILS: 0; 56 fee tests. Shown in a browser against the real Resend API with an invalid key: `HTTP 502 · reference … · email: validation_error (401): API key is invalid`.
+
+## Release status (2026-10-10)
+- **Real email test passed** on the preview (owner): reference `0a3efc8a`; notification and confirmation both arrived; custom sender on the verified domain.
+- **Final checks on `89d06ad`:** `tsc` clean; ESLint 0 errors; `seo_check.py` FAILS: 0 on 57 URLs; 83 lead tests; 56 fee tests; branch contains `main`; PR #7 mergeable; Vercel check green.
+- **Not confirmable from here:** the Production scope of the two Resend variables (no Vercel access; production's current code has no status endpoint).
+- **Status:** READY TO DEPLOY, waiting for authorization. No SEO feature added and the email implementation not changed since the passing test.
+
+## Loop status
+- Stopped. The only remaining step is the owner's authorization to merge PR #7.

@@ -1,37 +1,31 @@
 # GO / NO-GO: Phases 11 and 12
 
-**Date:** 2026-10-09 · **Branch:** `seo/phase-12` · **Pull request:** [#7](https://github.com/peregrineit/peregrinewebsite/pull/7) (draft) · **Not merged, not deployed.**
+**Date:** 2026-10-10 · **Branch:** `seo/phase-12` · **Pull request:** [#7](https://github.com/peregrineit/peregrinewebsite/pull/7) (draft) · **Not merged, not deployed.**
 
 ## Decision
 
-**NO-GO. P0 open: on the preview the form showed success and no email arrived (owner test, 2026-10-09).** PR #7 stays a draft and unmerged.
+**READY TO DEPLOY, pending the owner's authorization to merge.** The release blocker is cleared: a real submission on the preview was delivered. PR #7 is not merged and nothing is deployed.
 
-- **Root cause: not proven.** Two code paths could produce that result; the evidence that separates them is in Resend's activity list and the Vercel log, which I cannot read. Details and the single evidence request: `LEAD-DELIVERY.md`.
-- **Fixed regardless (commit `fix(lead)`):** a filled hidden anti-spam field no longer returns a silent success; the acknowledgement's result is checked; success means "accepted by the mail provider", is worded "Request received", and comes with a reference; Resend message ids are logged; retries cannot duplicate; the form reports a delivery problem if Resend records one.
-- **Second owner test (fixed build): "We could not send your request."** Resend is rejecting the notification; the reason is in the Vercel log line `Lead NOT accepted`, which I cannot read. Cause classes and the two-item request are in `LEAD-DELIVERY.md`. No code change was made for it.
-- **Log export (owner, 2026-10-10):** no `POST /api/lead` among 53 rows; preview status `senderDomainVerified: true`. The error text shown can only come from this API's 502, so the POST happened and the export does not cover it (window, retention or filter; see `LEAD-DELIVERY.md`). The form now shows the HTTP status, the reference and, on preview builds, Resend's error with addresses removed. Delivery logic was not changed.
-- **A fresh real submission on the new preview build is required.** The earlier test ran on a build that had the defects above.
+### Real email delivery (owner test on the preview, 2026-10-10)
 
-### What the fresh test must show
+| Check | Result |
+|---|---|
+| Contact form submission | succeeded; form showed "Request received" with reference `0a3efc8a` |
+| Lead notification | arrived, with the reference |
+| Customer confirmation | arrived, with the reference |
+| Sender | custom address on the Resend-verified domain (`sender: custom`, `senderDomainVerified: true` on the preview) |
+| Recipient | `info@peregrine-it.com` (fixed in code) |
+| Build tested | preview of `seo/phase-12` at `89d06ad`, the commit this report covers |
 
-On `https://peregrinewebsite-git-seo-phase-12-mukeshs-projects-36e886df.vercel.app` (signed in to Vercel), after the Vercel check passes on the latest commit:
+### What is still not known, stated plainly
 
-1. `/api/lead` → `"resend":true`, `"sender":"custom"`, `"environment":"preview"`, `"senderDomainVerified":true` or `null`.
-2. Submit `/contact` with "TEST" in the name. The form shows **Request received** and a **Reference**.
-3. The notification arrives at `info@peregrine-it.com` with that reference in the subject; the acknowledgement arrives at the visitor address with the same reference in the body.
-4. If either is missing: Resend → Emails → search the reference; send me the status word. The Vercel log line `Lead accepted` for that reference holds both Resend ids.
+- **Why two earlier preview tests failed.** The first showed a success with no email (old build; consistent with the hidden anti-spam field returning a silent success, which is fixed). The second showed "We could not send your request"; its log line was never captured, so the reason Resend refused that send is unknown. The next test passed with no configuration change made by me and no change to delivery logic (only diagnostics were added). If it recurs, the form now prints the HTTP status and reference, and the log line `Lead NOT accepted by any destination` holds Resend's error.
+- **Production's Resend configuration cannot be confirmed before the deploy.** I have no access to the Vercel project, and production today runs the old code, which has no status endpoint (`GET /api/lead` returns 405). Preview and Production are separate variable scopes in Vercel, so the passing preview test does not prove Production has the same values. See the pre-merge check below.
+- **No durable lead storage.** The record of a lead is the notification email and Resend's log. Optional Google Sheet receiver: `LEAD-DELIVERY.md`.
 
-Only when step 3 is confirmed does this file change to READY TO DEPLOY.
+### Before merging (owner, 1 minute, no secret is shown or changed)
 
-### Lead delivery evidence so far
-
-| Item | Status | Evidence |
-|---|---|---|
-| Recipient is `info@peregrine-it.com` | Verified | fixed in code |
-| `RESEND_API_KEY` and `LEAD_FROM_EMAIL` reach the preview | Verified by the owner | `/api/lead` showed `resend: true`, `sender: custom` |
-| Domain verified in Resend | Owner-stated; DNS consistent | `resend._domainkey` and `send` records present |
-| Resend accepted the test emails | **Unknown** | needs Resend activity or the Vercel log |
-| Emails delivered | **No** | owner saw neither |
+Vercel → peregrinewebsite → Settings → Environment Variables. Confirm that `RESEND_API_KEY` and `LEAD_FROM_EMAIL` each list **Production** among their environments. If either shows Preview only, tick Production on the same variable (same value). Nothing else changes.
 
 ### Favicon and SEO changes together (after merging `main`)
 
@@ -124,13 +118,13 @@ Detail and steps: `LEAD-DELIVERY.md`.
 
 | # | Item | Evidence | Status |
 |---|---|---|---|
-| E1 | Lead email delivery | **Code (read):** Resend is the only mail provider; recipient `info@peregrine-it.com` is fixed in code; sender is `LEAD_FROM_EMAIL` or Resend's test sender. **Configuration (not readable from here):** whether `RESEND_API_KEY` and `LEAD_FROM_EMAIL` are set, and whether Resend has verified the domain. **DNS (a hint only):** no `resend._domainkey` or `send` records on `peregrine-it.com`; a subdomain or custom record names would not show up this way | **Unverified. Release condition** |
+| E1 | Lead email delivery | Real preview submission delivered on 2026-10-10 (reference `0a3efc8a`): notification and confirmation both arrived | **Verified on Preview.** Production scope to be confirmed by the owner before merging and by the post-deploy test |
 | E2 | Vercel project access | The CLI login on this machine is a different account (team "Peregrine", one project, `sellv3`); the site is under `mukeshs-projects-36e886df` | blocks reading env var names |
 | E3 | Preview testing | Preview deployments require a Vercel sign-in | blocks a delivery test from here |
 | E4 | Durable lead record | The app has no database and Vercel has no writable disk, so none can be added without new infrastructure. Prepared: a Google Sheet receiver (`scripts/lead-sheet-webhook.gs`) for the existing `LEAD_WEBHOOK_URL`; free, in your Google Workspace; not deployed | optional, owner steps |
 | E5 | GA4 | No measurement ID (B2) | optional |
 
-**How E1 gets settled without guessing:** `GET /api/lead` now asks Resend whether the sender's domain is verified and returns `senderDomainVerified: true / false / null` (null when the API key is restricted to sending). It returns booleans only. Then one test submission, with the notification and the auto-reply both seen in an inbox.
+**How the same is confirmed on production after the deploy:** `GET /api/lead` now asks Resend whether the sender's domain is verified and returns `senderDomainVerified: true / false / null` (null when the API key is restricted to sending). It returns booleans only. Then one test submission, with the notification and the auto-reply both seen in an inbox.
 
 ## 4. Optional improvements (do not block)
 
@@ -144,21 +138,21 @@ Detail and steps: `LEAD-DELIVERY.md`.
 
 ## 5. Merge and deployment (only after explicit authorization)
 
-Preconditions: the preview lead test passed; this file says READY TO DEPLOY; you have said to release.
+Preconditions met: checks pass on `89d06ad`; real preview delivery verified. Remaining precondition: your authorization, and the Production-scope check above.
 
-1. PR #7 → **Ready for review**. Wait for the Vercel check to pass.
-2. **Merge pull request** → **Create a merge commit** (as PRs #2–#6). Vercel deploys `main` to production automatically.
+1. PR #7 → **Ready for review** (it is a draft). The Vercel check is already green on `89d06ad`.
+2. **Merge pull request** → **Create a merge commit** (as PRs #2–#6 and #8). Vercel deploys `main` to production automatically.
 3. Vercel → Deployments: wait for the production deployment to show **Ready**.
-4. Verify production:
+4. Verify production pages:
 ```bash
 python3 scripts/seo_check.py https://peregrine-it.com
 ```
    Expect `FAILS: 0` on 57 URLs.
-5. Open `https://peregrine-it.com/api/lead`: `"resend":true`, `"senderDomainVerified":true` (or `null`).
-6. Submit one test lead on `https://peregrine-it.com/contact`; see both emails arrive.
-7. Tell me "deployed". I resubmit the sitemap URLs to IndexNow and run the day-0 checks in `MONITORING.md`.
+5. Open `https://peregrine-it.com/api/lead`. Expect `"resend":true`, `"sender":"custom"`, `"senderDomainVerified":true`, `"environment":"production"`.
+6. Submit one test lead on `https://peregrine-it.com/contact` with "TEST" in the name. Expect "Request received" with a reference, and both emails.
+7. Tell me "deployed". I run the production checks, resubmit the sitemap URLs to IndexNow and start the day-0 list in `MONITORING.md`.
 
-If step 5 or 6 fails on production: roll back (below) and fix the Production-scope variables.
+**If step 5 or 6 fails:** leads on production would be refused (visitors see the error and the email link, not a false success). Fix the Production-scope variables and redeploy, or roll back.
 
 ## 6. Rollback
 

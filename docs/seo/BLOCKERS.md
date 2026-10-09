@@ -54,3 +54,7 @@ Deploying or merging to `main`; sending any email or message; creating accounts;
 
 ## P0, 2026-10-09: lead delivery
 - **B25 (release blocker)** The owner's preview test showed success with no email. Needed, once: Resend → Emails status for that test, the Vercel log for `/api/lead` at that time, spam folders, and the browser used (`LEAD-DELIVERY.md`, "Evidence needed"). Then a fresh test on the new preview build.
+
+## Update 2026-10-10
+- **B3, B18, B19, B25 resolved for Preview:** real submission delivered (reference `0a3efc8a`), notification and confirmation both received. Remaining owner check: `RESEND_API_KEY` and `LEAD_FROM_EMAIL` include the Production scope (GO-NO-GO.md).
+- **B1** is the only release step left: authorization to merge PR #7.

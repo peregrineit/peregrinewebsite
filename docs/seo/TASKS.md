@@ -113,5 +113,6 @@ Ordered. The loop takes the first item that is `ready`, finishes it, updates thi
 | C2 | Lead delivery: provider and configuration documented; Resend domain status in `/api/lead`; retry; lead reference; Google Sheet receiver prepared | done in code; delivery itself unverified (B18, B19, B24) |
 | C3 | Release re-validation after C1 and C2 | done: build, `tsc`, ESLint 0 errors, `seo_check.py` FAILS 0 on 57 URLs, 44 lead tests, 56 fee tests |
 | C4 | Unsupported testimonials and homepage figures replaced with client logos and verified stats; layout kept | done |
-| C5 | Real lead test on the Vercel preview | blocked: Vercel login and Resend access (setup request in GO-NO-GO.md) |
-| P0 | Lead delivery failure on the preview: success shown, no email | fix shipped on the branch; root cause unproven; needs Resend/Vercel evidence and a fresh preview test |
+| C5 | Real lead test on the Vercel preview | done by the owner 2026-10-10: passed |
+| P0 | Lead delivery failure on the preview | closed 2026-10-10: real preview submission delivered (reference `0a3efc8a`). The second failure's cause was never captured |
+| REL | Release of PR #7 | ready; waiting for the owner's authorization to merge |
