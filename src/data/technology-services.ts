@@ -15,7 +15,9 @@ import { caseStudies } from './case-studies';
 
 const usingStack = (name: string) => caseStudies.filter((c) => c.stack.some((s) => s.includes(name))).length;
 const NEXT_COUNT = usingStack('Next.js');
-const RN_COUNT = usingStack('React Native');
+// Case studies whose page actually describes a React Native app (the five cited on the
+// React page). Two more list React Native in their stack without describing a mobile app.
+const RN_COUNT = 5;
 const TOTAL = caseStudies.length;
 const MODEL = 'fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call';
 
@@ -46,7 +48,7 @@ export const technologyServices: Service[] = [
       },
       {
         title: 'Admin consoles and internal tools',
-        body: 'The operating side of a product: HR and payroll admin, course management for instructors, plant dashboards and a bill-of-materials editor, each sharing one API with the customer-facing app.',
+        body: 'The operating side of a product: HR and payroll admin, course management for instructors, plant dashboards and a bill-of-materials editor.',
       },
       {
         title: 'White-label and multi-tenant sites',
@@ -123,7 +125,7 @@ export const technologyServices: Service[] = [
     intro: [
       'React development is building user interfaces from reusable components; React Native uses the same approach to build iOS and Android apps from one codebase.',
       'It is for products that need a web app and a mobile app working against the same data: field and driver apps, tablet point-of-sale, tenant and customer apps, alongside a web portal for staff.',
-      `Peregrine builds both sides. ${RN_COUNT} of our ${TOTAL} published case studies include a React Native app, each paired with a React web app built on Next.js and a shared API.`,
+      `Peregrine builds both sides. ${RN_COUNT} of our ${TOTAL} published case studies describe a React Native app, and four of those pair it with a web app built on Next.js.`,
     ],
     whatWeBuild: [
       {
@@ -170,7 +172,7 @@ export const technologyServices: Service[] = [
       cost:
         `Peregrine works on React and React Native development as ${MODEL}. Cost depends on the platforms, the offline requirements, device features and whether the backend exists already. We do not publish a price list. A single, well-defined task can get a scoped estimate within 48 hours.`,
       work:
-        `${RN_COUNT} of Peregrine's ${TOTAL} published case studies include a React Native app. Five are listed here: an offline-first driver app, a tablet point-of-sale that works offline, customer, driver and kitchen apps for food delivery, a tenant app with smart-lock control, and a fitness subscription app with video.`,
+        `${RN_COUNT} of Peregrine's ${TOTAL} published case studies describe a React Native app. They are listed here: an offline-first driver app, a tablet point-of-sale that works offline, customer, driver and kitchen apps for food delivery, a tenant app with smart-lock control, and a fitness subscription app with video.`,
     },
     glance: {
       delivered: 'React web apps and React Native mobile apps for iOS and Android, with the shared API behind them',
@@ -379,13 +381,13 @@ export const technologyServices: Service[] = [
     metaDescription:
       'WordPress development: custom themes and plugins, headless WordPress with Next.js, performance and security work, and migration to a custom platform.',
     h1: 'WordPress Development, Headless WordPress and Migration',
-    // Capability page: no WordPress build has been published. One case study describes
-    // a client moving off WordPress to a custom platform; it is cited as exactly that.
+    // Capability page: no WordPress build has been published. One case study mentions that
+    // the client's content had lived partly in WordPress; it is cited as exactly that.
     offer: 'Custom themes and plugins, headless WordPress, and moves from WordPress to a custom platform.',
     intro: [
       'WordPress development is building and maintaining sites on WordPress beyond what stock themes and plugins provide: custom themes, custom plugins, integrations, and using WordPress as the content system behind a separate frontend.',
       'It is for organizations whose site has outgrown its theme and plugin stack, who need WordPress to feed a faster custom frontend, or whose product has outgrown WordPress and needs to move to a purpose-built platform.',
-      'Peregrine offers WordPress development and migration. We have not published a WordPress build as a case study; one published case study covers a client moving off WordPress to a custom platform.',
+      'Peregrine offers WordPress development and migration. We have not published a WordPress build as a case study; one published case study covers a custom platform built for a client whose content had lived partly in WordPress.',
     ],
     whatWeBuild: [
       {
@@ -406,7 +408,7 @@ export const technologyServices: Service[] = [
       },
       {
         title: 'Migration from WordPress to a custom platform',
-        body: 'When a product has outgrown WordPress, moving its content and users to a purpose-built application. In our EdTech case study the client\'s course content had been spread across WordPress, Google Drive and spreadsheets before the custom learning platform replaced them.',
+        body: 'When a product has outgrown WordPress, building the purpose-built application that replaces it. In our EdTech case study the client\'s content lived in separate systems, some in WordPress and some in Google Drive, with progress tracked in spreadsheets, before we built a custom learning platform.',
       },
     ],
     process: [
@@ -417,7 +419,7 @@ export const technologyServices: Service[] = [
     ],
     stack: ['WordPress', 'PHP', 'MySQL', 'Block editor', 'WordPress REST API', 'Next.js', 'Node.js', 'CDN'],
     caseStudies: [
-      { slug: 'edtech-learning-platform', note: 'A custom learning platform that replaced course content spread across WordPress, Google Drive and spreadsheets. It shows a move off WordPress, not a WordPress build.' },
+      { slug: 'edtech-learning-platform', note: 'A custom learning platform for a client whose content had lived partly in WordPress and partly in Google Drive, with progress tracked in spreadsheets. It is not a WordPress build.' },
     ],
     guides: [],
     answers: {
@@ -428,7 +430,7 @@ export const technologyServices: Service[] = [
       cost:
         `Peregrine works on WordPress development as ${MODEL}. Cost depends on whether the work is a fix, a custom theme or plugin, a headless frontend or a full migration, and on how much content is involved. We do not publish a price list.`,
       work:
-        'Peregrine has not published a WordPress build as a case study. One published case study is related: an EdTech company whose course content was spread across WordPress, Google Drive and spreadsheets moved to a custom learning platform we built. It shows a move off WordPress, not WordPress development.',
+        'Peregrine has not published a WordPress build as a case study. One published case study is related: an EdTech company whose content lived partly in WordPress and partly in Google Drive, with progress tracked in spreadsheets, for whom we built a custom learning platform. It is not a WordPress project.',
     },
     glance: {
       delivered: 'Custom WordPress themes and plugins, headless WordPress with Next.js, performance and security work, and migration to a custom platform',
@@ -453,7 +455,7 @@ export const technologyServices: Service[] = [
       },
       {
         question: 'Have you published WordPress case studies?',
-        answer: 'Not a WordPress build. Our EdTech case study describes a client moving from WordPress and other tools to a custom platform. We will add WordPress projects here when one can be published.',
+        answer: 'Not a WordPress build. Our EdTech case study describes a custom platform built for a client whose content had lived partly in WordPress. We will add WordPress projects here when one can be published.',
       },
     ],
     icon: 'ri-quill-pen-line',

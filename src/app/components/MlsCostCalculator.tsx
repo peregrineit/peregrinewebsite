@@ -13,26 +13,27 @@ const money = (n: number) => `$${n.toLocaleString('en-US', { maximumFractionDigi
 const range = ([a, b]: Range, suffix = '') => (a === b ? `${money(a)}${suffix}` : `${money(a)} to ${money(b)}${suffix}`);
 const add = (x: Range, y?: Range): Range => (y ? [x[0] + y[0], x[1] + y[1]] : x);
 
-function Count({ label, value, onChange }: { label: string; value: number; onChange: (n: number) => void }) {
+// The field keeps what was typed (so it can be cleared and retyped); the fee uses at least 1.
+function Count({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
     <label className="cp-calc-count">
       <span>{label}</span>
-      <input type="number" min={1} max={500} value={value} onChange={(e) => onChange(Math.max(1, Math.min(500, Number(e.target.value) || 1)))} />
+      <input type="number" min={1} max={500} inputMode="numeric" value={value} onChange={(e) => onChange(e.target.value)} />
     </label>
   );
 }
+
+const toCount = (v: string | undefined) => Math.max(1, Math.min(500, Math.floor(Number(v)) || 1));
 
 export default function MlsCostCalculator() {
   const [plugin, setPlugin] = useState('');
   const [boards, setBoards] = useState<Record<string, string>>({});
   const [vendor, setVendor] = useState('');
-  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [counts, setCounts] = useState<Record<string, string>>({});
   const [hours, setHours] = useState('');
   const [band, setBand] = useState('us');
   const [touched, setTouched] = useState(false);
 
-  const countOf = (id: string) => counts[id] ?? 1;
-  const setCount = (id: string, n: number) => setCounts((c) => ({ ...c, [id]: n }));
   const touch = () => {
     if (!touched) {
       setTouched(true);
@@ -43,7 +44,7 @@ export default function MlsCostCalculator() {
   const lines = useMemo<Line[]>(() => {
     const out: Line[] = [];
     const push = (prefix: string, o?: FeeOption) => {
-      if (o) out.push({ label: `${prefix}${o.label}`, published: o.published, source: o.source, fee: o.fee(counts[o.id] ?? 1), note: o.note });
+      if (o) out.push({ label: `${prefix}${o.label}`, published: o.published, source: o.source, fee: o.fee(toCount(counts[o.id])), note: o.note });
     };
     push('IDX plugin: ', idxPlugins.find((p) => p.id === plugin));
     mlsLicenses.forEach(({ board, options }) => push(`${board}: `, options.find((o) => o.id === boards[board])));
@@ -68,7 +69,7 @@ export default function MlsCostCalculator() {
     </select>
   );
   const counter = (o?: FeeOption) => o?.per && (
-    <Count label={`Number of ${o.per === 'office' ? 'offices' : `${o.per}s`}`} value={countOf(o.id)} onChange={(n) => setCount(o.id, n)} />
+    <Count label={`Number of ${o.per === 'office' ? 'offices' : `${o.per}s`}`} value={counts[o.id] ?? '1'} onChange={(v) => { touch(); setCounts((c) => ({ ...c, [o.id]: v })); }} />
   );
 
   return (

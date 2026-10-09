@@ -364,7 +364,7 @@ const coreServiceList: Service[] = [
       },
       {
         title: 'Capital calls and e-signature',
-        body: 'Subscription documents and capital call notices sent for signature through DocuSign and tracked inside the portal, so investor relations can see which investors have signed without chasing email.',
+        body: 'Subscription documents and capital call notices sent for signature through DocuSign from inside the portal. In our case study, capital call processing went from 12 days to 3 days with the e-signature workflow.',
       },
       {
         title: 'Distribution and performance reporting',
