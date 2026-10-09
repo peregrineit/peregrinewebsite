@@ -27,7 +27,20 @@ var COLUMNS = ['receivedAt', 'ref', 'name', 'email', 'company', 'form', 'project
   'lastTouchAt', 'firstLandingPage', 'firstReferrer', 'firstUtm', 'firstTouchAt', 'gclid', 'msclkid', 'fbclid',
   'ctaLocation', 'pagesViewed', 'priority', 'priorityReasons'];
 
+/**
+ * Always answers JSON. The site treats an HTML answer (which is what Apps Script sends for
+ * an uncaught exception or a sign-in page) and a JSON `ok: false` as "not accepted", so the
+ * visitor is never told a lead was received when this script did not record it.
+ */
 function doPost(e) {
+  try {
+    return record(e);
+  } catch (err) {
+    return json({ ok: false, error: String(err && err.message ? err.message : err).slice(0, 200) });
+  }
+}
+
+function record(e) {
   var lead = JSON.parse(e.postData.contents);
   // Owner alert (LEAD_ALERT_WEBHOOK_URL set to this same web app URL): the site accepted a
   // lead through this sheet but its notification email failed. Mail the sheet's owner

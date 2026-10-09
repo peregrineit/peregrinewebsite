@@ -2,6 +2,8 @@
 // (src/lib/attribution.ts, src/lib/form-tracking.ts).
 // Run: node --experimental-strip-types scripts/test_lead_client.mjs
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import vm from 'node:vm';
 import {
   calendlyUrl, cleanAttribution, hasSource, isExternalReferrer, nextTouches, oneLine, parseTouch, toLeadAttribution,
 } from '../src/lib/attribution.ts';
@@ -92,5 +94,43 @@ eq(run((tr) => { tr.input('strategy-call', '/a'); tr.input('strategy-call', '/b'
 eq(run((tr) => { tr.input('', '/a'); tr.hidden(); }), [], 'a form without a name is ignored');
 let keys = []; createFormTracker((e) => { keys = Object.keys(e); }).input('quick-project', '/');
 eq(keys.sort(), ['event', 'form', 'page'], 'events carry form and page only');
+
+// --- the Google Sheet receiver (scripts/lead-sheet-webhook.gs), run here with stand-ins for
+//     the Apps Script services. This checks the script's own logic, not Google.
+function sheetScript({ rows = [], failOn = '' } = {}) {
+  const mails = [];
+  const sheet = {
+    getLastRow: () => rows.length,
+    appendRow: (r) => { if (failOn === 'appendRow') throw new Error('Service Spreadsheets failed'); rows.push(r); },
+    getRange: (row, col, count) => ({ getValues: () => rows.slice(row - 1, row - 1 + count).map((r) => [r[col - 1]]) }),
+  };
+  const context = vm.createContext({
+    SpreadsheetApp: { getActiveSpreadsheet: () => { if (failOn === 'open') throw new Error('no sheet'); return { getSheets: () => [sheet] }; } },
+    ContentService: { MimeType: { JSON: 'application/json' }, createTextOutput: (text) => ({ text, type: 'text/plain', setMimeType(t) { this.type = t; return this; } }) },
+    MailApp: { sendEmail: (...args) => mails.push(args) },
+    Session: { getEffectiveUser: () => ({ getEmail: () => 'owner@example.com' }) },
+  });
+  vm.runInContext(readFileSync(new URL('./lead-sheet-webhook.gs', import.meta.url), 'utf8'), context);
+  const post = (contents) => context.doPost(contents === undefined ? {} : { postData: { contents } });
+  return { post, rows, mails };
+}
+const lead1 = JSON.stringify({ ref: 'aaaa1111', name: '=HYPERLINK("x")', email: 'a@example.com', message: 'hello', receivedAt: '2026-10-10T00:00:00.000Z' });
+let gs = sheetScript();
+let out = gs.post(lead1);
+eq([out.type, JSON.parse(out.text)], ['application/json', { ok: true }], 'sheet: a lead is answered with JSON ok:true');
+eq([gs.rows.length, gs.rows[1][1], gs.rows[1][2]], [2, 'aaaa1111', `'=HYPERLINK("x")`], 'sheet: header row, then the lead; a formula-like cell is escaped');
+eq([JSON.parse(gs.post(lead1).text), gs.rows.length], [{ ok: true, duplicate: true }, 2], 'sheet: the same ref again (a retry) adds no row');
+for (const [failOn, event, label] of [['appendRow', { postData: { contents: lead1 } }, 'a failing spreadsheet call'], ['open', { postData: { contents: lead1 } }, 'a missing sheet'],
+  ['', { postData: { contents: '{not json' } }, 'an unreadable body'], ['', {}, 'no body at all']]) {
+  gs = sheetScript({ failOn });
+  out = gs.post(event.postData ? event.postData.contents : undefined);
+  const answer = JSON.parse(out.text);
+  eq([out.type, answer.ok, typeof answer.error], ['application/json', false, 'string'], `sheet: ${label} is answered with JSON ok:false, never an exception page`);
+}
+gs = sheetScript({ rows: [['receivedAt', 'ref'], ['t', 'aaaa1111']] });
+out = gs.post(JSON.stringify({ event: 'lead_notification_failed', ref: 'aaaa1111', reason: 'timeout', heldBy: 'webhook', priority: 'high', receivedAt: 't' }));
+eq([JSON.parse(out.text), gs.rows.length, gs.mails.length, gs.mails[0][0], gs.mails[0][1].includes('aaaa1111')], [{ ok: true, alerted: true }, 2, 1, 'owner@example.com', true],
+  'sheet: an alert mails the owner and adds no row');
+eq([JSON.parse(gs.post(JSON.stringify({ event: 'something_else' })).text), gs.rows.length], [{ ok: true, ignored: true }, 2], 'sheet: an unknown event is never a row');
 
 console.log(`lead client unit tests: ${passed} passed`);

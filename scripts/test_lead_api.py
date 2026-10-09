@@ -79,6 +79,10 @@ class Mock(http.server.BaseHTTPRequestHandler):
             if state["hook_sleep"] or step.get("sleep"): time.sleep(state["hook_sleep"] or step["sleep"])
             if state["hook_fail"] or step.get("status", 200) >= 300:
                 return self._send(step.get("status", 500), {"error": "mock failure"})
+            # A 2xx that is not a receipt: {"ctype": ..., "body": ...}, e.g. Apps Script's sign-in or error page.
+            if "ctype" in step:
+                if step.get("recorded"): state["hooks"].append({**body, "_key": self.headers.get("Idempotency-Key")})
+                return self._send_raw(step.get("code", 200), step["ctype"], step.get("body", "").encode())
             state["hooks"].append({**body, "_key": self.headers.get("Idempotency-Key"), "_sig": self.headers.get("X-Peregrine-Signature"), "_raw": raw})
             return self._send(200, {"ok": True})
         self._send(404, {})
@@ -96,6 +100,13 @@ class Mock(http.server.BaseHTTPRequestHandler):
         state["blobs"][pathname] = json.loads(raw)
         if state["blob_wrong_path"]: pathname = "somewhere/else.json"
         self._send(200, {"url": f"https://mockstore.private.blob.vercel-storage.com/{pathname}", "pathname": pathname, "contentType": "application/json"})
+    def _send_raw(self, code, ctype, data):
+        try:
+            self.send_response(code)
+            if ctype: self.send_header("Content-Type", ctype)
+            self.send_header("Content-Length", str(len(data))); self.end_headers(); self.wfile.write(data)
+        except (BrokenPipeError, ConnectionResetError):
+            pass
     def _send(self, code, obj):
         data = json.dumps(obj).encode()
         try:
@@ -272,6 +283,17 @@ def run():
         reset(hook_plan=[{"sleep": 4.4, "status": 500}])
         t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
         check("webhook retry: no second attempt when too little of the budget is left", s == 502 and dt < 5.5 and len(state["hook_attempts"]) == 1, f"got {s} in {dt:.1f}s, attempts {len(state['hook_attempts'])}")
+        # a 2xx is not always a receipt: an HTML page (Apps Script sign-in or error page) records nothing
+        for label, ctype in (("text/html", "text/html; charset=utf-8"), ("TEXT/HTML", "TEXT/HTML")):
+            reset(hook_plan=[{"ctype": ctype, "body": "<!DOCTYPE html><html><body>Sign in</body></html>"}]); before = len(app_log()); s, b = post(LEAD, ip())
+            check(f"webhook html: 200 {label} is not accepted -> 502", s == 502 and b.get("success") is False, f"got {s} {b}")
+            check(f"webhook html: {label} is named in the log and not retried", "webhook answered with an HTML page" in app_log()[before:] and len(state["hook_attempts"]) == 1, app_log()[before:][-200:])
+        reset(hook_plan=[{"ctype": "application/json", "body": '{"ok":false,"error":"Exception: no sheet"}'}]); before = len(app_log()); s, b = post(LEAD, ip())
+        check("webhook: 200 JSON saying ok:false (the Sheet script's error answer) is not accepted", s == 502 and "webhook answered ok:false" in app_log()[before:], f"got {s}")
+        for label, step in (("text/plain", {"ctype": "text/plain", "body": "ok"}), ("empty 204", {"ctype": "", "code": 204}), ("JSON without ok", {"ctype": "application/json", "body": '{"status":"success","id":"abc"}'}),
+                            ("JSON that is not an object", {"ctype": "application/json", "body": '"received"'}), ("broken JSON", {"ctype": "application/json", "body": "{nope"})):
+            reset(hook_plan=[{**step, "recorded": True}]); s, b = post(LEAD, ip())
+            check(f"webhook: 2xx {label} is still accepted (receivers answer differently)", s == 200 and b.get("webhook") == {"status": "accepted"}, f"got {s} {b}")
     finally: stop_app(app)
 
     # --- webhook with a shared secret: every request is signed

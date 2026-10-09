@@ -10,6 +10,15 @@ import { createHmac } from "node:crypto";
 // receiver that is merely slow may still have stored the lead. Both attempts send the same
 // bytes and the same Idempotency-Key, so a receiver that honours the key stores one lead.
 //
+// What counts as accepted: a 2xx answer, with two exceptions.
+//   - A 2xx whose Content-Type is text/html is NOT accepted. A Google Apps Script web app
+//     answers 200 with an HTML page when it shows a sign-in page or dies with an uncaught
+//     exception, and nothing was recorded. No machine receiver confirms a lead with a web page.
+//   - A 2xx JSON body that says `"ok": false` is NOT accepted. That is how
+//     scripts/lead-sheet-webhook.gs reports an error, since Apps Script cannot set a status.
+// Nothing else about the body is required: Zapier, Make and others answer in their own way
+// (JSON without `ok`, plain text, or nothing), and those all count.
+//
 // Signature: when LEAD_WEBHOOK_SECRET is set, each request carries
 //   X-Peregrine-Signature: sha256=<hex HMAC-SHA256 of the raw request body>
 // so a receiver that knows the secret can tell the request came from this site and was
@@ -37,10 +46,30 @@ type Attempt = { ok: true; status: number } | { ok: false; reason: string; retry
 async function attempt(url: string, body: string, headers: Record<string, string>, timeoutMs: number): Promise<Attempt> {
   try {
     const res = await fetch(url, { method: "POST", headers, body, signal: AbortSignal.timeout(timeoutMs) });
-    // The body is not needed; release the connection.
-    await res.body?.cancel().catch(() => {});
-    if (res.ok) return { ok: true, status: res.status };
-    return { ok: false, reason: `webhook responded ${res.status}`, retry: res.status >= 500 || res.status === 408 || res.status === 429 };
+    if (!res.ok) {
+      await res.body?.cancel().catch(() => {});
+      return { ok: false, reason: `webhook responded ${res.status}`, retry: res.status >= 500 || res.status === 408 || res.status === 429 };
+    }
+    const type = (res.headers.get("content-type") || "").toLowerCase();
+    if (type.startsWith("text/html")) {
+      await res.body?.cancel().catch(() => {});
+      return { ok: false, reason: "webhook answered with an HTML page", retry: false };
+    }
+    if (type.includes("json")) {
+      // Only an explicit refusal counts. Anything else, unreadable bodies included, is a receipt.
+      const text = await res.text().catch(() => "");
+      try {
+        const answer: unknown = JSON.parse(text.slice(0, 4096));
+        if (answer && typeof answer === "object" && (answer as { ok?: unknown }).ok === false) {
+          return { ok: false, reason: "webhook answered ok:false", retry: false };
+        }
+      } catch {
+        // Not JSON after all: still a 2xx from a receiver that did not refuse.
+      }
+    } else {
+      await res.body?.cancel().catch(() => {});
+    }
+    return { ok: true, status: res.status };
   } catch (err) {
     const name = (err as { name?: string })?.name;
     if (name === "TimeoutError" || name === "AbortError") return { ok: false, reason: "webhook timed out", retry: false };
