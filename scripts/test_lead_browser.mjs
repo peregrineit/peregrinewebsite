@@ -131,10 +131,9 @@ async function main() {
   check('calendly: the same link is in the server HTML', html.includes('utm_content=%2Fservices%2Fsaas-development&amp;utm_term=service%3Asaas-development'));
   const clickAll = () => js(`Array.from(document.querySelectorAll('a[href*="calendly.com"]')).map(function (a) {
     var before = a.getAttribute('href'); a.click(); return { before: before, after: a.getAttribute('href') }; })`);
-  let total = 0;
   for (const page of ['/services/saas-development', '/', '/contact', '/case-studies/proptech-investor-portal']) {
     await goto(APP + page);
-    const links = await clickAll(); total += links.length;
+    const links = await clickAll();
     const bad = links.filter((l) => { const p = q(l.after); return !(p.utm_source === 'peregrine-it.com' && p.utm_medium === 'website' && p.utm_content === page && p.utm_term); });
     check(`calendly: all ${links.length} links on ${page} carry source, medium, page and location after a click`, links.length > 0 && bad.length === 0, JSON.stringify(bad));
     check(`calendly: ${page} footer links are located as "footer"`, links.some((l) => q(l.after).utm_term === 'footer'), JSON.stringify(links.map((l) => q(l.after).utm_term)));
@@ -180,7 +179,7 @@ async function main() {
     && /^\d{4}-\d\d-\d\dT/.test(body.firstTouchAt) && /^\d{4}-\d\d-\d\dT/.test(body.lastTouchAt), JSON.stringify(body));
   check('submit: inline form reports where it sits', body.ctaLocation === 'inline:service:saas-development', body.ctaLocation);
   check('submit: pages viewed is the session count', body.pagesViewed === Number(await js(`sessionStorage.getItem('pit_pages_viewed')`)) && body.pagesViewed >= 6, String(body.pagesViewed));
-  check('submit: the webhook mock received the same attribution', hooks.length === 1 && hooks[0].gclid === 'G-123_x' && hooks[0].ctaLocation === body.ctaLocation
+  check('submit: the webhook mock received the same attribution and a priority', hooks.length === 1 && hooks[0].gclid === 'G-123_x' && ['high', 'normal', 'low'].includes(hooks[0].priority) && hooks[0].ctaLocation === body.ctaLocation
     && hooks[0].pagesViewed === body.pagesViewed, JSON.stringify(hooks[0]));
   check('submit: lead_submit fired', (await events('lead_submit')).length === 1);
   await js(`window.dispatchEvent(new Event('pagehide'))`);

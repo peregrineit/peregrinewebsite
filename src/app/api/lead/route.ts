@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { cleanAttribution, type LeadAttribution } from "@/lib/attribution";
+import { leadPriority, priorityLine, type PriorityResult } from "@/lib/lead-priority";
 
 // Lead intake for the two site forms (components/LeadForms.tsx).
 //
@@ -41,6 +42,9 @@ interface LeadData {
   /** The hidden field had a value: probably a bot, possibly browser autofill. */
   spamSuspected: boolean;
 }
+
+/** A lead plus what this API derived from it. Only for the owner; never sent to the visitor. */
+type QualifiedLead = LeadData & { priority: PriorityResult };
 
 /** Outcome of one outbound message. `id` is the provider's message id, never content. */
 type Outcome =
@@ -116,7 +120,7 @@ async function sendEmail(
   return { status: "failed", reason, detail };
 }
 
-function notificationEmail(lead: LeadData) {
+function notificationEmail(lead: QualifiedLead) {
   const line = (label: string, value?: string) => `${label}: ${value || "Not provided"}`;
   const at = lead.attribution;
   const clickIds = (["gclid", "msclkid", "fbclid"] as const).filter((k) => at[k]).map((k) => `${k}=${at[k]}`).join(" ");
@@ -130,6 +134,8 @@ function notificationEmail(lead: LeadData) {
         ]
       : []),
     line("Reference", lead.ref),
+    // Derived from the fields below by lib/lead-priority.ts. A sorting aid, not a verdict.
+    line("Priority", priorityLine(lead.priority)),
     line("Name", lead.name),
     line("Email", lead.email),
     line("Company", lead.company),
@@ -179,12 +185,19 @@ https://peregrine-it.com`,
 }
 
 /** The lead as the webhook receives it: flat, so a spreadsheet receiver can map keys to columns. */
-function webhookBody(lead: LeadData) {
-  const { attribution, ...rest } = lead;
-  return { receivedAt: new Date().toISOString(), source: "peregrine-it.com", ...rest, ...attribution };
+function webhookBody(lead: QualifiedLead) {
+  const { attribution, priority, ...rest } = lead;
+  return {
+    receivedAt: new Date().toISOString(),
+    source: "peregrine-it.com",
+    ...rest,
+    ...attribution,
+    priority: priority.priority,
+    priorityReasons: priority.reasons.join("; "),
+  };
 }
 
-async function postToWebhook(url: string, lead: LeadData): Promise<Outcome> {
+async function postToWebhook(url: string, lead: QualifiedLead): Promise<Outcome> {
   try {
     const res = await fetch(url, {
       method: "POST",
@@ -287,7 +300,7 @@ export async function POST(request: NextRequest) {
     const submissionId = clean(raw.submissionId, 64);
     ref = (UUID.test(submissionId) ? submissionId : crypto.randomUUID()).replace(/-/g, "").slice(0, 8);
 
-    const lead: LeadData = {
+    const fields: LeadData = {
       ref,
       name: clean(raw.name, 200),
       email: clean(raw.email, 320),
@@ -306,6 +319,8 @@ export async function POST(request: NextRequest) {
       // party) is withheld.
       spamSuspected: Boolean(clean(raw[HONEYPOT_FIELD])),
     };
+
+    const lead: QualifiedLead = { ...fields, priority: leadPriority(fields) };
 
     if (!lead.name) {
       return NextResponse.json({ error: "Name is required." }, { status: 400 });
@@ -344,6 +359,7 @@ export async function POST(request: NextRequest) {
       environment: process.env.VERCEL_ENV || "local",
       sender: process.env.LEAD_FROM_EMAIL ? "custom" : "resend-test-sender",
       spamSuspected: lead.spamSuspected,
+      priority: lead.priority.priority,
       notification,
       acknowledgement,
       webhook,

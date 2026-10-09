@@ -9,7 +9,7 @@ var COLUMNS = ['receivedAt', 'ref', 'name', 'email', 'company', 'form', 'project
   // Added in sprint 2. New columns go at the end so an existing sheet keeps its layout;
   // add these headings to row 1 of a sheet that already has rows.
   'lastTouchAt', 'firstLandingPage', 'firstReferrer', 'firstUtm', 'firstTouchAt', 'gclid', 'msclkid', 'fbclid',
-  'ctaLocation', 'pagesViewed'];
+  'ctaLocation', 'pagesViewed', 'priority', 'priorityReasons'];
 
 function doPost(e) {
   var lead = JSON.parse(e.postData.contents);

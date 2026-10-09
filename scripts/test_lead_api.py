@@ -195,6 +195,14 @@ def run():
             check("attribution: long and multi-line strings are cut to one line", len(g.get("firstLandingPage")) == 500 and "\n" not in g.get("firstReferrer") and g.get("firstUtm") == "", f"got {g.get('firstReferrer')!r}")
         reset(); s, b = post({**LEAD, "pagesViewed": "7"}, ip())
         check("attribution: pagesViewed sent as text is read as a number", s == 200 and state["hooks"][-1].get("pagesViewed") == 7)
+        # priority (src/lib/lead-priority.ts; rules unit-tested in scripts/test_lead_priority.mjs)
+        reset(); s, b = post(LEAD, ip()); h = state["hooks"]
+        check("priority: webhook carries priority and its reasons", s == 200 and h and h[0].get("priority") == "high" and "timeline ASAP +2" in h[0].get("priorityReasons", ""), f"got {h[:1]}")
+        check("priority: never returned to the visitor", "priority" not in json.dumps(b).lower(), f"got {b}")
+        reset(); s, b = post({**LEAD, "email": "someone@gmail.com", "company": "", "timeline": "exploring", "service": "", "form": "quick-project"}, ip())
+        check("priority: a thin enquiry is low, and still delivered", s == 200 and state["hooks"] and state["hooks"][0].get("priority") == "low", f"got {state['hooks'][:1]}")
+        reset(); s, b = post({**LEAD, "pit_confirm_field": "x"}, ip())
+        check("priority: a filled anti-spam field is always low", s == 200 and state["hooks"] and state["hooks"][0].get("priority") == "low")
         s, _ = post({**LEAD, "budget": "2-6-months", "timeline": ""}, ip())
         check("webhook: legacy `budget` maps to timeline", s == 200 and state["hooks"][-1].get("timeline") == "2-6-months")
         reset(hook_fail=True)
@@ -246,6 +254,10 @@ def run():
         check("attribution: a new field cannot start a line of its own in the email", "Form opened from: hero Name: Injected" in text and "\nName: Injected" not in text, text)
         check("attribution: the response to the visitor carries none of it", "gclid" not in json.dumps(b) and "bing.com" not in json.dumps(b))
         check("log: attribution is not logged", "Cj0KCQ-test_1.x" not in app_log() and "bing.com" not in app_log())
+
+        reset(); s, b = post(LEAD, ip()); n = to_notify(); text = n[0].get("text", "") if n else ""
+        check("priority: notification has one Priority line with reasons", re.search(r"^Priority: High \(.*timeline ASAP \+2.*business email domain \+1.*\)$", text, re.M) is not None and text.count("Priority:") == 1, text)
+        check("priority: not in the acknowledgement, not in the response", "riority" not in to_visitor()[0].get("text", "") and "priority" not in json.dumps(b).lower())
 
         # duplicates: the same submission sent twice
         reset(); sid = str(uuid.uuid4())
