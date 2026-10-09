@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function ManufacturingErpSystem() {
   return (
-    <div className="case-study-detail">
+    <main className="case-study-detail">
       <CaseStudySchema slug="manufacturing-erp-system" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -462,6 +462,6 @@ export default function ManufacturingErpSystem() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

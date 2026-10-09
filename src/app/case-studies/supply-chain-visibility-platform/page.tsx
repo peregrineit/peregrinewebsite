@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function SupplyChainVisibilityPlatform() {
   return (
-    <div className="case-study-detail csd-orange">
+    <main className="case-study-detail csd-orange">
       <CaseStudySchema slug="supply-chain-visibility-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -460,6 +460,6 @@ export default function SupplyChainVisibilityPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

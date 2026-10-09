@@ -6,8 +6,23 @@ import { getAttribution, track } from '@/lib/track';
 // Footer popups, inline on /contact and at the foot of service and landing pages.
 // Both post to /api/lead with attribution (landing page, referrer, UTM) and fire
 // lead_submit / lead_error events (see docs/seo/TASKS.md).
-type Status = { loading: boolean; success: boolean; error: string };
+/** `fallback` is a pre-filled mailto: link, set when the server could not deliver the lead. */
+type Status = { loading: boolean; success: boolean; error: string; fallback?: string };
 const idle: Status = { loading: false, success: false, error: '' };
+
+// If nothing on the server accepted the lead (502) or the request never arrived, the
+// visitor can still send the same details from their own mail client.
+function mailtoFallback(d: Record<string, string>) {
+  const body = [
+    `Name: ${d.name}`,
+    d.company ? `Company: ${d.company}` : '',
+    d.projectType ? `Project type: ${d.projectType}` : '',
+    d.timeline ? `Timeline: ${d.timeline}` : '',
+    '',
+    d.message,
+  ].filter((line, i) => line || i === 4).join('\n');
+  return `mailto:info@peregrine-it.com?subject=${encodeURIComponent('Project inquiry')}&body=${encodeURIComponent(body)}`;
+}
 /** Named form controls, read by name in the submit handlers. */
 type Fields = Record<string, HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>;
 
@@ -26,11 +41,16 @@ async function submitLead(formData: Record<string, string>, setStatus: (s: Statu
       setStatus({ loading: false, success: true, error: '' });
       track('lead_submit', event);
     } else {
-      setStatus({ loading: false, success: false, error: json.error || 'Something went wrong.' });
+      setStatus({
+        loading: false,
+        success: false,
+        error: json.error || 'Something went wrong.',
+        fallback: res.status >= 500 ? mailtoFallback(formData) : undefined,
+      });
       track('lead_error', event);
     }
   } catch {
-    setStatus({ loading: false, success: false, error: 'Network error. Please try again.' });
+    setStatus({ loading: false, success: false, error: 'Network error. Please try again.', fallback: mailtoFallback(formData) });
     track('lead_error', event);
   }
 }
@@ -96,7 +116,12 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
       <textarea name="scMessage" aria-label="What you need" placeholder="Tell us briefly what you need" rows={2}
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', resize: 'vertical' as const }} />
       {formStatus.error && (
-        <p style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>{formStatus.error}</p>
+        <p role="alert" style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>
+          {formStatus.error}
+          {formStatus.fallback && (
+            <> <a href={formStatus.fallback} style={{ color: '#22d3ee', textDecoration: 'underline', display: 'inline' }}>Send it by email instead</a></>
+          )}
+        </p>
       )}
       <button type="submit" className="newsletter-btn" disabled={formStatus.loading}
         style={{ width: '100%', padding: '0.75rem', borderRadius: '0.75rem', fontSize: '0.95rem', fontWeight: '600', marginTop: '0.25rem', opacity: formStatus.loading ? 0.6 : 1 }}>
@@ -151,7 +176,12 @@ export function QuickProjectForm() {
         <option value="exploring">Just exploring</option>
       </select>
       {qpFormStatus.error && (
-        <p style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>{qpFormStatus.error}</p>
+        <p role="alert" style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>
+          {qpFormStatus.error}
+          {qpFormStatus.fallback && (
+            <> <a href={qpFormStatus.fallback} style={{ color: '#22d3ee', textDecoration: 'underline', display: 'inline' }}>Send it by email instead</a></>
+          )}
+        </p>
       )}
       <button type="submit" className="newsletter-btn" disabled={qpFormStatus.loading}
         style={{ width: '100%', padding: '0.75rem', borderRadius: '0.75rem', fontSize: '0.95rem', fontWeight: '600', marginTop: '0.25rem', opacity: qpFormStatus.loading ? 0.6 : 1 }}>

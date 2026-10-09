@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function FitnessWellnessSubscriptionApp() {
   return (
-    <div className="case-study-detail csd-purple">
+    <main className="case-study-detail csd-purple">
       <CaseStudySchema slug="fitness-wellness-subscription-app" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -479,6 +479,6 @@ export default function FitnessWellnessSubscriptionApp() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

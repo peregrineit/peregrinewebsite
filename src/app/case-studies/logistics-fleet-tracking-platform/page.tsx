@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 
 export default function LogisticsFleetTrackingPlatform() {
   return (
-    <div className="case-study-detail csd-orange">
+    <main className="case-study-detail csd-orange">
       <CaseStudySchema slug="logistics-fleet-tracking-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -474,6 +474,6 @@ export default function LogisticsFleetTrackingPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

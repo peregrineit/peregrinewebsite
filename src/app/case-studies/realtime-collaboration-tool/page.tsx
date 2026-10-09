@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function RealtimeCollaborationTool() {
   return (
-    <div className="case-study-detail csd-purple">
+    <main className="case-study-detail csd-purple">
       <CaseStudySchema slug="realtime-collaboration-tool" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -463,6 +463,6 @@ export default function RealtimeCollaborationTool() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

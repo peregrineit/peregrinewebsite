@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function RestaurantPOSOrderingSystem() {
   return (
-    <div className="case-study-detail csd-green-accent">
+    <main className="case-study-detail csd-green-accent">
       <CaseStudySchema slug="restaurant-pos-ordering-system" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -476,6 +476,6 @@ export default function RestaurantPOSOrderingSystem() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

@@ -112,6 +112,24 @@ async function postToWebhook(url: string, lead: LeadData) {
   if (!res.ok) throw new Error(`webhook responded ${res.status}`);
 }
 
+// Configuration status, booleans only: lets the owner (or a deploy check) confirm that a
+// lead has somewhere to go without exposing any value. `sender` is "verified-domain"
+// when LEAD_FROM_EMAIL is set and "resend-test-sender" otherwise; with the test sender
+// Resend delivers only to the Resend account owner's own address.
+export async function GET() {
+  const resend = Boolean(process.env.RESEND_API_KEY);
+  const webhook = Boolean(process.env.LEAD_WEBHOOK_URL);
+  return NextResponse.json(
+    {
+      ok: resend || webhook,
+      resend,
+      sender: process.env.LEAD_FROM_EMAIL ? "verified-domain" : "resend-test-sender",
+      webhook,
+    },
+    { headers: { "Cache-Control": "no-store" } }
+  );
+}
+
 export async function POST(request: NextRequest) {
   try {
     const raw = await request.json().catch(() => null);

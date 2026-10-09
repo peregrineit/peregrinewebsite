@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function InsuranceClaimsAutomationPlatform() {
   return (
-    <div className="case-study-detail">
+    <main className="case-study-detail">
       <CaseStudySchema slug="insurance-claims-automation-platform" />
       {/* ═══ HERO — Default (no accent) ═══ */}
       <section className="csd-hero">
@@ -478,6 +478,6 @@ export default function InsuranceClaimsAutomationPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

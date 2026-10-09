@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function RecruitmentAtsPlatform() {
   return (
-    <div className="case-study-detail csd-teal">
+    <main className="case-study-detail csd-teal">
       <CaseStudySchema slug="recruitment-ats-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -460,6 +460,6 @@ export default function RecruitmentAtsPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

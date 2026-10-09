@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function SelfStorageManagementPlatform() {
   return (
-    <div className="case-study-detail csd-purple">
+    <main className="case-study-detail csd-purple">
       <CaseStudySchema slug="self-storage-management-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -461,6 +461,6 @@ export default function SelfStorageManagementPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function FoodDeliveryAggregatorPlatform() {
   return (
-    <div className="case-study-detail csd-orange">
+    <main className="case-study-detail csd-orange">
       <CaseStudySchema slug="food-delivery-aggregator-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -474,6 +474,6 @@ export default function FoodDeliveryAggregatorPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

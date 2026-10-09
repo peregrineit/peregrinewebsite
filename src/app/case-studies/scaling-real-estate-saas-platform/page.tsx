@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 export default function ScalingRealEstateSaas() {
   return (
-    <div className="case-study-detail">
+    <main className="case-study-detail">
       <CaseStudySchema slug="scaling-real-estate-saas-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -467,6 +467,6 @@ export default function ScalingRealEstateSaas() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

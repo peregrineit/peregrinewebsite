@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function MultiVendorEcommerceMarketplace() {
   return (
-    <div className="case-study-detail csd-green-accent">
+    <main className="case-study-detail csd-green-accent">
       <CaseStudySchema slug="multi-vendor-ecommerce-marketplace" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -472,6 +472,6 @@ export default function MultiVendorEcommerceMarketplace() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

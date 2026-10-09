@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 // after; reword the two sentences to say so only once confirmed.
 export default function W3reAIRealEstatePlatform() {
   return (
-    <div className="case-study-detail csd-purple">
+    <main className="case-study-detail csd-purple">
       <CaseStudySchema slug="w3re-ai-real-estate-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -433,6 +433,6 @@ export default function W3reAIRealEstatePlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

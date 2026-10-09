@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function LegalDocumentAutomationPlatform() {
   return (
-    <div className="case-study-detail csd-gold">
+    <main className="case-study-detail csd-gold">
       <CaseStudySchema slug="legal-document-automation-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -462,6 +462,6 @@ export default function LegalDocumentAutomationPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

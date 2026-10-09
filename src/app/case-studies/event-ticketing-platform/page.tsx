@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function EventTicketingPlatform() {
   return (
-    <div className="case-study-detail csd-green-accent">
+    <main className="case-study-detail csd-green-accent">
       <CaseStudySchema slug="event-ticketing-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -460,6 +460,6 @@ export default function EventTicketingPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

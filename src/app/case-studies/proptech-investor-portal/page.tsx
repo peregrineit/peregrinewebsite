@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function PropTechInvestorPortal() {
   return (
-    <div className="case-study-detail csd-gold">
+    <main className="case-study-detail csd-gold">
       <CaseStudySchema slug="proptech-investor-portal" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -480,6 +480,6 @@ export default function PropTechInvestorPortal() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

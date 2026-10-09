@@ -41,6 +41,9 @@ class Mock(http.server.BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(len(data))); self.end_headers(); self.wfile.write(data)
     def log_message(self, *a): pass
 
+def status():
+    with urllib.request.urlopen(APP + "/api/lead", timeout=30) as r: return json.loads(r.read())
+
 def post(payload, ip):
     req = urllib.request.Request(APP + "/api/lead", data=json.dumps(payload).encode(),
                                  headers={"Content-Type": "application/json", "X-Forwarded-For": ip})
@@ -88,6 +91,7 @@ def run():
     # --- none: nothing configured -> honest error, never a false "sent"
     app = start_app({})
     try:
+        check("none: status endpoint reports nothing configured", status() == {"ok": False, "resend": False, "sender": "resend-test-sender", "webhook": False}, f"got {status()}")
         s, b = post(LEAD, ip()); check("none: 502 when no destination", s == 502 and "info@peregrine-it.com" in b.get("error", ""), f"got {s} {b}")
         s, b = post({**LEAD, "pit_confirm_field": "http://spam"}, ip()); check("honeypot: 200 and dropped", s == 200 and b.get("success") is True, f"got {s}")
         s, b = post({**LEAD, "email": "nope"}, ip()); check("validation: bad email 400", s == 400)
@@ -137,6 +141,7 @@ def run():
     # --- both
     reset(); app = start_app({**RESEND_ENV, **HOOK_ENV})
     try:
+        st = status(); check("both: status endpoint reports both, no secret values", st == {"ok": True, "resend": True, "sender": "verified-domain", "webhook": True}, f"got {st}")
         s, _ = post(LEAD, ip()); check("both: 200, 2 emails, 1 webhook", s == 200 and len(state["emails"]) == 2 and len(state["hooks"]) == 1)
         reset(); state["resend_fail"] = True
         s, _ = post(LEAD, ip()); check("both: Resend down, webhook still receives -> 200", s == 200 and len(state["hooks"]) == 1, f"got {s}")

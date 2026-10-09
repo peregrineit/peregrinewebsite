@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function MultiLocationClinicManagement() {
   return (
-    <div className="case-study-detail csd-teal">
+    <main className="case-study-detail csd-teal">
       <CaseStudySchema slug="multi-location-clinic-management" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -463,6 +463,6 @@ export default function MultiLocationClinicManagement() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

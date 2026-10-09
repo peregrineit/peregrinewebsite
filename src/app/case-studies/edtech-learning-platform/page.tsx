@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function EdTechLearningPlatform() {
   return (
-    <div className="case-study-detail csd-teal">
+    <main className="case-study-detail csd-teal">
       <CaseStudySchema slug="edtech-learning-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -472,6 +472,6 @@ export default function EdTechLearningPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

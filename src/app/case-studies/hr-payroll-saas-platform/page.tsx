@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function HRPayrollSaaSPlatform() {
   return (
-    <div className="case-study-detail csd-purple">
+    <main className="case-study-detail csd-purple">
       <CaseStudySchema slug="hr-payroll-saas-platform" />
       {/* ═══ HERO ═══ */}
       <section className="csd-hero">
@@ -474,6 +474,6 @@ export default function HRPayrollSaaSPlatform() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

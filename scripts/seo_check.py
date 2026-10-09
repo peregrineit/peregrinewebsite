@@ -58,6 +58,17 @@ def fetch(p):
 pages = dict(ThreadPoolExecutor(6).map(fetch, paths))
 
 titles, descs, links = {}, {}, {}
+schema_ids, schema_refs = set(), []
+
+def walk_ids(node, page_path, top=True):
+    """Collect declared @ids (nodes with a @type) and bare {'@id': ...} references."""
+    if isinstance(node, dict):
+        if "@id" in node:
+            if "@type" in node: schema_ids.add(node["@id"])
+            elif len(node) == 1: schema_refs.append((page_path, node["@id"]))
+        for v in node.values(): walk_ids(v, page_path, False)
+    elif isinstance(node, list):
+        for v in node: walk_ids(v, page_path, False)
 for p, (status, page) in pages.items():
     if status != 200: fail(p, f"status {status}"); continue
     body = strip_code(page)
@@ -81,6 +92,7 @@ for p, (status, page) in pages.items():
     if re.search(r"<img\b(?![^>]*\balt=)[^>]*>", body): fail(p, "img without alt")
     try: nodes = json_ld(page)
     except json.JSONDecodeError as e: fail(p, f"JSON-LD parse error {e}"); nodes = []
+    walk_ids(nodes, p)
     orgs = [n for n in nodes if n.get("@type") == "Organization"]
     if len(orgs) != 1: fail(p, f"{len(orgs)} Organization nodes")
     for where, txt in (("title", title), ("h1", text_of(h1s[0]) if h1s else ""), ("json-ld", json.dumps(nodes))):
@@ -103,6 +115,8 @@ for p, (status, page) in pages.items():
         for ans in answers:
             n = len(ans.split())
             if not 40 <= n <= 60 or "Peregrine" not in ans: fail(p, f"direct answer {n} words / names Peregrine={'Peregrine' in ans}: {ans[:40]}")
+    # Every page needs a way to enquire: a lead form, a popup trigger or a link to /contact.
+    if not re.search(r'<form\b|data-open-contact|href="/contact"', body): fail(p, "no contact path (form, popup trigger or /contact link)")
     links[p] = {h.split("#")[0].split("?")[0].rstrip("/") or "/" for h in re.findall(r'<a\b[^>]*href="(/[^"]*)"', body)}
 
 for t, ps in titles.items():
@@ -120,7 +134,25 @@ inbound = {p: sum(1 for src, ls in links.items() if p in ls and src != p) for p 
 for p, n in inbound.items():
     if n < 2 and p != "/": fail(p, f"only {n} inbound internal link(s)")
 
-print(f"{BASE}: {len(paths)} sitemap URLs checked")
+# Structured data: every bare {"@id": ...} reference must point at a node declared somewhere on the site.
+for page_path, ref in schema_refs:
+    if ref not in schema_ids: fail(page_path, f"schema @id reference does not resolve: {ref}")
+
+# robots.txt: crawling allowed for everyone, sitemap declared.
+_, robots = get("/robots.txt")
+if not re.search(r"(?im)^sitemap:\s*https://peregrine-it\.com/sitemap\.xml\s*$", robots): fail("/robots.txt", "sitemap line missing")
+for group in re.split(r"(?im)^(?=user-agent:)", robots):
+    if re.search(r"(?im)^disallow:\s*/\s*$", group): fail("/robots.txt", "a group disallows the whole site: " + group.splitlines()[0])
+
+# llms.txt: every site URL it lists exists and is in the sitemap.
+_, llms = get("/llms.txt")
+for u in sorted(set(re.findall(r"\((https://peregrine-it\.com[^)#\s]*)", llms))):
+    path = u.replace(PROD, "").rstrip("/") or "/"
+    if path not in known: fail("/llms.txt", f"lists {path}, which is not in the sitemap")
+missing_from_llms = [p for p in paths if p != "/" and (PROD + p) not in llms and not p.startswith("/case-studies/") and p not in ("/privacy-policy", "/terms-of-use", "/blog")]
+for p in missing_from_llms: fail("/llms.txt", f"does not list {p}")
+
+print(f"{BASE}: {len(paths)} sitemap URLs checked; {len(schema_ids)} schema nodes, {len(schema_refs)} references")
 if fails:
     print(f"FAILS: {len(fails)}"); [print("  " + f) for f in fails]; sys.exit(1)
 print("FAILS: 0")
