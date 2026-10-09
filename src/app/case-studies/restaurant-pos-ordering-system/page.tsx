@@ -413,16 +413,7 @@ export default function RestaurantPOSOrderingSystem() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;When the internet goes down in a food court, we used to shut the register. Now we
-            keep selling — orders sync when we&apos;re back online. The kitchen display alone
-            cut our modifier errors by half. Managers finally have one report instead of three
-            spreadsheets.&rdquo;
-          </div>
-          <div className="csd-quote-author">— VP of Operations, QSR Chain</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

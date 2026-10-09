@@ -417,16 +417,7 @@ export default function PropTechInvestorPortal() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;Our IR team was spending three weeks every quarter just assembling and sending
-            reports. Now the portal generates everything automatically, each investor sees exactly their
-            data, and we have a complete audit trail. It transformed our investor relations from a
-            bottleneck into a competitive advantage.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Managing Partner, Real Estate Development Firm</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY LEARNINGS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

@@ -414,15 +414,7 @@ export default function FitnessWellnessSubscriptionApp() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We went from a basic video app to a full fitness platform. Our subscribers can
-            now workout in the gym without Wi‑Fi, join live classes without lag, and see their
-            progress across devices. The 4.8 rating and 2M+ workouts logged speak for themselves.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Head of Product, Fitness Brand</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

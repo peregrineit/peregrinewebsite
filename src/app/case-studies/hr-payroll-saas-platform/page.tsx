@@ -412,16 +412,7 @@ export default function HRPayrollSaaSPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;Multi-state payroll used to keep us up at night. One wrong rate and we&apos;d
-            have to issue corrections for hundreds of employees. Now the system handles it
-            automatically — we hit 99.9% accuracy from day one. The self-service portal alone cut
-            our HR support load in half.&rdquo;
-          </div>
-          <div className="csd-quote-author">— VP of Operations, PEO</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

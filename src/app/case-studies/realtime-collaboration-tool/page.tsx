@@ -402,14 +402,7 @@ export default function RealtimeCollaborationTool() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;The real-time sync feels like magic — we went from 2–3 second lag to sub-100ms.
-            Offline support was the killer feature for our remote teams. No more lost edits.&rdquo;
-          </div>
-          <div className="csd-quote-author">— CTO, Productivity Startup</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

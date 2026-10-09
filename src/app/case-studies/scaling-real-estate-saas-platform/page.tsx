@@ -408,15 +408,7 @@ export default function ScalingRealEstateSaas() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;Our agents used to complain about slow search and broken listings. After the
-            rebuild, the platform became our biggest competitive advantage — agents actually want to
-            sign up now.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Brokerage Operations Director</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY LEARNINGS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

@@ -400,13 +400,7 @@ export default function W3reAIRealEstatePlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We went from juggling seven disconnected tools to having one platform that actually thinks. The AI search alone changed how our buyers find homes — they describe what they want in plain English, and the system just gets it. Our agents now spend their time closing deals instead of fighting spreadsheets.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Marcus Chen, Managing Broker & Co-Founder, W3|re</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         <CaseStudyByline />
         <RelatedCaseStudies slug="w3re-ai-real-estate-platform" />
 

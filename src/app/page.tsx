@@ -10,6 +10,7 @@ import HomeAnimations from './components/HomeAnimations';
 import HomeEffects from './components/HomeEffects';
 import { caseStudies, featuredCaseStudySlugs, getCaseStudy } from '@/data/case-studies';
 import { homeGuides } from '@/data/guides';
+import { industries } from '@/data/industries';
 
 // Rendered as the visible FAQ section and as FAQPage JSON-LD, so the two always match.
 // Every answer uses facts already on the site. [[guide-slug|text]] renders as a link to
@@ -413,7 +414,7 @@ export default function Home() {
                   <div className="grid__item-img-overlay"></div>
                 </Link>
                 <p className="card-title">Cloud Performance & DevOps</p>
-                <p id="w-node-ce33ac8b-9db8-17bf-d54a-a0731321ef44-098fe091" className="card-caption">Cloud migration, infrastructure optimization, and DevOps pipelines that cut hosting costs and eliminate downtime.</p>
+                <p id="w-node-ce33ac8b-9db8-17bf-d54a-a0731321ef44-098fe091" className="card-caption">Cloud migration, infrastructure optimization, and DevOps pipelines that cut hosting costs and reduce downtime.</p>
                 <div id="w-node-f525032f-b50b-8c52-803a-6c791f1fa233-098fe091" className="w-layout-vflex check-list-wrapper">
                   <div className="w-layout-hflex check-list-item anim01"><svg viewBox="0 0 24 24" fill="none"
                     xmlns="http://www.w3.org/2000/svg" className="svg-checkicon">
@@ -622,106 +623,78 @@ export default function Home() {
         <section id="sec-testimonials" className="section !pt-5 !pb-8">
           <div className="container-special">
             <div className="title-wrap">
-              <p className="section-borrow">Results</p>
-              <h3 className="heading-primary h3-centre">What Our Clients Say</h3>
+              <p className="section-borrow">Clients</p>
+              <h3 className="heading-primary h3-centre">Companies We Have Worked With</h3>
             </div>
 
-            {/* Testimonials Grid — 6 cards, 3 columns */}
+            {/* Client logos only. The quotes that were here are out until each client confirms
+                its wording in writing (docs/seo/BLOCKERS.md, B23); they are in git history. */}
             <div className="testimonials-grid">
-              {/* Row 1 */}
-              <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="testimonial-category">Performance Optimization</span>
-                <a href="https://www.easyagentpro.com" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="625" height="128" src="/logos/easyagentpro.webp" alt="Easy Agent PRO" className="testimonial-logo logo-dark-bg" /></a>
-                <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;We brought them in to fix performance bottlenecks across our all-in-one CRM. They optimized page loads, fixed the lead ingestion pipeline so leads flow directly into marketing sequences, and tightened up the overall system architecture. Agents on our platform started capturing more leads simply because the forms and pages stopped lagging. The full optimization was completed in a single sprint cycle.&rdquo;</p>
-                <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Josh Keeton</p>
-                <p style={{ color: '#64748b', fontSize: '0.8rem' }}>CEO, Easy Agent PRO</p>
-              </div>
-              <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="testimonial-category">Lead Automation System</span>
-                <a href="https://www.brokerlinx.com" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="136" height="96" src="/logos/brokerlinx.webp" alt="BrokerLinx" className="testimonial-logo" /></a>
-                <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;We were drowning in inbound leads with no structured way to route or follow up on them. The team built a custom automation layer on top of our CRM — auto-assigning leads, triggering follow-up sequences, and giving agents mobile access to their pipeline. Response time dropped from hours to minutes. They delivered two weeks ahead of schedule and came in under budget.&rdquo;</p>
-                <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>William Betancourt</p>
-                <p style={{ color: '#64748b', fontSize: '0.8rem' }}>Founder, BrokerLinx</p>
-              </div>
-              <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="testimonial-category">SaaS Platform Rebuild</span>
-                <a href="https://www.kypiq.com" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="256" height="94" src="/logos/kypiq.png" alt="Kypiq" className="testimonial-logo" /></a>
-                <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;Our legacy self-storage platform required manual intervention for most access and billing tasks. Peregrine rebuilt it as a fully automated 24/7-access system — eliminating the manual workflow entirely and cutting operational costs by roughly 40%. Page load times dropped to under a second, and we shipped the full rebuild in about 10 weeks.&rdquo;</p>
-                <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Iván Palacios</p>
-                <p style={{ color: '#64748b', fontSize: '0.8rem' }}>CEO, Kypiq</p>
-              </div>
-
-              {/* Row 2 */}
-              <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="testimonial-category">High-Traffic Streaming Platform</span>
-                <a href="https://www.torrins.com" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="152" height="29" src="/logos/torrins-logo.svg" alt="Torrins" className="testimonial-logo logo-dark-bg" /></a>
-                <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;We needed our video streaming infrastructure to handle thousands of concurrent users without buffering or session drops. They re-architected the streaming pipeline and course portal — lesson load times went from several seconds to near-instant. We also added automated enrollment workflows and personalized learning paths, which removed most of the admin overhead our team was spending 15+ hours a week on.&rdquo;</p>
-                <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Manpreet Singh</p>
-                <p style={{ color: '#64748b', fontSize: '0.8rem' }}>Co-Founder, Torrins</p>
-              </div>
-              <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="testimonial-category">Portal + CRM Integration</span>
-                <a href="https://www.bahiainternationalrealty.com" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="140" height="118" src="/logos/bahia-realty.png" alt="Bahia International Realty" className="testimonial-logo" /></a>
-                <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;We needed a property portal that could serve both international and local buyers, connected to our CRM and marketing stack. They built a fast-loading listing site with automated client-to-listing matching, which cut the manual search-and-send process our agents were doing daily. Operational costs dropped, and our agents reclaimed several hours per week. The system has been stable since launch with no unplanned downtime.&rdquo;</p>
-                <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Raul Aleman</p>
-                <p style={{ color: '#64748b', fontSize: '0.8rem' }}>Broker/Owner, Bahia International Realty</p>
-              </div>
-              <div className="testimonial-card" style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="testimonial-category">High-Load Infrastructure</span>
-                <a href="https://www.searchrealty.ca" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="650" height="180" src="/logos/search-realty.png" alt="Search Realty" className="testimonial-logo" /></a>
-                <p style={{ color: '#1e293b', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1rem', flex: '1' }}>&ldquo;Our Leads on Demand product needed a backend that could handle large traffic spikes without dropping requests or slowing down. They built a scalable infrastructure layer integrated with our CRM — lead capture and nurture now happen in real time with zero delay. Conversion rates improved measurably because prospects aren’t waiting on slow pages. The platform has been handling peak loads cleanly since launch.&rdquo;</p>
-                <p style={{ color: '#0e7490', fontSize: '0.85rem', fontWeight: '600' }}>Sterling Wong</p>
-                <p style={{ color: '#64748b', fontSize: '0.8rem' }}>Founder & CEO, Search Realty</p>
-              </div>
+              <a href="https://www.easyagentpro.com" target="_blank" rel="noopener noreferrer" className="testimonial-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', textDecoration: 'none' }}>
+                <img loading="lazy" width="625" height="128" src="/logos/easyagentpro.webp" alt="Easy Agent PRO" className="testimonial-logo logo-dark-bg" />
+                <span style={{ color: '#0e7490', fontSize: '0.9rem', fontWeight: '600' }}>Easy Agent PRO</span>
+              </a>
+              <a href="https://www.brokerlinx.com" target="_blank" rel="noopener noreferrer" className="testimonial-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', textDecoration: 'none' }}>
+                <img loading="lazy" width="136" height="96" src="/logos/brokerlinx.webp" alt="BrokerLinx" className="testimonial-logo" />
+                <span style={{ color: '#0e7490', fontSize: '0.9rem', fontWeight: '600' }}>BrokerLinx</span>
+              </a>
+              <a href="https://www.kypiq.com" target="_blank" rel="noopener noreferrer" className="testimonial-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', textDecoration: 'none' }}>
+                <img loading="lazy" width="256" height="94" src="/logos/kypiq.png" alt="Kypiq" className="testimonial-logo" />
+                <span style={{ color: '#0e7490', fontSize: '0.9rem', fontWeight: '600' }}>Kypiq</span>
+              </a>
+              <a href="https://www.torrins.com" target="_blank" rel="noopener noreferrer" className="testimonial-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', textDecoration: 'none' }}>
+                <img loading="lazy" width="152" height="29" src="/logos/torrins-logo.svg" alt="Torrins" className="testimonial-logo logo-dark-bg" />
+                <span style={{ color: '#0e7490', fontSize: '0.9rem', fontWeight: '600' }}>Torrins</span>
+              </a>
+              <a href="https://www.bahiainternationalrealty.com" target="_blank" rel="noopener noreferrer" className="testimonial-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', textDecoration: 'none' }}>
+                <img loading="lazy" width="140" height="118" src="/logos/bahia-realty.png" alt="Bahia International Realty" className="testimonial-logo" />
+                <span style={{ color: '#0e7490', fontSize: '0.9rem', fontWeight: '600' }}>Bahia International Realty</span>
+              </a>
+              <a href="https://www.searchrealty.ca" target="_blank" rel="noopener noreferrer" className="testimonial-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', textDecoration: 'none' }}>
+                <img loading="lazy" width="650" height="180" src="/logos/search-realty.png" alt="Search Realty" className="testimonial-logo" />
+                <span style={{ color: '#0e7490', fontSize: '0.9rem', fontWeight: '600' }}>Search Realty</span>
+              </a>
+              <a href="https://www.mmnovatech.com" target="_blank" rel="noopener noreferrer" className="testimonial-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', textDecoration: 'none' }}>
+                <img loading="lazy" width="568" height="150" src="/logos/mmnovatech.png" alt="MM Nova Tech" className="testimonial-logo" />
+                <span style={{ color: '#0e7490', fontSize: '0.9rem', fontWeight: '600' }}>MM Nova Tech</span>
+              </a>
             </div>
 
-            {/* Featured Testimonial — Deepak Kumar (full width) */}
-            <div className="testimonial-card-featured" style={{ background: 'linear-gradient(135deg, rgba(6,182,212,0.06) 0%, rgba(59,130,246,0.06) 100%)', border: '1px solid rgba(6,182,212,0.15)', borderRadius: '16px', padding: '2.5rem', marginBottom: '2.5rem', textAlign: 'center', maxWidth: '800px', margin: '0 auto 2.5rem auto' }}>
-              <span className="testimonial-category">CRM Feature Expansion</span>
-              <a href="https://www.mmnovatech.com" target="_blank" rel="noopener noreferrer"><img loading="lazy" width="568" height="150" src="/logos/mmnovatech.png" alt="MM Nova Tech" className="testimonial-logo-featured" /></a>
-              <p style={{ color: '#1e293b', fontSize: '1.1rem', lineHeight: '1.7', marginBottom: '1.25rem', fontStyle: 'italic' }}>&ldquo;We’re a SaaS company ourselves, so we had high standards for the team working on our platform. They integrated AI-driven lead scoring, email automation, and analytics dashboards directly into our CRM. System response times improved noticeably, and we can now support 3x the concurrent users on the same infrastructure. Development wrapped faster than our internal estimates, and their support team resolves issues same-day.&rdquo;</p>
-              <p style={{ color: '#0e7490', fontSize: '0.95rem', fontWeight: '600' }}>Deepak Kumar</p>
-              <p style={{ color: '#64748b', fontSize: '0.85rem' }}>CEO, MM Nova Tech</p>
-            </div>
-
-            {/* Stats Row */}
+            {/* Stats row: owner-confirmed (founded, team size) or counted from the data files. */}
             <div className="feature-number-wrap" style={{ marginTop: '2rem' }}>
               <div data-w-id="79529fbb-72fb-fe78-0c63-ba7c689cb953" style={{}} className="circle-div">
                 <div className="stat-wrap">
-                  <h4 className="counterup">50</h4>
-                  <h4 className="label-nextcounter">+</h4>
+                  <h4 className="counterup">2018</h4>
                 </div>
-                <div className="title-capped">SYSTEMS SHIPPED</div>
+                <div className="title-capped">FOUNDED</div>
               </div>
               <div className="arrow-wrap"><img loading="lazy" width="150" height="46" alt=""
                 src="/images/arrow-right.svg"
                 className="arrow-image shimmer-mask right-to-left" /></div>
               <div data-w-id="79529fbb-72fb-fe78-0c63-ba7c689cb95c" style={{}} className="circle-div">
                 <div className="stat-wrap">
-                  <h4 className="counterup">3</h4>
+                  <h4 className="counterup">25</h4>
                   <h4 className="label-nextcounter">+</h4>
                 </div>
-                <div className="title-capped">AVG. YEARS PER CLIENT</div>
+                <div className="title-capped">TEAM MEMBERS</div>
               </div>
               <div className="arrow-wrap"><img loading="lazy" width="150" height="46" alt=""
                 src="/images/arrow-right.svg"
                 className="arrow-image shimmer-mask right-to-left" /></div>
               <div data-w-id="79529fbb-72fb-fe78-0c63-ba7c689cb965" style={{}} className="circle-div">
                 <div className="stat-wrap">
-                  <h4 className="counterup">97</h4>
-                  <h4 className="label-nextcounter">%</h4>
+                  <h4 className="counterup">{caseStudies.length}</h4>
                 </div>
-                <div className="title-capped">ON-TIME DELIVERY RATE</div>
+                <div className="title-capped">PUBLISHED CASE STUDIES</div>
               </div>
               <div className="arrow-wrap"><img loading="lazy" width="150" height="46" alt=""
                 src="/images/arrow-right.svg"
                 className="arrow-image shimmer-mask right-to-left" /></div>
               <div data-w-id="bc979d55-ba31-04d1-c194-ff8614ee6322" style={{}} className="circle-div">
                 <div className="stat-wrap">
-                  <h4 className="counterup">4.7</h4>
-                  <h4 className="label-nextcounter">/5</h4>
+                  <h4 className="counterup">{industries.length}</h4>
                 </div>
-                <div className="title-capped">CLIENT SATISFACTION</div>
+                <div className="title-capped">INDUSTRIES WITH PUBLISHED WORK</div>
               </div>
             </div>
 

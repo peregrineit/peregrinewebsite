@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   },
 };
 
-// Clients whose testimonials appear on the homepage, with their own websites.
+// Clients named on the homepage, with their own websites.
 const NAMED_CLIENTS: [string, string][] = [
   ['Easy Agent PRO', 'https://www.easyagentpro.com'],
   ['BrokerLinx', 'https://www.brokerlinx.com'],

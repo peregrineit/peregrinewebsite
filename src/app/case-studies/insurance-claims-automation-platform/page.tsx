@@ -413,16 +413,7 @@ export default function InsuranceClaimsAutomationPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We used to have a backlog of thousands of claims and auditors breathing down our
-            necks. Now we process 45K claims a year with 60% less time per claim. The document
-            extraction alone saved us from hiring five more adjusters. And we finally have an
-            audit trail that stands up to scrutiny.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Director of Claims, Health Insurer</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

@@ -412,16 +412,7 @@ export default function FoodDeliveryAggregatorPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We went from WhatsApp and spreadsheets to a platform that routes orders and
-            dispatches drivers in seconds. Our average delivery time dropped to under three minutes
-            in the pilot zone. Restaurant partners love the kitchen display — they know exactly when
-            to start cooking.&rdquo;
-          </div>
-          <div className="csd-quote-author">— COO, Food Delivery Operator</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

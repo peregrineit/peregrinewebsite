@@ -403,15 +403,7 @@ export default function LegalDocumentAutomationPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We went from hunting for clauses in old Word files to having a single source of
-            truth. The multi-party e-signature alone eliminated two weeks per complex deal. Our
-            clients trust the audit trail.&rdquo;
-          </div>
-          <div className="csd-quote-author">— General Counsel, Legal Services Firm</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

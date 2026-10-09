@@ -402,15 +402,7 @@ export default function ManufacturingErpSystem() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We finally have one system that all plants trust. Inventory reconciliation used to
-            take two weeks — now it&apos;s real-time. The BOM versioning alone prevents costly
-            production errors.&rdquo;
-          </div>
-          <div className="csd-quote-author">— VP of Operations, Manufacturing</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

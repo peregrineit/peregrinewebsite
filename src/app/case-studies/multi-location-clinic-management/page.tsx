@@ -401,16 +401,7 @@ export default function MultiLocationClinicManagement() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;The insurance billing automation alone justified the entire project. We went from an
-            18% denial rate to under 5%, and our revenue cycle improved by over $1.6 million annually.
-            But honestly, the biggest win was giving our clinicians access to complete patient histories
-            at every location.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Chief Medical Officer</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

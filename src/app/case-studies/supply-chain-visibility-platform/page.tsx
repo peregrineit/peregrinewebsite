@@ -399,15 +399,7 @@ export default function SupplyChainVisibilityPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We used to spend half our day looking up tracking numbers. Now shippers see
-            everything in one place and get alerted when something goes wrong. Our support team
-            can focus on real problems.&rdquo;
-          </div>
-          <div className="csd-quote-author">— VP of Operations, 3PL</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

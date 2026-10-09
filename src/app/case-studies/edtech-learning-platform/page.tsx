@@ -410,15 +410,7 @@ export default function EdTechLearningPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We went from three different systems and spreadsheets to one platform that
-            actually shows us how learners engage. The video streaming alone — no more buffering
-            complaints. Our completion rates improved by 40% in the first quarter.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Head of Product, EdTech Company</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

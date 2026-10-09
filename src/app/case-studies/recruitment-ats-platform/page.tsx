@@ -400,15 +400,7 @@ export default function RecruitmentAtsPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;The resume parsing alone saves our recruiters hours every day. We went from
-            searching through email to having a searchable talent pool. Calendly integration
-            eliminated the scheduling chaos.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Head of Talent, Staffing Company</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

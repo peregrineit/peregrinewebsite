@@ -408,16 +408,7 @@ export default function MultiVendorEcommerceMarketplace() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;Most marketplace platforms treat Arabic as an afterthought — flip the CSS and call
-            it done. Peregrine built true bilingual support from the ground up. Our Arabic-speaking
-            customers say the experience feels native, not translated. That&apos;s the
-            difference.&rdquo;
-          </div>
-          <div className="csd-quote-author">— Head of Digital, Retail Conglomerate</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>

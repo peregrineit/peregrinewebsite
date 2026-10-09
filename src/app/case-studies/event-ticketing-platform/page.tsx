@@ -400,15 +400,7 @@ export default function EventTicketingPlatform() {
         </div>
 
         {/* QUOTE */}
-        <div className="csd-quote-block">
-          <div className="csd-quote-text">
-            &ldquo;We used to oversell every popular event. Now we have real-time locks and 99.5%
-            accuracy. The fraud prevention cut our chargebacks in half. Refunds happen in minutes,
-            not days.&rdquo;
-          </div>
-          <div className="csd-quote-author">— COO, Events Company</div>
-        </div>
-
+        {/* Client quote removed until the client confirms it in writing (docs/seo/BLOCKERS.md, B23). */}
         {/* KEY TAKEAWAYS */}
         <div className="csd-section">
           <div className="csd-section-label">Key Takeaways</div>
