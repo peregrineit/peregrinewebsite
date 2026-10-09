@@ -205,7 +205,7 @@ export const caseStudies: CaseStudy[] = [
     industry: "Real Estate / Investment",
     stack: ["Next.js", "Node.js", "PostgreSQL", "Redis", "AWS S3", "DocuSign API", "Stripe", "Chart.js"],
     related: ["w3re-ai-real-estate-platform", "scaling-real-estate-saas-platform", "legal-document-automation-platform"],
-    service: "saas-development",
+    service: "investor-portal-development",
     card: {
       category: "proptech fintech saas",
       theme: "amber",
