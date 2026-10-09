@@ -4,11 +4,33 @@
 
 ## Decision
 
-**Code: GO.** Every automated check passes on the final build.
+**NO-GO today. One blocker: lead delivery has not been verified.** PR #7 stays a draft until a real submission on the preview is seen to arrive (notification at `info@peregrine-it.com` and the visitor auto-reply).
 
-**Release: conditional on one unverified item, lead delivery (E1).** Nobody has yet seen a form submission arrive in an inbox, on production or on a preview. Until that is seen, lead capture is **unverified**, not working. The form's email link after a failure is a last resort for the visitor; it is not a delivered lead and is not counted as one.
+Everything else is ready: the code passes every check, and the unsupported testimonials and homepage figures are out.
 
-Recommended gate: pass the four-step check in `LEAD-DELIVERY.md` on the preview deployment **before** merging. The branch does not make delivery worse than production (production reports "sent" even when Resend rejects; the branch reports the failure), but that is a reason the merge is safe, not evidence that leads arrive.
+**Why I could not verify it myself (attempted 2026-10-09):**
+- The preview (`peregrinewebsite-git-seo-phase-12-mukeshs-projects-36e886df.vercel.app`) redirects to the Vercel login. I do not enter credentials.
+- No Vercel CLI session for the owning account and no Resend access on this machine; no `.env` file in the repo.
+- So the sender's Resend status is **unknown**, not "unverified". The recipient is confirmed from code: `info@peregrine-it.com`, fixed in `src/app/api/lead/route.ts`.
+
+The email link shown after a failed submission is not lead capture and is not counted as such.
+
+## Setup request (everything needed from the owner, once)
+
+About 15 minutes, plus DNS propagation if the domain needs verifying.
+
+1. **Resend → Domains.** Note whether `peregrine-it.com` (or a subdomain) says **Verified**. If not: Add domain → `peregrine-it.com` → create the DNS records Resend lists at your DNS host → wait for Verified.
+2. **Resend → API Keys.** Confirm a key exists for this site. "Full access" lets the status check read the domain state; a "Sending access" key also works, the check then shows `null`.
+3. **Vercel → peregrinewebsite → Settings → Environment Variables**, scope **Production and Preview**:
+   - `RESEND_API_KEY`: present in both scopes (add to Preview if it is Production-only).
+   - `LEAD_FROM_EMAIL` = `Peregrine IT <hello@peregrine-it.com>`.
+4. **Vercel → Deployments →** the latest `seo/phase-12` preview → **Redeploy** (so it picks up the variables).
+5. **Then either:**
+   - **(a) You test, 2 minutes.** While signed in to Vercel, open `<preview>/api/lead` and confirm `"resend":true` and `"senderDomainVerified":true` (or `null`). Open `<preview>/contact`, submit the form with an address you can read. Confirm two emails: the notification at `info@peregrine-it.com` (subject ends with a reference in brackets) and the auto-reply at the address you typed. Tell me "lead test passed" with the reference.
+   - **(b) I test.** Sign in to Vercel in the Browser pane of this app (I will not see or type the password), and tell me which address to use as the visitor. I will run the same test and report the reference; you confirm the two emails arrived.
+6. *(Optional, free)* A Google Sheet record of every lead: `LEAD-DELIVERY.md`, last section.
+
+After step 5 passes I re-run the build and all checks, update this file to GO, and wait for your explicit authorization to merge.
 
 ## 1. Verified technical readiness
 
@@ -49,16 +71,19 @@ No figure was invented. Where a label contradicted the figures beside it, the la
 | Food delivery | "<3min Avg Delivery" | labelled as the pilot zone | the body and the client quote say pilot zone |
 | Homepage | "AWS, Azure, and GCP certified engineers across the team" | removed | no certification is on file; About says unconfirmed |
 | Homepage | "SLA-backed maintenance" | "maintenance" | no SLA terms exist anywhere on the site |
+| Homepage | seven client testimonials with performance figures | the seven clients' logos and names, linked to their sites | quotes had no independent support; the client names were already on About |
+| Homepage | "50+ systems shipped", "3+ avg. years per client", "97% on-time", "4.7/5" | "2018 founded", "25+ team members", "19 published case studies", "6 industries with published work" | first two owner-confirmed; last two counted from the data files at build time |
+| Homepage | "eliminate downtime" | "reduce downtime" | absolute claim |
+| Case studies | a client quote on each of the 19 pages, attributed by role | removed | no confirmation on file |
 
 ### Still unresolved (owner)
 | # | Claim | Where | Problem |
 |---|---|---|---|
 | C1 | "within 1 business day" | site-wide | Applied on instruction. Confirm the team can keep it on every working day, or tell me to remove it |
-| C2 | "50+ systems", "3+ years", "97% on-time", "4.7/5"; homepage technology lists | homepage | No source on the site (B11). Left in place: removing them changes the homepage design, which is your call |
+| C2 | Homepage technology lists (Vue, Angular, .NET and others in no case study) | homepage | No source on the site (B11). Capability list, not a performance claim; left in place |
 | C3 | The percentages removed above (85%, 40%) | investor portal, clinic | Restore whichever you can state the measurement for |
 | C4 | 8-month project whose last phase ends at week 24 | real estate SaaS case study | Unchanged: no way to tell which is right |
-| C5 | Kypiq testimonial: rebuild "in about 10 weeks", costs down "roughly 40%" | homepage | Unchanged. It is a named client's quote; the anonymous self-storage case study says 10 months. Different engagements, or a conflict? |
-| C6 | Case-study quotes | 19 case studies | Attributed by role only ("COO, Events Company"); W3\|re's is a named person. None has a confirmation on file. Unchanged: I cannot tell a real quote from an unsupported one, and deleting real client words would be worse |
+| C5 | Client quotes (7 on the homepage, 19 in case studies) | removed | To restore one, send the client's written confirmation of the wording; the text is in git history (before `seo(C4)`). The footer's "Testimonials" link to Google could not be opened from here, so it was not used as support |
 | C7 | W3\|re figures | W3\|re case study | B9 |
 | C8 | "North American and European business hours" vs "US and Canadian hours" | homepage, contact, footer vs About | Pick one |
 | C9 | "Dedicated project lead on every engagement", "also work with Azure, Google Cloud Platform" | homepage, cloud service page | No case study shows them |
@@ -87,17 +112,23 @@ Detail and steps: `LEAD-DELIVERY.md`.
 - USD Odoo plan prices from a US connection (B16); a public NAR policy source (B17).
 - A `lead_submit` conversion in GA4, once the ID exists.
 
-## 5. Deployment
+## 5. Merge and deployment (only after explicit authorization)
 
-1. Pass E1 on the preview (`LEAD-DELIVERY.md`, steps 1 to 5).
-2. On PR #7 click **Ready for review**, wait for the Vercel check, then **Merge pull request** with a merge commit. Vercel deploys `main` to production.
-3. When the deployment is live:
+Preconditions: setup request step 5 passed; this file says GO; you have said to release.
+
+1. PR #7 → **Ready for review**. Wait for the Vercel check to pass.
+2. **Merge pull request** → **Create a merge commit** (as PRs #2–#6). Vercel deploys `main` to production automatically.
+3. Vercel → Deployments: wait for the production deployment to show **Ready**.
+4. Verify production:
 ```bash
 python3 scripts/seo_check.py https://peregrine-it.com
 ```
    Expect `FAILS: 0` on 57 URLs.
-4. Open `https://peregrine-it.com/api/lead` and check the status JSON (`ok`, `resend`, `senderDomainVerified` all true). Submit one real test lead and see both emails arrive.
-5. Say "deployed" in this session and I will resubmit the sitemap URLs to IndexNow and run the production checks in `MONITORING.md`.
+5. Open `https://peregrine-it.com/api/lead`: `"resend":true`, `"senderDomainVerified":true` (or `null`).
+6. Submit one test lead on `https://peregrine-it.com/contact`; see both emails arrive.
+7. Tell me "deployed". I resubmit the sitemap URLs to IndexNow and run the day-0 checks in `MONITORING.md`.
+
+If step 5 or 6 fails on production: roll back (below) and fix the Production-scope variables.
 
 ## 6. Rollback
 

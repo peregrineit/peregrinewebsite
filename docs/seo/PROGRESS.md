@@ -214,3 +214,16 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 
 ## Loop status
 - No safe, independent work remains. Open items need the owner: the lead delivery check, the claims in `GO-NO-GO.md` section 2, and the merge.
+
+## Release preparation (2026-10-09)
+
+### C4 — testimonials and homepage figures
+- **Files:** `src/app/page.tsx`, 19 case-study pages, `about/page.tsx` (comment)
+- **What changed:** the seven homepage testimonials are now a grid of the same clients' logos and names; the stats row shows 2018, 25+, the case-study count and the industry count (the last two computed from `src/data`); the quote block is removed from each case study; "eliminate downtime" is "reduce downtime".
+- **Tests:** `tsc` clean; ESLint 0 errors; `seo_check.py` FAILS: 0 on 57 URLs; 44 lead tests; 56 fee tests; homepage checked at desktop and 375 px, no overflow.
+
+### C5 — real lead test
+- **Not done.** The preview redirects to the Vercel login; no credentials are entered by me. No Resend access. Sender status is unknown; recipient confirmed from code. Decision is NO-GO until the test passes.
+
+## Loop status
+- Waiting on the owner's setup request (GO-NO-GO.md). No other safe work remains; no new SEO features started.

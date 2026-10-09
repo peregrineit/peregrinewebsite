@@ -46,3 +46,8 @@ Deploying or merging to `main`; sending any email or message; creating accounts;
 - **B18** restated: DNS is a hint, not proof. `GET /api/lead` reports `senderDomainVerified` from Resend itself; a test submission is the only proof of delivery. Steps in `LEAD-DELIVERY.md`.
 - **B23 (new)** Testimonials: case-study quotes are attributed by role only and none has a confirmation on file; the Kypiq quote (B21) is unresolved. Tell me which quotes are confirmed; unconfirmed ones can then be removed.
 - **B24 (new)** A durable lead record needs one owner action: deploy `scripts/lead-sheet-webhook.gs` in a Google Sheet and set `LEAD_WEBHOOK_URL` (`LEAD-DELIVERY.md`).
+
+## Update 2026-10-09 (release preparation)
+- **Release blocker:** lead delivery unverified. One consolidated request is in `GO-NO-GO.md` ("Setup request"). The preview redirects to the Vercel login, and there is no Resend or Vercel access from this machine.
+- **B11** resolved for the stats row (replaced with owner-confirmed and counted figures). Technology lists remain.
+- **B21, B23** resolved by removal: all client quotes are out of the homepage and the 19 case studies. Restoring one needs the client's written confirmation of the wording.
