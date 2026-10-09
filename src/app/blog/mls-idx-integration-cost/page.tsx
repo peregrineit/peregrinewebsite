@@ -81,7 +81,8 @@ export default function Guide() {
       <p>
         This route suits agents and brokerages whose main need is listings on a website. The trade-off is limited
         control: search, design and lead handling work the way the vendor built them, and the data stays inside the
-        vendor&apos;s product.
+        vendor&apos;s product. If you are weighing whether to move off a plugin, see{' '}
+        <Link href="/blog/idx-vendor-vs-custom-build">IDX vendor or custom build: when to switch</Link>.
       </p>
 
       <h2>Option two: MLS data in your own product</h2>
@@ -140,8 +141,10 @@ export default function Guide() {
         Not in any of the fee schedules cited here. The published fees are billed per month, per office, per product,
         or per feed or connection, not per user or per agent. The closest to per-agent pricing in this guide is
         iHomefinder&apos;s extra-MLS fee, which is{' '}
-        <Src href={IHF}>$25 per month on the one-agent plan or $50 per month for two or more agents</Src>. If a vendor
-        quotes you a per-user price, that is the vendor&apos;s own software licensing, separate from what the MLS charges
+        <Src href={IHF}>$25 per month on the one-agent plan or $50 per month for two or more agents</Src>. Some MLSs do
+        tier their vendor fees by the number of users; our guide on{' '}
+        <Link href="/blog/how-to-get-mls-data-access">how to get MLS data access</Link> lists one. If a software vendor
+        quotes you a per-user price, that is usually the vendor&apos;s own licensing, separate from what the MLS charges
         for data.
       </p>
 
@@ -196,7 +199,7 @@ export default function Guide() {
   { question: 'How much does IDX cost per month?', answer: ['Published IDX plugin plans run from ', ['$49 per month', BUDDY], ' at Buying Buddy to ', ['$149 per month', IDXB], ' for IDX Broker\'s top plan. Some vendors add a one-time setup fee, and Showcase IDX notes ', ['MLS pass-through fees of typically $0 to $33 per month', SHOWCASE], '.'] },
   { question: 'How much does IDX cost per year?', answer: ['IDX plugins are billed monthly, so the yearly cost is twelve times the plan price: about $588 a year at ', ['$49 per month', BUDDY], ' and $1,788 a year at ', ['$149 per month', IDXB], ', before any setup or MLS pass-through fees. Those yearly figures are our arithmetic on the published monthly prices.'] },
   { question: 'What does MLS Grid charge?', answer: ['MLS Grid does not publish its own price list. Its FAQ says ', ['you only pay the license fee required by your MLS', MLSGRID], ', which MLS Grid collects on the MLS\'s behalf, so the cost is your MLS\'s fee for your license type.'] },
-  { question: 'Is MLS data priced per user?', answer: ['Not in the fee schedules cited in this guide. They are billed per month, per office, per product, or per feed or connection. For example, Stellar MLS charges ', ['$450 per office per year', STELLAR], ' for broker back-office use, and Trestle charges ', ['$100 to $175 per connection per month', TRESTLE], ' for technology providers.'] },
+  { question: 'Is MLS data priced per user?', answer: ['Not in the fee schedules cited in this guide. They are billed per month, per office, per product, or per feed or connection. For example, Stellar MLS charges ', ['$450 per office per year', STELLAR], ' for broker back-office use, and Trestle charges ', ['$100 to $175 per connection per month', TRESTLE], ' for technology providers. Some MLSs outside this guide tier vendor fees by the number of users, so ask each board.'] },
   { question: 'What does an IDX plugin cost?', answer: ['Published plans include IDX Broker at ', ['$60, $99 or $149 per month', IDXB], ', Showcase IDX ', ['from $94.95 or $124.95 per month', SHOWCASE], ' and Buying Buddy at ', ['$49 or $77 per month', BUDDY], '. Some vendors also charge a one-time setup fee or pass MLS fees through.'] },
   { question: 'How much do MLSs charge for data feeds?', answer: ['It depends on the MLS and on how the data is used. Stellar MLS charges ', ['$450 per office per year for broker back-office use, capped at $7,500', STELLAR], ' and ', ['$7,500 per product per year for a vendor product', STELLAR], ', while ARMLS gives each brokerage ', ['five free feeds, with additional feeds at $150 per month each', ARMLS], '.'] },
   { question: 'Do RESO Web API data vendors add their own fees?', answer: ['Some do. Trestle charges ', ['$30 per month for broker data feeds and $100 per month for other feeds', TRESTLE], ' on top of MLS fees, while MLS Grid ', ['states that you only pay the license fee your MLS requires', MLSGRID], '.'] },
@@ -206,7 +209,8 @@ export default function Guide() {
 
       <p className="cp-note">
         Prices were taken from the vendors&apos; and MLSs&apos; public pages on September 29, 2026 and re-checked on
-        October 9, 2026. Fees change, and many
+        October 9, 2026. NAR&apos;s policy handbook pages required a member login when we re-checked, so the NAR
+        statements here are as read on September 29. Fees change, and many
         MLSs publish different rates for brokers and vendors, so confirm current pricing with each provider.
       </p>
       <p>

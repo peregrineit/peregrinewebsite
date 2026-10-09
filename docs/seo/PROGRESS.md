@@ -104,3 +104,17 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 - **Tests:** build; headers present on `/`; legacy, Reporting-API and malformed bodies each return 204; `seo_check.py` FAILS: 0; `test_lead_api.py` 39 passed.
 - **Remaining:** enforcing the policy needs two weeks of production reports (Q9).
 - **Next:** Q7 while the research for Q3–Q5 runs.
+
+### Q7 — Lighthouse on new page types
+- **Pages:** `/industries`, `/industries/self-storage`, `/services/nextjs-development`, `/services/investor-portal-development`, `/tools/mls-idx-cost-calculator`, both newest guides. Mobile, local build, one run each.
+- **Result:** accessibility 100, SEO 100, performance 95–96, CLS 0, TBT 16–124 ms on all seven. The only failed audit is "errors in console", caused by Vercel's analytics scripts returning 404 on localhost; it does not occur on Vercel.
+- **Remaining:** none. Single local runs; production numbers will differ.
+
+### Q6 — guide: IDX vendor vs custom build
+- **Files:** `src/app/blog/idx-vendor-vs-custom-build/` (page, OG image), `src/data/guides.ts`, `services.ts`, `industries.ts`, cost guide (link, per-user wording, NAR note), `public/llms.txt`
+- **Tests:** build; `seo_check.py` on 53 URLs FAILS: 0; 1,380 words, 19 source links, no dollar figure outside a source link; 93.2% unique on 5-word shingles against the cost guide.
+- **Findings while writing:**
+  - NAR's MLS policy handbook pages (7.58, 7.90, VOW policy) now show "Login Required". The cost guide and the data-access guide cite them. The cost guide now says the NAR statements are as read on September 29. The data-access guide is unchanged (its `dateModified` is unchanged too). Follow-up: find a public NAR source or drop the direct quotes at the next quarterly re-check.
+  - NorthstarMLS blocks automated access, so its fees in the data-access guide could not be re-verified today.
+  - The cost guide's new "priced per user" section now says some MLSs do tier vendor fees by user count and points to the data-access guide, which cites one.
+- **Next:** Q3.

@@ -84,8 +84,8 @@ Ordered. The loop takes the first item that is `ready`, finishes it, updates thi
 | Q3 | Guide: RESO Web API vs RETS (research running) | ready |
 | Q4 | Guide: self-storage software, build or buy (research running) | ready |
 | Q5 | Guide: MLS data access in Canada (research running) | ready |
-| Q6 | Guide: IDX vendor vs custom build (uses the cost guide's sources and the calculator) | ready |
-| Q7 | Lighthouse performance and accessibility on each new page type; fix what it finds | ready |
+| Q6 | Guide: IDX vendor vs custom build (uses the cost guide's sources and the calculator) | done |
+| Q7 | Lighthouse performance and accessibility on each new page type; fix what it finds | done: nothing to fix |
 | Q8 | Release readiness: draft pull request `seo/phase-12` → `main` with the deployment checklist (draft, not to be merged without the owner) | ready |
 | Q9 | Enforce the CSP | blocked: needs clean reports from production after Q2 ships |
 | Q10 | W3\|re dashboard block and metric windows | blocked (B9) |

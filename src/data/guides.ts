@@ -91,6 +91,21 @@ export const guides: Guide[] = [
     service: 'investor-portal-development',
     caseStudy: 'proptech-investor-portal',
   },
+  {
+    slug: 'idx-vendor-vs-custom-build',
+    cta: {
+      heading: 'Deciding Whether to Move Off Your IDX Vendor?',
+      text: 'Tell us which MLSs you work in and what your current IDX cannot do. An engineer will tell you whether a data vendor, a custom pipeline or staying put makes sense.',
+    },
+    title: 'IDX Vendor or Custom Build: When to Switch',
+    metaTitle: 'IDX Vendor vs Custom Build: When to Switch',
+    description:
+      'When an IDX plugin is enough, when a data vendor API fits, and when a brokerage or proptech team should build its own MLS pipeline, with sourced costs.',
+    datePublished: '2026-10-09',
+    dateModified: '2026-10-09',
+    service: 'mls-idx-integration',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {
