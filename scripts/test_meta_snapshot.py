@@ -4,7 +4,7 @@
 Usage: python3 scripts/test_meta_snapshot.py   (exit 1 on any failure)
 Also checks that the committed baseline (tests/fixtures/meta-baseline.json) is well formed.
 """
-import http.server, json, os, subprocess, sys, tempfile, threading
+import re, http.server, json, os, subprocess, sys, tempfile, threading
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCRIPT = os.path.join(ROOT, "scripts", "meta_snapshot.py")
@@ -70,7 +70,10 @@ if __name__ == "__main__":
     committed = os.path.join(ROOT, "tests", "fixtures", "meta-baseline.json")
     if os.path.exists(committed):
         doc = json.load(open(committed, encoding="utf-8")); pages = doc["pages"]
-        check("committed baseline: source is production", doc["source"] == "https://peregrine-it.com", doc["source"])
+        # Production, or a reviewed local build when a pull request changes pages on purpose
+        # (the --update step in docs/growth/systems/README.md).
+        check("committed baseline: source is production or a reviewed local build",
+              doc["source"] == "https://peregrine-it.com" or re.fullmatch(r"http://localhost:\d+", doc["source"]) is not None, doc["source"])
         check("committed baseline: every page 200 with title, description, self canonical and one H1",
               all(d["status"] == 200 and d["title"] and d["description"] and len(d["h1"]) == 1 and
                   d["canonical"].rstrip("/") == ("https://peregrine-it.com" + p).rstrip("/") for p, d in pages.items()))
