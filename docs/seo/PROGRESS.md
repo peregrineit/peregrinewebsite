@@ -227,3 +227,10 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 
 ## Loop status
 - Waiting on the owner's setup request (GO-NO-GO.md). No other safe work remains; no new SEO features started.
+
+### C6 — release verification after the Resend domain was verified (2026-10-09)
+- DNS now shows Resend's DKIM and `send` records for `peregrine-it.com`.
+- The preview still redirects to the Vercel login, so the real submission was not run.
+- Local end-to-end run in a browser with a mock mail server: success path (`lead_submit`, notification to `info@peregrine-it.com`, acknowledgement to the visitor) and failure path (`lead_error`, no `lead_submit`, error and email link) both behave as designed.
+- Final checks: build, `tsc`, ESLint 0 errors, `seo_check.py` FAILS: 0 on 57 URLs, 44 lead tests, 56 fee tests.
+- **Status:** not yet ready to deploy; one real preview submission remains.

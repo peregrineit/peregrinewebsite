@@ -4,33 +4,41 @@
 
 ## Decision
 
-**NO-GO today. One blocker: lead delivery has not been verified.** PR #7 stays a draft until a real submission on the preview is seen to arrive (notification at `info@peregrine-it.com` and the visitor auto-reply).
+**NOT YET READY TO DEPLOY. One step is left: a real test submission on the preview, seen to arrive.** Everything that can be checked without signing in to Vercel has passed. PR #7 stays a draft.
 
-Everything else is ready: the code passes every check, and the unsupported testimonials and homepage figures are out.
+### Lead delivery evidence (updated 2026-10-09, after the owner verified the domain in Resend)
 
-**Why I could not verify it myself (attempted 2026-10-09):**
-- The preview (`peregrinewebsite-git-seo-phase-12-mukeshs-projects-36e886df.vercel.app`) redirects to the Vercel login. I do not enter credentials.
-- No Vercel CLI session for the owning account and no Resend access on this machine; no `.env` file in the repo.
-- So the sender's Resend status is **unknown**, not "unverified". The recipient is confirmed from code: `info@peregrine-it.com`, fixed in `src/app/api/lead/route.ts`.
+| Item | Status | Evidence |
+|---|---|---|
+| Recipient is `info@peregrine-it.com` | **Verified** | fixed in `src/app/api/lead/route.ts` (`NOTIFY_TO`); the local end-to-end run sent the notification to that address |
+| Domain verified in Resend | **Owner-stated; consistent with DNS** | public DNS now has `resend._domainkey.peregrine-it.com` (DKIM key) and mail records on `send.peregrine-it.com`. On the morning of 2026-10-09 neither existed |
+| `RESEND_API_KEY` in Vercel | **Owner-stated; not seen** | no access to the project from this machine |
+| `LEAD_FROM_EMAIL` in Vercel, Preview scope | **Unknown** | not seen. Without it the code uses Resend's test sender, which delivers only to the Resend account owner's address, so the visitor acknowledgement would not arrive |
+| A real submission on the preview arrives | **Not tested** | the preview redirects to the Vercel login (checked again after the domain was verified) |
 
-The email link shown after a failed submission is not lead capture and is not counted as such.
+### The one remaining step
 
-## Setup request (everything needed from the owner, once)
+Either of these, nothing else. No DNS, key or Resend change is asked for.
 
-About 15 minutes, plus DNS propagation if the domain needs verifying.
+- **You (2 minutes):** signed in to Vercel, open `https://peregrinewebsite-git-seo-phase-12-mukeshs-projects-36e886df.vercel.app/api/lead`. If it shows `"sender":"custom"`, change nothing. If it shows `"sender":"resend-test-sender"`, add `LEAD_FROM_EMAIL` = `Peregrine IT <hello@peregrine-it.com>` in Vercel (Preview and Production) and redeploy the preview. Then submit the form on `/contact` with "TEST" in the name and an address you can read. Two emails should arrive: the notification at `info@peregrine-it.com` and the acknowledgement at your address.
+- **Or me:** sign in to Vercel in this app's Browser pane and name the visitor address; I run the same test and you confirm the two emails.
 
-1. **Resend → Domains.** Note whether `peregrine-it.com` (or a subdomain) says **Verified**. If not: Add domain → `peregrine-it.com` → create the DNS records Resend lists at your DNS host → wait for Verified.
-2. **Resend → API Keys.** Confirm a key exists for this site. "Full access" lets the status check read the domain state; a "Sending access" key also works, the check then shows `null`.
-3. **Vercel → peregrinewebsite → Settings → Environment Variables**, scope **Production and Preview**:
-   - `RESEND_API_KEY`: present in both scopes (add to Preview if it is Production-only).
-   - `LEAD_FROM_EMAIL` = `Peregrine IT <hello@peregrine-it.com>`.
-4. **Vercel → Deployments →** the latest `seo/phase-12` preview → **Redeploy** (so it picks up the variables).
-5. **Then either:**
-   - **(a) You test, 2 minutes.** While signed in to Vercel, open `<preview>/api/lead` and confirm `"resend":true` and `"senderDomainVerified":true` (or `null`). Open `<preview>/contact`, submit the form with an address you can read. Confirm two emails: the notification at `info@peregrine-it.com` (subject ends with a reference in brackets) and the auto-reply at the address you typed. Tell me "lead test passed" with the reference.
-   - **(b) I test.** Sign in to Vercel in the Browser pane of this app (I will not see or type the password), and tell me which address to use as the visitor. I will run the same test and report the reference; you confirm the two emails arrived.
-6. *(Optional, free)* A Google Sheet record of every lead: `LEAD-DELIVERY.md`, last section.
+When both emails are confirmed this file changes to **READY TO DEPLOY**.
 
-After step 5 passes I re-run the build and all checks, update this file to GO, and wait for your explicit authorization to merge.
+### Verified locally on the final build (2026-10-09)
+
+Run in a browser against the built site, with Resend replaced by a local mock (nothing left the machine):
+
+| Check | Result |
+|---|---|
+| Consultation form on a service page, labeled test submission | "Request sent successfully"; notification addressed to `info@peregrine-it.com` with a reference in the subject; acknowledgement addressed to the test visitor |
+| Tracking on success | `lead_submit` fired once; no `lead_error` |
+| Failure path on `/contact` (mock rejects the email) | error message and the email link shown; `lead_error` fired; **no** `lead_submit`; no success message. The email link is not counted as a lead |
+| Status endpoint | `{"ok":true,"resend":true,"sender":"custom","senderDomainVerified":true,"webhook":false}` |
+| Build, TypeScript, ESLint | pass; 0 errors |
+| `seo_check.py` | FAILS: 0 on 57 URLs |
+| `test_lead_api.py` | 44 passed |
+| `test_mls_fees.mjs` | 56 passed |
 
 ## 1. Verified technical readiness
 
@@ -106,6 +114,8 @@ Detail and steps: `LEAD-DELIVERY.md`.
 
 ## 4. Optional improvements (do not block)
 
+- The favicon fix is a separate pull request, #8, from `main`. It can merge before or after #7.
+
 - Case-study LCP is about 3.3 s in the local lab run (hero image); content pages are faster. Measure on production before spending time on it.
 - Enforce the CSP after two weeks of clean reports in the Vercel log (B15).
 - Team section, Odoo named integrations, first-hand MLS timelines, project proof for Shopify, Laravel and WordPress (B5–B8).
@@ -114,7 +124,7 @@ Detail and steps: `LEAD-DELIVERY.md`.
 
 ## 5. Merge and deployment (only after explicit authorization)
 
-Preconditions: setup request step 5 passed; this file says GO; you have said to release.
+Preconditions: the preview lead test passed; this file says READY TO DEPLOY; you have said to release.
 
 1. PR #7 → **Ready for review**. Wait for the Vercel check to pass.
 2. **Merge pull request** → **Create a merge commit** (as PRs #2–#6). Vercel deploys `main` to production automatically.
