@@ -19,7 +19,7 @@
 
 ## 2. Lead delivery (do not skip; before merging or straight after)
 
-The decision and the evidence are in `GO-NO-GO.md`. If a submission fails, the visitor now sees the error and a prefilled "Send it by email instead" link. `GET /api/lead` returns the configuration as booleans (`ok`, `resend`, `sender`, `webhook`) and never a value.
+The decision and the evidence are in `GO-NO-GO.md`; the steps are in `LEAD-DELIVERY.md`. If a submission fails, the visitor now sees the error and a prefilled "Send it by email instead" link. `GET /api/lead` returns the configuration as booleans (`ok`, `resend`, `sender`, `senderDomainVerified`, `webhook`) and never a value.
 
 The API delivers each lead to every configured destination and shows the visitor an error if **none** accepts it.
 
@@ -71,7 +71,7 @@ python3 scripts/test_lead_api.py
 node --experimental-strip-types scripts/test_mls_fees.mjs
 ```
 
-Expected: no type errors; `seo_check.py` prints `FAILS: 0` for 57 URLs; `test_lead_api.py` prints `41 passed, 0 failed`; `test_mls_fees.mjs` prints `56 passed`.
+Expected: no type errors; `seo_check.py` prints `FAILS: 0` for 57 URLs; `test_lead_api.py` prints `44 passed, 0 failed`; `test_mls_fees.mjs` prints `56 passed`.
 
 Manual, on the Vercel Preview URL:
 1. Submit the form on a service page; the success message shows and the email arrives with company, timeline, service, landing page and UTM.

@@ -194,3 +194,23 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 
 ## Loop status
 - Every remaining item needs the owner: the E1 lead check, the merge, and the facts in BLOCKERS.md. No new article was written: the unblocked topics are covered and the rest have no verified material.
+
+## Credibility and lead delivery (2026-10-09)
+
+### C1 — credibility fixes
+- **Files:** `LeadForms.tsx`, `api/lead/route.ts`, `ConsultationCta.tsx`, `Footer.tsx`, `page.tsx`, `services.ts`, `technology-services.ts`, `llms.txt`, `case-studies.ts`, six case-study pages
+- **What changed:** listed claim by claim in `GO-NO-GO.md` section 2. Rule followed: remove the contradicted label, keep the project's own figures, compute nothing new.
+- **Not changed:** client quotes, homepage stats, the real estate SaaS duration. Reasons in section 2.
+
+### C2 — lead delivery
+- **Finding:** Resend is the only provider; the recipient is fixed in code; nothing persists a lead inside the app.
+- **Code:** `GET /api/lead` reports `senderDomainVerified` by asking Resend (cached 5 minutes); one retry on the notification email; an 8-character reference on the email subject, webhook payload and log; a `Lead delivered` log line without personal data.
+- **Prepared, not deployed:** `scripts/lead-sheet-webhook.gs` and `LEAD-DELIVERY.md`.
+- **Tests:** `test_lead_api.py` 44 passed (adds retry, reference, verified and unverified domain status).
+- **Remaining:** real delivery is unverified (B18, B19).
+
+### C3 — release re-validation
+- Build, `tsc` clean, ESLint 0 errors, `seo_check.py` FAILS: 0 on 57 URLs, 44 lead tests, 56 fee tests. Changed stat cards checked at 375 px: no overflow.
+
+## Loop status
+- No safe, independent work remains. Open items need the owner: the lead delivery check, the claims in `GO-NO-GO.md` section 2, and the merge.

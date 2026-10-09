@@ -4,9 +4,11 @@
 
 ## Decision
 
-**GO for the code.** Every automated check passes and no page depends on an unverified claim that this release introduces.
+**Code: GO.** Every automated check passes on the final build.
 
-**One condition, about 10 minutes, on the owner's side:** confirm that a lead submitted on the site reaches an inbox (section 3, E1). This cannot be checked from here. It is not a reason to hold the release, because the branch is safer than what is live today: production currently tells the visitor "sent" even when the email fails; the branch shows an error and an email link instead. If lead delivery is broken, it is already broken on production, silently.
+**Release: conditional on one unverified item, lead delivery (E1).** Nobody has yet seen a form submission arrive in an inbox, on production or on a preview. Until that is seen, lead capture is **unverified**, not working. The form's email link after a failure is a last resort for the visitor; it is not a delivered lead and is not counted as one.
+
+Recommended gate: pass the four-step check in `LEAD-DELIVERY.md` on the preview deployment **before** merging. The branch does not make delivery worse than production (production reports "sent" even when Resend rejects; the branch reports the failure), but that is a reason the merge is safe, not evidence that leads arrive.
 
 ## 1. Verified technical readiness
 
@@ -18,56 +20,64 @@ Run on the final local production build of the branch.
 | ESLint, whole repo | 0 errors (68 warnings, all in legacy markup: `<img>` tags) |
 | `scripts/seo_check.py`, 57 sitemap URLs | FAILS: 0 |
 | ...which covers | status, title ≤ 60, description length, uniqueness, self-canonical, one H1, heading order, image alt, JSON-LD parses, 152 schema nodes with 393 `@id` references all resolving, FAQ schema equals visible FAQ, sitemap `lastmod` equals `dateModified`, robots.txt, llms.txt matches the sitemap, internal links resolve, at least 2 inbound links per page, a contact path on every page |
-| Lead API integration tests (mock Resend and webhook) | 41 passed |
+| Lead API integration tests (mock Resend and webhook) | 44 passed |
 | Calculator fee arithmetic | 56 passed |
 | Lighthouse mobile, 12 pages (local) | Accessibility 100 and SEO 100 on all; Performance 92 homepage, 96 content pages, about 90 case studies; CLS 0 |
 | Responsive | no horizontal overflow on 18 page types at 375 px and 11 at 1280 px; nav does not wrap |
 | Consent Mode (build with a test GA ID) | analytics denied by default, no `_ga` cookie before consent, bar shown, decline remembered |
 | GA4 events observed | `calendly_click`, `guide_cta_click` (Calendly and form), `lead_error`. `lead_submit` is covered by the API tests; not observed in GA because no real destination was available |
-| Form failure path | error message plus a prefilled "Send it by email instead" link |
+| Form failure path | error message plus a prefilled email link; tracked as `lead_error`, never as `lead_submit` |
+| Lead email retry and reference | one retry on a Resend error; an 8-character reference in the email subject, webhook payload and log |
 | Spam protection | honeypot, per-IP rate limit (5 per 10 minutes), server-side validation; all tested |
 
 **Not verifiable from here:** real email delivery, the Vercel environment variables, GA4 receiving data in a real property, field Core Web Vitals.
 
-## 2. Unverified business claims
+## 2. Business claims
 
-None of these was introduced by Phases 11 or 12 unless marked. None blocks the release; each is the owner's to confirm or correct. Found by an independent read of the site against its own case studies, then checked by hand.
+### Corrected on the branch (2026-10-09)
+No figure was invented. Where a label contradicted the figures beside it, the label went and the figures stayed.
 
+| Claim | Was | Now | Basis |
+|---|---|---|---|
+| Reply time | "6 hours", "1 business day" and "48 hours" in different places | "within 1 business day" everywhere; the 6-hour and 48-hour promises are gone (forms, auto-reply email, service pages, homepage, footer, llms.txt) | owner instruction |
+| Investor portal | "3 weeks → 2 hours" labelled "85% time saved" | the before and after only; no percentage | the two disagree (3 weeks to 2 hours is about 98%); which was measured is unknown |
+| Clinic | "45 → 18 days" labelled "40% faster" | "18 days (was 45)"; no percentage | same (45 to 18 is 60%) |
+| Legal platform | "SOC2 Compliant" | "SOC2 Ready" | the page's own timeline and results say preparation and "ready" |
+| Legal platform | "40% faster" captioned "cut by nearly half" | caption removed | 40% is not half |
+| HR platform | "confidence to pass SOC 2" | "confidence going into a SOC 2 audit" | the page reports a readiness checklist, not a passed audit |
+| Collaboration tool | hero and a heading said operational transform | CRDT, as the stack and the body say | internal mismatch |
+| Food delivery | "<3min Avg Delivery" | labelled as the pilot zone | the body and the client quote say pilot zone |
+| Homepage | "AWS, Azure, and GCP certified engineers across the team" | removed | no certification is on file; About says unconfirmed |
+| Homepage | "SLA-backed maintenance" | "maintenance" | no SLA terms exist anywhere on the site |
+
+### Still unresolved (owner)
 | # | Claim | Where | Problem |
 |---|---|---|---|
-| C1 | Reply time | forms and auto-reply email | The same form says "1 business day" before submitting and "6 hours" after; the quick form says 48 hours and its auto-reply says 6 hours (B4) |
-| C2 | "50+ systems", "3+ years", "97% on-time", "4.7/5"; homepage technology lists | homepage | No source on the site (B11) |
-| C3 | "AWS, Azure, and GCP certified engineers", "SLA-backed maintenance" | homepage | No support elsewhere; About says certifications are unconfirmed |
-| C4 | 8-month project whose last phase ends at week 24 | real estate SaaS case study | Duration and phase timeline disagree |
-| C5 | "3 weeks → 2 hours" labelled "85% time saved" | investor portal case study, and pages that quote it | The arithmetic gives about 98% |
-| C6 | "45 → 18 days" labelled "40% faster" | clinic case study | The arithmetic gives 60% |
-| C7 | "SOC2 Compliant" in the stats, "SOC2 ready" in the body | legal and HR case studies | Ready and compliant are different claims |
-| C8 | Hero says operational transform; stack says CRDT (Yjs) | collaboration case study | Internal mismatch |
-| C9 | Kypiq testimonial: rebuild "in about 10 weeks", costs down "roughly 40%" | homepage | The self-storage case study says 10 months and gives no 40% figure. Same client or not? |
-| C10 | W3\|re: named quote, "$480M+", and the figures in B9 | W3\|re case study | No owner confirmation on file |
-| C11 | "North American and European business hours" vs "US and Canadian hours" | homepage, contact, footer vs About | Pick one |
-| C12 | Shopify, Laravel, WordPress pages *(new in Phase 12)* | three service pages | They state that no case study is published; owner to confirm the services are sold (B13) |
-| C13 | MLS approval timelines | guides | Deliberately absent: guides say no MLS publishes one (B8) |
-
-The owner-stated "4–6 week MVP, 8–12 week complex platform" figures sit next to case studies that ran 6 to 14 months. They are owner-confirmed, so they stay; worth a second look.
+| C1 | "within 1 business day" | site-wide | Applied on instruction. Confirm the team can keep it on every working day, or tell me to remove it |
+| C2 | "50+ systems", "3+ years", "97% on-time", "4.7/5"; homepage technology lists | homepage | No source on the site (B11). Left in place: removing them changes the homepage design, which is your call |
+| C3 | The percentages removed above (85%, 40%) | investor portal, clinic | Restore whichever you can state the measurement for |
+| C4 | 8-month project whose last phase ends at week 24 | real estate SaaS case study | Unchanged: no way to tell which is right |
+| C5 | Kypiq testimonial: rebuild "in about 10 weeks", costs down "roughly 40%" | homepage | Unchanged. It is a named client's quote; the anonymous self-storage case study says 10 months. Different engagements, or a conflict? |
+| C6 | Case-study quotes | 19 case studies | Attributed by role only ("COO, Events Company"); W3\|re's is a named person. None has a confirmation on file. Unchanged: I cannot tell a real quote from an unsupported one, and deleting real client words would be worse |
+| C7 | W3\|re figures | W3\|re case study | B9 |
+| C8 | "North American and European business hours" vs "US and Canadian hours" | homepage, contact, footer vs About | Pick one |
+| C9 | "Dedicated project lead on every engagement", "also work with Azure, Google Cloud Platform" | homepage, cloud service page | No case study shows them |
+| C10 | Shopify, Laravel, WordPress pages | three service pages | State that no case study is published; confirm the services are sold (B13) |
+| C11 | "4–6 week MVP, 8–12 week complex platform" | homepage, service pages | Owner-confirmed, but every case study ran 6 to 14 months |
 
 ## 3. Environment configuration blockers
 
-| # | Item | What is known | Owner action |
+Detail and steps: `LEAD-DELIVERY.md`.
+
+| # | Item | Evidence | Status |
 |---|---|---|---|
-| E1 | Lead email delivery | Public DNS for `peregrine-it.com` has Google Workspace MX, SPF for Google only and a Google DKIM key. There is **no** `resend._domainkey` record and no `send` subdomain, which Resend needs to verify a domain. So the root domain is very likely not a verified Resend sender (a differently named subdomain cannot be ruled out). With the fallback sender, Resend delivers only to the Resend account owner's own address | Steps below |
-| E2 | Vercel project access | The Vercel CLI login on this machine is a different account (team "Peregrine", one project, `sellv3`). The site's project is under `mukeshs-projects-36e886df`. Environment variable names could not be listed | None needed if you do E1 yourself |
-| E3 | Preview testing | Preview deployments are behind Vercel sign-in, so no delivery test could be run | Open the preview while signed in |
-| E4 | GA4 | No measurement ID (B2). Nothing from Google loads without it | Optional: set `NEXT_PUBLIC_GA_ID` |
-| E5 | CRM webhook | Not configured, optional (B3) | Optional: set `LEAD_WEBHOOK_URL` |
+| E1 | Lead email delivery | **Code (read):** Resend is the only mail provider; recipient `info@peregrine-it.com` is fixed in code; sender is `LEAD_FROM_EMAIL` or Resend's test sender. **Configuration (not readable from here):** whether `RESEND_API_KEY` and `LEAD_FROM_EMAIL` are set, and whether Resend has verified the domain. **DNS (a hint only):** no `resend._domainkey` or `send` records on `peregrine-it.com`; a subdomain or custom record names would not show up this way | **Unverified. Release condition** |
+| E2 | Vercel project access | The CLI login on this machine is a different account (team "Peregrine", one project, `sellv3`); the site is under `mukeshs-projects-36e886df` | blocks reading env var names |
+| E3 | Preview testing | Preview deployments require a Vercel sign-in | blocks a delivery test from here |
+| E4 | Durable lead record | The app has no database and Vercel has no writable disk, so none can be added without new infrastructure. Prepared: a Google Sheet receiver (`scripts/lead-sheet-webhook.gs`) for the existing `LEAD_WEBHOOK_URL`; free, in your Google Workspace; not deployed | optional, owner steps |
+| E5 | GA4 | No measurement ID (B2) | optional |
 
-**E1 steps (owner):**
-1. Resend → Domains. If `peregrine-it.com` is not listed as verified, add it and create the DNS records Resend shows (a DKIM `TXT` at `resend._domainkey`, and `MX` and SPF `TXT` at `send`). They do not touch the existing Google records.
-2. Vercel → `peregrinewebsite` → Settings → Environment Variables, for Production and Preview: confirm `RESEND_API_KEY`; add `LEAD_FROM_EMAIL` = `Peregrine IT <hello@peregrine-it.com>`.
-3. Redeploy the preview, open `<preview-url>/api/lead`. Expect `{"ok":true,"resend":true,"sender":"verified-domain","webhook":false}`. It shows booleans only, never a value.
-4. Submit the form once on the preview. Confirm the notification reaches `info@peregrine-it.com` and the auto-reply reaches the address you entered.
-
-If you would rather merge first: do steps 3 and 4 on production straight after the deploy. Until they pass, a visitor whose submission fails sees the error and the email link, so the lead is not lost silently.
+**How E1 gets settled without guessing:** `GET /api/lead` now asks Resend whether the sender's domain is verified and returns `senderDomainVerified: true / false / null` (null when the API key is restricted to sending). It returns booleans only. Then one test submission, with the notification and the auto-reply both seen in an inbox.
 
 ## 4. Optional improvements (do not block)
 
@@ -79,14 +89,14 @@ If you would rather merge first: do steps 3 and 4 on production straight after t
 
 ## 5. Deployment
 
-1. Do E1 (or accept doing it straight after).
+1. Pass E1 on the preview (`LEAD-DELIVERY.md`, steps 1 to 5).
 2. On PR #7 click **Ready for review**, wait for the Vercel check, then **Merge pull request** with a merge commit. Vercel deploys `main` to production.
 3. When the deployment is live:
 ```bash
 python3 scripts/seo_check.py https://peregrine-it.com
 ```
    Expect `FAILS: 0` on 57 URLs.
-4. Open `https://peregrine-it.com/api/lead` and check the status JSON. Submit one real test lead.
+4. Open `https://peregrine-it.com/api/lead` and check the status JSON (`ok`, `resend`, `senderDomainVerified` all true). Submit one real test lead and see both emails arrive.
 5. Say "deployed" in this session and I will resubmit the sitemap URLs to IndexNow and run the production checks in `MONITORING.md`.
 
 ## 6. Rollback

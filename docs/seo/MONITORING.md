@@ -7,7 +7,7 @@ For use after PR #7 is merged. Nothing here has been run against production yet.
 | # | Check | How | Pass |
 |---|---|---|---|
 | 1 | All pages | `python3 scripts/seo_check.py https://peregrine-it.com` | `FAILS: 0`, 57 URLs |
-| 2 | Lead configuration | open `/api/lead` | `ok: true`, `sender: "verified-domain"` |
+| 2 | Lead configuration | open `/api/lead` | `ok: true`, `resend: true`, `senderDomainVerified: true` |
 | 3 | Real lead | submit the form on `/services/mls-idx-integration` | notification and auto-reply both arrive |
 | 4 | Sitemap | `/sitemap.xml` lists 57 URLs | new URLs present |
 | 5 | IndexNow | resubmit all sitemap URLs (footer and nav changed on every page) | HTTP 200 or 202 |

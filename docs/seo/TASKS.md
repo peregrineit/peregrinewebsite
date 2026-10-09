@@ -108,3 +108,6 @@ Ordered. The loop takes the first item that is `ready`, finishes it, updates thi
 | P4.3 | Outreach prospect criteria and two more drafts (nothing sent) | done: `OUTREACH.md` |
 | P4.4 | Search Console monitoring and post-deploy validation plan | done: `MONITORING.md` |
 | P4.5 | New MLS, Shopify, Laravel, WordPress content | blocked (B5, B8, B13): no verified project facts; no page added for page count |
+| C1 | Credibility: one reply-time promise; case-study labels match their figures; certification, SLA and compliance claims removed | done; open items in GO-NO-GO.md section 2 |
+| C2 | Lead delivery: provider and configuration documented; Resend domain status in `/api/lead`; retry; lead reference; Google Sheet receiver prepared | done in code; delivery itself unverified (B18, B19, B24) |
+| C3 | Release re-validation after C1 and C2 | done: build, `tsc`, ESLint 0 errors, `seo_check.py` FAILS 0 on 57 URLs, 44 lead tests, 56 fee tests |
