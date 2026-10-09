@@ -234,3 +234,8 @@ a.cp-card:hover { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 10px 30px
 @media (max-width: 767px) {
   .cp-factors > div { grid-template-columns: 1fr; }
 }
+@media (max-width: 767px) {
+  /* Stacked links inside cards need room between tap targets. */
+  .cp-card-list li { margin-bottom: 14px; }
+  .cp-card-list li a { display: inline-block; padding: 4px 0; }
+}

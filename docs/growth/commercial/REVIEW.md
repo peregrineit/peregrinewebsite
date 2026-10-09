@@ -83,3 +83,9 @@ share the template, so they received the same blocks (S1 to S6) with their own c
 - Case-study section anchors: the case-study pages have no section ids and are outside this stream, so proof
   links go to the case-study page and name what it shows.
 - Timelines on MLS, investor portal, Odoo, Shopify, Laravel, WordPress: none confirmed, none added.
+
+## Batch 2 (2026-10-10)
+- **Real estate, logistics, healthcare and insurance, HR and recruitment, e-commerce and food ordering industry pages:** each had only case-study cards, service cards and guides, so a buyer could not self-qualify or prepare. **Fixed:** "what we build" cards that restate the linked case studies with proof links, plus fit / scope / first phase / checklist written for that industry. Regulated topics (patient data, payroll tax, card data) are phrased as decisions and documents the buyer brings; no certification or compliance status is claimed and no legal requirement is restated.
+- **Laravel and Next.js pages:** "the backends in our published case studies are Node.js" ignored Python in the W3|re stack. **Fixed** in all four places: every stack lists Node.js and one also lists Python.
+- **Self-storage scope:** the unsourced statement that late-fee and lien rules differ by state is now a request to bring your procedures for each state.
+- **`/industries` index:** industry pages and case studies were already one tap from their card, but at 375 px the sixth card starts about four screens down and the stacked case-study links were only 6 px apart. **Fixed:** a row of 44 px industry links under the intro and more spacing between case-study links on phones.
