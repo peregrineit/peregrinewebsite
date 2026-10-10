@@ -10,7 +10,7 @@ Everything else is ready. When the test below passes, this becomes GO, pending t
 
 ### The one test (owner, about 3 minutes)
 
-Preview: `https://peregrinewebsite-git-growth-s2-integration-mukeshs-projects-36e886df.vercel.app`
+Preview: `https://peregrinewebsite-git-growth-s2-1f2aec-mukeshs-projects-36e886df.vercel.app`
 
 1. Signed in to Vercel, open `/api/lead` on that address. Expect `"resend":true`, `"sender":"custom"`, `"senderDomainVerified":true`, `"environment":"preview"`, `"webhookRetry":false`, `"ownerAlert":false`, `"durableStorage":"none"`. If `resend` is false or `sender` is `resend-test-sender`, the Preview scope lacks the variables production has; add them to Preview and redeploy.
 2. Open `/case-studies/proptech-investor-portal`, scroll to the form at the end, and submit it with "TEST" in the name, an address you can read, and a message of 10 or more characters.
