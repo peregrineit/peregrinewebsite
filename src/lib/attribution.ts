@@ -327,7 +327,9 @@ export function withoutClickIdsUnlessConsented(touch: Touch, local: StorageLike 
 export function syncTouches(env: { local: StorageLike | null; session: StorageLike | null; href: string; referrer: string; host: string; now: Date }) {
   // Advertising click ids (gclid, msclkid, fbclid) identify one person's ad click. They are
   // read only after an explicit analytics consent; without it they are never stored or sent.
-  const current = withoutClickIdsUnlessConsented(parseTouch(env.href, env.referrer, env.now), env.local);
+  const parsed = withoutClickIdsUnlessConsented(parseTouch(env.href, env.referrer, env.now), env.local);
+  // A referrer on this site (a reload, an internal link) is not where the visitor came from.
+  const current = isExternalReferrer(parsed.referrer, env.host) ? parsed : { ...parsed, referrer: '' };
   const stored = { first: readFirstTouch(env.local, env.session, env.now), last: read<Touch>(env.session, LAST_KEY) };
   const next = nextTouches(stored, current, env.host, env.now);
   if (next.first !== stored.first) {

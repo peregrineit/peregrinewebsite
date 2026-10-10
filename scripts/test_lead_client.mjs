@@ -77,6 +77,10 @@ local = store({ [FIRST]: JSON.stringify(ad) }); session = store();   // a record
 visit(local, session, 'https://peregrine-it.com/contact', '', day(5));
 eq([local.has(FIRST), session.json(FIRST).landingPage], [false, '/contact'], 'no choice: a first touch found in localStorage is deleted, not used');
 
+local = store(); session = store();                       // first page load is a reload or an internal link
+visit(local, session, 'https://peregrine-it.com/services', 'https://peregrine-it.com/contact', day(1));
+eq(session.json(FIRST).referrer, '', 'a referrer on this site is not recorded as where the visitor came from');
+
 // 2. accepted
 local = store({ [CONSENT_KEY]: 'granted' }); session = store();
 visit(local, session, AD_URL, 'https://www.google.com/', day(1));
