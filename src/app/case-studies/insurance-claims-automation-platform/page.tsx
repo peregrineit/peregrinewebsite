@@ -5,6 +5,7 @@ import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 import CaseStudyGlance from '../../components/CaseStudyGlance';
+import CaseStudyCta from '../../components/CaseStudyCta';
 
 export const metadata: Metadata = {
   title: 'Insurance Claims Automation Platform',
@@ -446,28 +447,9 @@ export default function InsuranceClaimsAutomationPlatform() {
         <RelatedCaseStudies slug="insurance-claims-automation-platform" />
 
         {/* CTA */}
-        <div className="csd-cta-section">
-          <h2>Building an Insurance or Claims Platform?</h2>
-          <p>
-            We help InsurTech companies build document automation, adjudication engines, and
-            compliant claims systems. Let&apos;s talk about your architecture.
-          </p>
-          <div className="csd-cta-buttons">
-            <a href="#" data-open-contact className="csd-cta-btn">
-              Tell Us About Your Project
-              <i className="ri-arrow-right-line" />
-            </a>
-            <a
-              href="https://calendly.com/mukesh-peregrine-it/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="csd-cta-btn csd-cta-btn-secondary"
-            >
-              Book a Strategy Call
-              <i className="ri-calendar-line" />
-            </a>
-          </div>
-        </div>
+        <CaseStudyCta slug="insurance-claims-automation-platform" heading="Building an Insurance or Claims Platform?">
+          We help InsurTech companies build document automation, adjudication engines, and compliant claims systems. Let&apos;s talk about your architecture.
+        </CaseStudyCta>
       </div>
     </main>
   );

@@ -157,7 +157,7 @@ export default function Footer({ services, industries }: { services: NavItem[]; 
                     <Link href="/contact" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Contact</Link>
                     <Link href="/blog" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Guides</Link>
                     <a href="https://calendly.com/mukesh-peregrine-it/30min" target="_blank" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Careers</a>
-                    <a href="https://share.google.com/DOm7mkXoRAN5u1mWi" target="_blank" rel="noopener noreferrer" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Testimonials</a>
+                    <a href="https://share.google/DOm7mkXoRAN5u1mWi" target="_blank" rel="noopener noreferrer" className="dfs-link-1" style={{ color: '#4b5563', fontSize: '0.95em', display: 'block', marginTop: '0.4rem' }}>Testimonials</a>
                   </div>
                 </div>
                 <div id="w-node-_53aec337-cf60-1ff7-e4d7-85a8a4b6c583-098fe091" className="dfs-wrap-7 footer-section-item">

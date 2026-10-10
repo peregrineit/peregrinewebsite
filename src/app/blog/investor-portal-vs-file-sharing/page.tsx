@@ -7,7 +7,7 @@ export const metadata = guideMetadata(SLUG);
 // Sources checked 2026-10-09. Every third-party statement is as published on the
 // vendor's own page on that date. Product feature labels are quoted from the vendors'
 // sites; nothing here is based on using those products.
-const DBX_PERMS = 'https://help.dropbox.com/share/set-folder-permissions';
+const DBX_PERMS = 'https://help.dropbox.com/share/set-file-folder-permissions';
 const DBX_LINKS = 'https://help.dropbox.com/share/set-link-permissions';
 const DBX_ACTIVITY = 'https://help.dropbox.com/account-access/view-activity';
 const DBX_WATERMARK = 'https://help.dropbox.com/view-edit/add-a-watermark';
@@ -16,7 +16,7 @@ const GDRIVE_LOG = 'https://knowledge.workspace.google.com/admin/reports/drive-l
 const BOX_ROLES = 'https://support.box.com/hc/en-us/articles/360044196413-Understanding-Collaborator-Permission-Levels';
 const BOX_REPORTS = 'https://support.box.com/hc/en-us/articles/4415010860435-Using-Reports';
 const BOX_WATERMARK = 'https://support.box.com/hc/en-us/articles/360044195253-Watermarking-Files';
-const SP_SHARE = 'https://support.microsoft.com/en-us/office/share-sharepoint-files-or-folders-1fe37332-0f9a-4719-970e-d2578da4941c';
+const SP_SHARE = 'https://support.microsoft.com/en-us/sharepoint/sharepoint-sharing-and-permissions/share-sharepoint-files-or-folders';
 const MS_AUDIT = 'https://learn.microsoft.com/en-us/purview/audit-solutions-overview';
 const MS_AUDIT_ACTIVITIES = 'https://learn.microsoft.com/en-us/purview/audit-log-activities';
 const JSQ_PORTAL = 'https://www.junipersquare.com/finance-and-reporting/investor-portal';

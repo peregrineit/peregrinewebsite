@@ -143,7 +143,7 @@ export default function Guide() {
         <li>That maintenance is charged as <Src href={TERMS}>a monthly fee per 100 lines of code</Src>. The rate is agreed in writing with Odoo and is not published.</li>
         <li>Staying on an old version has a price: Odoo&apos;s agreement provides for <Src href={TERMS}>an extra fee equal to 25% of the annualized price</Src> for databases on versions it no longer covers.</li>
         <li>Each major version gets a limited window: <Src href={SUPPORT}>standard support covers the first three years after release</Src>, and <Src href={SUPPORT}>extended support requires an additional fee</Src>.</li>
-        <li>Integrations age too. Odoo&apos;s older XML-RPC and JSON-RPC APIs are <Src href={RPC}>scheduled for removal in Odoo 22 (fall 2028)</Src>, so an integration built on them will need rework.</li>
+        <li>Integrations age too. Odoo&apos;s older XML-RPC and JSON-RPC APIs are <Src href={RPC}>scheduled for removal in Odoo 22 (fall 2028)</Src>, so an integration built on them will need rework. Our guide to <Link href="/blog/odoo-shopify-marketplace-integration">integrating Odoo with Shopify and marketplaces</Link> covers how to design one.</li>
       </ul>
       <p>
         The practical lesson is the one on our{' '}

@@ -7,11 +7,11 @@ export const metadata = guideMetadata(SLUG);
 // Sources checked 2026-09-29. Prices are the vendors' published list prices on that date.
 const FUB = 'https://www.followupboss.com/pricing';
 const FUB_API = 'https://www.followupboss.com/integrations';
-const WISE = 'https://www.wiseagent.com/pricing/';
-const RG = 'https://www.realgeeks.com/pricing/';
+const WISE = 'https://www.wiseagent.com/pricing.asp';
+const RG = 'https://www.realgeeks.com/real-geeks-pricing';
 const SF = 'https://www.salesforce.com/sales/pricing/';
-const LOFTY = 'https://lofty.com/pricing';
-const BOLD = 'https://boldtrail.com/pricing/';
+const LOFTY = 'https://lofty.com/price-packages';
+const BOLD = 'https://boldtrail.com/pricing-demo/';
 const CINC = 'https://www.cincpro.com/pricing';
 const NAR_2026 = 'https://www.nar.realtor/newsroom/realtors-adopt-technology-to-save-time-and-improve-the-client-experience-nar-report-finds';
 
