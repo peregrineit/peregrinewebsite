@@ -235,7 +235,7 @@ export const guides: Guide[] = [
       text: 'Tell us which channels you sell through, which system holds stock and prices today, and where orders go wrong. An engineer will walk through ownership, sync and failure handling for your setup.',
     },
     title: 'Odoo Integration with Shopify and Marketplaces: Ownership, Sync and Failure Handling',
-    metaTitle: 'Odoo Integration: Shopify & Marketplace Sync',
+    metaTitle: 'Odoo–Shopify Sync: Integration Design Guide',
     description:
       'How to connect Odoo to Shopify or a marketplace: which system owns each record, webhooks and polling, idempotency, rate limits, mapping pitfalls, a checklist.',
     datePublished: '2026-10-10',

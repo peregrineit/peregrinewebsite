@@ -600,7 +600,7 @@
    ],
    "robots": "index, follow",
    "status": 200,
-   "title": "Odoo Integration: Shopify & Marketplace Sync | Peregrine IT"
+   "title": "Odoo–Shopify Sync: Integration Design Guide | Peregrine IT"
   },
   "/blog/reso-web-api-vs-rets": {
    "canonical": "https://peregrine-it.com/blog/reso-web-api-vs-rets",
@@ -2183,5 +2183,5 @@
    "title": "MLS & IDX Cost Calculator: Published Fees | Peregrine IT"
   }
  },
- "source": "http://localhost:3077"
+ "source": "http://localhost:3057"
 }
