@@ -993,7 +993,7 @@ export default function Home() {
                 data-is-ix2-target="0" data-renderer="svg" data-default-duration="4" data-duration="0"></div>
               <div className="w-layout-vflex content-wrap">
                 <h2 className="heading-primary gradient">Technologies We Work With</h2>
-                <p className="section-sub">Our engineering teams work across the full modern stack — from frontend frameworks to cloud infrastructure.</p>
+                <p className="section-sub">Each list separates the technologies that appear in the stack of a published <Link href="/case-studies">case study</Link> from additional engineering capabilities.</p>
               </div>
             </div>
             <div className="w-layout-vflex">
@@ -1004,7 +1004,9 @@ export default function Home() {
                       data-src="documents/front-end.json" data-loop="1" data-direction="1" data-autoplay="1"
                       data-is-ix2-target="0" data-renderer="svg" data-default-duration="2.56" data-duration="0"></div>
                     <div className="w-layout-vflex titleandcaption">
-                      <div className="cert-title">Frontend: React, Vue.js, Angular, Next.js, Nuxt.js, Svelte, Tailwind CSS
+                      <div className="cert-title">Frontend
+                        <span style={{ display: 'block', fontSize: '0.8em', fontWeight: 600, marginTop: '0.35rem' }}>In published case studies: Next.js (React)</span>
+                        <span style={{ display: 'block', fontSize: '0.8em', fontWeight: 400, opacity: 0.85, marginTop: '0.2rem' }}>Additional capabilities: Vue.js, Angular, Nuxt.js, Svelte, Tailwind CSS</span>
                       </div>
                       <p id="w-node-b0216bc3-24d3-4254-e998-f8437df35508-098fe091" className="card-caption">Enables creation
                         of
@@ -1017,8 +1019,9 @@ export default function Home() {
                       data-is-ix2-target="0" data-renderer="svg" data-default-duration="1.9166666666666667"
                       data-duration="0"></div>
                     <div className="w-layout-vflex titleandcaption">
-                      <div className="cert-title">Backend: Laravel, .NET, Node.js, Python, NestJS, Django, FastAPI, Spring
-                        Boot
+                      <div className="cert-title">Backend
+                        <span style={{ display: 'block', fontSize: '0.8em', fontWeight: 600, marginTop: '0.35rem' }}>In published case studies: Node.js, Python</span>
+                        <span style={{ display: 'block', fontSize: '0.8em', fontWeight: 400, opacity: 0.85, marginTop: '0.2rem' }}>Additional capabilities: Laravel, .NET, NestJS, Django, FastAPI, Spring Boot</span>
                       </div>
                       <p id="w-node-d73c53f8-5359-9799-b71c-8af21aa3f015-098fe091" className="card-caption">Provides reliable,
                         scalable server-side solutions</p>
@@ -1029,7 +1032,10 @@ export default function Home() {
                       data-src="documents/phone.json" data-loop="1" data-direction="1" data-autoplay="1"
                       data-is-ix2-target="0" data-renderer="svg" data-default-duration="3" data-duration="0"></div>
                     <div className="w-layout-vflex titleandcaption">
-                      <div className="cert-title">Mobile: React Native, Flutter, Swift, Kotlin, Ionic</div>
+                      <div className="cert-title">Mobile
+                        <span style={{ display: 'block', fontSize: '0.8em', fontWeight: 600, marginTop: '0.35rem' }}>In published case studies: React Native</span>
+                        <span style={{ display: 'block', fontSize: '0.8em', fontWeight: 400, opacity: 0.85, marginTop: '0.2rem' }}>Additional capabilities: Flutter, Swift, Kotlin, Ionic</span>
+                      </div>
                       <p id="w-node-_3647b580-903b-fd43-e760-bbe8a4026aed-098fe091" className="card-caption">Allows efficient
                         development of cross-platform mobile applications</p>
                     </div>
@@ -1040,7 +1046,10 @@ export default function Home() {
                       data-is-ix2-target="0" data-renderer="svg" data-default-duration="2.5166666666666666"
                       data-duration="0"></div>
                     <div className="w-layout-vflex titleandcaption">
-                      <div className="cert-title">Cloud: AWS, Azure, Google Cloud Platform, DigitalOcean, Linode, Vultr</div>
+                      <div className="cert-title">Cloud
+                        <span style={{ display: 'block', fontSize: '0.8em', fontWeight: 600, marginTop: '0.35rem' }}>In published case studies: AWS, Linode</span>
+                        <span style={{ display: 'block', fontSize: '0.8em', fontWeight: 400, opacity: 0.85, marginTop: '0.2rem' }}>Additional capabilities: Azure, Google Cloud Platform, DigitalOcean, Vultr</span>
+                      </div>
                       <p id="w-node-bb6deb21-2cb2-dc8b-0b7f-dc119c5de743-098fe091" className="card-caption">Enables scalable,
                         flexible, and cost-effective cloud solutions</p>
                     </div>
@@ -1050,8 +1059,10 @@ export default function Home() {
                       data-src="documents/teamrotate.json" data-loop="1" data-direction="1" data-autoplay="1"
                       data-is-ix2-target="0" data-renderer="svg" data-default-duration="3" data-duration="0"></div>
                     <div className="w-layout-vflex titleandcaption">
-                      <div className="cert-title">DevOps: Docker, Kubernetes, Jenkins, GitHub Actions, GitLab CI, Terraform,
-                        Ansible</div>
+                      <div className="cert-title">DevOps
+                        <span style={{ display: 'block', fontSize: '0.8em', fontWeight: 600, marginTop: '0.35rem' }}>In published case studies: AWS EKS (managed Kubernetes)</span>
+                        <span style={{ display: 'block', fontSize: '0.8em', fontWeight: 400, opacity: 0.85, marginTop: '0.2rem' }}>Additional capabilities: Docker, Kubernetes, Jenkins, GitHub Actions, GitLab CI, Terraform, Ansible</span>
+                      </div>
                       <p id="w-node-_5452233e-aa99-5dce-8460-d03d8af886a6-098fe091" className="card-caption">Streamlines
                         development and deployment processes</p>
                     </div>
@@ -1062,8 +1073,10 @@ export default function Home() {
                       data-is-ix2-target="0" data-renderer="svg" data-default-duration="2.0166666666666666"
                       data-duration="0"></div>
                     <div className="w-layout-vflex titleandcaption">
-                      <div className="cert-title">Database: MongoDB, PostgreSQL, MySQL, Redis, Elasticsearch, Cassandra,
-                        DynamoDB</div>
+                      <div className="cert-title">Database
+                        <span style={{ display: 'block', fontSize: '0.8em', fontWeight: 600, marginTop: '0.35rem' }}>In published case studies: MongoDB, PostgreSQL, Redis, Elasticsearch</span>
+                        <span style={{ display: 'block', fontSize: '0.8em', fontWeight: 400, opacity: 0.85, marginTop: '0.2rem' }}>Additional capabilities: MySQL, Cassandra, DynamoDB</span>
+                      </div>
                       <p id="w-node-_5b347f63-bd06-b689-70e6-1fad2c984d4b-098fe091" className="card-caption">Provides efficient data storage, retrieval, and management solutions</p>
                     </div>
                   </div>
