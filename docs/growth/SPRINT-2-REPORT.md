@@ -1,5 +1,7 @@
 # Growth Sprint 2: report
 
+> **Superseded for release purposes by `RELEASE-S2.md`.** After this report the experimental Blob store was removed, webhook retry became opt-in, signatures gained a timestamp and click ids became consent-only. Statements below about the store describe the sprint, not the release candidate.
+
 **Date:** 2026-10-10 · **Base:** `main` at `48ed23f` · **Nothing is merged to `main` or deployed.**
 
 ## Time
