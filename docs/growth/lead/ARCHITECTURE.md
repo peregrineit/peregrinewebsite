@@ -8,7 +8,7 @@ This describes the code as it is on this branch. The incident history and the th
 
 | Thing | State |
 |---|---|
-| Durable store (Vercel Blob) | **Not production-ready. Tested against a mock only.** Off unless two variables are set. The owner has to create a Blob store, set the variables and submit a real test lead before relying on it. The HTTP interface it uses is not documented by Vercel (see "Durable store") |
+| Durable store | **Not implemented.** An experimental Vercel Blob adapter was written in Sprint 2 and removed before release: it relied on the HTTP request the Blob SDK makes, which Vercel does not document, and had only run against a mock. The variables that switched it on now do nothing |
 | Owner alert | Tested against a mock only. Off unless `LEAD_ALERT_WEBHOOK_URL` is set. The Sheet-script half (mail through Google) has never been run |
 | Sheet script changes (`scripts/lead-sheet-webhook.gs`) | Not run. Apps Script cannot be executed from this repo. New columns, the duplicate check and the alert handler need one manual test after pasting |
 | Privacy wording at the end | A draft for the owner. The published policy page is untouched |
@@ -32,12 +32,10 @@ submit form -> JSON: fields + attribution ---------> 1 parse, rate limit (5 / IP
                                                      5 priority = f(fields)            (no I/O)
                                                      6 in parallel:
                                                          notification email (8 s limit) ---> Resend -> info@peregrine-it.com
-                                                         webhook (1 retry, signed, 5 s) ---> LEAD_WEBHOOK_URL (e.g. Google Sheet)
+                                                         webhook (signed if a secret is set; retry only if switched on; 5 s) ---> LEAD_WEBHOOK_URL (e.g. Google Sheet)
                                                      7 accepted = email accepted OR webhook accepted
                                                         not accepted -> HTTP 502, nothing below runs
-                                                     8 as soon as accepted (see "Time limits"):
-                                                         store write (if switched on) -----> Vercel Blob
-                                                       when both of step 6 have answered:
+                                                     8 when both of step 6 have answered:
                                                          acknowledgement email (5 s limit) -> Resend -> the visitor
                                                      9 one log line, no personal data -----> Vercel runtime log
                                                     10 respond: ref, per-step status
@@ -62,7 +60,7 @@ Nothing is sent to the server before the visitor submits a form. The analytics e
 
 Rules the code enforces (`readFirstTouch` and `syncTouches` in `src/lib/attribution.ts`):
 
-- **Without an explicit "accept" on the analytics bar, nothing about the arrival is written to localStorage.** First touch, last touch and click ids live in sessionStorage and end with the tab. If a first-touch record is found in localStorage without consent, it is deleted, not used.
+- **Without an explicit "accept" on the analytics bar, nothing about the arrival is written to localStorage.** First touch, last touch and click ids live in sessionStorage and end with the tab. If a first-touch record is found in localStorage without consent, it is deleted, not used. **Advertising click ids are not read at all without that accept** (release review, 2026-10-10): a `gclid`, `msclkid` or `fbclid` in the URL is ignored, and any captured while consent was in force are removed when it is declined or withdrawn.
 - **With consent**, the first touch is also kept in localStorage for at most 90 days. An older record is deleted when it is read.
 - **Declining, or withdrawing an earlier acceptance,** deletes the localStorage record at once (the consent bar calls `applyConsentChoice()`), and so does any page load on which the choice is not `granted`.
 - **Referrers are stored as origin + path.** The query string and fragment (search phrases, tokens) are dropped before anything is stored.
@@ -97,7 +95,7 @@ Attribution fields (all optional; the server accepts a lead without any of them)
 
 The 8-character reference is the first 8 hex characters of SHA-256 over the form's `submissionId` and the cleaned content (every form field and every attribution field). Without a valid `submissionId` it is random. Every idempotency key (`lead-notify-<ref>`, `lead-ack-<ref>`, webhook `Idempotency-Key: lead-<ref>`, alert `lead-alert-<ref>`) and the store path derive from it.
 
-- **Identical retry** (same id, same content; the form keeps its id after a network error or any 5xx): same reference, same keys. Resend returns the first message instead of sending again; the store object is replaced by an identical one; a receiver that deduplicates on `ref` keeps one row.
+- **Identical retry** (same id, same content; the form keeps its id after a network error or any 5xx): same reference, same keys. Resend returns the first message instead of sending again; a receiver that deduplicates on `ref` keeps one row.
 - **Edited retry** (same id, the visitor changed something first): a new reference, delivered as a new message. So the visible reference changes when the content changes.
 - A reused key with a different payload cannot occur, because the content is part of the reference. That matters: Resend answers such a request with HTTP 409 `invalid_idempotent_request` (its documentation, read 2026-10-10) rather than sending it.
 
@@ -108,11 +106,10 @@ What the visitor can wait for, at most:
 | Step | Limit | On expiry |
 |---|---|---|
 | Notification email (retry included) | 8 s | reported `failed`, reason `timeout`; the send may still complete at Resend, which is why a retry reuses the key |
-| Webhook (retry and backoff included) | 5 s | reported `failed`, reason `webhook timed out` |
-| Store write | 3 s, and never past 5.5 s after the request started | reported `failed`, reason `store timed out` |
+| Webhook (the optional retry and its backoff included) | 5 s | reported `failed`, reason `webhook timed out` |
 | Acknowledgement email (retry included) | 5 s, after the two above have answered | reported `failed`; the visitor is told to keep the reference |
 
-The webhook and the store share one deadline. The store write starts as soon as the lead is accepted: immediately when both the email and the webhook have answered; otherwise once one of them has accepted and at least 2 s have passed since the request started, without waiting for the other. In that case the stored object records the silent one as `"pending"`. A hung webhook and a hung store together hold the response for about 5.5 s (it was 8 s). The worst case overall is a slow notification (8 s) followed by a slow acknowledgement (5 s).
+The webhook has 5 seconds in total, the optional retry included; each Resend call has its own deadline.
 
 ### Priority
 
@@ -146,7 +143,7 @@ It appears as `Priority: High (timeline ASAP +2; company given +1; ...)` in the 
 `src/lib/lead-webhook.ts`.
 
 - **Body:** flat JSON: `receivedAt`, `source`, `ref`, the form fields (not `submissionId`, not the anti-spam field's value), `spamSuspected`, the attribution fields, `priority`, `priorityReasons`.
-- **Headers:** `Idempotency-Key: lead-<ref>`; with `LEAD_WEBHOOK_SECRET` set, `X-Peregrine-Signature: sha256=<hex HMAC-SHA256 of the raw body>`.
+- **Headers:** `Idempotency-Key: lead-<ref>`; with `LEAD_WEBHOOK_SECRET` set, `X-Peregrine-Signature: t=<unix seconds>,v1=<hex HMAC-SHA256 of the raw body>`.
 - **Budget:** 5 seconds for everything, retry and backoff included.
 - **Retry:** one, 300 ms later, only after a failure that came back quickly and may be transient (5xx, 408, 429, connection error), and only if at least 500 ms of the budget is left. A timeout is not retried. Other 4xx are not retried. Both attempts send identical bytes.
 - **Receivers must deduplicate on `ref`.** Since sprint 2 the site may send the same lead twice: once more after a quick 5xx, 408, 429 or connection error, and again if the visitor retries an unchanged form after an error. Every repeat has the same `ref`, the same `Idempotency-Key` and (for the automatic retry) the same bytes. A receiver that appends a row or creates a contact for every POST will create duplicates unless it treats a repeated `ref` as the lead it already has. The Sheet script checks the last 20 rows for the `ref`. A timeout is not retried by the site.
@@ -155,21 +152,12 @@ It appears as `Priority: High (timeline ASAP +2; company given +1; ...)` in the 
 
 ### Durable store
 
-`src/lib/lead-store.ts`. A `LeadStore` interface with a no-op default and one adapter.
+None. The app has no database and no writable disk, and the experimental Vercel Blob adapter was removed before release (see the table at the top). The durable record of a lead is:
 
-- **Switch:** the adapter runs only when `LEAD_STORE=vercel-blob` **and** `BLOB_READ_WRITE_TOKEN` are both set. One without the other, or any other `LEAD_STORE` value, is the no-op store and the API behaves exactly as before.
-- **Rule:** a store write is a record of a lead that was already accepted. It is not acceptance. The visitor is told "received" only when the notification email or the webhook accepted the lead; if neither did, the response is the 502 it always was and **nothing is stored**. Reason: nobody is notified when an object appears in a Blob store, so a store-only lead would be one the visitor believes was received and nobody reads.
-- **Failure:** a failed or slow write (3 second limit, shortened by the deadline it shares with the webhook, see "Time limits"; no retry) is logged (`Lead accepted with a failed step`, with the reason) and reported (`store.status: "failed"`). It never fails the lead.
-- **Object:** `leads/<yyyy-mm>/<ref>-<32 hex>.json` containing the webhook body plus `delivery: { notification, webhook }` (each `accepted`, `failed`, `skipped`, or `pending` if that destination had not answered when the object was written). The 32 hex characters are an HMAC of the reference keyed with the store token: not guessable from the reference the visitor sees, and the same for an identical retry of the same submission, so that retry replaces its own object. An edited retry has a new reference and is a second object. The path is never logged or returned.
-- **Access:** sent as `private` by default, which needs a **private** Blob store (reads then need the token). `LEAD_STORE_BLOB_ACCESS=public` exists for a public store, where the unguessable path is the only protection; a private store is the recommendation.
-- **Interface used:** `PUT <api>/?pathname=<path>` with `authorization: Bearer <token>`, `x-api-version`, `x-vercel-blob-access`, `x-content-type`, `x-add-random-suffix: 0`, `x-allow-overwrite: 1`. Vercel's documentation (`vercel.com/docs/vercel-blob`, read 2026-10-10) describes the SDK only; this is the request the `@vercel/blob` SDK source makes (`packages/blob/src/put.ts`, `api.ts`, API version 12, base `https://vercel.com/api/blob`). It is not the older `https://blob.vercel-storage.com/<path>` form. Because it is undocumented it can change; the effect would be failed writes in the log, not lost leads. If the owner prefers a supported interface, swap the adapter's `fetch` for the SDK's `put()` (one dependency).
-- **Status:** `GET /api/lead` reports `store` (`none` or `vercel-blob`) and `durableStorage` (`none`, `webhook`, `vercel-blob`, `webhook+vercel-blob`) for what is configured; the POST response reports what was actually written for that lead.
+- the notification email in the inbox, and Resend's own log of it;
+- the webhook's destination when `LEAD_WEBHOOK_URL` is set (for example the Google Sheet receiver in `scripts/lead-sheet-webhook.gs`).
 
-**Turning the store on (owner steps, not done):**
-1. Vercel → Storage → Create → Blob → access **Private**. Connect it to the project (Production, and Preview if wanted).
-2. Confirm `BLOB_READ_WRITE_TOKEN` exists in the project's variables (newer stores connect with OIDC by default; this adapter needs the read-write token).
-3. Set `LEAD_STORE=vercel-blob`. Redeploy.
-4. `GET /api/lead` shows `"store":"vercel-blob"`. Submit a test lead: the response shows `"store":{"status":"stored"}` and an object appears under `leads/` in the Blob browser. If it shows `"failed"`, the reason is in the `Lead accepted with a failed step` log line.
+`GET /api/lead` reports `durableStorage` as `webhook` or `none`. A supported store should be added only with a documented API, a real test against that service on a preview deployment, and a deletion routine.
 
 ### Owner alert
 
@@ -202,6 +190,19 @@ A notification that is *skipped* because `RESEND_API_KEY` is not set does not al
 
 `lead_form_abandon` includes tab switches: a visitor who switches away, returns and submits produces an abandon and then a `lead_submit`. No event ever contains a field name or value. `docs/seo/TASKS.md` holds the event table and should get these rows (not edited from this stream).
 
+## Release review decisions (2026-10-10)
+
+| Topic | Decision | Why |
+|---|---|---|
+| Durable store | Removed | Undocumented endpoint, mock-tested only |
+| Webhook retry | **Off by default.** `LEAD_WEBHOOK_RETRY=1` turns on one retry | A receiver can record a lead and still answer 5xx; only a receiver that deduplicates on `ref` or `Idempotency-Key` makes a retry safe. The Sheet script does; a generic automation webhook may not |
+| Duplicate emails | Unchanged: one idempotency key per message, derived from the submission id and its content | Resend documents that a repeated key returns the first result and that a changed payload with the same key is refused |
+| Webhook signature | `X-Peregrine-Signature: t=<unix seconds>,v1=<HMAC-SHA256 of "<t>.<body>">`; secrets under 16 characters are ignored and reported as unsigned | The timestamp is signed, so a captured request cannot be replayed after the verifier's age limit (5 minutes in the reference verifier) |
+| Owner alert | Off unless `LEAD_ALERT_WEBHOOK_URL` is set; `GET /api/lead` shows `ownerAlert: false` otherwise | Nothing is sent anywhere new by default |
+| Advertising click ids (`gclid`, `msclkid`, `fbclid`) | Read **only after** an explicit analytics consent; never stored or sent without it; removed if consent is declined or withdrawn | They identify one person's ad click and the published privacy policy does not mention them. Today there is no consent bar (no GA4 ID), so none are collected |
+| Other attribution (landing page, referrer without query string, UTM parameters, pages viewed, form location) | Session storage only without consent; sent only when the visitor submits a form | The published policy already lists "pages visited, time spent, and referral source" as collected automatically |
+| Lead priority | Kept, reworded: reasons state the observed fact, and the line ends "Sorting hint from the form fields only; nothing about the sender is verified." | It must not read as a verified qualification |
+
 ## Environment variables
 
 | Variable | Default | Effect |
@@ -210,11 +211,8 @@ A notification that is *skipped* because `RESEND_API_KEY` is not set does not al
 | `LEAD_FROM_EMAIL` | Resend's test sender | Sender of both emails. Unchanged |
 | `LEAD_WEBHOOK_URL` | not set | Every lead is POSTed there as JSON. Unchanged, plus one retry |
 | `LEAD_WEBHOOK_SECRET` | not set | **New.** When set, webhook and alert requests carry `X-Peregrine-Signature`. Any long random string; the receiver needs the same value |
+| `LEAD_WEBHOOK_RETRY` | not set (no retry) | **New.** `1` allows one retry after a quick transient failure. Only for receivers that deduplicate |
 | `LEAD_ALERT_WEBHOOK_URL` | not set | **New.** Where the owner alert is POSTed when the notification email fails on an accepted lead |
-| `LEAD_STORE` | not set (no store) | **New.** `vercel-blob` selects the Blob adapter; needs the token as well |
-| `BLOB_READ_WRITE_TOKEN` | not set | **New to this app.** Vercel's read-write token for the Blob store. Used only when `LEAD_STORE=vercel-blob` |
-| `LEAD_STORE_BLOB_ACCESS` | `private` | **New.** `public` only for a public Blob store |
-| `LEAD_STORE_BLOB_API_URL` | `https://vercel.com/api/blob` | **New.** Base URL of the Blob API. Exists so the tests can point at a mock; do not set it in Vercel. **Ignored when `VERCEL_ENV` is `production`**, because every request to that URL carries the store token |
 | `NEXT_PUBLIC_GA_ID` | not set | GA4 and the consent bar. Unchanged |
 | `RESEND_BASE_URL` | Resend's API | Read by the Resend SDK; used by the tests only |
 | `VERCEL_ENV` | set by Vercel | `production` hides the diagnostic in a 502 response. Unchanged |
@@ -232,14 +230,13 @@ No variable's value is ever returned by `GET /api/lead` or written to the log.
 | Acknowledgement email in the visitor's inbox | their name as typed, the reference, the reply-time sentence | none | the visitor |
 | Resend | both emails as sent (recipient, subject, body) and their delivery events | none | Resend's retention for the account's plan; the owner can delete from the Resend dashboard. **TODO(owner): confirm the plan's retention period before quoting one in the policy** |
 | Webhook destination (Google Sheet when the provided script is used) | one row per lead: every field of the webhook body | none | the sheet's owner; rows stay until deleted |
-| Vercel Blob (only if switched on) | one JSON object per accepted lead: the webhook body plus the delivery outcome | none. Objects are never deleted or expired by this code | the Vercel team owning the store; delete in the Blob browser or by script. **A retention routine does not exist yet and should before this is switched on in production** |
 | Alert destination (only if set) | reference, time, form name, priority, where the lead is held, the provider's error name. No personal data | none | whoever owns that URL |
 | Vercel runtime log | one line per lead: reference, form name, environment, priority, per-step status, Resend message ids, error names. No name, address, message, attribution or storage path | none | Vercel's log retention for the plan |
 | Vercel Analytics / GA4 | event name with `form`, `page`, `service`, `location`, `status`. No form values, no reference | none | those services' retention settings |
 | The server itself | nothing durable. An in-memory per-instance rate-limit table of IP address and timestamps; timestamps older than 10 minutes are dropped the next time that address posts (or when the table passes 5,000 addresses), and all of it is lost when the instance stops | as described | automatic |
 | Calendly | whatever the visitor enters when booking, plus the four UTM parameters naming our page and CTA | none | Calendly account settings |
 
-Deleting one person's data on request therefore means, by hand: the notification email (and any reply thread), the Resend log entries, the sheet row, and the Blob object if the store is on. The reference in the email subject finds the row and the object (`leads/<yyyy-mm>/<ref>-…`).
+Deleting one person's data on request therefore means, by hand: the notification email (and any reply thread), the Resend log entries, and the sheet row if the store is on. The reference in the email subject finds the row and the object (`leads/<yyyy-mm>/<ref>-…`).
 
 ## Draft privacy-policy wording (for the owner to review; not published)
 
@@ -266,22 +263,22 @@ Points for the owner while reviewing:
 
 | # | Finding | Change |
 |---|---|---|
-| 1 | Hung webhook plus hung store answered after 8 s | one shared deadline, about 5.5 s; see "Time limits" |
+| 1 | Hung webhook plus hung store answered after 8 s | the store was removed before release; the webhook alone is limited to 5 s |
 | 2 | Resend calls had no timeout | 8 s for the notification, 5 s for the acknowledgement; `failed` with reason `timeout` |
 | 3 | A 200 HTML page from the webhook counted as accepted | `text/html` 2xx and JSON `ok:false` are refused; the Sheet script always answers JSON |
 | 4 | Neutral leads were low priority; a throwaway address could be high | low needs -1 or less; disposable-mailbox list at -3 |
 | 5 | A name with line breaks forged lines in both emails | every single-line field is forced onto one line; the message is delimited and prefixed |
 | 6 | Edited retry with the same `submissionId` was dropped and overwrote the stored object | reference derived from id and content; the reference changes when the content changes |
-| 7 | Non-string anti-spam value not flagged; Blob URL override could carry the token elsewhere; retry undocumented | all three addressed (anti-spam field above, env table, "Webhook") |
+| 7 | Non-string anti-spam value not flagged; retry undocumented | all three addressed (anti-spam field above, env table, "Webhook") |
 | 8 | First touch persisted in localStorage before consent, with click ids and full referrer | sessionStorage only without consent; localStorage for 90 days with it; referrer cut to origin + path |
 
 ## Tests
 
 | Command | Covers | Result on this branch |
 |---|---|---|
-| `python3 scripts/test_lead_api.py` (needs `npm run build`) | the API against local mocks of Resend, the webhook, the alert endpoint and the Blob API: every pre-existing check, plus attribution cleaning, priority, retry and budget, signature (verified by the Node reference verifier), store switch and failure modes, owner alert | 229 passed |
+| `python3 scripts/test_lead_api.py` (needs `npm run build`) | the API against local mocks of Resend, the webhook, and the alert endpoint: every pre-existing check, plus attribution cleaning, priority, retry and budget, signature (verified by the Node reference verifier), store switch and failure modes, owner alert | 229 passed |
 | `node --experimental-strip-types scripts/test_lead_priority.mjs` | every scoring rule and threshold | 54 passed |
 | `node --experimental-strip-types scripts/test_lead_client.mjs` | touch parsing, first/last touch rules, the three consent states for first-touch storage, referrer stripping, server-side cleaning, Calendly URL rewriting, the form start/abandon state machine, the Blob URL rule in production, and the Sheet script run with stand-ins for the Apps Script services | 87 passed |
 | `node scripts/test_lead_browser.mjs` (needs a build and an installed Chrome) | headless Chrome over the DevTools protocol: storage after a real arrival with UTM, click id and referrer; no cookie; page-view count across a client-side navigation; Calendly hrefs after a click on four pages and after a context-menu event; the server-rendered ConsultationCta link; `lead_form_start` once; the POST body of an inline and a popup form; `lead_form_abandon` on a real unload; a retry after a 502 reusing its submission id; localStorage empty without consent, filled after accepting, emptied after declining | 39 passed |
 
-Not verified anywhere: a real Resend send, a real Vercel Blob write, the Apps Script receiver, Calendly actually recording the UTM parameters on a booking, GA4 or Vercel Analytics receiving an event sent during page unload, and any browser other than Chrome.
+Not verified anywhere: a real Resend send, the Apps Script receiver, Calendly actually recording the UTM parameters on a booking, GA4 or Vercel Analytics receiving an event sent during page unload, and any browser other than Chrome.

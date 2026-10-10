@@ -318,9 +318,16 @@ export function readFirstTouch(local: StorageLike | null, session: StorageLike |
   return inSession;
 }
 
+/** A touch with its click ids removed unless the visitor has accepted analytics. */
+export function withoutClickIdsUnlessConsented(touch: Touch, local: StorageLike | null): Touch {
+  return hasConsent(local) ? touch : { ...touch, gclid: '', msclkid: '', fbclid: '' };
+}
+
 /** Records one page load. All storage decisions are here and in readFirstTouch. */
 export function syncTouches(env: { local: StorageLike | null; session: StorageLike | null; href: string; referrer: string; host: string; now: Date }) {
-  const current = parseTouch(env.href, env.referrer, env.now);
+  // Advertising click ids (gclid, msclkid, fbclid) identify one person's ad click. They are
+  // read only after an explicit analytics consent; without it they are never stored or sent.
+  const current = withoutClickIdsUnlessConsented(parseTouch(env.href, env.referrer, env.now), env.local);
   const stored = { first: readFirstTouch(env.local, env.session, env.now), last: read<Touch>(env.session, LAST_KEY) };
   const next = nextTouches(stored, current, env.host, env.now);
   if (next.first !== stored.first) {
@@ -351,6 +358,13 @@ export function applyConsentChoice() {
   if (typeof window === 'undefined') return;
   const { local, session: tab } = storages();
   readFirstTouch(local, tab, new Date());
+  // Declined or withdrawn: click ids captured while consent was in force are removed too.
+  if (!hasConsent(local)) {
+    for (const key of [FIRST_KEY, LAST_KEY]) {
+      const touch = read<Touch>(tab, key);
+      if (touch && (touch.gclid || touch.msclkid || touch.fbclid)) write(tab, key, withoutClickIdsUnlessConsented(touch, local));
+    }
+  }
 }
 
 /** Call on every page view (first load and each client-side navigation). */

@@ -58,8 +58,8 @@ Run `tsc`, a build and `seo_check.py` after every change to pages, metadata or s
 | `LEAD_FROM_EMAIL` | verified sender, e.g. `Peregrine IT <hello@peregrine-it.com>`; falls back to Resend's test sender |
 | `LEAD_WEBHOOK_URL` | optional CRM/automation webhook that receives every lead as JSON |
 | `NEXT_PUBLIC_GA_ID` | optional GA4 measurement ID (`G-…`); enables Consent Mode and the consent bar |
-| `LEAD_WEBHOOK_SECRET` | optional; signs each webhook body (`X-Peregrine-Signature`, HMAC-SHA256) |
+| `LEAD_WEBHOOK_SECRET` | optional, 16+ characters; signs each webhook request (`X-Peregrine-Signature: t=…,v1=…`, HMAC-SHA256 over timestamp and body) |
+| `LEAD_WEBHOOK_RETRY` | optional; `1` allows one webhook retry. Only for receivers that deduplicate on `ref` |
 | `LEAD_ALERT_WEBHOOK_URL` | optional; told when the notification email fails but another destination took the lead |
-| `LEAD_STORE` + `BLOB_READ_WRITE_TOKEN` | optional, experimental: `vercel-blob` writes one object per accepted lead. Off unless both are set; tested against a mock only |
 
 Lead flow, every variable and what is stored where: `docs/growth/lead/ARCHITECTURE.md`. Lead tests: `npm run test:leads`; tool tests: `npm run test:systems`.

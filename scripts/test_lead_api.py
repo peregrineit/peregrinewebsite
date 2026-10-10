@@ -11,7 +11,7 @@ where it matters: message ids, idempotency keys, error bodies, message status lo
   resend        RESEND_API_KEY only (RESEND_BASE_URL -> mock)
   both          both destinations
   unreachable   RESEND_BASE_URL points at a closed port
-  store         LEAD_STORE=vercel-blob + token, with the Blob API pointed at the mock
+  no store      the removed Blob adapter's variables set: must have no effect
 
 Usage: python3 scripts/test_lead_api.py      (exits 1 on any failure)
 """
@@ -28,7 +28,7 @@ NOTIFY = "info@peregrine-it.com"
 DEFAULTS = dict(emails=[], attempts=0, hooks=[], keys={}, key_bodies={}, events={}, fail=None, fail_once=None, fail_ack=None,
                 hook_fail=False, hook_sleep=0, hook_plan=[], hook_attempts=[], email_sleep=0, ack_sleep=0,
                 alerts=[], alert_fail=False, alert_sleep=0,
-                blobs={}, blob_puts=[], blob_fail=None, blob_sleep=0, blob_wrong_path=False)
+                blob_puts=[])
 state = dict(DEFAULTS, domains=[{"name": "test.invalid", "status": "verified"}])
 ERRORS = {
     422: {"statusCode": 422, "name": "validation_error", "message": "Invalid `from` field: hello@test.invalid is not allowed."},
@@ -77,7 +77,7 @@ class Mock(http.server.BaseHTTPRequestHandler):
             return self._send(200, {"ok": True})
         if self.path.startswith("/hook"):
             # hook_attempts: every request that arrived. hooks: the ones the receiver accepted.
-            state["hook_attempts"].append({"key": self.headers.get("Idempotency-Key"), "raw": raw})
+            state["hook_attempts"].append({"key": self.headers.get("Idempotency-Key"), "raw": raw, "sig": self.headers.get("X-Peregrine-Signature")})
             # hook_plan: one {"sleep": s, "status": code} per attempt, used up in order.
             step = state["hook_plan"].pop(0) if state["hook_plan"] else {}
             if state["hook_sleep"] or step.get("sleep"): time.sleep(state["hook_sleep"] or step["sleep"])
@@ -91,19 +91,10 @@ class Mock(http.server.BaseHTTPRequestHandler):
             return self._send(200, {"ok": True})
         self._send(404, {})
     def do_PUT(self):
-        # Stand-in for the Vercel Blob API as the @vercel/blob SDK calls it: PUT <api>/?pathname=<path>.
-        raw = self.rfile.read(int(self.headers.get("Content-Length", 0)))
-        url = urllib.parse.urlparse(self.path)
-        if url.path.rstrip("/") != "/blob": return self._send(404, {})
-        pathname = urllib.parse.parse_qs(url.query).get("pathname", [""])[0]
-        state["blob_puts"].append({"pathname": pathname, "headers": {k.lower(): v for k, v in self.headers.items()}})
-        if state["blob_sleep"]: time.sleep(state["blob_sleep"])
-        if self.headers.get("Authorization") != f"Bearer {BLOB_TOKEN}": return self._send(403, {"error": {"code": "forbidden"}})
-        if state["blob_fail"]: return self._send(state["blob_fail"], {"error": {"code": "mock_failure"}})
-        if pathname in state["blobs"] and self.headers.get("x-allow-overwrite") != "1": return self._send(400, {"error": {"code": "blob_already_exists"}})
-        state["blobs"][pathname] = json.loads(raw)
-        if state["blob_wrong_path"]: pathname = "somewhere/else.json"
-        self._send(200, {"url": f"https://mockstore.private.blob.vercel-storage.com/{pathname}", "pathname": pathname, "contentType": "application/json"})
+        # Nothing in the app issues a PUT. Any that arrives is recorded so tests can assert none did.
+        self.rfile.read(int(self.headers.get("Content-Length", 0)))
+        state["blob_puts"].append({"path": self.path})
+        self._send(200, {})
     def _send_raw(self, code, ctype, data):
         try:
             self.send_response(code)
@@ -177,12 +168,15 @@ def to_visitor(): return [e for e in state["emails"] if e["to"] != NOTIFY]
 BLOB_TOKEN = "vercel_blob_rw_mockstore_notARealToken"
 STORE_ENV = {"LEAD_STORE": "vercel-blob", "BLOB_READ_WRITE_TOKEN": BLOB_TOKEN, "LEAD_STORE_BLOB_API_URL": MOCK + "/blob"}
 SECRET = "test-shared-secret-not-a-real-one"
-def verifier(secret, header, raw):
+def verifier(secret, header, raw, now=None):
     """Exit code of the reference Node verifier (0 = valid) for a captured request."""
-    return subprocess.run(["node", os.path.join(ROOT, "docs/growth/lead/verify-signature.mjs"), secret, header], input=raw, capture_output=True).returncode
+    args = ["node", os.path.join(ROOT, "docs/growth/lead/verify-signature.mjs"), secret, header] + ([str(now)] if now is not None else [])
+    return subprocess.run(args, input=raw, capture_output=True).returncode
 
 RESEND_ENV = {"RESEND_API_KEY": "re_test_mock", "RESEND_BASE_URL": MOCK, "LEAD_FROM_EMAIL": FROM}
 HOOK_ENV = {"LEAD_WEBHOOK_URL": MOCK + "/hook"}
+# Retry is opt-in (LEAD_WEBHOOK_RETRY=1): only for receivers that deduplicate.
+HOOK_RETRY_ENV = {**HOOK_ENV, "LEAD_WEBHOOK_RETRY": "1"}
 
 def run():
     server = http.server.ThreadingHTTPServer(("127.0.0.1", MOCK_PORT), Mock)
@@ -210,8 +204,20 @@ def run():
         check("log: failure is logged with the reference, not swallowed", "Lead NOT accepted by any destination" in app_log())
     finally: stop_app(app)
 
-    # --- webhook only
+    # --- webhook, default settings: no retry, so a receiver that does not deduplicate cannot get a lead twice
     reset(); app = start_app(HOOK_ENV)
+    try:
+        st = get(); check("no retry by default: status says so", st.get("webhookRetry") is False, f"got {st}")
+        for code in (500, 503, 429):
+            reset(hook_plan=[{"status": code}]); s, b = post(LEAD, ip())
+            check(f"no retry by default: {code} -> one request, 502", s == 502 and len(state["hook_attempts"]) == 1 and not state["hooks"], f"got {s}, attempts {len(state['hook_attempts'])}")
+        # the dangerous case: the receiver recorded the lead and then answered 500
+        reset(hook_plan=[{"ctype": "application/json", "body": "{}", "recorded": True, "code": 500}]); s, b = post(LEAD, ip())
+        check("no retry by default: recorded-then-500 leaves exactly one row at the receiver", len(state["hooks"]) == 1 and len(state["hook_attempts"]) == 1, f"rows {len(state['hooks'])}, attempts {len(state['hook_attempts'])}")
+    finally: stop_app(app)
+
+    # --- webhook only (retry switched on)
+    reset(); app = start_app(HOOK_RETRY_ENV)
     try:
         s, b = post(LEAD, ip()); h = state["hooks"]
         check("webhook: 200 accepted", s == 200 and b.get("success") is True and b.get("status") == "accepted", f"got {s} {b}")
@@ -301,19 +307,32 @@ def run():
     finally: stop_app(app)
 
     # --- webhook with a shared secret: every request is signed
-    reset(); app = start_app({**HOOK_ENV, "LEAD_WEBHOOK_SECRET": SECRET})
+    reset(); app = start_app({**HOOK_RETRY_ENV, "LEAD_WEBHOOK_SECRET": SECRET})
     try:
         st = get(); check("signature: status says signed, without the secret", st.get("webhookSigned") is True and SECRET not in json.dumps(st), f"got {st}")
         reset(hook_plan=[{"status": 500}]); s, b = post(LEAD, ip()); h = state["hooks"]
         check("signature: accepted (after one retry)", s == 200 and len(h) == 1 and len(state["hook_attempts"]) == 2, f"got {s}")
         if h:
             sig, raw = h[0].get("_sig") or "", h[0]["_raw"]
-            check("signature: header is sha256=<HMAC-SHA256 of the raw body>", sig == "sha256=" + hmac.new(SECRET.encode(), raw, hashlib.sha256).hexdigest(), f"got {sig}")
+            m = re.fullmatch(r"t=(\d+),v1=([0-9a-f]{64})", sig); t = int(m.group(1)) if m else 0
+            check("signature: header is t=<unix seconds>,v1=<HMAC-SHA256 of '<t>.<raw body>'>",
+                  m is not None and abs(t - time.time()) < 60 and m.group(2) == hmac.new(SECRET.encode(), f"{t}.".encode() + raw, hashlib.sha256).hexdigest(), f"got {sig}")
             check("signature: reference verifier accepts it", verifier(SECRET, sig, raw) == 0)
+            check("signature: a replay after the age limit is rejected", verifier(SECRET, sig, raw, now=t + 301) == 1 and verifier(SECRET, sig, raw, now=t + 299) == 0)
+            check("signature: a rewritten timestamp is rejected", m is not None and verifier(SECRET, f"t={t + 1000},v1={m.group(2)}", raw, now=t + 1000) == 1)
+            at = state["hook_attempts"]
+            check("signature: the retry repeats the same signature, so it is the same request", len(at) == 2 and at[0].get("sig") == at[1].get("sig") == sig, f"got {[a.get('sig') for a in at]}")
             check("signature: wrong secret is rejected", verifier("another-secret", sig, raw) == 1)
             check("signature: altered body is rejected", verifier(SECRET, sig, raw.replace(b"Test Person", b"Someone Else")) == 1)
-            check("signature: missing or malformed header is rejected", verifier(SECRET, "", raw) == 1 and verifier(SECRET, sig.replace("sha256=", ""), raw) == 1 and verifier(SECRET, "sha256=zz", raw) == 1)
+            check("signature: missing or malformed header is rejected", verifier(SECRET, "", raw) == 1 and verifier(SECRET, sig.replace("t=", ""), raw) == 1 and verifier(SECRET, "sha256=zz", raw) == 1 and verifier(SECRET, "t=1,v1=zz", raw) == 1)
         check("signature: the secret is never logged or returned", SECRET not in app_log() and SECRET not in json.dumps(b))
+    finally: stop_app(app)
+
+    # --- a secret too short to be one is treated as not set, and the status says unsigned
+    reset(); app = start_app({**HOOK_ENV, "LEAD_WEBHOOK_SECRET": "short"})
+    try:
+        st = get(); s, b = post(LEAD, ip()); h = state["hooks"]
+        check("signature: a short secret does not sign, and status reports unsigned", st.get("webhookSigned") is False and s == 200 and h and h[0].get("_sig") is None, f"got {st}")
     finally: stop_app(app)
 
     # --- resend only (mocked)
@@ -358,7 +377,7 @@ def run():
         check("log: attribution is not logged", "Cj0KCQ-test_1.x" not in app_log() and "bing.com" not in app_log())
 
         reset(); s, b = post(LEAD, ip()); n = to_notify(); text = n[0].get("text", "") if n else ""
-        check("priority: notification has one Priority line with reasons", re.search(r"^Priority: High \(.*timeline ASAP \+2.*business email domain \+1.*\)$", text, re.M) is not None and text.count("Priority:") == 1, text)
+        check("priority: notification has one Priority line with reasons", re.search(r"^Priority: High \(.*timeline ASAP \+2.*email domain is not a free-mail provider \+1.*\)\. Sorting hint from the form fields only; nothing about the sender is verified\.$", text, re.M) is not None and text.count("Priority:") == 1, text)
         check("priority: not in the acknowledgement, not in the response", "riority" not in to_visitor()[0].get("text", "") and "priority" not in json.dumps(b).lower())
 
         # duplicates: the same submission sent twice
@@ -515,99 +534,28 @@ def run():
         check("alert: a failing alert endpoint is logged and changes nothing for the visitor", s == 200 and "Lead alert FAILED" in app_log(), f"got {s}")
     finally: stop_app(app)
 
-    # --- durable store behind its switch (src/lib/lead-store.ts). MOCK ONLY: the adapter has
-    #     never been run against the real Vercel Blob API.
+    # --- no durable store: the experimental Vercel Blob adapter was removed before release.
+    #     The variables that used to switch it on must now do nothing at all.
     reset(); app = start_app({**RESEND_ENV, **HOOK_ENV, **STORE_ENV})
     try:
-        st = get(); check("store: status names the store, never the token",
-                          st.get("store") == "vercel-blob" and st.get("durableStorage") == "webhook+vercel-blob" and BLOB_TOKEN not in json.dumps(st) and "mockstore" not in json.dumps(st), f"got {st}")
-        s, b = post({**LEAD, **ATTR}, ip()); blobs = state["blobs"]; ref = b.get("ref", "")
-        check("store: accepted lead is written once", s == 200 and len(blobs) == 1 and len(state["blob_puts"]) == 1, f"got {s}, {len(blobs)} objects")
-        check("store: response reports the write", b.get("store") == {"status": "stored"} and b.get("durableStorage") == "webhook+vercel-blob", f"got {b}")
-        if blobs:
-            path, obj = next(iter(blobs.items())); hd = state["blob_puts"][0]["headers"]
-            m = re.fullmatch(r"leads/\d{4}-\d{2}/" + re.escape(ref) + r"-([0-9a-f]{32})\.json", path)
-            check("store: path holds the reference and a 128-bit unguessable suffix", m is not None, f"got {path}")
-            check("store: private access, no second random suffix, JSON content type",
-                  hd.get("x-vercel-blob-access") == "private" and hd.get("x-add-random-suffix") == "0" and hd.get("x-content-type") == "application/json" and hd.get("x-api-version"), f"got {hd}")
-            check("store: object holds the lead", all(obj.get(k) == LEAD[k] for k in ("name", "email", "company", "message", "form", "service", "timeline", "pageUrl")) and obj.get("ref") == ref, f"got {obj}")
-            check("store: object holds the attribution", all(obj.get(k) == v for k, v in ATTR.items()) and obj.get("landingPage") == LEAD["landingPage"] and obj.get("utm") == LEAD["utm"])
-            check("store: object holds priority, time and how delivery went", obj.get("priority") == "high" and re.match(r"\d{4}-\d\d-\d\dT", obj.get("receivedAt", ""))
-                  and obj.get("delivery") == {"notification": "accepted", "webhook": "accepted"}, f"got {obj.get('delivery')}")
-            check("store: same receivedAt in the store and the webhook", state["hooks"] and state["hooks"][0].get("receivedAt") == obj.get("receivedAt"))
-            if m:
-                check("store: neither the path nor the token reaches the visitor or the log", m.group(1) not in json.dumps(b) and m.group(1) not in app_log()
-                      and BLOB_TOKEN not in app_log() and "Lead accepted" in app_log())
-        # the same submission twice replaces its own object; another lead gets another path
-        reset(); sid = str(uuid.uuid4())
-        post({**LEAD, "submissionId": sid}, ip()); s, b = post({**LEAD, "submissionId": sid}, ip())
-        check("store: a repeated submission is still one object", s == 200 and len(state["blobs"]) == 1 and len(state["blob_puts"]) == 2 and b.get("store") == {"status": "stored"}, f"got {len(state['blobs'])}")
-        s, b = post({**LEAD, "submissionId": sid, "company": "Acme Edited"}, ip())
-        check("store: an edited retry of the same submission is a second object, not an overwrite",
-              s == 200 and len(state["blobs"]) == 2 and sorted(o.get("company") for o in state["blobs"].values()) == ["Acme", "Acme Edited"], f"got {len(state['blobs'])}")
-        state["blobs"].clear(); post({**LEAD, "submissionId": sid}, ip())
-        post(LEAD, ip()); suffixes = {p.rsplit("-", 1)[1] for p in state["blobs"]}
-        check("store: a different lead gets a different path", len(state["blobs"]) == 2 and len(suffixes) == 2)
-        reset(); s, b = post({**LEAD, "pit_confirm_field": "x"}, ip())
-        check("store: a suspected-spam lead is stored too, marked", s == 200 and len(state["blobs"]) == 1 and next(iter(state["blobs"].values())).get("spamSuspected") is True)
-        # a failing store never fails the lead
-        for label, kw, reason in (("500", {"blob_fail": 500}, "store responded 500"), ("403", {"blob_fail": 403}, "store responded 403"),
-                                  ("unconfirmed write", {"blob_wrong_path": True}, "store did not confirm the write")):
-            reset(**kw); before = len(app_log()); s, b = post(LEAD, ip())
-            check(f"store {label}: lead still accepted, write reported failed", s == 200 and b.get("success") is True and b.get("store") == {"status": "failed"} and b.get("durableStorage") == "webhook", f"got {s} {b}")
-            check(f"store {label}: both emails and the webhook still went out", len(state["emails"]) == 2 and len(state["hooks"]) == 1)
-            check(f"store {label}: failure is logged with its reason", "Lead accepted with a failed step" in app_log()[before:] and reason in app_log()[before:], app_log()[before:][-300:])
-        reset(blob_sleep=6); t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
-        check("store hangs: lead accepted, write gives up after about 3 s", s == 200 and b.get("store") == {"status": "failed"} and dt < 4.5 and "store timed out" in app_log(), f"got {s} in {dt:.1f}s")
-        time.sleep(3.5)
-        # one deadline for webhook + store: together they never hold the response much beyond 5 s
-        reset(hook_sleep=7, blob_sleep=6); t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
-        check("budget: email accepted, webhook hangs, store hangs -> answered within about 5.5 s", s == 200 and dt < 6.0 and b.get("webhook") == {"status": "failed"} and b.get("store") == {"status": "failed"}, f"got {s} in {dt:.1f}s {b}")
-        time.sleep(3.0)
-        reset(hook_plan=[{"sleep": 3, "status": 500}, {"sleep": 7}], blob_sleep=6); t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
-        check("budget: slow 500, hung retry and hung store -> answered within about 5.5 s", s == 200 and dt < 6.0 and len(state["hook_attempts"]) == 2 and b.get("store") == {"status": "failed"}, f"got {s} in {dt:.1f}s {b}")
-        time.sleep(5.5)
-        reset(hook_sleep=7); t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t; obj = next(iter(state["blobs"].values()), {})
-        check("budget: webhook hangs, store healthy -> stored without waiting for the webhook to give up, and the object says the webhook was still pending",
-              s == 200 and dt < 6.0 and b.get("store") == {"status": "stored"} and b.get("durableStorage") == "vercel-blob" and obj.get("delivery") == {"notification": "accepted", "webhook": "pending"}, f"got {s} in {dt:.1f}s {b} {obj.get('delivery')}")
-        time.sleep(2.5)
-        reset(fail=500, hook_plan=[{"sleep": 3}], blob_sleep=6); t = time.time(); s, b = post(LEAD, ip()); dt = time.time() - t
-        check("budget: email down, webhook accepts after 3 s, store hangs -> still within about 5.5 s", s == 200 and dt < 6.0 and b.get("webhook") == {"status": "accepted"} and b.get("store") == {"status": "failed"}, f"got {s} in {dt:.1f}s {b}")
-        time.sleep(3.5)
-        # the rule: a store is a record of an accepted lead, never acceptance
-        reset(fail=500, hook_fail=True); s, b = post(LEAD, ip())
-        check("store: email and webhook both down -> 502 and nothing is stored", s == 502 and b.get("success") is False and not state["blob_puts"], f"got {s}, {len(state['blob_puts'])} writes")
-        reset(fail=500); s, b = post(LEAD, ip()); obj = next(iter(state["blobs"].values()), {})
-        check("store: email down, webhook accepted -> stored, and the object says the email failed", s == 200 and obj.get("delivery") == {"notification": "failed", "webhook": "accepted"}, f"got {s} {obj.get('delivery')}")
+        st = get(); s, b = post(LEAD, ip())
+        check("no store: the old switch variables have no effect on the status endpoint",
+              "store" not in st and st.get("durableStorage") == "webhook" and BLOB_TOKEN not in json.dumps(st), f"got {st}")
+        check("no store: lead accepted as usual, nothing written anywhere else",
+              s == 200 and b.get("success") is True and "store" not in b and b.get("durableStorage") == "webhook"
+              and not state["blob_puts"] and len(state["emails"]) == 2 and len(state["hooks"]) == 1, f"got {s} {b} puts={len(state['blob_puts'])}")
+        check("no store: the token is not logged", BLOB_TOKEN not in app_log())
     finally: stop_app(app)
-
-    # --- store with email only: the store is the durable record, the email is the acceptance
     reset(); app = start_app({**RESEND_ENV, **STORE_ENV})
     try:
-        st = get(); check("store+email: ok comes from the email; storage is the store", st.get("ok") is True and st.get("durableStorage") == "vercel-blob", f"got {st}")
-        s, b = post(LEAD, ip()); check("store+email: accepted and stored", s == 200 and len(state["blobs"]) == 1 and b.get("durableStorage") == "vercel-blob", f"got {s} {b}")
-        reset(fail=500); s, b = post(LEAD, ip())
-        check("store+email: email down -> 502, nothing stored (a store write is not acceptance)", s == 502 and not state["blob_puts"], f"got {s}")
+        st = get(); s, b = post(LEAD, ip())
+        check("no store: email only reports durableStorage none", st.get("durableStorage") == "none" and s == 200 and b.get("durableStorage") == "none" and not state["blob_puts"], f"got {st} {b}")
     finally: stop_app(app)
-
-    # --- store alone: not a destination
     reset(); app = start_app(STORE_ENV)
     try:
-        st = get(); check("store alone: status is not ok", st.get("ok") is False and st.get("store") == "vercel-blob", f"got {st}")
-        s, b = post(LEAD, ip()); check("store alone: 502 and nothing stored", s == 502 and not state["blob_puts"], f"got {s}")
+        st = get(); s, b = post(LEAD, ip())
+        check("no store: store variables alone are not a destination -> 502", st.get("ok") is False and s == 502 and b.get("success") is False and not state["blob_puts"], f"got {st} {s}")
     finally: stop_app(app)
-
-    # --- the switch: both LEAD_STORE and the token are needed
-    for label, env in (("token without LEAD_STORE", {"BLOB_READ_WRITE_TOKEN": BLOB_TOKEN, "LEAD_STORE_BLOB_API_URL": MOCK + "/blob"}),
-                       ("LEAD_STORE without token", {"LEAD_STORE": "vercel-blob", "LEAD_STORE_BLOB_API_URL": MOCK + "/blob"}),
-                       ("unknown LEAD_STORE", {**STORE_ENV, "LEAD_STORE": "s3"})):
-        reset(); app = start_app({**HOOK_ENV, **env})
-        try:
-            st = get(); s, b = post(LEAD, ip())
-            check(f"switch off ({label}): nothing is written, behaviour as before",
-                  st.get("store") == "none" and st.get("durableStorage") == "webhook" and s == 200 and not state["blob_puts"]
-                  and b.get("store") == {"status": "skipped"} and b.get("durableStorage") == "webhook", f"got {st} {s} {b}")
-        finally: stop_app(app)
 
     server.shutdown()
     try: os.remove(LOG)

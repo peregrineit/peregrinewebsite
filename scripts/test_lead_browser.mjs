@@ -44,7 +44,7 @@ const mock = http.createServer((req, res) => {
 
 // --- the built app, with only the webhook configured
 const env = { ...process.env, PORT: String(APP_PORT), LEAD_WEBHOOK_URL: `http://127.0.0.1:${MOCK_PORT}/hook` };
-for (const k of ['RESEND_API_KEY', 'LEAD_FROM_EMAIL', 'NEXT_PUBLIC_GA_ID', 'LEAD_STORE', 'LEAD_WEBHOOK_SECRET', 'LEAD_ALERT_WEBHOOK_URL']) delete env[k];
+for (const k of ['RESEND_API_KEY', 'LEAD_FROM_EMAIL', 'NEXT_PUBLIC_GA_ID', 'LEAD_WEBHOOK_RETRY', 'LEAD_WEBHOOK_SECRET', 'LEAD_ALERT_WEBHOOK_URL']) delete env[k];
 const app = spawn('npx', ['next', 'start'], { cwd: ROOT, env, stdio: 'ignore', detached: true });
 const profile = mkdtempSync(path.join(tmpdir(), 'pit-chrome-'));
 const chrome = spawn(CHROME, ['--headless=new', `--remote-debugging-port=${CDP_PORT}`, `--user-data-dir=${profile}`, '--no-first-run',
@@ -117,8 +117,8 @@ async function main() {
   await goto(`${APP}/services/saas-development?utm_source=test-src&utm_medium=cpc&gclid=G-123_x`, 'https://www.google.com/search?q=private+search+words');
   const last = await js(`JSON.parse(sessionStorage.getItem('pit_attribution'))`);
   const first = await js(`JSON.parse(sessionStorage.getItem('pit_first_touch'))`);
-  check('arrival: last touch in sessionStorage, referrer without its query string', last && last.landingPage === '/services/saas-development' && last.utm === 'utm_source=test-src&utm_medium=cpc'
-    && last.gclid === 'G-123_x' && last.referrer === 'https://www.google.com/search', JSON.stringify(last));
+  check('arrival: last touch in sessionStorage, referrer without its query string, no click id without consent', last && last.landingPage === '/services/saas-development' && last.utm === 'utm_source=test-src&utm_medium=cpc'
+    && last.gclid === '' && last.referrer === 'https://www.google.com/search', JSON.stringify(last));
   check('arrival: first touch in sessionStorage, same arrival', JSON.stringify(first) === JSON.stringify(last), JSON.stringify(first));
   check('arrival: without an analytics choice nothing is written to localStorage', (await js(`localStorage.length`)) === 0, await js(`JSON.stringify(Object.keys(localStorage))`));
   check('arrival: one page viewed', (await js(`sessionStorage.getItem('pit_pages_viewed')`)) === '1');
@@ -156,7 +156,7 @@ async function main() {
   check('pages: a client-side navigation (no reload) counts as a page view',
     (await js(`window.__marker`)) === 1 && Number(await js(`sessionStorage.getItem('pit_pages_viewed')`)) === before + 1, await js(`sessionStorage.getItem('pit_pages_viewed')`));
   const lastNow = await js(`JSON.parse(sessionStorage.getItem('pit_attribution'))`);
-  check('touch: internal page loads leave the last touch alone', lastNow.gclid === 'G-123_x' && lastNow.landingPage === '/services/saas-development', JSON.stringify(lastNow));
+  check('touch: internal page loads leave the last touch alone', lastNow.gclid === '' && lastNow.landingPage === '/services/saas-development', JSON.stringify(lastNow));
 
   // ---------------------------------------------------------------- 4. inline form: start, POST body, no abandon after success
   await goto(`${APP}/services/saas-development`);
@@ -178,11 +178,11 @@ async function main() {
   const body = posts.at(-1) || {};
   check('submit: the POST carries last touch, first touch and click id',
     body.landingPage === '/services/saas-development' && body.utm === 'utm_source=test-src&utm_medium=cpc' && body.referrer === 'https://www.google.com/search'
-    && body.firstLandingPage === '/services/saas-development' && body.firstUtm === body.utm && body.gclid === 'G-123_x'
+    && body.firstLandingPage === '/services/saas-development' && body.firstUtm === body.utm && body.gclid === ''
     && /^\d{4}-\d\d-\d\dT/.test(body.firstTouchAt) && /^\d{4}-\d\d-\d\dT/.test(body.lastTouchAt), JSON.stringify(body));
   check('submit: inline form reports where it sits', body.ctaLocation === 'inline:service:saas-development', body.ctaLocation);
   check('submit: pages viewed is the session count', body.pagesViewed === Number(await js(`sessionStorage.getItem('pit_pages_viewed')`)) && body.pagesViewed >= 6, String(body.pagesViewed));
-  check('submit: the webhook mock received the same attribution and a priority', hooks.length === 1 && hooks[0].gclid === 'G-123_x' && ['high', 'normal', 'low'].includes(hooks[0].priority) && hooks[0].ctaLocation === body.ctaLocation
+  check('submit: the webhook mock received the same attribution and a priority', hooks.length === 1 && hooks[0].gclid === '' && ['high', 'normal', 'low'].includes(hooks[0].priority) && hooks[0].ctaLocation === body.ctaLocation
     && hooks[0].pagesViewed === body.pagesViewed, JSON.stringify(hooks[0]));
   check('submit: lead_submit fired', (await events('lead_submit')).length === 1);
   await js(`window.dispatchEvent(new Event('pagehide'))`);
@@ -221,7 +221,7 @@ async function main() {
   // ---------------------------------------------------------------- 6. a retry after a server failure is the same submission
   await goto(`${APP}/contact`);
   const R = `${F}`;
-  failNext = 2;                       // both webhook attempts fail -> the API answers 502
+  failNext = 1;                       // the webhook attempt fails (no automatic retry by default) -> the API answers 502
   const sent = posts.length; const stored = hooks.length;
   await typeInto(`${R} [name=scName]`, 'TEST Retry');
   await typeInto(`${R} [name=scEmail]`, 'retry-check@example.com');
@@ -240,7 +240,7 @@ async function main() {
   await js(`localStorage.setItem('pit_analytics_consent', 'granted')`);
   await goto(`${APP}/services`);
   const keptFirst = await js(`JSON.parse(localStorage.getItem('pit_first_touch'))`);
-  check('consent accepted: the first touch is now also in localStorage', keptFirst && keptFirst.gclid === 'G-123_x' && keptFirst.landingPage === '/services/saas-development', JSON.stringify(keptFirst));
+  check('consent accepted: the first touch is now also in localStorage', keptFirst && keptFirst.gclid === '' && keptFirst.landingPage === '/services/saas-development', JSON.stringify(keptFirst));
   await js(`localStorage.setItem('pit_analytics_consent', 'denied')`);
   await goto(`${APP}/contact`);
   check('consent declined: the localStorage record is deleted on the next page', (await js(`localStorage.getItem('pit_first_touch')`)) === null

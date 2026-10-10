@@ -1,5 +1,8 @@
-// Lead qualification: a priority for the owner's inbox, derived only from what the
-// visitor already typed into the form. Deterministic; no lookups, no third parties.
+// A sorting hint for the owner's inbox, derived only from what the visitor typed into the
+// form. Deterministic; no lookups, no third parties. It is NOT a qualification: nothing
+// about the sender is verified, a company name is whatever was typed, and an email domain
+// that is not a free-mail provider says nothing about who owns it. The notification says so
+// next to the hint, and every reason is worded as the observed fact, not a conclusion.
 //
 // It goes into the notification email and the webhook payload. It is never returned to
 // the visitor and never changes whether or how a lead is delivered.
@@ -90,9 +93,9 @@ export function leadPriority(input: PriorityInput): PriorityResult {
   if ((input.company || '').trim()) add(1, 'company given');
 
   const domain = emailDomain(input.email);
-  if (DISPOSABLE_MAIL_DOMAINS.has(domain)) add(-3, 'disposable email domain');
+  if (DISPOSABLE_MAIL_DOMAINS.has(domain)) add(-3, 'email domain is on the throwaway-mailbox list');
   else if (FREE_MAIL_DOMAINS.has(domain)) add(0, 'free-mail address');
-  else add(1, 'business email domain');
+  else add(1, 'email domain is not a free-mail provider');
 
   const message = input.message.trim();
   const length = message === DEFAULT_MESSAGE ? 0 : message.length;
@@ -101,14 +104,17 @@ export function leadPriority(input: PriorityInput): PriorityResult {
   else if (length < 30) add(-1, length ? 'very short message' : 'no message');
 
   if (input.form === 'strategy-call') add(1, 'strategy-call form');
-  if ((input.service || '').trim()) add(1, 'sent from a service or landing page');
+  if ((input.service || '').trim()) add(1, 'sent from a service, industry, guide or case-study page');
 
   if (input.spamSuspected) return { priority: 'low', score, reasons: ['anti-spam field was filled', ...reasons] };
   return { priority: score >= HIGH_AT ? 'high' : score <= LOW_AT ? 'low' : 'normal', score, reasons };
 }
 
-/** "High (timeline ASAP +2; company given +1)" for the notification email. */
+/** "High (timeline ASAP +2; company given +1). Sorting hint ..." for the notification email. */
 export function priorityLine(result: PriorityResult): string {
   const label = result.priority[0].toUpperCase() + result.priority.slice(1);
-  return `${label} (${result.reasons.join('; ')})`;
+  return `${label} (${result.reasons.join('; ')}). ${PRIORITY_NOTE}`;
 }
+
+/** Shown beside the hint so it is not read as a verified qualification. */
+export const PRIORITY_NOTE = 'Sorting hint from the form fields only; nothing about the sender is verified.';

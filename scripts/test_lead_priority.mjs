@@ -36,7 +36,7 @@ eq(leadPriority({ ...base, timeline: 'exploring', company: 'Acme' }).priority, '
 // disposable addresses
 eq(score({ email: 'x@mailinator.com' }), -3, 'disposable domain -3');
 eq(score({ email: 'x@YOPMAIL.com' }), -3, 'disposable list is case-insensitive');
-eq(leadPriority({ ...base, email: 'x@guerrillamail.com' }).reasons[1], 'disposable email domain -3', 'disposable reason is named');
+eq(leadPriority({ ...base, email: 'x@guerrillamail.com' }).reasons[1], 'email domain is on the throwaway-mailbox list -3', 'disposable reason is named');
 eq([...DISPOSABLE_MAIL_DOMAINS].filter((d) => FREE_MAIL_DOMAINS.has(d)), [], 'no domain is on both lists');
 
 // timeline
@@ -88,7 +88,7 @@ eq([spam.priority, spam.score, spam.reasons[0]], ['low', 8, 'anti-spam field was
 
 // determinism and wording
 eq(leadPriority(best), leadPriority({ ...best }), 'same input, same result');
-eq(priorityLine(leadPriority({ ...base, timeline: 'asap', company: 'Acme' })), 'Normal (timeline ASAP +2; company given +1; free-mail address 0)', 'email line');
-eq(leadPriority({ email: 'a@acme.com', message: long(60) }).reasons, ['no timeline 0', 'business email domain +1'], 'optional fields may be absent');
+eq(priorityLine(leadPriority({ ...base, timeline: 'asap', company: 'Acme' })), 'Normal (timeline ASAP +2; company given +1; free-mail address 0). Sorting hint from the form fields only; nothing about the sender is verified.', 'email line carries the not-verified note');
+eq(leadPriority({ email: 'a@acme.com', message: long(60) }).reasons, ['no timeline 0', 'email domain is not a free-mail provider +1'], 'optional fields may be absent');
 
 console.log(`lead priority unit tests: ${passed} passed`);

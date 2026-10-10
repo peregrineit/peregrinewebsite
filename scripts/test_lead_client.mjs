@@ -9,7 +9,6 @@ import {
   stripReferrer, syncTouches, toLeadAttribution,
 } from '../src/lib/attribution.ts';
 import { createFormTracker } from '../src/lib/form-tracking.ts';
-import { blobApiUrl, blobPath, getLeadStore } from '../src/lib/lead-store.ts';
 
 let passed = 0;
 const eq = (actual, expected, name) => { assert.deepEqual(actual, expected, name); passed++; };
@@ -68,7 +67,8 @@ let local = store(), session = store();
 visit(local, session, AD_URL, 'https://www.google.com/search?q=x', day(1));
 eq(hasConsent(local), false, 'no choice: not consent');
 eq(local.has(FIRST), false, 'no choice: nothing is written to localStorage');
-eq([session.json(FIRST).gclid, session.json(FIRST).referrer, session.json(LAST).gclid], ['Cj0-x_1', 'https://www.google.com/search', 'Cj0-x_1'], 'no choice: first and last touch are in sessionStorage, click id included');
+eq([session.json(FIRST).gclid, session.json(FIRST).referrer, session.json(LAST).gclid], ['', 'https://www.google.com/search', ''], 'no choice: first and last touch are in sessionStorage, WITHOUT the click id');
+eq(session.json(FIRST).utm, 'utm_source=google', 'no choice: the campaign parameters are still recorded');
 eq(readFirstTouch(local, session, day(1)).landingPage, '/services/saas-development', 'no choice: the session first touch is what a submit sends');
 session = store();                                        // the tab is closed; a new visit
 visit(local, session, 'https://peregrine-it.com/contact', '', day(5));
@@ -94,12 +94,12 @@ eq([local.json(FIRST).landingPage, local.json(FIRST).gclid], ['/blog/x', ''], 'a
 local = store(); session = store();                       // accepts during the visit
 visit(local, session, AD_URL, '', day(1));
 local.setItem(CONSENT_KEY, 'granted'); readFirstTouch(local, session, day(1));
-eq(local.json(FIRST).gclid, 'Cj0-x_1', 'accepted during the visit: the session first touch is copied to localStorage');
+eq([local.json(FIRST).landingPage, local.json(FIRST).gclid], ['/services/saas-development', ''], 'accepted during the visit: the session first touch is copied to localStorage; a click id seen before consent was never kept');
 
 // 3. declined, and withdrawn after accepting
 local = store({ [CONSENT_KEY]: 'denied' }); session = store();
 visit(local, session, AD_URL, '', day(1));
-eq([local.has(FIRST), session.json(FIRST).gclid], [false, 'Cj0-x_1'], 'declined: sessionStorage only');
+eq([local.has(FIRST), session.json(FIRST).gclid, session.json(FIRST).landingPage], [false, '', '/services/saas-development'], 'declined: sessionStorage only, no click id');
 local = store({ [CONSENT_KEY]: 'granted' }); session = store();
 visit(local, session, AD_URL, '', day(1));
 local.setItem(CONSENT_KEY, 'denied'); readFirstTouch(local, session, day(1));
@@ -164,17 +164,6 @@ eq(run((tr) => { tr.input('strategy-call', '/a'); tr.input('strategy-call', '/b'
 eq(run((tr) => { tr.input('', '/a'); tr.hidden(); }), [], 'a form without a name is ignored');
 let keys = []; createFormTracker((e) => { keys = Object.keys(e); }).input('quick-project', '/');
 eq(keys.sort(), ['event', 'form', 'page'], 'events carry form and page only');
-
-// --- server configuration that cannot be exercised over HTTP without leaving the machine
-const REAL = 'https://vercel.com/api/blob';
-eq(blobApiUrl({}), REAL, 'blob API: default');
-eq(blobApiUrl({ LEAD_STORE_BLOB_API_URL: 'http://127.0.0.1:3073/blob/' }), 'http://127.0.0.1:3073/blob', 'blob API: override used outside production (tests)');
-eq(blobApiUrl({ VERCEL_ENV: 'preview', LEAD_STORE_BLOB_API_URL: 'http://127.0.0.1:3073/blob' }), 'http://127.0.0.1:3073/blob', 'blob API: override used on preview');
-eq(blobApiUrl({ VERCEL_ENV: 'production', LEAD_STORE_BLOB_API_URL: 'https://attacker.example/collect' }), REAL, 'blob API: override ignored in production, so the token cannot be sent elsewhere');
-eq([getLeadStore({}).name, getLeadStore({ LEAD_STORE: 'vercel-blob' }).name, getLeadStore({ BLOB_READ_WRITE_TOKEN: 't' }).name, getLeadStore({ LEAD_STORE: 's3', BLOB_READ_WRITE_TOKEN: 't' }).name,
-  getLeadStore({ LEAD_STORE: 'vercel-blob', BLOB_READ_WRITE_TOKEN: 't' }).name], ['none', 'none', 'none', 'none', 'vercel-blob'], 'store switch: needs LEAD_STORE=vercel-blob and the token');
-eq(/^leads\/2026-10\/abcd1234-[0-9a-f]{32}\.json$/.test(blobPath('abcd1234', '2026-10-10T00:00:00.000Z', 'token-a')), true, 'store path: month, reference, 128-bit suffix');
-eq(blobPath('abcd1234', '2026-10-10T00:00:00.000Z', 'token-a') === blobPath('abcd1234', '2026-10-10T00:00:00.000Z', 'token-b'), false, 'store path: the suffix depends on the token');
 
 // --- the Google Sheet receiver (scripts/lead-sheet-webhook.gs), run here with stand-ins for
 //     the Apps Script services. This checks the script's own logic, not Google.
