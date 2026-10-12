@@ -344,7 +344,7 @@ export default function Guide() {
         If your needs have outgrown a vendor plan, see our{' '}
         <Link href="/services/mls-idx-integration">MLS &amp; IDX integration service</Link> or{' '}
         <Link href="/contact">talk to an engineer</Link>. Every project starts with a 30-minute technical discovery
-        call, and if a $49 plan is all you need, we will say so.
+        call.
       </p>
     </GuideLayout>
   );

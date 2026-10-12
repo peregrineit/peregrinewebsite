@@ -240,9 +240,9 @@ export default function Guide() {
 
       <h2>4. Backend language and framework</h2>
       <p>
-        All five options below can replicate an MLS feed, serve an API and run background jobs. Benchmark rankings
-        rarely decide a listing platform, because the slow parts are the database, the index and the feed&apos;s
-        rate limits. Judge on the ecosystem for this work, whom you can hire, and how long each version is
+        All five options below can replicate an MLS feed, serve an API and run background jobs. In our view, language
+        benchmark rankings are a weak basis for this choice: in a listing platform the waiting is mostly in the
+        database, the search index and the feed&apos;s rate limits. We would judge on the ecosystem for this work, whom you can hire, and how long each version is
         supported:
       </p>
       <div className="cp-table-wrap cp-table-wide">

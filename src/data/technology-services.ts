@@ -76,7 +76,7 @@ export const technologyServices: Service[] = [
       { slug: 'recruitment-ats-platform', note: 'A Next.js recruiter portal with a Kanban pipeline, plus branded career pages for each company.' },
       { slug: 'insurance-claims-automation-platform', note: 'A Next.js workspace where adjusters handle claim intake, the review queue, corrections to extracted data and approvals.' },
     ],
-    guides: [],
+    guides: ['real-estate-website-seo-aeo-geo', 'real-estate-platform-tech-stack'],
     answers: {
       includes:
         'Peregrine\'s Next.js development covers server-rendered storefronts and public pages, signed-in portals and dashboards, admin consoles, white-label and multi-tenant sites, and performance work on existing Next.js apps. We build the React frontend together with the API, authentication and data layer behind it, so one team owns the whole product.',
