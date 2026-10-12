@@ -46,8 +46,8 @@ Every URL below was fetched on **2026-10-12** with `curl` (browser user agent, H
 | https://developers.google.com/search/docs/crawling-indexing/url-structure | not to use fragments to change the content of a page | "Don't use fragments to change the content of a page, as Google Search generally doesn't support URL fragments." |
 | https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action | sets how an element&apos;s region can be manipulated by a touchscreen user | verbatim on the page |
 | https://dd.reso.org/DD2.0/Property/InternetAddressDisplayYN/ | indicates whether or not the seller has allowed the listing address to be displayed on Internet sites | verbatim on the page |
-| https://dd.reso.org/DD2.0/Property/InternetAddressDisplayYN/ | usage adoption of 98%, 410 of 420 organizations | "Usage Adoption 98% 410 of 420 Organizations" |
 | https://dd.reso.org/DD2.0/Property/Latitude/ | the geographic latitude of some reference point on the property | verbatim on the page |
+| https://www.rfc-editor.org/rfc/rfc7946.html | exterior rings are counterclockwise, and holes are clockwise | "A linear ring MUST follow the right-hand rule with respect to the area it bounds, i.e., exterior rings are counterclockwise, and holes are clockwise." (added in QA, 2026-10-13) |
 
 ## Notes
 
@@ -57,3 +57,13 @@ Every URL below was fetched on **2026-10-12** with `curl` (browser user agent, H
 - Not stated because not verified: any MLS rule on what must happen on a map when InternetAddressDisplayYN is false (rules differ by MLS; the article says to read them); antimeridian behavior of any specific engine; any performance figure.
 - Peregrine statement: `/case-studies/scaling-real-estate-saas-platform` states "Elasticsearch — Search Layer: Handles property search, filters, geo-queries, auto-suggestions" and "Built property search indexing pipeline, auto-suggestion engine, and geo-based filtering." The article repeats only that.
 - The SQL, Elasticsearch request and JavaScript in the article are illustrative and were not executed.
+
+## Independent QA, 2026-10-13
+
+- Every URL above was fetched again with `curl` on 2026-10-13 (all HTTP 200) and every link text re-checked; paraphrased links were read in context. No statement was found to be wrong.
+- Confirmed: `ST_MakeEnvelope(xmin, ymin, xmax, ymax, srid)` argument order and SRID default; `&&` for geometry and geography with index use; `ST_Covers(A, B)` meaning "no point of B lies outside A" (the SQL passes the polygon first); `geo_bounding_box`, `geo_shape` on `geo_point` fields, `geotile_grid` precision 0 to 29; MongoDB `2dsphere`, `$geoWithin` and `$box`; supercluster defaults `radius` 40 and `maxZoom` 16, "Once loaded, index is immutable"; RESO `InternetAddressDisplayYN` definition.
+- Fixed in the examples: the GeoJSON polygon in the Elasticsearch request listed its exterior ring clockwise; it now runs counterclockwise as RFC 7946 requires (row above). The JavaScript sample now checks `res.ok` and does not report an error for a superseded request. The SQL names the column type and SRID in a comment.
+- Removed: the RESO adoption figure (98%, 410 of 420 organizations). It was correct on the page but not needed.
+- Reworded: unlabeled example numbers ("forty thousand homes", "60 listings") are now marked as examples or made general; "Many sites use the grid at low zoom" (unsourced) became a recommendation; a swapped coordinate pair "lands in Antarctica" became "an invalid latitude or a point in the wrong hemisphere".
+- The Elasticsearch request body was parsed as JSON (valid). Nothing was executed against a database or cluster.
+- Case study statement re-read in the case-study page: "Elasticsearch — Search Layer: Handles property search, filters, geo-queries, auto-suggestions" and "Built property search indexing pipeline, auto-suggestion engine, and geo-based filtering".

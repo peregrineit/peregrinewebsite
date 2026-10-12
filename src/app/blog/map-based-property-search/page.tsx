@@ -32,6 +32,7 @@ const DD_LATITUDE = 'https://dd.reso.org/DD2.0/Property/Latitude/';
 const MDN_ABORT = 'https://developer.mozilla.org/en-US/docs/Web/API/AbortController';
 const MDN_REPLACE = 'https://developer.mozilla.org/en-US/docs/Web/API/History/replaceState';
 const MDN_TOUCH = 'https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action';
+const RFC7946 = 'https://www.rfc-editor.org/rfc/rfc7946.html';
 const G_URL = 'https://developers.google.com/search/docs/crawling-indexing/url-structure';
 const G_FACETED = 'https://developers.google.com/crawling/docs/faceted-navigation';
 
@@ -40,17 +41,17 @@ export default function Guide() {
     <GuideLayout slug={SLUG}>
       <h2>Why map search is harder than it looks</h2>
       <p>
-        A filter form sends one query when the user presses a button. A map sends a query every time the user&apos;s
-        hand moves. Dragging across a city can change the search area dozens of times in a few seconds, each change
-        asks for a different set of listings, and the answers come back in whatever order the network delivers them.
-        At a zoomed-out view the honest answer may be forty thousand homes, which no browser should draw as forty
-        thousand pins. Meanwhile a list beside the map has to show the same homes, with the same count, at every
-        moment.
+        A filter form sends one query when the user presses a button. A map sends one every time the user&apos;s
+        hand moves. Dragging across a city changes the search area many times in a few seconds, and the answers
+        come back in whatever order the network delivers them.
+        At a zoomed-out view the honest answer may be tens of thousands of homes, which no browser should draw
+        as individual pins. Meanwhile a list beside the map has to show the same homes, with the same count, at
+        every moment.
       </p>
       <p>
         So map search is three problems at once: a spatial query that stays fast at any zoom, a way to summarize
         too many results, and a front end that keeps map, list and URL consistent while requests overlap. This
-        article covers each, for teams building it on PostGIS, Elasticsearch or MongoDB. For the index design
+        article covers each, for PostGIS, Elasticsearch and MongoDB. For the index design
         behind the Elasticsearch examples, see{' '}
         <Link href="/blog/real-estate-search-elasticsearch">designing a real estate search engine with Elasticsearch</Link>;
         for choosing between these stores in the first place, see the{' '}
@@ -74,9 +75,8 @@ export default function Guide() {
         <li><strong>One response updates both.</strong> Markers, clusters, list rows and the total come from the same response. A response that is no longer the newest is dropped.</li>
       </ol>
       <p>
-        In the example, three clusters (128, 42 and 9 listings) and five single markers add up to the 184 homes the
-        list reports. That arithmetic is the test of a correct implementation: at any moment, the map and the list
-        describe the same result set.
+        In the example, three clusters (128, 42 and 9 listings) and five single markers add up to the 184 homes
+        the list reports. That arithmetic is the test of a correct implementation.
       </p>
 
       <h2>Viewport queries: the bounding box</h2>
@@ -86,22 +86,23 @@ export default function Guide() {
       </p>
       <p>
         <strong>Panning changes which box; zooming changes how big it is.</strong> Each zoom level out roughly
-        quadruples the area and, in a dense market, the number of matching listings. A query that returns 60
-        listings at street level returns tens of thousands at metro level. The spatial filter is the same; what
+        quadruples the area and, in a dense market, the number of matching listings. A query that returns, for
+        example, 60 listings at street level can return tens of thousands at metro level. The spatial filter is
+        the same; what
         must change is what you ask for: individual listings when there are few, aggregated counts when there are
         many. Pick the mode from the result count or the zoom level on the server, not in the browser after
         downloading everything.
       </p>
       <p>
-        <strong>Raw bounds are unique; snapped bounds repeat.</strong> A viewport read from the map library has
-        many decimal places and is different for every user and every pixel of drag. We would snap the requested
-        bounds outward to a grid (for example the edges of the map tiles that cover the view) before querying.
-        The user sees no difference, small pans inside the same tiles need no new request, and the same request
-        recurs across users, which is what lets a cache help. Draw only what is inside the true viewport.
+        <strong>Raw bounds are unique; snapped bounds repeat.</strong> A viewport read from the map library is
+        different for every user and every pixel of drag. We would snap the requested bounds outward to a grid
+        (for example the edges of the map tiles that cover the view) before querying. Small pans inside the same
+        tiles then need no new request, and the same request recurs across users, which is what lets a cache
+        help. Draw only what is inside the true viewport.
       </p>
       <p>
-        Two edge cases deserve a test each: a box that crosses the 180th meridian, where the left longitude is
-        greater than the right, and a view tilted or rotated by the map library, where the visible area is not an
+        Two edge cases deserve a test each: a box that crosses the 180th meridian, where the west longitude is
+        greater than the east, and a view tilted or rotated by the map library, where the visible area is not an
         axis-aligned rectangle and you should query its enclosing box.
       </p>
 
@@ -172,14 +173,14 @@ export default function Guide() {
         Two notes from the documentation that affect design. MongoDB&apos;s <code>$geoWithin</code>{' '}
         <Src href={MDB_WITHIN}>does not require a geospatial index</Src>, so a missing index shows up as slowness,
         not as an error; and it <Src href={MDB_WITHIN}>does not return sorted results</Src>, so the list&apos;s
-        sort is a separate step. In all three stores the spatial clause is one filter among several. Price,
-        status and bedrooms narrow the same query, and which condition the planner uses first depends on how
-        selective each is, so test with realistic filter combinations and not only with the map.
+        sort is a separate step. In all three stores the spatial clause is one filter among several, and which
+        condition the planner uses first depends on how selective each is, so test with realistic filter
+        combinations and not only with the map.
       </p>
 
       <h3>An illustrative PostGIS query</h3>
       <p>Illustrative: table, column names and values are examples.</p>
-      <pre className="cp-code"><code>{`-- One-time: the spatial index
+      <pre className="cp-code"><code>{`-- geom is geometry(Point, 4326): longitude is x, latitude is y
 CREATE INDEX listing_search_geom_gix
   ON listing_search USING GIST (geom);
 
@@ -197,15 +198,15 @@ LIMIT  200;`}</code></pre>
 
       <h2>Polygon and drawn-area search</h2>
       <p>
-        Letting a buyer draw a shape is popular because neighborhoods in people&apos;s heads do not match postal
-        codes. The query is a point-in-polygon test, shown above for PostGIS and below for Elasticsearch. The
-        engineering is mostly in treating the polygon as untrusted input.
+        Buyers draw shapes because the neighborhoods in their heads do not match postal codes. The query is a
+        point-in-polygon test, shown above for PostGIS and below for Elasticsearch. The engineering is mostly in
+        treating the polygon as untrusted input.
       </p>
       <ul>
         <li>
           <strong>Reduce the vertices.</strong> A freehand stroke produces a point for every few pixels. Simplify
-          it in the browser before sending, and cap the vertex count on the server. A polygon with thousands of
-          vertices is slower to test and too long for a URL.
+          it in the browser and cap the vertex count on the server; a polygon with thousands of vertices is
+          slower to test and too long for a URL.
         </li>
         <li>
           <strong>Close and validate the ring.</strong> A stroke that crosses itself is not a valid polygon.
@@ -219,17 +220,17 @@ LIMIT  200;`}</code></pre>
         <li>
           <strong>Mind coordinate order.</strong> GeoJSON and these databases use longitude then latitude; many
           map libraries hand you latitude then longitude. MongoDB&apos;s documentation repeats the instruction{' '}
-          <Src href={MDB_BOX}>specify longitude first</Src> for a reason. A swapped pair for a US location lands
-          in Antarctica or fails validation; test for it.
+          <Src href={MDB_BOX}>specify longitude first</Src>. A swapped pair for a US location is either an
+          invalid latitude or a point in the wrong hemisphere; test for it. GeoJSON also fixes the
+          winding order: <Src href={RFC7946}>exterior rings are counterclockwise, and holes are clockwise</Src>.
         </li>
         <li>
-          <strong>Keep the viewport filter too.</strong> A drawn area and the visible box are separate
-          conditions. With both applied, panning away from the drawn area shows fewer results instead of loading
-          markers the user cannot see.
+          <strong>Keep the viewport filter too.</strong> With both conditions applied, panning away from the
+          drawn area shows fewer results instead of loading markers the user cannot see.
         </li>
         <li>
-          <strong>Store it as data.</strong> A drawn area that becomes a saved search should be stored as GeoJSON
-          with the other criteria, not as a URL string.
+          <strong>Store it as data.</strong> A drawn area that becomes a saved search is stored as GeoJSON with
+          the other criteria, not as a URL string.
         </li>
       </ul>
       <p>
@@ -240,8 +241,7 @@ LIMIT  200;`}</code></pre>
 
       <h2>Clustering at low zoom</h2>
       <p>
-        When the result is too large to draw as individual markers, group it. There are two places to do the
-        grouping, and they suit different sizes of result.
+        When the result is too large to draw as individual markers, group it, on the server or in the browser.
       </p>
       <h3>On the server: grid aggregations</h3>
       <p>
@@ -250,9 +250,9 @@ LIMIT  200;`}</code></pre>
         where <Src href={ES_GEOTILE}>each cell corresponds to a map tile as used by many online map sites</Src> and
         the precision is a zoom level <Src href={ES_GEOTILE}>between 0 and 29, inclusive</Src>. The{' '}
         <code>geohash_grid</code> aggregation does the same with geohash cells at{' '}
-        <Src href={ES_GEOHASH}>a choice of precision between 1 and 12</Src>. Because tile cells line up with the
-        map&apos;s own zoom levels, the tile grid is the natural choice for a web map: ask for a precision a few
-        levels above the current zoom and each map tile is divided into a fixed number of cells.
+        <Src href={ES_GEOHASH}>a choice of precision between 1 and 12</Src>. Because tile cells line up with a
+        web map&apos;s own zoom levels, we would default to the tile grid: ask for a precision a few levels above
+        the current zoom and each map tile is divided into a fixed number of cells.
       </p>
       <p>Three details make it work well:</p>
       <ul>
@@ -267,7 +267,7 @@ LIMIT  200;`}</code></pre>
           cluster there.
         </li>
         <li>
-          <strong>Enjoy the stability.</strong> Grid cells are fixed to the world, not to the viewport, so
+          <strong>Cells are stable.</strong> Grid cells are fixed to the world, not to the viewport, so
           clusters do not reshuffle when the user pans. The price is that a tight group of homes on a cell
           boundary is split in two.
         </li>
@@ -280,8 +280,7 @@ LIMIT  200;`}</code></pre>
 
       <h3>In the browser: supercluster</h3>
       <p>
-        The other approach sends the points to the browser and clusters them there. The supercluster library
-        describes itself as <Src href={SUPERCLUSTER}>a very fast JavaScript library for geospatial point clustering for browsers and Node</Src>.
+        The supercluster library describes itself as <Src href={SUPERCLUSTER}>a very fast JavaScript library for geospatial point clustering for browsers and Node</Src>.
         You load GeoJSON points once, then call <code>getClusters(bbox, zoom)</code> on every map movement with no
         network request; <code>getClusterExpansionZoom</code> returns{' '}
         <Src href={SUPERCLUSTER}>the zoom on which the cluster expands into several children</Src>, which is the
@@ -309,9 +308,9 @@ LIMIT  200;`}</code></pre>
       <p>
         A sound default for an MLS-scale site is a hybrid: grid aggregations from the server while the result is
         large, and individual points (clustered in the browser if they overlap) once the filtered result in view
-        is small. For a single brokerage&apos;s own listings, where the whole set is a few hundred points,
-        client-side clustering alone is simpler and needs no search engine. The last row of the table matters
-        more than it seems; it returns in the section on address display below.
+        is small. For a single brokerage&apos;s own listings, where the whole set may be a few hundred points,
+        client-side clustering alone is simpler and needs no search engine. The last row of the table returns in
+        the section on address display below.
       </p>
 
       <h3>An illustrative Elasticsearch request</h3>
@@ -338,8 +337,8 @@ LIMIT  200;`}</code></pre>
               "shape": {
                 "type": "Polygon",
                 "coordinates": [[
-                  [-97.84, 30.38], [-97.70, 30.40], [-97.66, 30.30],
-                  [-97.74, 30.22], [-97.86, 30.26], [-97.84, 30.38]
+                  [-97.84, 30.38], [-97.86, 30.26], [-97.74, 30.22],
+                  [-97.66, 30.30], [-97.70, 30.40], [-97.84, 30.38]
                 ]]
               },
               "relation": "intersects"
@@ -360,24 +359,22 @@ LIMIT  200;`}</code></pre>
 
       <h2>Keeping the list and the map in sync</h2>
       <p>
-        The list and the map are two views of one result set, and most visible bugs in map search are the two
-        disagreeing: a count of 184 over a list that ends at 150, a marker with no row, a row whose marker is off
-        screen. The rules we would hold to:
+        The list and the map are two views of one result set, and the visible bugs are the two disagreeing: a
+        count that does not match the list, a marker with no row. The rules we would hold to:
       </p>
       <ul>
-        <li><strong>One criteria object.</strong> Filters, bounds, drawn area and sort live in one state object. Both the list request and the map request are built from it, by the same function, on the server.</li>
+        <li><strong>One criteria object.</strong> Filters, bounds, drawn area and sort live in one state object. The list request and the map request are both built from it, by the same function, on the server.</li>
         <li><strong>One response, or one version.</strong> Either a single request returns hits, total and clusters together, or each response carries the criteria version it answers and the UI applies only matching pairs.</li>
         <li><strong>One total.</strong> The number above the list is the total of the query, and the cluster counts sum to it. Test that sum automatically.</li>
-        <li><strong>The list is a page; the map is the whole set.</strong> The list shows the first page of the sort order. The map shows every match, as markers or clusters. Do not draw only the markers for the current list page unless the design says so explicitly.</li>
+        <li><strong>The list is a page; the map is the whole set.</strong> The list shows the first page of the sort order; the map shows every match, as markers or clusters.</li>
         <li><strong>Shared identity.</strong> Hovering a row highlights its marker and the reverse, keyed by listing ID. When the listing is inside a cluster, highlight the cluster.</li>
-        <li><strong>A choice about movement.</strong> &quot;Search as I move the map&quot; on by default, with a visible way to turn it off and a &quot;search this area&quot; button when it is off. Selecting a list row should not move the map and trigger a new search that removes the row.</li>
+        <li><strong>A choice about movement.</strong> &quot;Search as I move the map&quot; with a visible way to turn it off. Selecting a list row should not move the map and trigger a search that removes the row.</li>
       </ul>
 
       <h2>Debouncing and cancelling requests</h2>
       <p>
-        During a drag the map fires movement events continuously. Sending a query for each wastes the server and,
-        worse, produces responses that arrive out of order: the answer for where the map was two seconds ago can
-        land after the answer for where it is now. Two mechanisms, used together, prevent that.
+        During a drag the map fires movement events continuously. Sending a query for each wastes the server
+        and produces responses that arrive out of order. Two mechanisms, used together, prevent that.
       </p>
       <p>
         <strong>Debounce:</strong> wait until movement has paused for a short interval before querying, or query
@@ -402,12 +399,13 @@ const onMapSettled = debounce(async () => {
 
   try {
     const res = await fetch('/api/search?' + toQuery(state), { signal: controller.signal });
+    if (!res.ok) throw new Error('search failed: ' + res.status);
     const data = await res.json();
     if (mine !== latest) return;               // a newer request has started; drop this one
     renderMap(data.clusters, data.markers);
     renderList(data.hits, data.total);
   } catch (err) {
-    if (err.name !== 'AbortError') showSearchError(err);
+    if (err.name !== 'AbortError' && mine === latest) showSearchError(err);
   }
 }, 250);`}</code></pre>
       <p>
@@ -417,19 +415,17 @@ const onMapSettled = debounce(async () => {
 
       <h2>URL state: shareable and crawlable are different goals</h2>
       <p>
-        A buyer who sends a link expects the recipient to see the same map. That requires the bounds, zoom,
-        filters and drawn area in the URL, updated as the map moves. For continuous movement use{' '}
-        <code>history.replaceState</code>, which{' '}
+        A buyer who sends a link expects the recipient to see the same map, so bounds, zoom, filters and drawn
+        area go in the URL as the map moves. For continuous movement use <code>history.replaceState</code>, which{' '}
         <Src href={MDN_REPLACE}>modifies the current history entry</Src> instead of adding one, so the back button
-        leaves the search rather than replaying forty pans. Add a real history entry only for deliberate steps,
+        leaves the search instead of replaying every pan. Add a real history entry only for deliberate steps,
         such as choosing a city or applying a filter.
       </p>
       <p>
         Crawlable is a separate question, and the answer is mostly no. Every viewport is a distinct URL, and
         Google describes what that produces: parameter-based faceted navigation{' '}
-        <Src href={G_FACETED}>can generate infinite URL spaces</Src>, with crawlers spending time on URLs that
-        are of no use. Its guidance offers two directions. If the filtered URLs need not be indexed, prevent
-        crawling of them, or keep the state in the fragment, since{' '}
+        <Src href={G_FACETED}>can generate infinite URL spaces</Src>. Its guidance offers two directions. If the
+        filtered URLs need not be indexed, prevent crawling of them, or keep the state in the fragment, since{' '}
         <Src href={G_FACETED}>Google Search generally doesn&apos;t support URL fragments in crawling and indexing</Src>.
         If some must be indexable, keep them orderly:{' '}
         <Src href={G_FACETED}>use the industry standard URL parameter separator</Src> and return a 404{' '}
@@ -439,19 +435,15 @@ const onMapSettled = debounce(async () => {
       <ul>
         <li>
           <strong>Place in the path, crawlable.</strong> City, neighborhood and postal-code pages have stable
-          paths, a server-rendered first page of listings, and links to listing detail pages. These are the pages
-          that should rank. Google&apos;s URL guidance is to use the History API for content changed by JavaScript
-          and <Src href={G_URL}>not to use fragments to change the content of a page</Src>, which applies to
-          these.
+          paths, a server-rendered first page of listings, and links to listing detail pages. Google&apos;s URL
+          guidance is to use the History API for content changed by JavaScript and{' '}
+          <Src href={G_URL}>not to use fragments to change the content of a page</Src>, which applies to these.
         </li>
         <li>
           <strong>Viewport and drawn area as state, not crawled.</strong> Bounds, zoom and polygon are query
           parameters or a fragment on top of the place page, excluded from crawling and canonicalized to the place
-          page. They exist for people sharing links.
-        </li>
-        <li>
-          <strong>The server can render from the URL.</strong> When the state is in query parameters, the first
-          response can already contain the matching list, so a shared link does not open on an empty map.
+          page. With query parameters, the server can render the matching list in the first response, so a shared
+          link does not open on an empty map.
         </li>
       </ul>
       <p>
@@ -470,25 +462,20 @@ const onMapSettled = debounce(async () => {
           scroll. Decide which you have and test both directions.
         </li>
         <li>
-          <strong>Bottom sheet.</strong> The common pattern is a full-screen map with the list in a sheet that
-          rests at a peek height, expands to half and to full. Tapping a marker should show that listing&apos;s
-          card without covering the marker. When the sheet covers part of the map, the searched bounds should be
-          the visible part, or results will hide under the sheet.
+          <strong>Bottom sheet.</strong> A common pattern is a full-screen map with the list in a sheet that
+          rests at a peek height and expands. When the sheet covers part of the map, search the visible part, or
+          results will hide under the sheet.
         </li>
         <li>
-          <strong>Drawing.</strong> Freehand drawing conflicts with panning, so drawing needs an explicit mode with
-          a clear way out.
-        </li>
-        <li>
-          <strong>Targets.</strong> Markers a few pixels wide are hard to tap. Cluster more aggressively on small
-          screens and make single markers large enough to hit.
+          <strong>Drawing and targets.</strong> Freehand drawing conflicts with panning, so it needs an explicit
+          mode with a clear way out. Markers a few pixels wide are hard to tap: cluster more aggressively on
+          small screens and make single markers large enough to hit.
         </li>
         <li>
           <strong>Low-end devices.</strong> The costs are the map library itself, the number of marker elements
-          and the size of each response. Load the map code only when the map is shown, render markers on the
-          map&apos;s canvas layer instead of as hundreds of HTML elements, prefer server-side clusters so the
-          phone never holds the full point set, and return only the fields a marker needs. Measure on a real
-          mid-range phone, not on a laptop with the window narrowed; the loading side of this is covered in{' '}
+          and the size of each response. Load the map code only when the map is shown, prefer server-side clusters
+          so the phone never holds the full point set, and return only the fields a marker needs. The loading
+          side is covered in{' '}
           <Link href="/blog/listing-page-core-web-vitals">optimizing listing pages for Core Web Vitals</Link>.
         </li>
       </ul>
@@ -498,15 +485,13 @@ const onMapSettled = debounce(async () => {
         A map pin is an address. The RESO Data Dictionary defines a field for the seller&apos;s choice:{' '}
         <code>InternetAddressDisplayYN</code>{' '}
         <Src href={DD_ADDRESS}>indicates whether or not the seller has allowed the listing address to be displayed on Internet sites</Src>.
-        The dictionary page shows it in wide use, with{' '}
-        <Src href={DD_ADDRESS}>usage adoption of 98%, 410 of 420 organizations</Src>, as generated on October 12,
-        2026. Coordinates come from the same record:{' '}
+        Coordinates come from the same record:{' '}
         <Src href={DD_LATITUDE}>the geographic latitude of some reference point on the property</Src>.
       </p>
       <p>
-        The field tells you the seller&apos;s instruction. What your site must do about the map when it is false
-        is set by your MLS&apos;s rules and your license, which you should read; we do not state a universal rule
-        here. As an engineering matter, plan for three consequences:
+        The field records the seller&apos;s instruction. What your site must do about the map when it is false
+        is a question for your MLS&apos;s rules and your license; we do not state a rule here. As an engineering
+        matter, plan for three consequences:
       </p>
       <ul>
         <li>
@@ -535,9 +520,9 @@ const onMapSettled = debounce(async () => {
 
       <h2>Map provider terms: check, do not assume</h2>
       <p>
-        The map itself comes from a provider, under terms that differ by provider and by plan and that change. We
-        do not summarize any provider&apos;s terms here. Before committing to one, read its current terms and
-        pricing pages for the answers to these questions:
+        The map comes from a provider, under terms that differ by provider and plan and that change. We do not
+        summarize any provider&apos;s terms. Before committing to one, read its current terms and pricing pages
+        for the answers to these questions:
       </p>
       <ul className="cp-checklist">
         <li>What is billed: map loads, tile requests, sessions, monthly users, geocoding calls? Which of those does a pan or zoom generate?</li>
@@ -574,18 +559,16 @@ const onMapSettled = debounce(async () => {
       </p>
 
       <GuideFaq slug={SLUG} items={[
-        { question: 'Should map clustering happen on the server or in the browser?', answer: ['It depends on how many listings match. Server-side grid aggregations return one count per cell whatever the result size; Elasticsearch’s geotile grid ', ['groups geo_point and geo_shape values into buckets that represent a grid', ES_GEOTILE], '. Client-side clustering with a library such as supercluster is instant on pan and zoom but needs every matching point in the browser, and ', ['once loaded, index is immutable', SUPERCLUSTER], '. Many sites use the grid at low zoom and points at high zoom.'] },
+        { question: 'Should map clustering happen on the server or in the browser?', answer: ['It depends on how many listings match. Server-side grid aggregations return one count per cell whatever the result size; Elasticsearch’s geotile grid ', ['groups geo_point and geo_shape values into buckets that represent a grid', ES_GEOTILE], '. Client-side clustering with a library such as supercluster is instant on pan and zoom but needs every matching point in the browser, and ', ['once loaded, index is immutable', SUPERCLUSTER], '. A sound default is the grid while the result is large and points once it is small.'] },
         { question: 'Do I need Elasticsearch for map search, or is PostGIS enough?', answer: ['PostGIS is enough for viewport and polygon queries: it ', ['uses an R-Tree index implemented on top of GiST to index spatial data', GIS_INDEX], ', and a grouped query on snapped coordinates can produce cluster counts. A search engine becomes worthwhile when the same search also needs autocomplete, facet counts and text relevance at volume.'] },
-        { question: 'How do I stop the map from sending a query on every pixel of a drag?', answer: ['Debounce the movement, query when it settles, and cancel the request in flight. AbortController ', ['allows you to abort one or more Web requests as and when desired', MDN_ABORT], '. Also ignore any response that is not the most recent, because a cancelled request may already have been answered.'] },
-        { question: 'Should map search URLs be indexed by Google?', answer: ['Usually not. Viewport and filter URLs are a form of faceted navigation, which ', ['can generate infinite URL spaces', G_FACETED], '. Keep city and neighborhood pages crawlable and server-rendered, and treat bounds, zoom and drawn areas as shareable state that is excluded from crawling or canonicalized to the place page.'] },
         { question: 'Can we show a pin for a listing whose address is withheld?', answer: ['Check your MLS rules. The RESO field InternetAddressDisplayYN ', ['indicates whether or not the seller has allowed the listing address to be displayed on Internet sites', DD_ADDRESS], ', and an exact pin discloses the address as surely as the text does. Plan for a display-safe location and never send exact coordinates for such a listing to the browser.'] },
       ]} />
 
       <p className="cp-note">
-        Database, search engine, browser and Google documentation was read on October 12, 2026, as was the RESO
-        Data Dictionary page and the supercluster README. Queries and code are illustrative and are not drop-in
-        implementations. Address display rules are set by each MLS and license; map provider terms are set by
-        each provider. Read the current versions of both.
+        Database, search engine, browser and Google documentation, the RESO Data Dictionary pages and the
+        supercluster README were read on October 12 and 13, 2026. Queries and code are illustrative, were not
+        executed, and are not drop-in implementations. Address display rules are set by each MLS and license; map
+        provider terms are set by each provider. Read the current versions of both.
       </p>
       <p>
         Building or fixing map search on MLS data? See our{' '}
