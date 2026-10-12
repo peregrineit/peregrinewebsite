@@ -135,6 +135,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'self-storage-software-build-vs-buy',
+    hero: 'Illustration: a row of storage unit doors under two cards labelled Buy and Build.',
     related: ['custom-saas-vs-off-the-shelf-crm-for-brokerages'],
     cta: {
       heading: 'Weighing a Custom Self-Storage Platform?',
@@ -183,6 +184,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'mls-data-pipeline-architecture',
+    hero: 'Illustration: five pipeline stages from connector to search index and API, with media worker and display policy alongside.',
     related: ['real-estate-platform-tech-stack', 'mls-boards-compared'],
     cta: {
       heading: 'Designing or Repairing an MLS Pipeline?',
@@ -199,6 +201,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'laravel-upgrade-checklist',
+    hero: 'Illustration: Laravel versions 9 to 13 in a row above an upgrade checklist and three routes: upgrade in place, replace in stages, rewrite.',
     related: ['odoo-implementation-cost', 'custom-saas-vs-off-the-shelf-crm-for-brokerages'],
     cta: {
       heading: 'Planning a Laravel Upgrade?',
@@ -215,6 +218,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'investor-portal-security-checklist',
+    hero: 'Illustration: a shield with a padlock and four checklist items: access by role and entity, watermarked documents, audit trail, sessions and sign-in.',
     related: ['investor-portal-vs-file-sharing', 'cost-to-build-a-real-estate-platform'],
     cta: {
       heading: 'Specifying or Reviewing an Investor Portal?',
@@ -231,6 +235,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'odoo-shopify-marketplace-integration',
+    hero: 'Illustration: Odoo and Shopify connected by arrows, with the sync direction for products, stock, orders and refunds.',
     related: ['odoo-implementation-cost', 'laravel-upgrade-checklist'],
     cta: {
       heading: 'Connecting Odoo to a Sales Channel?',
@@ -247,7 +252,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'cheapest-idx-options',
-    hero: 'Illustration: price cards showing the lowest published IDX plans, from $49 per month.',
+    hero: 'Illustration: price cards for the lowest published IDX plans ($49, $60 and $99 per month) beside a listing search screen.',
     related: ['mls-idx-integration-cost', 'idx-vendor-vs-custom-build'],
     cta: {
       heading: 'Outgrown a Low-Cost IDX Plan?',

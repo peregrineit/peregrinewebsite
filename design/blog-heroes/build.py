@@ -114,8 +114,72 @@ seo = page("Guide · Search visibility", "<em>SEO, AEO &amp; GEO</em> for real e
 .core{position:absolute;right:186px;top:246px;width:136px;text-align:center;font-size:16px;font-weight:800;line-height:1.25;color:#04121c;background:#f8fafc;border-radius:14px;padding:10px 8px;box-shadow:0 10px 30px rgba(2,6,23,.6)}
 .q{position:absolute;right:38px;top:6px;display:flex;gap:10px;align-items:center;font-size:16.5px;color:#e2e8f0;padding:12px 18px;border-radius:999px}""")
 
+
+pipeline = page("Guide · MLS data pipeline", "How an <em>MLS data pipeline</em> works", "A nine-stage reference design for the RESO Web API, with failure modes.",
+ "<b>Replication</b><span class='dot'></span><b>Normalization</b><span class='dot'></span><b>Compliance</b><span class='dot'></span><b>Monitoring</b>",
+ """<div class="flow"><div class="nd glass"><i>1</i><b>Connector</b><small>OAuth 2 · paging · rate limits</small></div><div class="ar"></div>
+<div class="nd glass"><i>2</i><b>Replication</b><small>cursor per feed</small></div><div class="ar"></div>
+<div class="nd glass glow"><i>3</i><b>Normalize</b><small>RESO Data Dictionary</small></div><div class="ar"></div>
+<div class="nd glass"><i>4</i><b>Canonical store</b><small>one row per listing per feed</small></div><div class="ar"></div>
+<div class="nd glass"><i>5</i><b>Search index &amp; API</b><small>rebuildable from the store</small></div></div>
+<div class="side glass">Media worker</div><div class="side s2 glass">Display policy</div>""",
+ """.left{width:540px}h1{font-size:54px}.flow{position:absolute;right:120px;top:12px;width:330px;display:flex;flex-direction:column;align-items:stretch}
+.nd{display:grid;grid-template-columns:44px 1fr;column-gap:14px;align-items:center;padding:13px 18px;border-radius:16px}.nd i{grid-row:span 2;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:19px;color:#04121c;background:linear-gradient(135deg,#22d3ee,#818cf8)}
+.nd b{font-size:20px}.nd small{font-size:14px;color:#94a3b8}.ar{height:22px;width:2px;margin:0 auto;background:linear-gradient(#22d3ee,#818cf8);position:relative}.ar:after{content:'';position:absolute;left:-5px;bottom:-2px;border:6px solid transparent;border-top-color:#818cf8}
+.side{position:absolute;right:0;top:214px;font-size:15px;font-weight:700;color:#a5f3fc;padding:12px 14px;border-radius:14px;writing-mode:vertical-rl}.side.s2{top:380px;color:#c4b5fd}""")
+
+security = page("Guide · Investor portal security", "Investor portal <em>security checklist</em>", "Access by role and entity, document controls, audit trail and sign-in, mapped to public standards.",
+ "<b>OWASP ASVS 5.0</b><span class='dot'></span><b>NIST SP 800-63B</b>",
+ """<svg class="sh" viewBox="0 0 300 340"><defs><linearGradient id="s1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#6366f1"/></linearGradient><filter id="b"><feGaussianBlur stdDeviation="14"/></filter></defs>
+<path d="M150 14 L276 60 V168 C276 244 222 300 150 326 C78 300 24 244 24 168 V60 Z" fill="#22d3ee" opacity=".35" filter="url(#b)"/>
+<path d="M150 14 L276 60 V168 C276 244 222 300 150 326 C78 300 24 244 24 168 V60 Z" fill="#0b1630" stroke="url(#s1)" stroke-width="5"/>
+<path d="M150 44 L250 80 V168 C250 228 208 274 150 296 C92 274 50 228 50 168 V80 Z" fill="url(#s1)" opacity=".16"/>
+<rect x="104" y="150" width="92" height="76" rx="14" fill="url(#s1)"/><path d="M122 150 v-22 a28 28 0 0 1 56 0 v22" fill="none" stroke="url(#s1)" stroke-width="13" stroke-linecap="round"/>
+<circle cx="150" cy="182" r="9" fill="#06202b"/><rect x="146" y="184" width="8" height="22" rx="4" fill="#06202b"/></svg>
+<div class="ck glass k1">✓ Access by role and entity</div><div class="ck glass k2">✓ Watermarked documents</div><div class="ck glass k3">✓ Audit trail</div><div class="ck glass k4">✓ Sessions and sign-in</div>""",
+ """.left{width:560px}h1{font-size:54px}.sh{position:absolute;right:150px;top:44px;width:270px;height:306px}
+.ck{position:absolute;font-size:16.5px;font-weight:700;color:#e2e8f0;padding:12px 18px;border-radius:14px}.k1{right:0;top:6px}.k2{right:-6px;top:156px}.k3{right:330px;top:300px}.k4{right:20px;top:372px}.k1,.k3{color:#a5f3fc}""")
+
+laravel = page("Guide · Laravel upgrade", "Laravel <em>upgrade</em> checklist", "Upgrade in place, replace in stages or rewrite: a decision table and six phases.",
+ "<b>From Laravel's own upgrade guides</b><span class='dot'></span>No project claims",
+ """<div class="hop"><span>9</span><u></u><span>10</span><u></u><span>11</span><u></u><span>12</span><u></u><span class="on">13</span></div>
+<div class="lc glass glow"><div class="hd"><i></i><i></i><i></i><b>upgrade-plan.md</b></div>
+<p><s>✓</s>Inventory versions and packages</p><p><s>✓</s>Add tests around what matters</p><p><s>✓</s>One major version per hop</p><p><s>✓</s>Fix deprecations, then upgrade</p><p><s>✓</s>Rehearse the deploy and rollback</p><p class="todo"><s></s>Go live, then watch the queues</p></div>
+<div class="opt glass o1">Upgrade in place</div><div class="opt glass o2">Replace in stages</div><div class="opt glass o3">Rewrite</div>""",
+ """.hop{position:absolute;right:26px;top:6px;display:flex;align-items:center;gap:8px}.hop span{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;background:rgba(30,41,69,.85);border:1px solid rgba(148,163,184,.3);color:#cbd5e1}
+.hop span.on{background:linear-gradient(135deg,#fb7185,#f43f5e);color:#fff;border:0;box-shadow:0 0 26px rgba(244,63,94,.6)}.hop u{width:22px;height:2px;background:#475569;display:block}
+.lc{position:absolute;right:20px;top:84px;width:430px;padding:0 0 14px;overflow:hidden}.hd{display:flex;align-items:center;gap:7px;padding:13px 16px;border-bottom:1px solid rgba(148,163,184,.18);margin-bottom:8px}.hd i{width:11px;height:11px;border-radius:50%;background:#475569}.hd b{margin-left:8px;font-size:13.5px;color:#94a3b8;font-weight:600}
+.lc p{display:flex;align-items:center;gap:12px;font-size:17px;padding:9px 20px;color:#e2e8f0}.lc s{text-decoration:none;width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#22d3ee,#6366f1);color:#04121c;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center}
+.lc p.todo{color:#94a3b8}.lc p.todo s{background:transparent;border:2px solid #475569}
+.opt{position:absolute;top:446px;font-size:15.5px;font-weight:700;padding:11px 16px;border-radius:13px;color:#a5f3fc}.o1{right:300px}.o2{right:128px}.o3{right:22px;color:#fda4af}""")
+
+odoo = page("Guide · Odoo + Shopify integration", "<em>Odoo and Shopify</em> integration guide", "Which system owns each record, webhooks plus polling, rate limits and failure modes.",
+ "<b>From Odoo and Shopify documentation</b>",
+ """<div class="sys glass a"><b>Odoo</b><small>ERP · stock · accounting</small></div><div class="sys glass glow b"><b>Shopify</b><small>storefront · checkout</small></div>
+<svg class="lk" viewBox="0 0 160 110"><defs><linearGradient id="l" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#818cf8"/></linearGradient></defs>
+<path d="M12 36 H140 M124 20 L142 36 L124 52" fill="none" stroke="url(#l)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M148 78 H20 M36 62 L18 78 L36 94" fill="none" stroke="url(#l)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="rec"><div class="glass">Products<small>Odoo → Shopify</small></div><div class="glass">Stock<small>Odoo → Shopify</small></div><div class="glass">Orders<small>Shopify → Odoo</small></div><div class="glass">Refunds<small>Shopify → Odoo</small></div></div>""",
+ """.left{width:540px}h1{font-size:54px}.sys{position:absolute;top:36px;width:206px;height:150px;display:flex;flex-direction:column;justify-content:center;align-items:center;border-radius:24px}.sys b{font-size:34px;font-weight:800;letter-spacing:-.02em}.sys small{font-size:14px;color:#94a3b8;margin-top:6px}
+.sys.a{right:330px}.sys.a b{color:#e9d5ff}.sys.b{right:0}.sys.b b{color:#a7f3d0}.lk{position:absolute;right:212px;top:62px;width:112px;height:78px}
+.rec{position:absolute;right:0;top:236px;width:536px;display:grid;grid-template-columns:1fr 1fr;gap:14px}.rec div{padding:16px 20px;border-radius:16px;font-size:20px;font-weight:800;display:flex;flex-direction:column}.rec small{font-size:14.5px;font-weight:600;color:#67e8f9;margin-top:4px}""")
+
+storage = page("Guide · Self-storage software", "Self-storage software: <em>build or buy?</em>", "What the published products cover, where they stop, and when a custom build pays off.",
+ "<b>Costs</b><span class='dot'></span><b>Integrations</b><span class='dot'></span><b>Gate and lock access</b><span class='dot'></span><b>Billing</b>",
+ """<div class="ch glass c1"><b>Buy</b><small>faster start</small></div><div class="ch glass glow c2"><b>Build</b><small>your workflow · your data</small></div>
+<div class="units"><div class="roof"></div><div class="row"><u></u><u></u><u></u><u></u><u></u></div><div class="ground"></div></div>""",
+ """.left{width:560px}h1{font-size:52px}.ch{position:absolute;top:14px;width:236px;padding:20px 22px;border-radius:20px;display:flex;flex-direction:column}.ch b{font-size:34px;font-weight:800}.ch small{font-size:15px;color:#94a3b8;margin-top:4px}
+.c1{right:262px}.c2{right:0}.c2 b{background:linear-gradient(90deg,#22d3ee,#a5b4fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.units{position:absolute;right:0;top:186px;width:500px}.roof{height:26px;background:linear-gradient(180deg,#334155,#1e293b);border-radius:8px 8px 0 0;border:1px solid rgba(148,163,184,.3)}
+.row{display:flex;gap:12px;padding:14px 14px 0;background:linear-gradient(180deg,#16233f,#0e1830);border-left:1px solid rgba(148,163,184,.25);border-right:1px solid rgba(148,163,184,.25)}
+.row u{flex:1;height:176px;border-radius:6px 6px 0 0;display:block;background:repeating-linear-gradient(180deg,#f59e0b 0 13px,#d97706 13px 15px);box-shadow:inset 0 0 0 2px rgba(120,53,15,.5),0 0 26px rgba(245,158,11,.25)}
+.row u:nth-child(2),.row u:nth-child(5){background:repeating-linear-gradient(180deg,#22d3ee 0 13px,#0891b2 13px 15px);box-shadow:inset 0 0 0 2px rgba(8,51,68,.6),0 0 26px rgba(34,211,238,.3)}
+.ground{height:14px;background:#334155;border-radius:0 0 8px 8px;box-shadow:0 30px 60px rgba(2,6,23,.8)}""")
+
 PAGES = {"cheapest-idx-options": cheapest, "idx-website-features-checklist": features, "mls-boards-compared": boards,
-         "real-estate-platform-tech-stack": stack, "real-estate-website-seo-aeo-geo": seo}
+         "real-estate-platform-tech-stack": stack, "real-estate-website-seo-aeo-geo": seo,
+         "mls-data-pipeline-architecture": pipeline, "investor-portal-security-checklist": security, "laravel-upgrade-checklist": laravel,
+         "odoo-shopify-marketplace-integration": odoo, "self-storage-software-build-vs-buy": storage}
 if __name__ == "__main__":
     for slug, doc in PAGES.items():
         open(os.path.join(D, slug + ".html"), "w").write(doc); print("wrote", slug + ".html")
