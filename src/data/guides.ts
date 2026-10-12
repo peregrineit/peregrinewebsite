@@ -335,6 +335,70 @@ export const guides: Guide[] = [
     service: 'nextjs-development',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
+  {
+    slug: 'multi-tenant-real-estate-saas',
+    related: ['real-estate-platform-tech-stack', 'custom-saas-vs-off-the-shelf-crm-for-brokerages'],
+    cta: {
+      heading: 'Designing a Multi-Tenant Real Estate Platform?',
+      text: 'Tell us who your tenants are (brokerages, teams or agent sites), which MLSs they license and how the data is separated today. An engineer will walk through the tenancy model and isolation it needs.',
+    },
+    title: 'Building a Multi-Tenant Real Estate SaaS Platform',
+    metaTitle: 'Multi-Tenant Real Estate SaaS Architecture',
+    description:
+      'How to design tenancy for a real estate SaaS: tenant hierarchy, data isolation with row-level security, custom domains, per-tenant MLS licenses and lifecycle.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'saas-development',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
+  {
+    slug: 'real-estate-crm-architecture',
+    related: ['multi-tenant-real-estate-saas', 'custom-saas-vs-off-the-shelf-crm-for-brokerages'],
+    cta: {
+      heading: 'Designing Lead Capture, Routing or a CRM Integration?',
+      text: 'Tell us where your enquiries come from, which CRM your agents use and where leads get lost or duplicated. An engineer will walk through capture, routing and sync for your setup.',
+    },
+    title: 'Real Estate CRM Architecture: From Property Enquiry to Lead Management',
+    metaTitle: 'Real Estate CRM Architecture: Lead Management',
+    description:
+      'How to design a real estate CRM: enquiry capture, attribution, deduplication, lead routing, an event timeline, consent records and integration boundaries.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'saas-development',
+    caseStudy: 'w3re-ai-real-estate-platform',
+  },
+  {
+    slug: 'webhook-event-driven-integrations',
+    related: ['odoo-shopify-marketplace-integration', 'real-estate-crm-architecture'],
+    cta: {
+      heading: 'Building or Repairing a Webhook Integration?',
+      text: 'Tell us which providers you receive events from, what you send to your own customers and where events get lost or duplicated. An engineer will walk through both paths with you.',
+    },
+    title: 'Building Reliable Webhook and Event-Driven Integrations',
+    metaTitle: 'Reliable Webhooks & Event-Driven Integrations',
+    description:
+      'How to receive and send webhooks reliably: signature checks, idempotency, ordering, retries with jitter, the outbox pattern, reconciliation and SSRF defenses.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'api-integration',
+    caseStudy: 'supply-chain-visibility-platform',
+  },
+  {
+    slug: 'background-jobs-redis-bullmq',
+    related: ['webhook-event-driven-integrations', 'multi-tenant-real-estate-saas'],
+    cta: {
+      heading: 'Building or Stabilizing a Background Job System?',
+      text: 'Tell us what your jobs do, how they fail today and how Redis is set up. An engineer will walk through retries, stalled jobs, idempotency and the Redis settings your queues need.',
+    },
+    title: 'Designing Reliable Background Jobs with Redis and BullMQ',
+    metaTitle: 'Reliable Background Jobs with Redis & BullMQ',
+    description:
+      'How to run BullMQ on Redis in production: retries and backoff, concurrency, stalled jobs, idempotent handlers, Job Schedulers, Redis settings and failure modes.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'saas-development',
+    // No caseStudy: no published case study describes a BullMQ job system.
+  },
 ];
 
 export function getGuide(slug: string): Guide {
