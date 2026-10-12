@@ -8,8 +8,8 @@ export const metadata = guideMetadata(SLUG);
 // Every capability, limit and support window below was read on the technology's own page on
 // 2026-10-12; the sentence relied on for each link is logged in
 // docs/growth/content/SOURCES-real-estate-platform-tech-stack.md. No benchmark or popularity
-// survey is cited. dev.mysql.com refused a plain HTTP client that day and was read through a
-// page fetcher instead (noted in the log).
+// survey is cited. Every link was fetched again for the editorial revision on 2026-10-12;
+// dev.mysql.com refuses a plain HTTP client (403) and was read in a browser that day.
 const PG_JSON = 'https://www.postgresql.org/docs/current/datatype-json.html';
 const PG_FK = 'https://www.postgresql.org/docs/current/ddl-constraints.html';
 const PG_FTS = 'https://www.postgresql.org/docs/current/textsearch-intro.html';
@@ -33,6 +33,7 @@ const ES_ALIAS = 'https://www.elastic.co/docs/manage-data/data-store/aliases';
 const ES_NRT = 'https://www.elastic.co/docs/manage-data/data-store/near-real-time-search';
 const ES_SUGGEST = 'https://www.elastic.co/docs/reference/elasticsearch/rest-apis/search-suggesters';
 const ES_GRID = 'https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geotilegrid-aggregation';
+const OS_GRID = 'https://docs.opensearch.org/latest/aggregations/bucket/geotile-grid/';
 const ES_LICENSE = 'https://www.elastic.co/pricing/faq/licensing';
 const OS_GEO = 'https://docs.opensearch.org/latest/query-dsl/geo-and-xy/index/';
 const OS_AUTO = 'https://docs.opensearch.org/latest/search-plugins/searching-data/autocomplete/';
@@ -108,7 +109,12 @@ export default function Guide() {
           <Src href={GRID}>each record contains only the fields converted from its originating MLS</Src>.
         </li>
         <li><strong>Every listing has a location,</strong> and buyers search by map area, radius and drawn shape.</li>
-        <li><strong>Your copy is refreshed on a schedule,</strong> so every derived layer needs a staleness rule.</li>
+        <li>
+          <strong>Your copy is a replica.</strong> MLS Grid, for one, does{' '}
+          <Src href={GRID}>not support real-time access and provides the data through replication</Src>, so the
+          search index, the cache and the rendered pages are copies of a copy, and each needs a rule for how
+          stale it may be.
+        </li>
         <li>
           <strong>Each listing carries a set of photos,</strong> and on MLS Grid you{' '}
           <Src href={GRID}>must maintain your own copy of all media files</Src>.
@@ -161,7 +167,9 @@ export default function Guide() {
         One PostGIS detail to settle early: its geography type takes longitude and latitude directly, but{' '}
         <Src href={GIS_DATA}>fewer functions are defined on it and they take more CPU time</Src>; PostGIS suggests
         it for data that <Src href={GIS_DATA}>covers a continental region</Src>, which a US and Canada platform
-        does. Also check support windows: PostgreSQL{' '}
+        does. A sound default is a geography point column per listing with a GiST index, which gives radius
+        queries in meters without choosing a projection; reach for geometry only if you need a function that
+        geography lacks. Also check support windows: PostgreSQL{' '}
         <Src href={PG_VER}>supports a major version for 5 years after its initial release</Src>.
       </p>
 
@@ -177,9 +185,12 @@ export default function Guide() {
           box, distance and polygon (<Src href={ES_GEO}>Elasticsearch geo queries</Src>,{' '}
           <Src href={OS_GEO}>OpenSearch geographic queries</Src>). Both offer as-you-type suggestions (
           <Src href={ES_SUGGEST}>Elasticsearch completion suggester</Src>,{' '}
-          <Src href={OS_AUTO}>four OpenSearch autocomplete methods</Src>). Elasticsearch can{' '}
-          <Src href={ES_GRID}>group points into map-tile grid cells</Src>, which is what clustered map pins need,
-          and makes a stored document <Src href={ES_NRT}>searchable within 1 second</Src>. For rebuilds, both let
+          <Src href={OS_AUTO}>four OpenSearch autocomplete methods</Src>). Both can group points into map-tile
+          grid cells, which is what clustered map pins need (
+          <Src href={ES_GRID}>Elasticsearch geotile grid aggregation</Src>,{' '}
+          <Src href={OS_GRID}>OpenSearch geotile grid aggregation</Src>). Elasticsearch documents that a stored
+          document is <Src href={ES_NRT}>searchable within 1 second</Src>, so the delay a buyer sees is set by
+          your sync, not by the index. For rebuilds, both let
           you fill a new index and then repoint an alias: Elasticsearch lists{' '}
           <Src href={ES_ALIAS}>reindexing data without downtime</Src> as a use of aliases, and OpenSearch states
           that <Src href={OS_ALIAS}>alias changes are atomic</Src>. The licenses differ: OpenSearch is{' '}
@@ -196,12 +207,12 @@ export default function Guide() {
           <strong>A hosted search service.</strong> Algolia filters{' '}
           <Src href={ALGOLIA_GEO}>around a central point and inside rectangular or polygonal areas</Src>; Typesense{' '}
           <Src href={TYPESENSE_GEO}>filters records by distance or area and sorts by distance from a point</Src>.
-          Pricing models differ. As published on October 12, 2026, Algolia&apos;s
-          Grow plan includes{' '}
-          <Src href={ALGOLIA_PRICE}>10K search requests a month and 100K records, then $0.50 per additional 1K requests and $0.40 per additional 1K records</Src>;
-          Typesense Cloud sells{' '}
+          They meter differently, which matters more than any list price: Algolia&apos;s plans{' '}
+          <Src href={ALGOLIA_PRICE}>count search requests and records</Src>, while Typesense Cloud sells{' '}
           <Src href={TYPESENSE_PRICE}>a dedicated cluster, with no limits on records or operations</Src>, sized by
-          memory. Also read your MLS license before sending listing data to any third-party service.
+          memory. Cost either one at your own record count (answer 1 in the worksheet) and query volume, and
+          remember that a map that re-queries on every pan multiplies requests. Also read your MLS license
+          before sending listing data to any third-party service.
         </li>
       </ul>
       <div className="cp-table-wrap">
@@ -210,13 +221,15 @@ export default function Guide() {
           <tbody>
             <tr><td><strong>Search in PostgreSQL</strong></td><td>A few markets, filters plus map bounds and radius, and a small team. Moving search out later does not change the system of record.</td></tr>
             <tr><td><strong>Elasticsearch or OpenSearch</strong></td><td>Autocomplete across addresses and neighborhoods, clustered map pins, relevance tuning, or a system of record that is slow at ad hoc queries. You accept a second copy of the data and a reindex job.</td></tr>
-            <tr><td><strong>A hosted search service</strong></td><td>You want those features without running a cluster, the pricing works at your volume, and your MLS agreements allow the data to be held there.</td></tr>
+            <tr><td><strong>A hosted search service</strong></td><td>You want those features without running a cluster, its metering fits your record count and query volume, and your MLS agreements allow the data to be held there.</td></tr>
           </tbody>
         </table>
       </div>
       <p>
-        The index is a derived copy, rebuildable from the system of record; the{' '}
-        <Link href="/blog/mls-data-pipeline-architecture">pipeline guide</Link> covers which records may enter it.
+        Whichever you choose, the index is a derived copy: it must be rebuildable from the system of record
+        at any time, and a record your license no longer lets you display has to leave it as well as the
+        database. The <Link href="/blog/mls-data-pipeline-architecture">pipeline guide</Link> covers which
+        records may enter the index and how deletions reach it.
       </p>
 
       <h2>3. Cache: what to store in Redis and when to drop it</h2>
@@ -244,7 +257,7 @@ export default function Guide() {
           <thead><tr><th>Choose</th><th>When</th></tr></thead>
           <tbody>
             <tr><td><strong>No cache yet</strong></td><td>Search answers fast enough from the index or database, or you cannot yet say what invalidates each key.</td></tr>
-            <tr><td><strong>Timeout equal to the sync interval</strong></td><td>Sync runs on a fixed schedule and results a few minutes behind are acceptable inside your license&apos;s refresh rule.</td></tr>
+            <tr><td><strong>Timeout equal to the sync interval</strong></td><td>Sync runs on a fixed schedule. A cached result can then lag the database by up to one interval, on top of the sync&apos;s own lag behind the MLS; both together must fit your license&apos;s refresh rule.</td></tr>
             <tr><td><strong>Deletion by the sync job</strong></td><td>Sync is frequent or event-driven and you can key the cache by market or feed.</td></tr>
           </tbody>
         </table>
@@ -283,7 +296,7 @@ export default function Guide() {
             </tr>
             <tr>
               <td><strong>Go</strong></td>
-              <td>Go 1 programs are intended to <Src href={GO_COMPAT}>continue to compile and run correctly, unchanged</Src>, which keeps long-running sync workers cheap to maintain</td>
+              <td>Go 1 programs are intended to <Src href={GO_COMPAT}>continue to compile and run correctly, unchanged</Src>; we read that as low upgrade effort for long-lived sync workers</td>
               <td>Each major release is supported <Src href={GO_REL}>until there are two newer major releases</Src></td>
             </tr>
           </tbody>
@@ -328,7 +341,8 @@ export default function Guide() {
       <ul>
         <li>
           <strong>Static generation.</strong> <Src href={NEXT_PARAMS}>generateStaticParams statically generates routes at build time</Src>.
-          Fine for a few thousand pages that change rarely; too slow for a full MLS.
+          We would use it for a small set of pages that change rarely. Building every listing of a full MLS
+          at each deploy is the case ISR exists for.
         </li>
         <li>
           <strong>Incremental static regeneration.</strong> ISR lets you{' '}
@@ -362,8 +376,9 @@ export default function Guide() {
 
       <h2>6. Media storage and delivery</h2>
       <p>
-        Since you must hold your own copies of listing photos, the usual design is object storage for the
-        originals, a CDN in front, and resized variants made on upload or on first request. Amazon S3, as one
+        Where the feed requires you to hold your own copies of listing photos, as MLS Grid does, the usual
+        design is object storage for the originals, a CDN in front, and resized variants made on upload or on
+        first request. Amazon S3, as one
         example, is <Src href={S3}>designed to provide 99.999999999% durability</Src>, and a CDN such as
         CloudFront <Src href={CLOUDFRONT}>delivers content through a worldwide network of edge locations</Src>.
         If the frontend is Next.js, its image optimization{' '}
@@ -375,7 +390,7 @@ export default function Guide() {
         <table>
           <thead><tr><th>Choose</th><th>When</th></tr></thead>
           <tbody>
-            <tr><td><strong>Resize on first request, cache at the CDN</strong></td><td>Millions of photos of which most are rarely viewed; you pay only for what is looked at.</td></tr>
+            <tr><td><strong>Resize on first request, cache at the CDN</strong></td><td>A large inventory in which most photos are rarely viewed; you resize only what is looked at.</td></tr>
             <tr><td><strong>Resize on ingestion</strong></td><td>A smaller inventory, a fixed set of sizes, and a media worker that already touches each photo.</td></tr>
             <tr><td><strong>A separate image service</strong></td><td>Photo traffic is heavy enough to slow the application servers.</td></tr>
           </tbody>
@@ -396,7 +411,7 @@ export default function Guide() {
         <table>
           <thead><tr><th>Choose</th><th>When</th></tr></thead>
           <tbody>
-            <tr><td><strong>A platform plus managed database and search</strong></td><td>A small team without operations staff. You pay more per unit and operate less.</td></tr>
+            <tr><td><strong>A platform plus managed database and search</strong></td><td>A small team without operations staff, and no component that needs a long-running process the platform does not offer. Check where sync and media workers would run before you commit.</td></tr>
             <tr><td><strong>Containers on a cloud with managed data services</strong></td><td>Several services (API, sync and media workers) and someone who owns deployment.</td></tr>
             <tr><td><strong>Your own virtual servers</strong></td><td>Cost control matters most and you have the skills to patch, back up and monitor.</td></tr>
           </tbody>
@@ -455,8 +470,8 @@ export default function Guide() {
       ]} />
 
       <p className="cp-note">
-        Capabilities, prices and support windows were read from each technology&apos;s own documentation on October
-        12, 2026, and change with new versions. MySQL&apos;s support-lifecycle page could not be read that day,
+        Capabilities, pricing models and support windows were read from each technology&apos;s own documentation
+        on October 12, 2026, and change with new versions. MySQL&apos;s support-lifecycle page could not be read that day,
         so no MySQL support window is given. No benchmark or popularity survey is cited.
       </p>
       <p>
