@@ -383,6 +383,22 @@ export const guides: Guide[] = [
     service: 'api-integration',
     caseStudy: 'supply-chain-visibility-platform',
   },
+  {
+    slug: 'background-jobs-redis-bullmq',
+    related: ['webhook-event-driven-integrations', 'multi-tenant-real-estate-saas'],
+    cta: {
+      heading: 'Building or Stabilizing a Background Job System?',
+      text: 'Tell us what your jobs do, how they fail today and how Redis is set up. An engineer will walk through retries, stalled jobs, idempotency and the Redis settings your queues need.',
+    },
+    title: 'Designing Reliable Background Jobs with Redis and BullMQ',
+    metaTitle: 'Reliable Background Jobs with Redis & BullMQ',
+    description:
+      'How to run BullMQ on Redis in production: retries and backoff, concurrency, stalled jobs, idempotent handlers, Job Schedulers, Redis settings and failure modes.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'saas-development',
+    // No caseStudy: no published case study describes a BullMQ job system.
+  },
 ];
 
 export function getGuide(slug: string): Guide {
