@@ -335,6 +335,22 @@ export const guides: Guide[] = [
     service: 'nextjs-development',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
+  {
+    slug: 'real-estate-search-elasticsearch',
+    related: ['real-estate-platform-tech-stack', 'mls-data-pipeline-architecture'],
+    cta: {
+      heading: 'Designing or Repairing Listing Search?',
+      text: 'Tell us your listing volume, the filters and map features you need, and where search is slow or wrong today. An engineer will walk through the index and sync design with you.',
+    },
+    title: 'Designing a Real Estate Search Engine with Elasticsearch',
+    metaTitle: 'Real Estate Search with Elasticsearch',
+    description:
+      'Designing listing search on Elasticsearch: mappings, filters, geo queries, autocomplete, pagination, facet counts, relevance and zero-downtime reindexing.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {
