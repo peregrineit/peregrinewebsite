@@ -55,16 +55,16 @@ export default function Guide() {
         By the fourth board there are dozens, and nobody can say where a given value on a listing page came from.
       </p>
       <p>
-        The <Link href="/blog/mls-data-pipeline-architecture">MLS data pipeline reference architecture</Link>{' '}
-        gives normalization one stage and five bullet points. This article is that stage in detail: what the
-        standard does and does not settle, what the platforms convert for you, how to design the mapping layer and
-        the canonical schema, and how to keep the source of every value.
-      </p>
-      <p>
         One of our published projects had this shape. The{' '}
         <Link href="/case-studies/w3re-ai-real-estate-platform">W3|re case study</Link> describes a brokerage
         across four MLS regions where each MLS used different RETS and Web API standards and schemas, and a
         pipeline that ingests from four MLS systems, normalizes schemas and deduplicates cross-listed properties.
+      </p>
+      <p>
+        Normalization is one stage of the{' '}
+        <Link href="/blog/mls-data-pipeline-architecture">MLS data pipeline reference architecture</Link>. Here
+        it is taken apart: what the standard settles and what it leaves open, what the platforms convert for you,
+        how to design the mapping layer and the canonical schema, and how to keep the source of every value.
       </p>
 
       <h2>A shared dictionary is not a shared dataset</h2>
@@ -77,8 +77,8 @@ export default function Guide() {
       </p>
       <p>
         The dictionary standardizes names, types and lookup values. It does not make every MLS populate every
-        field. Its own pages publish how many certified organizations use each one, and the figures make the
-        point:
+        field. Its own pages publish an adoption figure for each one, as a share of 420 organizations, and the
+        figures make the point:
       </p>
       <div className="cp-table-wrap">
         <table>
@@ -86,7 +86,7 @@ export default function Guide() {
           <tbody>
             <tr><td><Src href={DD_PRICE}>ListPrice</Src></td><td>100%</td><td>Safe to require</td></tr>
             <tr><td><Src href={DD_LIVING}>LivingArea</Src></td><td>79%</td><td>About one organization in five does not send it</td></tr>
-            <tr><td><Src href={DD_LIVING_UNITS}>LivingAreaUnits</Src></td><td>39%</td><td>The unit is usually implied, not stated</td></tr>
+            <tr><td><Src href={DD_LIVING_UNITS}>LivingAreaUnits</Src></td><td>39%</td><td>The unit is often implied, not stated</td></tr>
             <tr><td><Src href={DD_SOURCE_NAME}>SourceSystemName</Src></td><td>40%</td><td>You often have to record the immediate source yourself</td></tr>
             <tr><td><Src href={DD_MEDIA_KEY}>MediaKey</Src></td><td>61%</td><td>Photo identity is not guaranteed</td></tr>
             <tr><td><Src href={DD_UPI}>UniversalPropertyId</Src></td><td>21%</td><td>Cannot be the only basis for matching properties</td></tr>
@@ -139,7 +139,7 @@ export default function Guide() {
       </ul>
       <p>
         So even through a platform, the consumer still owns value semantics, units, local fields, missing data
-        and time zones. A direct feed from an MLS vendor leaves more.
+        and time zones. A direct feed from an MLS vendor may leave more.
       </p>
 
       <h2>The shape of the solution</h2>
@@ -158,9 +158,9 @@ export default function Guide() {
         <li><strong>Provenance.</strong> Every canonical value records its source system and field, the raw record, the rule version and the transform. Because the raw record is kept, the rules can be re-run when they change.</li>
       </ol>
       <p>
-        The property that matters is direction. Data flows one way, from raw to canonical, through rules that are
-        configuration. Nothing downstream of the mapping layer should know which board a record came from, except
-        to show attribution and apply that board&apos;s display rules.
+        Data flows one way, from raw to canonical, through rules that are configuration. Nothing downstream of
+        the mapping layer should know which board a record came from, except to show attribution and apply that
+        board&apos;s display rules.
       </p>
 
       <h2>An illustrative mapping</h2>
@@ -204,15 +204,15 @@ export default function Guide() {
         are different records for compliance purposes. ListingId is a display and lookup field, never a key.
       </p>
       <p>
-        Platforms also decorate keys. On MLS Grid, key fields carry an MLS prefix that{' '}
+        Platforms also decorate keys: MLS Grid prefixes key fields, and the prefix{' '}
         <Src href={GRID_V2}>should be removed before displaying externally but must be added back when requesting records</Src>.
-        Store both forms; do not compute one from the other at request time.
+        Store both forms.
       </p>
       <h3>Linking the same property across boards</h3>
       <p>
-        One property listed in two MLSs is two legitimate records. The pipeline guide sets out the order of
-        evidence for linking them and why they are linked, never merged. The normalization layer&apos;s job is to
-        produce the comparable values that matching needs:
+        One property listed in two MLSs is two legitimate records; the{' '}
+        <Link href="/blog/mls-data-pipeline-architecture">pipeline guide</Link> sets out why they are linked, never
+        merged. The normalization layer&apos;s job is to produce the comparable values that matching needs:
       </p>
       <ul>
         <li>
@@ -271,8 +271,8 @@ export default function Guide() {
         explicit LotSizeSquareFeet and LotSizeAcres. It says the explicit fields{' '}
         <Src href={DD_LOT_SF}>must be in sync with the values represented in Lot Size Area and Lot Size Units</Src>.
         A consumer should not assume they are. Choose a precedence, compute one canonical value, and flag records
-        where the representations disagree beyond rounding. Those flags find real data-entry errors, such as a lot
-        entered in acres in a square-foot field.
+        where the representations disagree beyond rounding. A flag of that kind is how you would catch, for
+        example, a lot entered in acres in a square-foot field.
       </p>
       <p>
         <strong>Currency.</strong> ListPrice is defined as{' '}
@@ -285,8 +285,8 @@ export default function Guide() {
       <p>
         <strong>Counts that look like measures.</strong> BathroomsTotalInteger is{' '}
         <Src href={DD_BATHS}>the simple sum of the number of bathrooms: two full and one half is 3</Src>, and the
-        dictionary says <Src href={DD_BATHS}>decimal-based bathrooms are not recommended</Src>. Local feeds still
-        send 2.5. The two numbers answer different questions, and a &ldquo;3+ baths&rdquo; filter gives different
+        dictionary says <Src href={DD_BATHS}>decimal-based bathrooms are not recommended</Src>, while allowing
+        them in a non-standard field. A feed may therefore still send 2.5. The two numbers answer different questions, and a &ldquo;3+ baths&rdquo; filter gives different
         results depending on which was stored. Keep full and half counts as the canonical facts and derive any
         total from them.
       </p>
@@ -370,8 +370,7 @@ export default function Guide() {
 
       <h2>An illustrative canonical record with provenance</h2>
       <p>
-        The example below is illustrative: the names, values and rule identifiers are invented. It shows the three
-        parts of a canonical record: normalized values, a local namespace and provenance.
+        The example below is illustrative: the names, values and rule identifiers are invented.
       </p>
       <pre className="cp-code"><code>{`// Illustrative canonical listing (one per feed + originating system + record key).
 {
@@ -404,11 +403,11 @@ export default function Guide() {
 }`}</code></pre>
       <p>Why each part is there:</p>
       <ul>
-        <li><strong>The raw reference</strong> answers &ldquo;what did the MLS actually send?&rdquo; without a new download. It is also what makes a mapping change cheap: re-run the rules over stored payloads. The <Link href="/blog/mls-sync-engine">sync engine article</Link> covers how the raw store is written.</li>
+        <li><strong>The raw reference</strong> answers &ldquo;what did the MLS actually send?&rdquo; without a new download. The <Link href="/blog/mls-sync-engine">sync engine article</Link> covers how the raw store is written.</li>
         <li><strong>The mapping version</strong> says which rules produced this record, so after a rule change you can find and re-process exactly the records made under the old one.</li>
-        <li><strong>Field-level provenance</strong> records the source field, the value as received and the transform. Keep it for every field that was converted, mapped or assumed; identity copies can be implied by the mapping version to save space.</li>
+        <li><strong>Field-level provenance</strong> is kept for every field that was converted, mapped or assumed; identity copies can be implied by the mapping version to save space.</li>
         <li><strong>The assumed marker</strong> separates what the source said from what you inferred. When an agent disputes a figure, that is the first thing support needs to know.</li>
-        <li><strong>The quality block</strong> is where unmapped fields, unmapped lookup values and conflicts between representations are recorded, so they can be counted per source.</li>
+        <li><strong>The quality block</strong> records unmapped fields, unmapped lookup values and conflicts between representations, so they can be counted per source.</li>
       </ul>
       <p>
         The search index is built from this record, not from the raw one.{' '}

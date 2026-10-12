@@ -1,6 +1,6 @@
 # Source log: /blog/mls-data-normalization
 
-Every URL below was fetched on **2026-10-13** shortly after midnight IST (HTTP 200), in the same working session that began on 2026-10-12, and the quoted text was read on the page then. The dd.reso.org pages carry the footer "Generated October 12, 2026". Quotes are verbatim. Method: `curl` with a browser user agent, HTML stripped to text; the PDF with `pdftotext -layout`.
+Every URL below was fetched on **2026-10-13** shortly after midnight IST (HTTP 200), in the same working session that began on 2026-10-12, and the quoted text was read on the page then. The dd.reso.org pages carry the footer "Generated October 12, 2026". Quotes are verbatim. QA re-fetched every URL later on 2026-10-13: each quoted sentence and every adoption percentage used in the article (ListPrice 100%, LivingArea 79%, LivingAreaUnits 39%, SourceSystemName 40%, MediaKey 61%, UniversalPropertyId 21%, MediaCategory 45%, and the PropertyType lookup figures) was on its own dd.reso.org field page, each with the footer "Generated October 12, 2026" and the denominator "of 420 Organizations". Method: `curl` with a browser user agent, HTML stripped to text; the PDF with `pdftotext -layout`.
 
 ## RESO Data Dictionary (dd.reso.org, DD 2.0)
 
@@ -21,7 +21,7 @@ Every URL below was fetched on **2026-10-13** shortly after midnight IST (HTTP 2
 | https://dd.reso.org/DD2.0/Property/ParcelNumber/ | "The assessor's parcel number (APN) format varies from county to county. It is recommended that all parcel numbers are transmitted without dashes or hyphens." |
 | https://dd.reso.org/DD2.0/Property/PropertyType/ | "Lookup Status Open with Enumerations" · "Lookups (9)": Business Opportunity 16%, Commercial Lease 46%, Commercial Sale 71%, Farm 31%, Land 96%, Manufactured In Park 6%, Residential 98%, Residential Income 52%, Residential Lease 49% |
 | https://dd.reso.org/DD2.0/Property/PropertySubType/ | "Lookups (31)" · "Apartment A unit within a wholly owned structure of five or more units. This may not be used for Residential or Residential Income. For Residential, use Condo...." · "Condominium A unit within a structure where ownership is on a unit-by-unit basis." |
-| https://dd.reso.org/DD2.0/Property/BathroomsTotalInteger/ | "The simple sum of the number of bathrooms. For example, for a property with two full bathrooms and one half bathroom, the Bathrooms Total Integer would be 3. ... Decimal-based bathrooms are not recommended" |
+| https://dd.reso.org/DD2.0/Property/BathroomsTotalInteger/ | "The simple sum of the number of bathrooms. For example, for a property with two full bathrooms and one half bathroom, the Bathrooms Total Integer would be 3. Expressing this example as 2.5 would require a non-standard field name. Decimal-based bathrooms are not recommended, they are possible via the Data Dictionary's extensibility." |
 | https://dd.reso.org/DD2.0/Property/InternetEntireListingDisplayYN/ | "Indicates whether or not the seller has allowed the listing to be displayed on Internet sites." |
 | https://dd.reso.org/DD2.0/Property/InternetAddressDisplayYN/ | "Indicates whether or not the seller has allowed the listing address to be displayed on Internet sites." |
 | https://dd.reso.org/DD2.0/Property/InternetAutomatedValuationDisplayYN/ | "Indicates whether or not the seller allows the listing to be displayed with an automated valuation model (AVM) on Internet sites." |
@@ -68,6 +68,8 @@ The composite key of feed, originating system and record key; per-source unit de
 
 ## Not used because it could not be verified
 
+- The field pages say "Adoption N% n of 420 Organizations" and do not say the organizations are certified; "certified organizations" was removed from the article in QA.
+- "Local feeds still send 2.5", "A direct feed from an MLS vendor leaves more" and "Those flags find real data-entry errors": general claims with no source; reworded in QA as possibilities.
 - https://dd.reso.org/DD2.0/Property/UniversalParcelId/ and https://dd.reso.org/DD2.0/Property/Currency/ returned 404. The article cites the UniversalPropertyId field page and does not claim that the dictionary lacks a currency field; it says only that the ListPrice definition does not state one.
 - Trestle's CustomProperty resource page lists fields but has no prose description; the article relies on the scaling guide's sentence instead.
 - A square-foot to acre conversion factor from a standards body: the NIST page fetched gives only approximate metric conversions, so no factor is stated in the prose.
