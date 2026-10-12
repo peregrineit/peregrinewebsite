@@ -4,6 +4,20 @@ Every URL below was fetched on **2026-10-12** and the quoted text was read on th
 
 Method: `curl` with a browser user agent (HTTP 200), HTML stripped to text, then searched for the sentence. Exception: **dev.mysql.com returned HTTP 403 to curl**; those four pages were read through the WebFetch page fetcher instead, which returns quotes extracted by a small model. They are marked (WebFetch) and should be opened in a browser at the next re-check.
 
+## Editorial revision, 2026-10-12
+
+All 61 source URLs were fetched again and every quoted sentence in this log was searched for. 58 returned HTTP 200 to `curl` and all their quotes were found. The three dev.mysql.com pages still return 403 to `curl`; this time they were opened in a browser, which confirmed "JSON columns, like columns of other binary types, are not indexed directly; instead, you can create an index on a generated column that extracts a scalar value from the JSON column.", "SPATIAL INDEX creates an R-tree index." and "MySQL supports foreign keys, which permit cross-referencing related data across tables, and foreign key constraints, which help keep the related data consistent." The other MySQL quotes below still rest on the earlier WebFetch read.
+
+Redirects seen, content unchanged: `laravel.com/docs/releases` and `/docs/scout` now resolve under `laravel.com/framework/docs/`; `docs.djangoproject.com/en/stable/…` resolves to `/en/6.1/…`; `cloud.typesense.org/pricing` resolves to `/pricing/calculator`.
+
+Found and changed:
+
+- **Hosted-search prices removed.** The guide quoted Algolia's Grow plan figures next to Typesense Cloud's model, which read as a vendor price comparison. It now states only how each meters (Algolia: "search requests" and "records" are the metered quantities on its pricing page; Typesense Cloud: "You get a dedicated cluster, with no limits on records or operations." · "Memory Based on the size of your data"). No figure is used.
+- **Clustered map pins were credited to Elasticsearch only.** Added https://docs.opensearch.org/latest/aggregations/bucket/geotile-grid/ : "The geotile grid aggregation groups documents into grid cells for geographical analysis. Each grid cell corresponds to a map tile and is identified using the {zoom}/{x}/{y} format."
+- **Replication stated with its source.** https://docs.mlsgrid.com/ : "We do not support real time data access at this time. Our service provides the data through a data replication process."
+- **Cache staleness corrected.** "A few minutes behind" was wrong for a timeout equal to the sync interval; the row now says a cached result can lag the database by up to one interval, on top of the sync's lag. (Our reasoning, no source.)
+- **Unsupported phrases recast as recommendations or qualified:** static generation "for a few thousand pages", Go "keeps sync workers cheap to maintain", "you must hold your own copies of listing photos" (true where the feed says so; MLS Grid does), "millions of photos", "you pay more per unit". A geography-point default for PostGIS and a note on map re-querying were added as recommendations.
+
 ## PostgreSQL and PostGIS
 
 | URL | Text relied on |

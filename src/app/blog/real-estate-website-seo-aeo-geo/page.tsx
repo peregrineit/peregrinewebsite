@@ -9,6 +9,8 @@ export const metadata = guideMetadata(SLUG);
 // docs/growth/content/SOURCES-real-estate-website-seo-aeo-geo.md. Several Google pages have moved from
 // /search/docs/crawling-indexing/ to /crawling/docs/; the constants hold the URL each one resolved to.
 // Bing's webmaster guidelines page returned no article text without scripts on that date and is not cited.
+// Every link was fetched again for the editorial revision the same day; all resolved and still carry the
+// sentences relied on (see the log).
 const G = 'https://developers.google.com/search/docs';
 const G_JS = `${G}/crawling-indexing/javascript/javascript-seo-basics`;
 const G_CANON = `${G}/crawling-indexing/canonicalization`;
@@ -156,7 +158,7 @@ export default function Guide() {
             </tr>
             <tr>
               <td>Sorted and filtered search results</td>
-              <td>Canonical to the unfiltered page, or block in robots.txt</td>
+              <td>Canonical to the unfiltered page, or block in robots.txt. Keep indexable only the few filter combinations you publish as landing pages with their own content</td>
               <td>Listed as duplicates: <Src href={G_CANON}>the results of sorting and filtering functions</Src>; robots.txt is suggested for <Src href={G_CRAWL}>differently sorted versions of the same page</Src></td>
             </tr>
           </tbody>
@@ -166,7 +168,9 @@ export default function Guide() {
         Do not use noindex to save crawling: Google <Src href={G_CRAWL}>will still request, but then drop the page</Src>.
         Client-rendered apps that answer 200 for every route are told to{' '}
         <Src href={G_JS}>redirect to a URL for which the server responds with a 404</Src>; server rendering sends
-        the real status. Which statuses you may display at all is set by your MLS (see the display-policy stage in
+        the real status. The response also has to change when the listing does: if listing pages are cached or
+        statically regenerated, the job that records a status change must invalidate that page, or a sold
+        listing keeps answering as active until the cache expires. Which statuses you may display at all is set by your MLS (see the display-policy stage in
         our <Link href="/blog/mls-data-pipeline-architecture">MLS data pipeline architecture</Link> guide).
       </p>
       <h3>Sitemaps and crawl budget for a daily-changing inventory</h3>
@@ -227,7 +231,9 @@ export default function Guide() {
         Google notes that properties it does not use{' '}
         <Src href={G_SD_INTRO}>may be useful for other search engines, services, tools, and platforms</Src>. Do not{' '}
         <Src href={G_SD_POLICY}>mark up content that is not visible to readers of the page</Src>; Google <Src href={G_SD_POLICY}>does not guarantee</Src> that valid markup is shown. Generate the JSON-LD from
-        the record that renders the page, so a price change cannot leave the two disagreeing.
+        the record that renders the page, so a price change cannot leave the two disagreeing. The same reasoning
+        covers FAQPage: this site still emits it for the questions at the end of each guide, as a description of
+        the page, and expects no rich result from it.
       </p>
 
       <h2>4. Area and neighborhood pages: data or doorway</h2>
@@ -315,6 +321,7 @@ export default function Guide() {
         <li><strong>Every photo is lazy-loaded.</strong> web.dev: <Src href={LCP}>never lazy-load your LCP image</Src>. Give the first photo <code>fetchpriority=&quot;high&quot;</code> and hidden slides <Src href={LCP}>a low priority</Src>.</li>
         <li><strong>Photos come from another origin,</strong> such as an MLS media host, which costs <Src href={LCP}>a connection to that origin before the resource can start loading</Src>.</li>
         <li><strong>Photos lack dimensions and widgets resize.</strong> Layout shifts come from <Src href={CLS}>images or videos with unknown dimensions</Src> and self-resizing third-party widgets, which describes an embedded IDX search box.</li>
+        <li><strong>The map and gallery scripts start while the visitor is already tapping.</strong> INP is measured on real interactions, and the first one on a listing page is usually a photo arrow. We would render the gallery controls without waiting for the map library, and load the map when it scrolls into view or is asked for.</li>
       </ul>
       <p>
         Our <Link href="/case-studies/scaling-real-estate-saas-platform">real estate SaaS case study</Link> describes

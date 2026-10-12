@@ -292,10 +292,10 @@ export const guides: Guide[] = [
       heading: 'Adding a New MLS Market?',
       text: 'Tell us which MLSs you need and which brokers you work with. An engineer will tell you which platform, license and feed type each one involves before you estimate.',
     },
-    title: 'MLS Boards Compared: Data Platforms, Access and Fees at 15 US MLSs',
-    metaTitle: 'MLS Boards Compared: Platforms, Access, Fees',
+    title: '15 US MLS Boards: A Data Access Reference',
+    metaTitle: '15 US MLS Boards: A Data Access Reference',
     description:
-      'A side-by-side reference for 15 US MLSs: region, size, data platform, feed types, who may license, published fees and where to apply, each cell sourced.',
+      'Reference profiles of 15 US MLSs in alphabetical order: who each serves, data delivery, feed types, who may license and where to apply, each fact sourced.',
     datePublished: '2026-10-12',
     dateModified: '2026-10-12',
     service: 'mls-idx-integration',

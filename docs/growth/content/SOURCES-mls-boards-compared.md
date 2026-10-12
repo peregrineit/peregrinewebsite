@@ -4,7 +4,41 @@ Every URL below was fetched on **2026-10-12** and the quoted text was read on th
 
 Method: `curl` with a browser user agent, HTML stripped to text; PDFs with `pdftotext -layout`. Three sites refuse or do not render for plain requests and were read in a browser instead (marked **browser**): Bright MLS (script-rendered), OneKey MLS (script-rendered), MIAMI Association of REALTORS (HTTP 403 to curl).
 
-Counts in the guide that are our own arithmetic on these sources: "15 MLSs"; "five through MLS Grid, three through Trestle, four through Bridge, five issue API access themselves" (from the platform column); "37 originating systems" (rows counted in MLS Grid's table); "ten publish at least some fees".
+## Revision of 2026-10-12 (reference reframe)
+
+The guide was retitled "15 US MLS Boards: A Data Access Reference" (URL unchanged) and reorganized into an alphabetical index, 15 profiles with the same six lines each, and one fee table. The order is alphabetical and stated as not a ranking. Removed: the cross-board fee range in the opening, the paragraph contrasting fee models at 5 and 500 clients, and the "What the platform adds to the bill" list that set platform charges side by side.
+
+Every URL in this log was fetched again for the revision on 2026-10-12, same method. All 34 pages that answer plain requests returned HTTP 200 and every quoted sentence below was found again (122 phrase checks, 0 misses). Bright MLS (2 pages), OneKey MLS (1) and MIAMI (3) were re-read in a browser and match. Nothing was found stale.
+
+Retried and still unreadable: `www.har.com` (HTTP 403), `www.gamls.com` (no connection). `www.canopymls.com` home page loads with no data information. NWMLS: `/data-licensing/`, `/idx/`, `/vendors/` return 404 and `/member-services/industry-data-information/` (HTTP 200) says nothing about IDX, feeds or licensing, so its feed types, licensee rules and fees stay "not published". OneKey MLS: no data-licensing page found.
+
+No longer cited in the guide: https://www.bridgeinteractive.com/mls/bridge-api/ ("No additional fees for members or vendors"), removed with the platform-charges list. MIAMI's own statement about Bridge fees stays in MIAMI's fee row. Trestle's pricing page is still linked, without its figures.
+
+### Text added to the profiles in this revision (read 2026-10-12)
+
+| URL | Text relied on |
+|---|---|
+| https://armls.com/data-feeds-vendor-info | "• Data must NOT be displayed publicly" · "AVMs are considered back-office tools (though aggregated results may be displayed publicly)" · "Participants (broker-owners or brokerage principals) are entitled to a data feed of their listings." · "All feeds must be used under broker control." · "Requests may be submitted by the subscriber or their consultant" · "If you or your consultant support multiple ARMLS subscribers, consider becoming an ARMLS Preferred Vendor. This allows use of a single feed across multiple clients." · footer "Arizona Regional Multiple Listing Service, Inc. 130 S. Priest Drive, Suite 101, Tempe, AZ" |
+| https://www.brightmls.com/about-us (**browser**) | "Founded in 2015 through the merger of 43 real estate associations…" |
+| https://www.brightmls.com/benefits/developers (**browser**) | "Bright is one of the first and largest multiple listing services to achieve RESO's Data Dictionary 1.6 Platinum Certification." (only the certification is repeated in the guide) |
+| https://go.crmls.org/idx-resources/ | "This option is available to all CRMLS users at no additional cost." (frameable links) |
+| https://firstmls.com/about/ | "FMLS was founded in 1957 by a group of brokers who wanted to share real estate listings…" |
+| https://www.fmls.com/marketplace-info | "Within the Bridge feed, those fields not currently part of the RESO Data Dictionary will be identified with \"FMLS_<fieldname>.\"" · "Typical review turnaround will be 2 business days." |
+| https://metromls.com/about-metro-mls/ | "…serving more than 9,000 members and eight Realtor associations." |
+| https://metromls.com/participant-data-feed-information/ | "Non-Participant Subscribers are not eligible for a direct data feed except in the case of Virtual Office Websites" · "the listing display must only be a \"frame\" of either their Participant's office website, WiHomes.com or the Realtor.com listing search" · "All other forms of application will be rejected and referred to the web application." · "There are two (2) separate IDX feeds, Metro MLS and WiREx." · "There are two (2) separate VOW feeds, Metro MLS and WiREx." |
+| https://www.miamirealtors.com/mls/webapi/ (**browser**) | "Additionally, agents with their own in-house or private vendor can apply for a courtesy IDX feed via API…" |
+| https://www.mlspin.com/resources/data-services | "Free \"IDX Links\" Option · Free \"Manual IDX Download\" Option" · Syndicator Access: "Brokers' \"opted-in\" data must be displayed on the public portal for free · A completed Third-Party Portal Data Access Agreement" · contact "dataservices@mlspin.com 800-695-3000 ext. 7112" · footer "MLS Property Information Network, Inc." |
+| https://ww2.mredllc.com/data-delivery/idx-vow/ | "The listings are from all companies that participate in the program, which is about 99.5% of all companies and listings." · "…they can have access to search all the listings, not just the 99.5% of listings that are in the IDX program." |
+| https://northstarmls.com/third-party-data-usage/ | "Examples of third party usage are providing NorthstarMLS Participants with statistics tools, showing scheduling support, or accounting software." · "Monthly access fees are charged to the vendor based on the number of customers utilizing the data and are billed by the MLS Grid" |
+| https://ntreis.net/data/ | "Once approved, the Participant will complete a data access agreement before credentials are issued." · "Websites submitted for approval must be accessible for review." · footer "North Texas Real Estate Information Systems, Inc" |
+| https://www.nwmls.com/about-nwmls/ | page title "About NWMLS - Northwest Multiple Listing Service" · "NWMLS is a broker-owned, not-for-profit organization…" |
+| https://www.onekeymls.com/about-us (**browser**) | "OneKey® MLS is owned and operated by the Long Island Board of REALTORS® and the Hudson Gateway Association of REALTORS®." |
+| https://www.realcomp.com/Products-Services/Services-Products/Internet-Data-Exchange-IDX-for-Realcomp-Customers | "Data layouts are available via the API metadata." · "Realcomp guarantees that our IDX Department will respond back to IDX/VOW approval requests within 1 business day." · "The Pre-Made IDX Search allows you to place an existing IDX-compliant search onto your website by simply embedding an iFrame code…" |
+| https://recolorado.com/data/ | "REcolorado grants access to one data feed per application, with the exception of Back Office; a single Back Office feed may support multiple approved Back Office use cases." · "REcolorado will review your request and provide the appropriate license agreement based on your use case. Complete the required agreement and questionnaire in Bridge." |
+| https://www.stellarmls.com/data-delivery | "…your application must reside behind a login and be non-accessible to the public or clients." · "Ability to demonstrate a fully working application/product. If you are still in development, please let us know in the questionnaire and we can provide a sample data set." · "Vendors - An individual agreement is required for each Broker you are working with." · Broker Data Release: "Getting Started: Brokers only." |
+| https://docs.mlsgrid.com/api-documentation/api-version-2.0 | rows "nwmls Northwest MLS", "onekey2 OneKey® MLS", "recolorado REcolorado" (still 37 rows) |
+
+Counts in the guide that are our own arithmetic on these sources: "15 MLSs"; "five through MLS Grid, three through Trestle, four through Bridge, five issue API access themselves" (from the platform column); "37 originating systems" (rows counted in MLS Grid's table); "ten publish at least some fees" (ARMLS, CRMLS, FMLS, Metro MLS, MIAMI MLS, MLS PIN, NorthstarMLS, NTREIS, REcolorado, Stellar MLS) and "five publish none" (Bright MLS, MRED, NWMLS, OneKey MLS, Realcomp).
 
 ## Left out, and why
 
