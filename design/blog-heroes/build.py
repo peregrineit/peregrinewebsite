@@ -69,7 +69,7 @@ features = page("Guide · Requirements checklist", "IDX website <em>features</em
 .it u{width:54px;height:54px;border-radius:9px;background:linear-gradient(135deg,#1e3a5f,#312e81);display:block}.it p{display:flex;flex-direction:column;font-size:16px}.it s{text-decoration:none;white-space:nowrap;font-size:12px;color:#94a3b8;margin-top:3px}
 .chk{position:absolute;font-size:16px;font-weight:700;padding:12px 18px;border-radius:14px;color:#a5f3fc}.k1{left:-10px;top:448px}.k2{left:96px;top:506px}.k3{right:0;top:448px}""")
 
-boards = page("Reference · 15 US MLS boards", "MLS boards, <em>side by side</em>", "Data platform, feed types, who may license and published fees for each.",
+boards = page("Reference · MLS data access", "15 US MLS Boards: A <em>Data Access Reference</em>", "Who each serves, how data is delivered, feed types, who may license and where to apply.",
  "<b>MLS Grid</b><span class='dot'></span><b>Trestle</b><span class='dot'></span><b>Bridge</b><span class='dot'></span><b>Spark</b><span class='dot'></span><b>Own API</b>",
  """<svg class="net" viewBox="0 0 520 500"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#818cf8"/></linearGradient>
 <filter id="f"><feGaussianBlur stdDeviation="6"/></filter></defs>
@@ -88,7 +88,7 @@ boards = page("Reference · 15 US MLS boards", "MLS boards, <em>side by side</em
 <g><rect x="92" y="426" width="136" height="40" rx="12" fill="#101c38" stroke="#818cf8"/><text x="160" y="452">REcolorado</text></g>
 <g><rect x="0" y="336" width="104" height="40" rx="12" fill="#101c38" stroke="#818cf8"/><text x="52" y="362">FMLS</text></g>
 <g><rect x="0" y="186" width="110" height="40" rx="12" fill="#101c38" stroke="#22d3ee"/><text x="55" y="212">NWMLS</text></g></g></svg>""",
- ".net{position:absolute;right:-6px;top:10px;width:540px;height:520px;filter:drop-shadow(0 20px 50px rgba(2,6,23,.7))}")
+ "h1{font-size:50px}.left{width:540px}.net{position:absolute;right:-6px;top:10px;width:540px;height:520px;filter:drop-shadow(0 20px 50px rgba(2,6,23,.7))}")
 
 stack = page("Decision guide · Architecture", "Choosing a <em>tech stack</em> for a real estate platform", "Database, search, cache, backend and frontend: what listing data asks of each.",
  "<b>7 layers in the guide</b><span class='dot'></span>From each technology's own documentation",

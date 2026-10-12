@@ -286,7 +286,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'mls-boards-compared',
-    hero: 'Illustration: nine MLS names connected to a RESO Web API hub.',
+    hero: 'Illustration: nine of the fifteen MLS names arranged around a RESO Web API hub.',
     related: ['how-to-get-mls-data-access', 'mls-data-pipeline-architecture'],
     cta: {
       heading: 'Adding a New MLS Market?',
