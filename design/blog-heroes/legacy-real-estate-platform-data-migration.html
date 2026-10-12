@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=1200">
+<title>Strategy · Platform migration</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{font-family:Inter,'SF Pro Display',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#f8fafc;
+ background:#060b18;position:relative}
+.bg{position:absolute;inset:0;background:
+ radial-gradient(620px 420px at 86% 18%,rgba(34,211,238,.30),transparent 62%),
+ radial-gradient(560px 460px at 96% 96%,rgba(129,140,248,.34),transparent 60%),
+ radial-gradient(520px 380px at 4% 100%,rgba(14,165,233,.20),transparent 60%),
+ linear-gradient(135deg,#060b18 0%,#0b1630 55%,#0a1026 100%)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(148,163,184,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.07) 1px,transparent 1px);
+ background-size:44px 44px;mask-image:radial-gradient(900px 520px at 70% 45%,#000 20%,transparent 75%);-webkit-mask-image:radial-gradient(900px 520px at 70% 45%,#000 20%,transparent 75%)}
+.wrap{position:absolute;inset:0;padding:52px 56px;display:flex;gap:28px}
+.left{width:560px;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.14em;font-size:15px;color:#e2e8f0}
+.brand img{width:40px;height:40px;display:block;filter:drop-shadow(0 0 14px rgba(34,211,238,.45))}
+.pill{margin-top:44px;align-self:flex-start;font-size:13.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#67e8f9;
+ padding:8px 14px;border-radius:999px;background:rgba(34,211,238,.10);border:1px solid rgba(34,211,238,.35)}
+h1{margin-top:22px;font-size:58px;line-height:1.04;font-weight:800;letter-spacing:-.025em}
+h1 em{font-style:normal;background:linear-gradient(90deg,#22d3ee,#818cf8 70%,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin-top:20px;font-size:21px;line-height:1.45;color:#cbd5e1;max-width:520px}
+.foot{margin-top:auto;display:flex;gap:18px;align-items:center;font-size:15px;color:#94a3b8}
+.foot b{color:#e2e8f0;font-weight:600}
+.dot{width:5px;height:5px;border-radius:50%;background:#475569}
+.right{flex:1;position:relative}
+.glass{background:linear-gradient(180deg,rgba(30,41,69,.82),rgba(15,23,42,.82));border:1px solid rgba(148,163,184,.22);border-radius:20px;
+ box-shadow:0 30px 80px rgba(2,6,23,.65),inset 0 1px 0 rgba(255,255,255,.07);backdrop-filter:blur(6px)}
+.glow{box-shadow:0 0 0 1px rgba(34,211,238,.45),0 24px 70px rgba(34,211,238,.28),inset 0 1px 0 rgba(255,255,255,.1)}
+.muted{color:#94a3b8}.cy{color:#67e8f9}
+.left{width:590px}.sub{font-size:19.5px;max-width:540px}.bx{position:absolute;border-radius:16px;padding:12px 16px;font-weight:700;font-size:16px}h1{font-size:44px}.mv{position:absolute;right:-4px;top:16px;width:536px;height:438px}</style></head><body><div class="bg"></div><div class="grid"></div>
+<div class="wrap"><div class="left"><div class="brand"><img src="../../public/favicons/favicon-192x192.png" alt="">PEREGRINE IT</div><div class="pill">Strategy · Platform migration</div>
+<h1><em>Data Migration</em> Strategies for Legacy Real Estate Platforms</h1><p class="sub">Parallel run, validation gates, cutover and a rollback window.</p><div class="foot"><b>Map</b><span class='dot'></span><b>Reconcile</b><span class='dot'></span><b>Cut over</b><span class='dot'></span><b>Roll back</b></div></div><div class="right"><svg class="mv" viewBox="0 0 540 440"><defs><linearGradient id='ga' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='520' y2='440'><stop offset='0' stop-color='#22d3ee'/><stop offset='1' stop-color='#818cf8'/></linearGradient><marker id='ah' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='7' markerHeight='7' orient='auto-start-reverse'><path d='M0 0L10 5L0 10z' fill='#818cf8'/></marker></defs>
+<text x="0" y="62" fill="#94a3b8" font-size="16" font-weight="700">LEGACY</text><rect x="0" y="76" width="350" height="54" rx="14" fill="#1e293b" stroke="#64748b" stroke-width="2"/><rect x="350" y="76" width="120" height="54" rx="14" fill="#1e293b" stroke="#64748b" stroke-width="2" stroke-dasharray="6 6" opacity=".55"/>
+<text x="24" y="109" fill="#e2e8f0" font-size="17" font-weight="700">serving traffic</text><text x="372" y="109" fill="#94a3b8" font-size="15" font-weight="600">rollback</text>
+<text x="0" y="262" fill="#67e8f9" font-size="16" font-weight="700">NEW PLATFORM</text><rect x="110" y="276" width="240" height="54" rx="14" fill="#0e3a4a" stroke="#22d3ee" stroke-width="2" stroke-dasharray="6 6"/><rect x="350" y="276" width="190" height="54" rx="14" fill="#0e3a4a" stroke="#22d3ee" stroke-width="2.5"/>
+<text x="130" y="309" fill="#e2e8f0" font-size="17" font-weight="700">parallel run</text><text x="372" y="309" fill="#f8fafc" font-size="17" font-weight="800">serving traffic</text>
+<g fill="none" stroke="url(#ga)" stroke-width="2.5" marker-end="url(#ah)"><path d="M150 132 V270"/><path d="M230 132 V270"/><path d="M310 132 V270"/></g>
+<text x="176" y="206" fill="#94a3b8" font-size="14">sync</text><line x1="350" y1="40" x2="350" y2="370" stroke="#fbbf24" stroke-width="3" stroke-dasharray="4 6"/><text x="350" y="30" fill="#fde68a" font-size="17" font-weight="800" text-anchor="middle">Cutover</text>
+<g font-size="14.5" font-weight="700" fill="#a5f3fc"><rect x="96" y="372" width="124" height="38" rx="11" fill="#101c38" stroke="#22d3ee"/><text x="158" y="396" text-anchor="middle">Counts match</text><rect x="232" y="372" width="112" height="38" rx="11" fill="#101c38" stroke="#22d3ee"/><text x="288" y="396" text-anchor="middle">Samples OK</text></g></svg></div></div></body></html>

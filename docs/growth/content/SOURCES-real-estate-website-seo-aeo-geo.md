@@ -4,6 +4,12 @@ Every URL below was fetched on **2026-10-12** (HTTP 200) and the quoted text was
 
 Method: `curl -L` with a browser user agent, HTML stripped to text; the MLS Grid PDF with `pdftotext -layout`. Where a URL redirected, the URL in the table is the one it resolved to (noted).
 
+## Editorial revision, 2026-10-12
+
+All 39 distinct source URLs in the guide were fetched again (`curl -L --compressed` with a browser user agent, HTML stripped to text) and every quoted sentence in this log was searched for: all 39 returned HTTP 200 and all quotes were found. Nothing was stale. Two notes for the next re-check: schema.org now serves compressed responses, so fetch with `--compressed`; and `https://www.mlsgrid.com/s/MLS-Grid-AI-Use-Addendum.pdf` resolves through a redirect to a `static1.squarespace.com` file (same text).
+
+Changes in the revision, none of which adds a source: a recommendation on which filtered search URLs to keep indexable; a sentence that a cached or statically regenerated listing page must be invalidated when the listing's status changes; a statement that this site still emits FAQPage JSON-LD (`GuideFaq` in `src/app/components/GuideLayout.tsx`) and expects no rich result; and one recommendation on INP (map and gallery scripts), phrased as our recommendation, resting on the INP threshold already cited from web.dev/articles/vitals.
+
 ## Google Search Central / Google crawling documentation
 
 | URL | Text relied on |

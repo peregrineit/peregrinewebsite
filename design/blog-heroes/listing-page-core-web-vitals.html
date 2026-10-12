@@ -1,0 +1,39 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=1200">
+<title>Performance · Core Web Vitals</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{font-family:Inter,'SF Pro Display',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#f8fafc;
+ background:#060b18;position:relative}
+.bg{position:absolute;inset:0;background:
+ radial-gradient(620px 420px at 86% 18%,rgba(34,211,238,.30),transparent 62%),
+ radial-gradient(560px 460px at 96% 96%,rgba(129,140,248,.34),transparent 60%),
+ radial-gradient(520px 380px at 4% 100%,rgba(14,165,233,.20),transparent 60%),
+ linear-gradient(135deg,#060b18 0%,#0b1630 55%,#0a1026 100%)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(148,163,184,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.07) 1px,transparent 1px);
+ background-size:44px 44px;mask-image:radial-gradient(900px 520px at 70% 45%,#000 20%,transparent 75%);-webkit-mask-image:radial-gradient(900px 520px at 70% 45%,#000 20%,transparent 75%)}
+.wrap{position:absolute;inset:0;padding:52px 56px;display:flex;gap:28px}
+.left{width:560px;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.14em;font-size:15px;color:#e2e8f0}
+.brand img{width:40px;height:40px;display:block;filter:drop-shadow(0 0 14px rgba(34,211,238,.45))}
+.pill{margin-top:44px;align-self:flex-start;font-size:13.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#67e8f9;
+ padding:8px 14px;border-radius:999px;background:rgba(34,211,238,.10);border:1px solid rgba(34,211,238,.35)}
+h1{margin-top:22px;font-size:58px;line-height:1.04;font-weight:800;letter-spacing:-.025em}
+h1 em{font-style:normal;background:linear-gradient(90deg,#22d3ee,#818cf8 70%,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin-top:20px;font-size:21px;line-height:1.45;color:#cbd5e1;max-width:520px}
+.foot{margin-top:auto;display:flex;gap:18px;align-items:center;font-size:15px;color:#94a3b8}
+.foot b{color:#e2e8f0;font-weight:600}
+.dot{width:5px;height:5px;border-radius:50%;background:#475569}
+.right{flex:1;position:relative}
+.glass{background:linear-gradient(180deg,rgba(30,41,69,.82),rgba(15,23,42,.82));border:1px solid rgba(148,163,184,.22);border-radius:20px;
+ box-shadow:0 30px 80px rgba(2,6,23,.65),inset 0 1px 0 rgba(255,255,255,.07);backdrop-filter:blur(6px)}
+.glow{box-shadow:0 0 0 1px rgba(34,211,238,.45),0 24px 70px rgba(34,211,238,.28),inset 0 1px 0 rgba(255,255,255,.1)}
+.muted{color:#94a3b8}.cy{color:#67e8f9}
+.left{width:590px}.sub{font-size:19.5px;max-width:540px}.bx{position:absolute;border-radius:16px;padding:12px 16px;font-weight:700;font-size:16px}h1{font-size:40px}.left{width:600px}.pg{position:absolute;right:112px;top:4px;width:380px;padding:14px;border-radius:18px}.ph{height:150px;border-radius:12px;background:linear-gradient(135deg,#164e63,#312e81);border:2px dashed #22d3ee;display:flex;align-items:flex-end;padding:10px}.ph span{font-size:14px;font-weight:800;color:#a5f3fc;background:rgba(2,6,23,.6);padding:5px 10px;border-radius:8px}
+.rw{display:flex;gap:12px;margin-top:12px}.tx{flex:1;display:flex;flex-direction:column;gap:9px;padding-top:6px}.tx u{height:13px;border-radius:6px;background:#334155;display:block}.tx u.s{width:78%}.tx u.t{width:54%}.mpb{width:150px;height:84px;border-radius:12px;border:2px dashed #818cf8;color:#c4b5fd;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px}
+.gl{display:flex;gap:9px;margin-top:12px;align-items:center}.gl i{width:58px;height:44px;border-radius:9px;background:#1e293b;border:1px solid #334155;display:block}.gl em{font-style:normal;font-size:13.5px;color:#94a3b8;font-weight:700;margin-left:4px}
+.gg{position:absolute;right:0;top:20px;display:flex;flex-direction:column;gap:14px}.g{position:relative;width:92px;height:92px}.g svg{width:100%;height:100%}.g b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800}</style></head><body><div class="bg"></div><div class="grid"></div>
+<div class="wrap"><div class="left"><div class="brand"><img src="../../public/favicons/favicon-192x192.png" alt="">PEREGRINE IT</div><div class="pill">Performance · Core Web Vitals</div>
+<h1>Real Estate Website Performance: Optimizing Listing Pages for <em>Core Web Vitals</em></h1><p class="sub">The hero photo, galleries, maps and third-party scripts on a listing page.</p><div class="foot"><b>LCP</b><span class='dot'></span><b>INP</b><span class='dot'></span><b>CLS</b></div></div><div class="right"><div class="pg glass glow"><div class="ph"><span>LCP candidate: hero photo</span></div><div class="rw"><div class="tx"><u></u><u class="s"></u><u class="t"></u></div><div class="mpb">map: load on demand</div></div><div class="gl"><i></i><i></i><i></i><i></i><em>gallery: lazy</em></div></div>
+<div class="gg"><div class="g"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="31" fill="none" stroke="#1e293b" stroke-width="9"/><circle cx="40" cy="40" r="31" fill="none" stroke="#22d3ee" stroke-width="9" stroke-linecap="round" stroke-dasharray="150 195" transform="rotate(-90 40 40)"/></svg><b>LCP</b></div>
+<div class="g"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="31" fill="none" stroke="#1e293b" stroke-width="9"/><circle cx="40" cy="40" r="31" fill="none" stroke="#818cf8" stroke-width="9" stroke-linecap="round" stroke-dasharray="130 195" transform="rotate(-90 40 40)"/></svg><b>INP</b></div>
+<div class="g"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="31" fill="none" stroke="#1e293b" stroke-width="9"/><circle cx="40" cy="40" r="31" fill="none" stroke="#c084fc" stroke-width="9" stroke-linecap="round" stroke-dasharray="165 195" transform="rotate(-90 40 40)"/></svg><b>CLS</b></div></div></div></div></body></html>

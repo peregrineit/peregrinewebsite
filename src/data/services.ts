@@ -140,7 +140,7 @@ const coreServiceList: Service[] = [
       { slug: 'self-storage-management-platform', note: 'A multi-tenant SaaS for self-storage operators combining reservations, Stripe billing and smart-lock access control behind one event-driven backend.' },
       { slug: 'recruitment-ats-platform', note: 'A multi-tenant applicant tracking system with per-company pipelines, branded career pages, resume parsing and Elasticsearch candidate search.' },
     ],
-    guides: ['cost-to-build-a-real-estate-platform', 'real-estate-platform-tech-stack', 'custom-saas-vs-off-the-shelf-crm-for-brokerages'],
+    guides: ['cost-to-build-a-real-estate-platform', 'real-estate-platform-tech-stack', 'custom-saas-vs-off-the-shelf-crm-for-brokerages', 'multi-tenant-real-estate-saas', 'real-estate-crm-architecture', 'legacy-real-estate-platform-data-migration', 'background-jobs-redis-bullmq'],
     answers: {
       includes:
         'Peregrine\'s SaaS development covers the whole platform: a multi-tenant data model, authentication and roles, Stripe billing, search over large datasets, admin and reporting tools, the integrations your customers expect, and the cloud infrastructure it runs on. We build new products and also take over existing MVPs that are starting to break under real customers.',
@@ -233,7 +233,7 @@ const coreServiceList: Service[] = [
       { slug: 'hr-payroll-saas-platform', note: 'Payroll integrations with ADP and QuickBooks for deductions and ledger export, plus DocuSign for I-9 and W-4 forms, with reconciliation webhooks.' },
       { slug: 'legal-document-automation-platform', note: 'DocuSign integration for multi-party signing with webhook handlers for envelope events and retries that keep in-flight documents moving during outages.' },
     ],
-    guides: ['custom-saas-vs-off-the-shelf-crm-for-brokerages'],
+    guides: ['webhook-event-driven-integrations', 'custom-saas-vs-off-the-shelf-crm-for-brokerages'],
     answers: {
       includes:
         'Peregrine\'s API integration service builds the layer between your systems: one adapter per vendor behind a normalized internal data model, webhooks and polling with retry queues, reconciliation jobs, and monitoring. It covers CRMs, ERPs, payroll and finance tools, e-signature, shipping carriers, and public or partner APIs for your own product.',
@@ -325,7 +325,7 @@ const coreServiceList: Service[] = [
       { slug: 'w3re-ai-real-estate-platform', note: 'A unified pipeline for four MLS systems (NTREIS, Stellar MLS, ARMLS and REcolorado) that normalizes schemas and deduplicates cross-listed properties.' },
       { slug: 'scaling-real-estate-saas-platform', note: 'Rebuilt the MLS sync engine for US and Canadian boards with delta detection, retry logic and per-feed error isolation, feeding Elasticsearch search for agent IDX sites.' },
     ],
-    guides: ['mls-idx-integration-cost', 'how-to-get-mls-data-access', 'idx-vendor-vs-custom-build', 'reso-web-api-vs-rets', 'mls-data-pipeline-architecture', 'mls-data-access-canada', 'mls-boards-compared', 'idx-website-features-checklist', 'cheapest-idx-options', 'real-estate-website-seo-aeo-geo', 'cost-to-build-a-real-estate-platform'],
+    guides: ['mls-idx-integration-cost', 'how-to-get-mls-data-access', 'idx-vendor-vs-custom-build', 'reso-web-api-vs-rets', 'mls-data-pipeline-architecture', 'mls-data-access-canada', 'mls-boards-compared', 'idx-website-features-checklist', 'cheapest-idx-options', 'real-estate-website-seo-aeo-geo', 'cost-to-build-a-real-estate-platform', 'mls-sync-engine', 'mls-data-normalization', 'listing-lifecycle-sold-expired-deleted', 'real-estate-search-elasticsearch', 'map-based-property-search', 'saved-searches-listing-alerts'],
     answers: {
       includes:
         'Peregrine\'s MLS and IDX integration service builds the full listing pipeline: feed ingestion over the RESO Web API or RETS, normalization across MLS boards, deduplication of cross-listed properties, a fast search layer, and the IDX website or app on top, with lead capture feeding your CRM. We also build and operate our own real estate product, RealFoyer.',
