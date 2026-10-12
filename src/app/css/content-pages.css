@@ -279,5 +279,6 @@ a.cp-card:hover { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 10px 30px
 /* An inline SVG diagram with its caption. The SVG scales to the column; wide ones scroll. */
 .cp-diagram { margin: 28px 0; }
 .cp-diagram .cp-diagram-scroll { overflow-x: auto; border: 1px solid var(--cp-border); border-radius: 14px; background: #0b1426; padding: 14px; }
-.cp-diagram svg { display: block; width: 100%; height: auto; min-width: 560px; }
+/* Diagrams inside the scroll wrapper are full width (the older rule above caps the pipeline diagram at 520px). */
+.cp-diagram .cp-diagram-scroll svg { display: block; width: 100%; max-width: none; height: auto; min-width: 560px; margin: 0; }
 .cp-diagram figcaption { font-size: 13px; color: var(--cp-muted); margin-top: 8px; text-align: center; }
