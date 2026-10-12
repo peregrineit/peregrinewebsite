@@ -383,6 +383,22 @@ export const guides: Guide[] = [
     service: 'mls-idx-integration',
     caseStudy: 'w3re-ai-real-estate-platform',
   },
+  {
+    slug: 'legacy-real-estate-platform-data-migration',
+    related: ['mls-sync-engine', 'mls-data-normalization'],
+    cta: {
+      heading: 'Planning a Move Off a Legacy Platform?',
+      text: 'Tell us what the old system holds, how many tenants and users it serves and how much downtime you can accept. An engineer will walk through strategy, validation and rollback for your case.',
+    },
+    title: 'Data Migration Strategies for Legacy Real Estate Platforms',
+    metaTitle: 'Legacy Real Estate Platform Data Migration',
+    description:
+      'How to migrate a legacy real estate platform: what to move or re-fetch, cutover strategies, validation, URL redirects, rollback planning and a cutover runbook.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'saas-development',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {
