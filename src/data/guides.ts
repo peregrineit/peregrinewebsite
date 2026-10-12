@@ -351,6 +351,22 @@ export const guides: Guide[] = [
     service: 'mls-idx-integration',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
+  {
+    slug: 'listing-lifecycle-sold-expired-deleted',
+    related: ['mls-sync-engine', 'real-estate-website-seo-aeo-geo'],
+    cta: {
+      heading: 'Sold or Removed Listings Still Showing on Your Site?',
+      text: 'Tell us which feeds you pull and how removals reach you today. An engineer will walk through reconciliation, index cleanup and what each listing URL should return.',
+    },
+    title: 'Handling Deleted, Expired and Sold Listings Correctly',
+    metaTitle: 'Handling Deleted, Expired & Sold Listings',
+    description:
+      'How to handle sold, expired, withdrawn and deleted MLS listings: status mapping, removal signals, reconciliation, index cleanup, HTTP status and license rules.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {
