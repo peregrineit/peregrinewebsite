@@ -335,6 +335,22 @@ export const guides: Guide[] = [
     service: 'nextjs-development',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
+  {
+    slug: 'multi-tenant-real-estate-saas',
+    related: ['real-estate-platform-tech-stack', 'custom-saas-vs-off-the-shelf-crm-for-brokerages'],
+    cta: {
+      heading: 'Designing a Multi-Tenant Real Estate Platform?',
+      text: 'Tell us who your tenants are (brokerages, teams or agent sites), which MLSs they license and how the data is separated today. An engineer will walk through the tenancy model and isolation it needs.',
+    },
+    title: 'Building a Multi-Tenant Real Estate SaaS Platform',
+    metaTitle: 'Multi-Tenant Real Estate SaaS Architecture',
+    description:
+      'How to design tenancy for a real estate SaaS: tenant hierarchy, data isolation with row-level security, custom domains, per-tenant MLS licenses and lifecycle.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'saas-development',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {
