@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import GuideLayout, { GuideFaq, Src, guideMetadata } from '../../components/GuideLayout';
+import GuideFigure from '../../components/GuideFigure';
 
 const SLUG = 'mls-boards-compared';
 export const metadata = guideMetadata(SLUG);
@@ -67,6 +68,17 @@ export default function Guide() {
         we could read do not say; it does not mean free. For the process of getting approved, see{' '}
         <Link href="/blog/how-to-get-mls-data-access">how to get MLS data access</Link>.
       </p>
+
+      <GuideFigure
+
+        slug="mls-boards-compared"
+
+        alt="Five data platforms and the MLSs delivered through each. MLS Grid: Stellar MLS, MRED, OneKey MLS, NWMLS, NorthstarMLS. Trestle: CRMLS, NTREIS, MIAMI MLS. Bridge Interactive: Stellar MLS, MIAMI MLS, FMLS, REcolorado. Spark: ARMLS. Its own API: Bright MLS, MLS PIN, Realcomp, Metro MLS."
+
+        caption="Data delivery platform for each of the 15 MLSs, as each MLS's own site states it. Stellar MLS and MIAMI MLS appear under two platforms."
+
+      />
+
 
       <h2>Who they are and how they deliver data</h2>
       <p>

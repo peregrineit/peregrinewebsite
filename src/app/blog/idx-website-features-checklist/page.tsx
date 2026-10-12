@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import GuideLayout, { GuideFaq, Src, guideMetadata } from '../../components/GuideLayout';
+import GuideFigure from '../../components/GuideFigure';
 
 const SLUG = 'idx-website-features-checklist';
 export const metadata = guideMetadata(SLUG);
@@ -103,6 +104,17 @@ export default function Guide() {
         <a href="#checklist">checklist below</a> scores {FEATURE_COUNT} features across those groups, with a question
         to ask a vendor or developer for each and whether MLS rules limit it.
       </p>
+
+      <GuideFigure
+
+        slug="idx-website-features-checklist"
+
+        alt="Four columns of IDX website features: eight for the home buyer, five for the agent or team, five for the brokerage and seven for search engines."
+
+        caption="The 25 features in this checklist, grouped by who they serve."
+
+      />
+
 
       <h2>How to read this guide</h2>
       <p>

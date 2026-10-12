@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import GuideLayout, { GuideFaq, Src, guideMetadata } from '../../components/GuideLayout';
+import GuideFigure from '../../components/GuideFigure';
 
 const SLUG = 'real-estate-website-seo-aeo-geo';
 export const metadata = guideMetadata(SLUG);
@@ -69,6 +70,17 @@ export default function Guide() {
         Claude, Perplexity and Gemini. Every rule below was read on its publisher&apos;s page on October 12, 2026.
         This is a build checklist, not a promise of rankings.
       </p>
+
+      <GuideFigure
+
+        slug="real-estate-website-seo-aeo-geo"
+
+        alt="Three columns listing what to build for SEO, AEO and GEO on a real estate website."
+
+        caption="What to build for each of the three. The checklist near the end has the source and the verification step for every item."
+
+      />
+
 
       <h2>1. Serve listing pages from your own hostname, in the HTML</h2>
       <h3>Iframes and vendor subdomains</h3>

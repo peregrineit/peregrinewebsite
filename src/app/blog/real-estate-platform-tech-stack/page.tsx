@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import GuideLayout, { GuideFaq, Src, guideMetadata } from '../../components/GuideLayout';
+import GuideFigure from '../../components/GuideFigure';
 
 const SLUG = 'real-estate-platform-tech-stack';
 export const metadata = guideMetadata(SLUG);
@@ -87,6 +88,17 @@ export default function Guide() {
         for how listings get from the MLS into the database see the{' '}
         <Link href="/blog/mls-data-pipeline-architecture">MLS data pipeline architecture</Link>.
       </p>
+
+      <GuideFigure
+
+        slug="real-estate-platform-tech-stack"
+
+        alt="Seven stack layers with their options: system of record, search, cache, backend, frontend rendering, media and hosting."
+
+        caption="The seven layers this guide covers, with the options compared at each."
+
+      />
+
 
       <h2>What listing data asks of a stack</h2>
       <ul>

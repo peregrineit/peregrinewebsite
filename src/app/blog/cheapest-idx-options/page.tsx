@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import GuideLayout, { GuideFaq, Src, guideMetadata } from '../../components/GuideLayout';
+import GuideFigure from '../../components/GuideFigure';
 
 const SLUG = 'cheapest-idx-options';
 export const metadata = guideMetadata(SLUG);
@@ -42,6 +43,17 @@ export default function Guide() {
         plans is usually the right answer. Custom development is not, and the last section of this guide says when
         that changes.
       </p>
+
+      <GuideFigure
+
+        slug="cheapest-idx-options"
+
+        alt="Bar chart of the lowest published monthly IDX plan from nine vendors: Buying Buddy, MLSImport and Flexmls IDX at $49; Wovax and Placester at $59; IDX Broker at $60; myRealPage at $69.99; Showcase IDX at $94.95; Realtyna at $99."
+
+        caption="Lowest published monthly plan per vendor, as published on October 12, 2026. The table below has setup fees, MLS fees and what each plan leaves out."
+
+      />
+
 
       <h2>The lowest published plan from each IDX vendor</h2>
       <p>
