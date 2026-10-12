@@ -1,6 +1,6 @@
 # Source log: /blog/listing-lifecycle-sold-expired-deleted
 
-Every URL below was fetched on **2026-10-12** (HTTP 200) and the quoted text was read on the page that day. Quotes are verbatim (spelling as published). Method: `curl` with a browser user agent, HTML stripped to text; PDFs with `pdftotext -layout`.
+Every URL below was fetched on **2026-10-12** (HTTP 200) and the quoted text was read on the page that day. QA re-fetched every URL on **2026-10-13** and found each quoted sentence still on its page; the StandardStatus page still read "Generated October 12, 2026" and "404 of 420 Organizations". Quotes are verbatim (spelling as published). Method: `curl` with a browser user agent, HTML stripped to text; PDFs with `pdftotext -layout`.
 
 ## RESO
 
@@ -49,6 +49,8 @@ Driving logic from StandardStatus; treating unknown statuses as not displayable;
 
 ## Not used because it could not be verified
 
+- A reconciliation query for MLS Grid: its documentation and Best Practices guide describe none. The article presents the `$select` key pull as our proposal and says to agree it with MLS Grid support (changed in QA).
+- "Will never fire on most feeds" (about `StandardStatus = 'Delete'`) and "usually through MlsStatus": inferences the usage figures do not support; softened in QA.
 - NAR IDX policy text on sold-listing display: not fetched (member login on the earlier check); no NAR rule is cited.
 - Full definitions of Withdrawn, Hold and Coming Soon are truncated on the field page; only the visible part of the Withdrawn definition is used.
 - Whether a minimal tombstone (key and removal time only) satisfies "must be removed from your local data store": not stated by MLS Grid; the article says to confirm it against the agreement.

@@ -5,7 +5,7 @@ import ListingLifecycleDiagram from '../../components/diagrams/ListingLifecycleD
 const SLUG = 'listing-lifecycle-sold-expired-deleted';
 export const metadata = guideMetadata(SLUG);
 
-// Sources fetched and checked 2026-10-12; the sentence relied on for each link is logged in
+// Sources fetched 2026-10-12 and re-checked 2026-10-13; the sentence relied on for each link is logged in
 // docs/content/sources/listing-lifecycle-sold-expired-deleted.md. Code and config blocks are illustrative.
 const DD_STATUS = 'https://dd.reso.org/DD2.0/Property/StandardStatus/';
 const DD_MLS_STATUS = 'https://dd.reso.org/DD2.0/Property/MlsStatus/';
@@ -40,10 +40,9 @@ export default function Guide() {
         with no clear status management, and agents were showing sold properties as active on their sites.
       </p>
       <p>
-        The <Link href="/blog/mls-data-pipeline-architecture">MLS data pipeline reference architecture</Link>{' '}
-        says in a paragraph that removals arrive differently on each platform. This article follows a listing
-        through each ending and says what the pipeline, the search index and the web page should do, and which
-        questions only your MLS license can answer.
+        What follows takes each ending in turn: what the pipeline, the search index and the web page should do,
+        and which questions only your MLS license can answer. For where this sits in the whole system, see the{' '}
+        <Link href="/blog/mls-data-pipeline-architecture">MLS data pipeline reference architecture</Link>.
       </p>
 
       <h2>Two status fields, and they are not the same on every MLS</h2>
@@ -80,9 +79,9 @@ export default function Guide() {
       <p>
         The right-hand column is the point of the table. About half of the organizations measured use Canceled
         and Active Under Contract; about a fifth use Delete. So code that waits for{' '}
-        <code>StandardStatus = &apos;Delete&apos;</code> will never fire on most feeds, and a board without Active
-        Under Contract is expressing that state some other way, usually through MlsStatus. Three working rules
-        follow:
+        <code>StandardStatus = &apos;Delete&apos;</code> cannot be the only removal path, and a board without
+        Active Under Contract may be expressing that state some other way, for instance through MlsStatus. Three
+        working rules follow:
       </p>
       <ul>
         <li>Drive logic (search filters, counts, page treatment) from StandardStatus. Show MlsStatus where the board&apos;s own wording matters to agents.</li>
@@ -113,10 +112,9 @@ export default function Guide() {
         </li>
       </ul>
       <p>
-        The flag is also only visible to the right query. The initial import filters on MlgCanView equal to true;
-        the replication queries that follow{' '}
-        <Src href={GRID_V2}>do not contain an MlgCanView filter, so that changes to false arrive</Src>. The{' '}
-        <Link href="/blog/mls-sync-engine">sync engine article</Link> covers that handoff.
+        The flag only reaches a query that does not filter on it; the{' '}
+        <Link href="/blog/mls-sync-engine">sync engine article</Link> covers that handoff from initial import to
+        replication.
       </p>
       <h3>2. Nothing at all (Trestle, and hard deletes generally)</h3>
       <p>
@@ -138,8 +136,7 @@ export default function Guide() {
         <Src href={GRID_IDX}>may be excluded from MLS Grid data</Src>.
       </p>
       <p>
-        A pipeline has to handle all three, because one platform can use more than one, and because the second is
-        also what a missed flag looks like after an outage.
+        A pipeline has to handle all three: the second is also what a missed flag looks like after an outage.
       </p>
 
       <h2>The lifecycle as a state machine</h2>
@@ -160,9 +157,8 @@ export default function Guide() {
       </ul>
       <p>
         Implement the transitions in one place: a function that takes the previous and the new state of a record
-        and returns the actions. Search, page rendering, alerts and the sitemap then read the result. When status
-        logic is spread across templates and queries, each surface develops its own idea of what
-        &ldquo;active&rdquo; means.
+        and returns the actions. Search, page rendering, alerts and the sitemap then read the result, instead of
+        each holding its own idea of what &ldquo;active&rdquo; means.
       </p>
 
       <h2>Decision table: status, index, page, license</h2>
@@ -273,25 +269,27 @@ export default function Guide() {
       </p>
       <p>
         Google also supports an <Src href={G_ROBOTS_META}>unavailable_after rule: do not show this page in search results after the specified date and time</Src>.
-        It suits pages with a known end date, such as an open house or an auction. A listing&apos;s end date is
-        rarely known in advance, so it does not replace the status code. The wider indexing picture for listing
-        sites is in <Link href="/blog/real-estate-website-seo-aeo-geo">SEO, AEO and GEO for real estate websites</Link>.
+        It suits pages with a known end date, such as an open house. A listing&apos;s end is rarely known in
+        advance, so the rule does not replace the status code. The wider indexing picture for listing sites is in <Link href="/blog/real-estate-website-seo-aeo-geo">SEO, AEO and GEO for real estate websites</Link>.
       </p>
 
       <h2>The reconciliation job</h2>
       <p>
-        Reconciliation is a separate job from incremental sync, on its own schedule, and it is required on every
-        platform: as the only removal mechanism on some, and as the safety net behind a flag on others. An
+        Reconciliation is a separate job from incremental sync, on its own schedule. We would run it on every
+        platform: it is the only removal mechanism on some and the safety net behind a flag on others. An
         illustrative outline:
       </p>
       <pre className="cp-code"><code>{`// Illustrative. Runs per feed, originating system and resource.
 async function reconcile(key) {
   const startedAt = now()
-  const remote = new Map()                       // record key -> { modified, status }
-  for await (const page of feed.listKeys(key)) { // key fields only, every page
-    for (const r of page) remote.set(r.key, r)
+  const remote = new Map()                       // record key -> { modified }
+  let complete = false
+  for await (const page of feed.listKeys(key)) { // key fields only; throws if any page fails
+    for (const r of page.records) remote.set(r.key, r)
+    complete = page.isLast                       // true only when the response had no next link
   }
-  if (!feed.completed(key)) return abort('incomplete key list')   // never diff a partial list
+  // Never diff a partial or empty list: every key not fetched would look deleted.
+  if (!complete || remote.size === 0) return abort('incomplete key list')
 
   const local = await store.keysFor(key)         // records we hold as displayable
   const missing = local.filter(k => !remote.has(k.key) && k.firstSeenAt < startedAt)
@@ -309,18 +307,21 @@ async function reconcile(key) {
         <li>
           <strong>Key-only queries.</strong> Trestle allows a query that selects only key fields to return{' '}
           <Src href={TRESTLE_REF}>up to 300,000 records</Src>, and points to its replication endpoint for
-          resources of more than a million. On MLS Grid, which supports <code>$select</code>, the equivalent is
-          to page through the resource with the initial-import filter (MlgCanView equal to true) selecting the
-          key and the timestamp.
+          resources of more than a million. MLS Grid&apos;s documentation does not describe a reconciliation
+          query. It does support <code>$select</code>, so the equivalent we would propose is to page through the
+          resource with the initial-import filter (MlgCanView equal to true), selecting the key and the
+          timestamp. Agree the schedule with MLS Grid support first, since a repeated full pull is the kind of
+          usage its guidelines exist to limit.
         </li>
         <li>
           <strong>Never act on a partial list.</strong> If the key download fails halfway, every key not yet
-          fetched looks deleted. The job diffs only after the last page.
+          fetched looks deleted. The job diffs only after a page with no next link, and treats an empty list as
+          a failure.
         </li>
         <li>
           <strong>A removal threshold.</strong> If the diff wants to remove more than a set fraction of a feed,
-          stop and ask a person. Either the feed has a problem or the license scope changed, and in both cases a
-          human should decide. The fraction is a setting to tune per feed, not a number we can give you.
+          stop and ask a person: either the feed has a problem or the license scope changed. The fraction is a
+          setting to tune per feed, not a number we can give you.
         </li>
         <li>
           <strong>Drift as well as absence.</strong> Selecting the timestamp with the key finds records whose
@@ -329,28 +330,24 @@ async function reconcile(key) {
         </li>
       </ul>
       <p>
-        How often to run it is set by the license, not by convenience. Under MLS Grid&apos;s twelve-hour refresh
-        rule, a feed whose only removal mechanism is reconciliation needs that job to complete well inside twelve
-        hours. After any outage longer than the platform&apos;s flag window, run it before trusting incremental
-        sync again.
-      </p>
-      <p>
-        RESO has ratified a cleaner mechanism. With the EntityEvent resource,{' '}
-        <Src href={RESO_EE_BLOG}>events are produced when records are no longer part of a user&apos;s feed</Src>,
-        which would make removals part of the normal stream where a provider offers it. Until yours does,
-        reconciliation stays.
+        How often to run it follows from the license, not from convenience. Where a refresh rule such as MLS
+        Grid&apos;s twelve hours applies and reconciliation is the only way removals reach you, we would have the
+        job complete well inside that period. After any outage longer than the platform&apos;s flag window, run
+        it before trusting incremental sync again. RESO&apos;s ratified EntityEvent resource would put removals
+        in the normal stream, since{' '}
+        <Src href={RESO_EE_BLOG}>events are produced when records are no longer part of a user&apos;s feed</Src>;
+        until your provider offers it, reconciliation stays.
       </p>
 
       <h2>Cleaning up everything derived from the record</h2>
       <p>
-        Deleting the row is the smallest part of a removal. The listing also lives in every copy made from it,
-        and each copy has its own way of going stale:
+        Deleting the row is the smallest part of a removal. The listing also lives in every copy made from it:
       </p>
       <ul>
         <li>
           <strong>Search index.</strong> Delete the document in the same job that applies the removal, not in a
-          later batch. In Elasticsearch a change becomes{' '}
-          <Src href={ES_NRT}>visible to search within about a second by default</Src>, at the next refresh.
+          later batch. In Elasticsearch a change becomes visible to search at the next refresh, and by default
+          the engine <Src href={ES_NRT}>refreshes indices every second, but only on indices that have received a search request in the last 30 seconds</Src>.
         </li>
         <li><strong>Query caches.</strong> A cached result set still contains the listing until it expires. Either keep cache lifetimes shorter than your refresh obligation, or filter cached results against the store before rendering.</li>
         <li><strong>Rendered pages and the CDN.</strong> Invalidate the listing page, and any area or building page that lists it.</li>
@@ -368,8 +365,8 @@ async function reconcile(key) {
       </p>
       <p>
         One design question is whether to keep a tombstone. MLS Grid&apos;s wording is that the record must be
-        removed from your data store, so a soft-delete flag on the full record is not a removal. What we would
-        keep is a minimal tombstone: the key, the removal time and the signal, with no listing content. It lets
+        removed from your data store, and we read a soft-delete flag on the full record as not meeting it. What
+        we would keep is a minimal tombstone: the key, the removal time and the signal, with no listing content. It lets
         the site answer 410 for a URL that once existed, stops a late-arriving job from recreating the record, and
         gives support a way to answer &ldquo;where did this listing go&rdquo;. Confirm even that against your
         agreement.
@@ -377,17 +374,15 @@ async function reconcile(key) {
 
       <h2>Sold and historical records are licensed data</h2>
       <p>
-        It is tempting to treat sold listings as your own archive once they are in your database. They are not.
-        They remain MLS data, and what you may do with them is written per MLS. Staying with MLS Grid&apos;s
-        public IDX rules as the worked example, and without generalizing beyond the MLSs they name:
+        It is tempting to treat sold listings as your own archive once they are in your database. Treat them as
+        licensed data instead: what you may show is written per MLS. The decision table above quotes the age and
+        field limits that MLS Grid&apos;s public IDX rules set for REcolorado, IRMLS and Unlock participants. The
+        same document adds, for{' '}
+        <Src href={GRID_IDX}>SCKMLS participants, that display of Sold Price and Net Sold Price on closed listings is prohibited</Src>,
+        and that when a sold listing is displayed{' '}
+        <Src href={GRID_IDX}>the name of the cooperating brokerage or a stated disclaimer must also appear</Src>.
+        None of this generalizes beyond the MLSs named. Rules of this kind have three engineering consequences.
       </p>
-      <ul>
-        <li>For <Src href={GRID_IDX}>REcolorado participants, display of closed listings more than three years old is prohibited</Src>; the same limit is stated for IRMLS.</li>
-        <li>For <Src href={GRID_IDX}>Unlock participants, closed listings may not show the sale price or photographs other than the primary photograph</Src>.</li>
-        <li>For <Src href={GRID_IDX}>SCKMLS participants, display of Sold Price and Net Sold Price on closed listings is prohibited</Src>.</li>
-        <li>When a sold listing is displayed, <Src href={GRID_IDX}>the name of the cooperating brokerage or a stated disclaimer must also appear</Src>.</li>
-      </ul>
-      <p>These rules have three engineering consequences.</p>
       <p>
         <strong>Rules are data, keyed by originating system.</strong> An illustrative shape:
       </p>
@@ -410,9 +405,8 @@ const displayPolicy = {
         under another. The display-policy filter has to know the surface as well as the status.
       </p>
       <p>
-        Rules change, too. The document cited here carries an update date of September 17, 2026. Keep the policy
-        versioned, record which version each display decision was made under, and re-run the policy over stored
-        records whenever it changes.
+        Rules change, too: the document cited here carries an update date of September 17, 2026. Keep the policy
+        versioned and re-run it over stored records whenever it changes.
       </p>
 
       <h2>Checks that prove it works</h2>
@@ -429,14 +423,13 @@ const displayPolicy = {
       <GuideFaq slug={SLUG} items={[
         { question: 'Should a sold listing page return 404 or stay live?', answer: ['It depends on your MLS license. If you may display sold listings and the page has real content, keep it at 200 with the status shown. If not, Google says to ', ['return a 404 (not found) or 410 (gone) response code', G_SOFT404], '. A 200 page that only says the listing is unavailable is a soft 404.'] },
         { question: 'Is there a difference between 404 and 410 for removed listings?', answer: ['Not for Google Search, which says ', ['all 4xx errors, except 429, are treated the same', G_STATUS], '. A 410 is the more accurate answer for a URL you know existed, which is one reason to keep a minimal record of removed keys.'] },
-        { question: 'How do you detect a listing that was deleted at the MLS?', answer: ['It depends on the platform. MLS Grid sets MlgCanView to false, and the record ', ['must be removed from your local data store', GRID_V2], '. Trestle’s incremental updates ', ['will not provide information on records that are no longer available', TRESTLE_SCALE], ', so you compare your keys with the feed’s keys on a schedule.'] },
         { question: 'Do all MLSs use the same listing statuses?', answer: ['No. RESO’s StandardStatus has 11 locked values, but its Data Dictionary shows that not every organization uses every value, and MlsStatus is ', ['an open enumeration: any value is allowed', DD_MLS_STATUS], '. Store both fields and the mapping between them for each MLS.'] },
         { question: 'How long can sold listings be displayed?', answer: ['Only as long as each MLS allows. As one published example, MLS Grid’s IDX rules state that for REcolorado participants ', ['display of closed listings more than three years old is prohibited', GRID_IDX], '. Other MLSs set different limits or none; your license decides.'] },
       ]} />
 
       <p className="cp-note">
         Status definitions, platform behavior, MLS Grid rules and Google guidance were read from the linked pages
-        on October 12, 2026. MLS rules are quoted from MLS Grid&apos;s public IDX Rules as a worked example and
+        on October 12, 2026, and checked again the next day. MLS rules are quoted from MLS Grid&apos;s public IDX Rules as a worked example and
         apply only to the MLSs named in them. Rules change and differ by MLS and by feed type; your license and
         the current documents decide. Code and configuration blocks are illustrative.
       </p>
