@@ -36,6 +36,25 @@ All pages fetched and read on 2026-10-12. Each row is the sentence or figure the
 | https://www.postgresql.org/docs/current/sql-select.html | "With SKIP LOCKED, any selected rows that cannot be immediately locked are skipped. ... can be used to avoid lock contention with multiple consumers accessing a queue-like table." | 2026-10-12 |
 | https://www.postgresql.org/docs/current/sql-insert.html | "ON CONFLICT DO NOTHING simply avoids inserting a row as its alternative action." | 2026-10-12 |
 
+## Independent QA, 2026-10-12
+
+All 12 source URLs were fetched again by a second reviewer and every quoted sentence above was found. Three logged Stripe quotes differ from the page by a word and were not used verbatim in the article: the page says "exponential back off" and "delay its expiration for up to 24 hours ... until expiration". The Standard Webhooks sentence reads "manually replay specific webhooks or failures within a range". Also confirmed there: "410 Gone ... Sender should disable the webhook endpoint, and stop sending it messages" and the signed content "msg_id.timestamp.payload".
+
+Added in QA:
+
+| URL | Relied on | Date |
+|---|---|---|
+| https://nodejs.org/api/crypto.html | crypto.timingSafeEqual: "a and b must both be Buffers, TypedArrays, or DataViews, and they must have the same byte length. An error is thrown if a and b have different byte lengths." | 2026-10-12 |
+
+Code bugs fixed in QA:
+
+- The worker pseudocode read the stored version and then wrote, so two events for the same object could both pass the check and apply out of order. The version test is now part of the conditional upsert. It also called the provider's API while holding a row lock inside a transaction; the fetch now happens first.
+- The receiver enqueued only when the insert created a row, so an attempt that died between insert and enqueue depended on the sweeper alone. It now enqueues on every delivery, deduplicated by job id.
+- The job id was `provider + ':' + event_id`. BullMQ rejects ':' in a custom job id ("Custom Id cannot contain :", `src/classes/job.ts` on the master branch, read 2026-10-12); the separator is now '_'.
+- The outbox `seq` column was described as the order the relay reads in. A sequence value is assigned before commit, so a cursor on it can skip a late-committing row; the text now says to select by `relayed_at IS NULL`.
+
+Removed as unsupported: "the commonest way to lose an outgoing event", "cause most verification bugs", "the one most often missing", "fail in the second month". Cut for length: the closing checklist and two FAQ entries that restated sections, one of three AWS jitter quotes, a generic schema-publishing bullet; the case-study paragraph was shortened without changing what it attributes to each page.
+
 ## Peregrine statements and their source
 - Supply chain: "Polling runs on a schedule; webhooks push when available. Deduplication ensures we don't store the same scan twice. Failed API calls go to a retry queue with exponential backoff." `src/app/case-studies/supply-chain-visibility-platform/page.tsx`
 - HR and payroll: "We built idempotent sync logic and reconciliation jobs that compare our records with provider data. Mismatches trigger alerts" `src/app/case-studies/hr-payroll-saas-platform/page.tsx`

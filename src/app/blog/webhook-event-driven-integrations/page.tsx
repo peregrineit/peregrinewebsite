@@ -18,6 +18,7 @@ const AWS_JITTER = 'https://aws.amazon.com/blogs/architecture/exponential-backof
 const AWS_RETRIES = 'https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/';
 const AWS_OUTBOX = 'https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html';
 const OWASP_SSRF = 'https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html';
+const NODE_CRYPTO = 'https://nodejs.org/api/crypto.html';
 const PG_SELECT = 'https://www.postgresql.org/docs/current/sql-select.html';
 const PG_INSERT = 'https://www.postgresql.org/docs/current/sql-insert.html';
 
@@ -28,8 +29,7 @@ export default function Guide() {
       <p>
         A webhook is one HTTP request from a system you do not control, sent once things have already happened
         there. Integrations built on the assumption that each event arrives exactly once, in order, and always,
-        work in the demo and fail in the second month, because the published behavior of real providers is
-        otherwise:
+        work in a demo and fail in production, because the published behavior of real providers is otherwise:
       </p>
       <ul>
         <li>
@@ -49,8 +49,7 @@ export default function Guide() {
       <p>
         The same three facts apply in reverse when your product sends webhooks to customers: you will deliver
         duplicates, out of order, and sometimes not at all, unless the sending side is designed against it. This
-        article covers both directions, because most platforms do both: they receive events from payment,
-        e-signature, messaging and CRM providers, and send events to their own customers and internal services.
+        article covers both directions.
       </p>
 
       <h2>Both paths at a glance</h2>
@@ -91,7 +90,7 @@ export default function Guide() {
           so the timestamp cannot be altered without breaking the signature.
         </li>
       </ul>
-      <p>Three implementation details cause most verification bugs:</p>
+      <p>Three implementation details decide whether the check holds:</p>
       <ul>
         <li>
           <strong>Hash the raw bytes.</strong> Stripe{' '}
@@ -103,7 +102,10 @@ export default function Guide() {
         <li>
           <strong>Compare in constant time.</strong> GitHub&apos;s instruction is to{' '}
           <Src href={GH_VALIDATE}>never use a plain == operator</Src> and to use a constant-time comparison
-          such as <code>crypto.timingSafeEqual</code>, to mitigate timing attacks.
+          such as <code>crypto.timingSafeEqual</code>. In Node.js that function{' '}
+          <Src href={NODE_CRYPTO}>throws an error if the two buffers have different byte lengths</Src>, so
+          compare the two digests as bytes of equal length and treat a malformed header as a failed check, not
+          an unhandled exception.
         </li>
         <li>
           <strong>Reject stale requests.</strong> A valid signature proves who sent a message, not when. A
@@ -155,25 +157,37 @@ handle POST /webhooks/:provider (request):
 
     // 2. Enqueue: the provider's event id is the idempotency key
     event_id = event_id_from(request)          // an id header or a field in the body
-    inserted = insert into inbound_event (provider, event_id, received_at, raw, status)
-               values (provider, event_id, now(), raw, 'pending')
-               on conflict (provider, event_id) do nothing
-    if inserted: enqueue('process-inbound-event', job_id = provider + ':' + event_id)
-    // (a sweeper re-enqueues rows still 'pending' after a few minutes, in case
-    //  the process died between the insert and the enqueue)
+    insert into inbound_event (provider, event_id, received_at, raw, status)
+        values (provider, event_id, now(), raw, 'pending')
+        on conflict (provider, event_id) do nothing
+    // Enqueue even when the row already existed: the earlier attempt may have died
+    // between its insert and its enqueue. The job id makes a second enqueue a no-op
+    // while the first is still queued; the worker makes it harmless afterwards.
+    enqueue('process-inbound-event', job_id = provider + '_' + event_id)
 
     // 3. Ack: duplicates get the same 2xx, so the sender stops retrying
     return 200
 
 worker process-inbound-event (provider, event_id):
+    event = select ... from inbound_event where provider, event_id
+    if event.status == 'processed': return                 // 5. already applied
+    current = fetch_current_state_if_needed(event)         // network call: before the transaction,
+                                                           // and do not trust event order
     begin transaction
-        event = select ... from inbound_event where ... for update
-        if event.status == 'processed': commit; return     // 5. already applied
-        current = fetch_current_state_if_needed(event)     // do not trust event order
-        if current.version <= stored_version(current.id): mark_processed(event); commit; return
-        apply(current)                                     // upsert keyed by the provider's object id
+        locked = select status from inbound_event where ... for update
+        if locked.status == 'processed': commit; return    // another worker finished first
+        // The version test is part of the write. A separate "read version, then write"
+        // lets two events for the same object both pass the check and apply out of order.
+        upsert target keyed by the provider's object id
+            set fields = current.fields, version = current.version
+            where target.version < current.version          // no row yet counts as older
         mark_processed(event)                              // same transaction as the change
     commit`}</code></pre>
+      <p>
+        If the provider gives no version or update time to compare, two workers that each fetch the same object
+        can still write their results in the wrong order. In that case serialize per object, for example with
+        a lock keyed by the object id taken before the fetch, or a queue that runs one job per object at a time.
+      </p>
 
       <h2>Receiving, step 5: duplicates and idempotency keys</h2>
       <p>
@@ -251,7 +265,7 @@ worker process-inbound-event (provider, event_id):
 
       <h2>Sending, steps 1 and 2: the transactional outbox</h2>
       <p>
-        The commonest way to lose an outgoing event is to do two writes that cannot be made atomic: commit the
+        A common way to lose an outgoing event is to do two writes that cannot be made atomic: commit the
         database change, then publish to a queue or call the subscriber. A crash between the two loses the
         event; publishing first and failing the commit announces something that never happened. AWS&apos;s
         prescriptive guidance calls this the dual write problem, where{' '}
@@ -264,7 +278,7 @@ worker process-inbound-event (provider, event_id):
       <pre className="cp-code"><code>{`-- Illustrative. Written in the same transaction as the business change.
 CREATE TABLE outbox_event (
   id             uuid PRIMARY KEY,               -- the event id receivers deduplicate on
-  seq            bigserial NOT NULL,             -- relay reads in this order
+  seq            bigserial NOT NULL,             -- rough order only; see the note on the relay
   tenant_id      uuid NOT NULL,
   type           text NOT NULL,                  -- e.g. 'lead.assigned'
   schema_version int  NOT NULL,
@@ -295,7 +309,12 @@ CREATE TABLE webhook_delivery (
         And the relay itself can crash after sending and before marking the row, so the outbox gives
         at-least-once publication, not exactly-once. AWS says so directly: the relay{' '}
         <Src href={AWS_OUTBOX}>might send out duplicate messages or events</Src>, so the consuming service should
-        be idempotent. That is why the event id is generated when the row is written and never changes.
+        be idempotent. That is why the event id is generated when the row is written and never changes. One
+        trap: select rows by <code>relayed_at IS NULL</code>, not by &ldquo;<code>seq</code> greater than the
+        last one I saw&rdquo;. A sequence value is assigned before its transaction commits, so a slow
+        transaction can commit a lower number after the relay has moved past it, and a cursor would skip that
+        event for good. For the same reason, and because several workers share the table, the relay does not
+        promise order; <code>aggregate_ver</code> is what lets a receiver discard a stale event.
       </p>
 
       <h2>Sending, steps 3 to 5: deliver, retry with backoff and jitter, dead-letter</h2>
@@ -312,11 +331,10 @@ CREATE TABLE webhook_delivery (
         <Src href={AWS_RETRIES}>retries can amplify the load on a dependent system</Src>. Plain exponential
         backoff is not enough, because deliveries that failed together retry together. The AWS Architecture
         Blog&apos;s analysis found that with un-jittered backoff{' '}
-        <Src href={AWS_JITTER}>there are still clusters of calls</Src>, that{' '}
-        <Src href={AWS_JITTER}>the solution isn&apos;t to remove backoff, it&apos;s to add jitter</Src>, and
-        that <Src href={AWS_JITTER}>the no-jitter exponential backoff approach is the clear loser</Src> in its
-        simulation. The &ldquo;full jitter&rdquo; form it describes picks a random wait between zero and the
-        capped exponential value:
+        <Src href={AWS_JITTER}>there are still clusters of calls</Src>, and that{' '}
+        <Src href={AWS_JITTER}>the solution isn&apos;t to remove backoff, it&apos;s to add jitter</Src>. The
+        &ldquo;full jitter&rdquo; form it describes picks a random wait between zero and the capped exponential
+        value:
       </p>
       <pre className="cp-code"><code>{`// Illustrative. "Full jitter" as described in the AWS Architecture Blog article.
 wait = random_between(0, min(cap, base * 2 ^ attempt))`}</code></pre>
@@ -356,21 +374,17 @@ wait = random_between(0, min(cap, base * 2 ^ attempt))`}</code></pre>
       <p>
         A reconciliation job should correct through the same idempotent apply function the webhook worker uses,
         count what it corrected, and alert when that count is above its normal level, because a non-zero
-        correction rate is the earliest sign that the event path is leaking. Webhooks then give speed and
-        polling gives completeness. Our published case studies describe this pairing: the{' '}
-        <Link href="/case-studies/supply-chain-visibility-platform">supply chain visibility case study</Link>{' '}
-        describes carrier adapters where polling runs on a schedule and webhooks push when available, with
-        deduplication of repeated scans and a retry queue with exponential backoff; the{' '}
-        <Link href="/case-studies/hr-payroll-saas-platform">HR and payroll case study</Link> describes
-        idempotent sync logic and reconciliation jobs that compare records with provider data and alert on
-        mismatches; and the{' '}
-        <Link href="/case-studies/legal-document-automation-platform">legal document automation case study</Link>{' '}
-        describes e-signature webhook handlers where duplicate delivery is handled idempotently and the
-        application does not treat an envelope as complete until the webhook arrives. The same split between
-        webhooks and polling for an ERP and a storefront is worked through in{' '}
-        <Link href="/blog/odoo-shopify-marketplace-integration">Odoo integration with Shopify and marketplaces</Link>,
-        and for listing data, where polling is the primary mechanism, in the{' '}
-        <Link href="/blog/mls-sync-engine">MLS sync engine</Link> article.
+        correction rate is the earliest sign that the event path is leaking. Three of our published case studies
+        describe this pairing: carrier adapters where{' '}
+        <Link href="/case-studies/supply-chain-visibility-platform">polling runs on a schedule and webhooks push when available</Link>,
+        with deduplication and a retry queue with exponential backoff;{' '}
+        <Link href="/case-studies/hr-payroll-saas-platform">idempotent sync logic and reconciliation jobs</Link>{' '}
+        that compare records with provider data and alert on mismatches; and{' '}
+        <Link href="/case-studies/legal-document-automation-platform">e-signature webhooks handled idempotently</Link>,
+        where the application does not treat an envelope as complete until the webhook arrives. For listing
+        data, where polling is the primary mechanism, see the{' '}
+        <Link href="/blog/mls-sync-engine">MLS sync engine</Link> article; for an ERP and a storefront, see{' '}
+        <Link href="/blog/odoo-shopify-marketplace-integration">Odoo integration with Shopify and marketplaces</Link>.
       </p>
 
       <h2>Schema versioning and backward compatibility</h2>
@@ -382,7 +396,6 @@ wait = random_between(0, min(cap, base * 2 ^ attempt))`}</code></pre>
         <li><strong>Additive changes only within a version.</strong> New optional fields and new event types are compatible; removing or renaming a field, changing a type or changing the meaning of a value is not.</li>
         <li><strong>A version on every event,</strong> and the version pinned per endpoint. Stripe ties the structure of an event to an API version: <Src href={STRIPE_WH}>the API version in your account settings when the event occurs dictates the structure of an Event sent to your destination</Src>. Pinning lets each subscriber upgrade on its own schedule.</li>
         <li><strong>A stated deprecation window</strong> during which old and new versions are both produced, with per-endpoint visibility of which version is in use.</li>
-        <li><strong>Published schemas and sample payloads</strong> for each event type, so receivers can test without waiting for a real event.</li>
       </ul>
       <p>
         And as a receiver: ignore fields you do not know, and do not assume the list of event types is closed.
@@ -441,34 +454,16 @@ wait = random_between(0, min(cap, base * 2 ^ attempt))`}</code></pre>
         </table>
       </div>
       <p>
-        The &ldquo;silence&rdquo; row is the one most often missing. A webhook integration that stops receiving
+        The &ldquo;silence&rdquo; row is the easiest to leave out. A webhook integration that stops receiving
         raises no error anywhere; only an alert on absence, or the reconciliation count, reveals it. For
         subscribers, expose the delivery log: a customer who can see their own failed deliveries and replay them
         does not need to open a support ticket to find out their certificate expired.
       </p>
 
-      <h2>A review checklist</h2>
-      <ul className="cp-checklist">
-        <li>Signatures are verified over the raw body with a constant-time comparison; stale timestamps are rejected.</li>
-        <li>The handler stores the event and replies 2xx; no business logic runs before the reply.</li>
-        <li>The event id has a unique constraint, and the processed mark commits with the change.</li>
-        <li>Handlers do not depend on arrival order; they fetch current state or compare versions.</li>
-        <li>Outgoing events are written to an outbox in the same transaction as the change.</li>
-        <li>Retries use capped exponential backoff with jitter, per endpoint, with a bounded number of attempts.</li>
-        <li>Failed events and deliveries are parked with their error and can be replayed.</li>
-        <li>A reconciliation job runs on a schedule and its correction count is monitored.</li>
-        <li>Events carry a version; changes within a version are additive.</li>
-        <li>Two signing secrets can be active during rotation.</li>
-        <li>Subscriber URLs are validated against internal addresses at registration and at send time, and redirects are not followed.</li>
-        <li>There is an alert for lag, for dead letters and for silence.</li>
-      </ul>
-
       <GuideFaq slug={SLUG} items={[
         { question: 'How do you verify a webhook signature?', answer: ['Compute an HMAC of the raw request body with the shared secret and compare it with the signature header using a constant-time comparison. GitHub sends ', ['an HMAC hex digest', GH_VALIDATE], ' in the X-Hub-Signature-256 header; Stripe ', ['includes a timestamp in the Stripe-Signature header', STRIPE_WH], ' that is part of the signed payload, so old requests can be rejected. Use the provider’s official library where one exists.'] },
         { question: 'How do you handle duplicate webhook events?', answer: ['Record each event id under a unique constraint and skip ids you have already processed, committing that record in the same transaction as the change the event causes. Stripe’s guidance is to ', ['guard against duplicated event receipts by logging the event IDs you’ve processed', STRIPE_WH], '. Make the change itself an upsert so a repeat is harmless.'] },
         { question: 'Are webhooks delivered in order?', answer: ['Do not rely on it. Stripe, for example, ', ['doesn’t guarantee the delivery of events in the order that they’re generated', STRIPE_WH], '. Treat an event as a signal to fetch the object’s current state, or compare a version number carried in the payload and ignore anything older than what you hold.'] },
-        { question: 'What is the transactional outbox pattern?', answer: ['It is a way to send events without losing them: the event is written to an outbox table ', ['in the same transaction', AWS_OUTBOX], ' as the business change, and a separate relay reads the table and delivers the events. If the transaction rolls back, no event exists; if the relay crashes, it resumes from the table. Delivery is at least once, so receivers still deduplicate.'] },
-        { question: 'Why add jitter to retry backoff?', answer: ['Because deliveries that failed at the same moment would otherwise all retry at the same moment. The AWS Architecture Blog’s analysis found that with plain exponential backoff ', ['there are still clusters of calls', AWS_JITTER], ', and concluded that ', ['the solution isn’t to remove backoff, it’s to add jitter', AWS_JITTER], ': a random component that spreads the retries out.'] },
       ]} />
 
       <p className="cp-note">

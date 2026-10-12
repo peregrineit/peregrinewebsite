@@ -19,7 +19,7 @@ export const RECEIVE: PathStep[] = [
   { name: 'Enqueue', sub: 'store the event; event id is unique', text: 'Store the raw event durably under its unique event id; a duplicate id is accepted and skipped.' },
   { name: 'Ack', sub: 'return 2xx to the sender, fast', text: 'Return a 2xx status to the sender straight away, before any business logic runs.' },
   { name: 'Worker', sub: 'takes the event from the queue', text: 'A worker takes the event from the queue; a failed attempt is retried and finally dead-lettered.' },
-  { name: 'Idempotent apply', sub: 'skip if seen; compare versions; commit', text: 'Apply the change once: skip an event already processed, ignore a version older than the stored one, and commit the change with the processed marker.' },
+  { name: 'Idempotent apply', sub: 'skip if seen; compare versions; commit', text: 'Apply the change once: skip an event already processed, write only if the version is newer than the stored one, and commit the change with the processed marker.' },
 ];
 
 export const SEND: PathStep[] = [
