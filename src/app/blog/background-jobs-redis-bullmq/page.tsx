@@ -14,7 +14,6 @@ const BQ_CHANGELOG = `${BQ}/changelog`;
 const BQ_V6 = `${BQ}/guide/migrations/migrate-from-v5-to-v6`;
 const BQ_PG = `${BQ}/guide/postgresql`;
 const BQ_ARCH = `${BQ}/guide/architecture`;
-const BQ_QUEUES = `${BQ}/guide/queues`;
 const BQ_WORKERS = `${BQ}/guide/workers`;
 const BQ_CONC = `${BQ}/guide/workers/concurrency`;
 const BQ_GCONC = `${BQ}/guide/queues/global-concurrency`;
@@ -57,10 +56,8 @@ export default function Guide() {
         a key the queue depended on. A year of completed jobs fills memory. The same alert goes out twice.
       </p>
       <p>
-        Each of those is a documented behavior with a documented setting, and this article walks through them
-        for BullMQ on Redis, quoting the BullMQ and Redis documentation as read on October 12, 2026. It assumes
-        a Node.js backend and is written for the person deciding how the job system should behave, not only how
-        to call it.
+        Each of those is a documented behavior with a documented setting. This article walks through them for
+        BullMQ on Redis, quoting the BullMQ and Redis documentation as read on October 12, 2026.
       </p>
 
       <h2>What BullMQ is, and its model</h2>
@@ -75,27 +72,16 @@ export default function Guide() {
         The version current in the documentation&apos;s changelog on the day we read it was{' '}
         <Src href={BQ_CHANGELOG}>6.3.13, dated 2026-10-12</Src>. Version 6 matters if you are reading older
         tutorials: it{' '}
-        <Src href={BQ_V6}>removes the legacy repeatable-job APIs introduced before Job Schedulers</Src>, replaces
-        the old debounce option with deduplication, and introduces pluggable backends, including{' '}
-        <Src href={BQ_PG}>an optional PostgreSQL backend</Src>. The documentation says{' '}
-        <Src href={BQ_PG}>the Redis backend remains the default</Src>, and that is the one this article covers.
-        The building blocks:
+        <Src href={BQ_V6}>removes the legacy repeatable-job APIs introduced before Job Schedulers</Src> and
+        removes the old debounce option in favor of deduplication, and its 6.0.0 changelog entry{' '}
+        <Src href={BQ_CHANGELOG}>introduces the IQueueBackend abstraction, with Redis and PostgreSQL backends</Src>.
+        The documentation describes <Src href={BQ_PG}>an optional PostgreSQL backend</Src> that runs the same
+        API, and says{' '}
+        <Src href={BQ_PG}>the Redis backend remains the default and the most battle-tested option</Src>. Redis
+        is the backend this article covers. Beyond the <code>Queue</code> that producers add jobs to and the{' '}
+        <code>Worker</code> that processes them, two building blocks are worth naming:
       </p>
       <ul>
-        <li>
-          <strong>Queue.</strong> <Src href={BQ_QUEUES}>A list of jobs waiting to be processed</Src>, controlled
-          through the <code>Queue</code> class; <code>add</code> puts a named job with a data payload on it.
-        </li>
-        <li>
-          <strong>Worker.</strong> Workers{' '}
-          <Src href={BQ_WORKERS}>are the actual instances that perform some job based on the jobs that are added in the queue</Src>.
-          If the process function returns, the job moves to completed; if it throws, the job{' '}
-          <Src href={BQ_WORKERS}>will automatically be moved to the &ldquo;failed&rdquo; status</Src>, subject to retries.
-        </li>
-        <li>
-          <strong>Job.</strong> A name, a data payload and options. Every job has an id that is{' '}
-          <Src href={BQ_JOBIDS}>unique within its queue</Src>.
-        </li>
         <li>
           <strong>Flows.</strong> Parent and child jobs, added with the <code>FlowProducer</code> class. A parent{' '}
           <Src href={BQ_FLOWS}>will not be moved to the wait status until all its children jobs have been processed successfully</Src>,
@@ -106,9 +92,6 @@ export default function Guide() {
           <Src href={BQ_SCHED}>acts as a factory, producing jobs based on specified &ldquo;repeat&rdquo; settings</Src>:
           a fixed interval or a cron pattern. The documentation notes that, for historical reasons, the jobs it
           produces <Src href={BQ_SCHED}>are often referred to as &ldquo;Repeatable Jobs&rdquo;</Src>.
-        </li>
-        <li>
-          <strong>QueueEvents.</strong> A class for listening to job events from all workers in one place.
         </li>
       </ul>
 
@@ -176,7 +159,8 @@ export const alerts = new Queue('listing-alerts', {
 
 export async function enqueueAlert(tenantId: string, searchId: string, listingKey: string) {
   // A custom job id: adding the same alert twice while the first is still in the
-  // queue is ignored. No ':' in the id, and not digits only.
+  // queue is ignored. BullMQ rejects ':' in a custom id and ids that are digits only,
+  // so strip ':' from listing keys if your MLS source uses it.
   await alerts.add(
     'send-alert',
     { tenantId, searchId, listingKey },             // ids only: no personal data in the payload
@@ -193,12 +177,18 @@ const worker = new Worker(
     const { tenantId, searchId, listingKey } = job.data;
     const key = \`alert-\${searchId}-\${listingKey}\`;
 
-    // 1. Has this effect already happened? (a retry after a success, or a re-added job)
-    if (await db.alertSent.exists(tenantId, key)) return 'already sent';
-
-    // 2. Read current state; the world may have changed since the job was added.
+    // 1. Read current state; the world may have changed since the job was added.
     const search = await db.savedSearch.find(tenantId, searchId);
     if (!search || !search.active) return 'search removed';
+
+    // 2. Claim the effect. One INSERT ... ON CONFLICT under a unique constraint on
+    //    (tenant, key), so two workers running this job at once cannot both proceed.
+    //    A check-then-send would let both pass the check and both send.
+    //    takeOverAfterMs must exceed the time a send can take (the mailer times out at 5 s).
+    const claim = await db.alertSent.claim(tenantId, key, { takeOverAfterMs: 10_000 });
+    if (claim === 'sent') return 'already sent';      // an earlier run finished
+    if (claim === 'held') throw new Error('claim held by another run'); // retried with backoff
+    // claim === 'mine': a new claim, or one abandoned by a run that crashed
 
     // 3. Do the side effect, passing the same key downstream where the provider supports it.
     try {
@@ -208,8 +198,8 @@ const worker = new Worker(
       throw err;                                      // an Error: retried with backoff
     }
 
-    // 4. Record it under a unique constraint, so a concurrent duplicate cannot record twice.
-    await db.alertSent.insertIgnoringDuplicate(tenantId, key);
+    // 4. Mark the claim as sent.
+    await db.alertSent.markSent(tenantId, key);
     return 'sent';
   },
   {
@@ -261,16 +251,12 @@ process.on('SIGTERM', shutdown);`}</code></pre>
           <strong>Throw real errors.</strong> The documentation warns that{' '}
           <Src href={BQ_RETRY}>the exceptions thrown in a processor must be an Error object for BullMQ to work correctly</Src>.
         </li>
-        <li>
-          <strong>Defaults live on the queue.</strong> <code>defaultJobOptions</code> applies the retry policy to
-          every job added to the queue unless a job overrides it, which keeps policy out of call sites.
-        </li>
       </ul>
       <p>
         Choose attempts and delay from how long the dependency is likely to be unavailable. With the example
-        values (five attempts, two-second base), the last retry happens at most about thirty seconds after the
-        first failure (2 + 4 + 8 + 16), which covers a restart but not a provider outage. For longer outages,
-        prefer a higher base delay to dozens of attempts.
+        values, the last retry happens at most about thirty seconds after the first failure (2 + 4 + 8 + 16),
+        which covers a restart but not a provider outage. For longer outages, prefer a higher base delay to
+        dozens of attempts.
       </p>
 
       <h2>Concurrency and rate limiting</h2>
@@ -308,8 +294,9 @@ process.on('SIGTERM', shutdown);`}</code></pre>
       </div>
       <p>
         Two practical notes. When an API answers 429, a worker can pause the whole queue for the period the API
-        asks for with the manual rate limit (the <code>rateLimit</code> method followed by throwing{' '}
-        <code>RateLimitError</code>), and the documentation says that in this case{' '}
+        asks for with the manual rate limit (<code>await worker.rateLimit(ms)</code>, then{' '}
+        <code>throw Worker.RateLimitError()</code>, with <code>limiter</code> options set on the worker), and
+        the documentation says that in this case{' '}
         <Src href={BQ_STOP}>the attempts check is ignored, as rate limiting is not considered a real error</Src>.
         And the open-source limiter is per queue, not per key: the documentation states that{' '}
         <Src href={BQ_RATE}>from BullMQ 3.0 and onwards, group keys support is removed</Src>. In a multi-tenant
@@ -323,7 +310,7 @@ process.on('SIGTERM', shutdown);`}</code></pre>
         When a worker starts a job, BullMQ{' '}
         <Src href={BQ_WORKERS}>will place a lock on this job</Src>, and the worker must keep renewing it. If it
         cannot, the job is treated as abandoned. That is the mechanism that rescues jobs from crashed workers,
-        and it is also the commonest source of jobs that run twice. The troubleshooting page lists why a lock is
+        and it is also how a job comes to run twice. The troubleshooting page lists why a lock is
         lost; the first three are the ones to design against:
       </p>
       <ul>
@@ -381,17 +368,21 @@ process.on('SIGTERM', shutdown);`}</code></pre>
       </p>
       <ol>
         <li>Derive a key from what must happen once (this alert for this search and listing), not from the job.</li>
-        <li>Check whether the effect is already recorded, and return if so.</li>
         <li>Re-read current state; do not act on a snapshot in the payload.</li>
+        <li>Claim the key with an insert under a unique constraint. Checking first and recording afterwards is not enough: two runs of a stalled job can both pass the check before either records anything.</li>
         <li>Perform the side effect, passing the key to the provider as an idempotency key if it accepts one.</li>
-        <li>Record the effect under a unique constraint.</li>
+        <li>Mark the claim as done.</li>
       </ol>
       <p>
-        There is a gap between steps 4 and 5: a crash there means the retry sends again unless the provider
-        deduplicates on the key. Recording first and sending second closes that gap and opens the opposite one
-        (recorded but never sent). No ordering removes both without the downstream system&apos;s help, so decide
-        per job which error is cheaper: a rare duplicate email, or a rare missing one. For a payment or a
-        payout, the answer is different from an alert, and the provider&apos;s idempotency key is not optional.
+        One gap remains, between steps 4 and 5: a crash there leaves a claim that is never marked done. The
+        example takes such a claim over after ten seconds and sends again, so the retry is a duplicate unless
+        the provider deduplicates on the key. That figure is illustrative and tied to two others: it must be
+        longer than a send can take, and the retry schedule must outlast it, or the job runs out of attempts
+        while the claim is still held (here the last retry comes at least 15 seconds after the first failure).
+        Refusing to take over closes that gap and opens the opposite one (claimed but never sent). No ordering
+        removes both without the downstream system&apos;s help, so decide per job which error is cheaper: a
+        rare duplicate email, or a rare missing one. For a payment or a payout the answer is different from an
+        alert, and the provider&apos;s idempotency key is not optional.
         Keeping jobs small helps: the pattern page advises that jobs{' '}
         <Src href={BQ_IDEM}>should be as atomic and simple as possible</Src>, and a job with five side effects
         has five places to fail halfway. Split them, with a flow if the order matters.
@@ -502,7 +493,7 @@ process.on('SIGTERM', shutdown);`}</code></pre>
         <li>
           <strong>Workers need <code>maxRetriesPerRequest: null</code></strong> when you pass your own ioredis
           instance; BullMQ <Src href={BQ_CONN}>will throw an exception if this setting is not set to null</Src>{' '}
-          for worker connections. When BullMQ creates the connection from options, it sets this itself.
+          when the client is passed to a worker.
         </li>
         <li>
           <strong>Count connections.</strong> <Src href={BQ_CONN}>Every class will consume at least one Redis connection</Src>,
@@ -555,10 +546,8 @@ process.on('SIGTERM', shutdown);`}</code></pre>
           enqueued a job to the worker that ran it.
         </li>
         <li>
-          <strong>A dashboard</strong> for inspecting and retrying individual jobs is useful for support work;
-          open-source and commercial ones exist. Whichever you choose, it holds the power to delete and retry
-          jobs and can read every payload, so put it behind your own authentication and treat it as an admin
-          tool.
+          <strong>A dashboard</strong> for inspecting and retrying individual jobs can delete jobs and read
+          every payload, so put it behind your own authentication and treat it as an admin tool.
         </li>
       </ul>
 
@@ -635,29 +624,13 @@ process.on('SIGTERM', shutdown);`}</code></pre>
         <li><strong>You need an event log that many consumers replay.</strong> A job queue delivers each job to one worker and then discards or archives it. Replay, fan-out to independent consumers and long retention are what a streaming log is for.</li>
         <li><strong>The process takes days and waits on people.</strong> Approval chains and multi-step onboarding are workflows: model the state in your database and use jobs only for the individual steps and timers.</li>
         <li><strong>A simple schedule on one host would do.</strong> A nightly report with no retry requirement does not need Redis. Add the queue when you need retries, concurrency control or more than one worker.</li>
-        <li><strong>You do not want to operate Redis.</strong> Since version 6 BullMQ documents a PostgreSQL backend for teams that <Src href={BQ_PG}>would rather not operate a separate Redis instance</Src>, while calling the Redis backend <Src href={BQ_PG}>the most battle-tested option</Src>. A managed queue service is the other route.</li>
-      </ul>
-
-      <h2>A production checklist</h2>
-      <ul className="cp-checklist">
-        <li>Redis for queues is separate from Redis for caching, with <code>maxmemory-policy noeviction</code> and AOF persistence.</li>
-        <li>Every queue has <code>attempts</code>, a backoff with jitter, and <code>removeOnComplete</code> / <code>removeOnFail</code> in its default job options.</li>
-        <li>Every handler is safe to run twice, keyed on the business effect.</li>
-        <li>Payloads carry ids, not personal data or secrets.</li>
-        <li>Producers fail fast when Redis is down; workers reconnect and log errors.</li>
-        <li>Workers close on SIGINT and SIGTERM, and the platform grace period exceeds the longest job.</li>
-        <li>CPU-heavy processors are sandboxed; outbound calls have timeouts.</li>
-        <li>Recurring work uses Job Schedulers created with an upsert at startup.</li>
-        <li>Dashboards and alerts cover queue age, failed count, stalled events, Redis memory and time since each scheduler last succeeded.</li>
-        <li>Someone has killed a worker mid-job and restarted Redis in a staging environment, and watched what happened.</li>
+        <li><strong>You do not want to operate Redis.</strong> Since version 6 BullMQ documents an optional PostgreSQL backend for teams that <Src href={BQ_PG}>would rather not operate a separate Redis instance</Src>, with requirements of its own: <Src href={BQ_PG}>PostgreSQL 13 or newer</Src>, explicit schema migrations, and job throughput the same page describes as <Src href={BQ_PG}>usually lower than Redis</Src>. Nothing in this article about Redis settings applies to it. A managed queue service is the other route.</li>
       </ul>
 
       <GuideFaq slug={SLUG} items={[
         { question: 'Does BullMQ guarantee a job runs exactly once?', answer: ['No. Its documentation says it ', ['attempts to deliver every message exactly one time, but it will deliver at least once in the worst case scenario', BQ_HOME], '. A stalled or retried job can run again, so handlers must be idempotent.'] },
         { question: 'What Redis settings does BullMQ need in production?', answer: ['Set maxmemory-policy to noeviction, which the BullMQ production guide calls ', ['the only setting that guarantees the correct behavior of the queues', BQ_PROD], ', and enable persistence; the guide recommends ', ['enabling AOF (Append Only File)', BQ_PROD], '. Keep queues on a different Redis instance from a cache that relies on eviction.'] },
         { question: 'Why do BullMQ jobs stall?', answer: ['A worker holds a lock on each active job and must renew it. The troubleshooting page lists the usual causes: ', ['the worker is consuming too much CPU and has no time to renew the lock every 30 seconds', BQ_TROUBLE], ', lost communication with Redis, or a wrong maxmemory policy. A stalled job goes back to the waiting list and runs again.'] },
-        { question: 'How do I stop completed jobs from filling Redis memory?', answer: ['Set removeOnComplete and removeOnFail on the queue’s default job options, with a count, an age in seconds, or both. Without them, by default jobs are ', ['either completed or failed and kept forever', BQ_PROD], '. Keep more failed jobs than completed ones so failures can be inspected and retried.'] },
-        { question: 'What replaced repeatable jobs in BullMQ?', answer: ['Job Schedulers. BullMQ version 6 ', ['removes the legacy repeatable-job APIs introduced before Job Schedulers', BQ_V6], '. Recurring work is created with queue.upsertJobScheduler, given an interval or a cron pattern, and the upsert ', ['ensures the scheduler is updated or created without duplications', BQ_SCHED], '.'] },
       ]} />
 
       <p className="cp-note">

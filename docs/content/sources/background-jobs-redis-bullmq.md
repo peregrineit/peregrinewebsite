@@ -40,6 +40,22 @@ All pages fetched and read on 2026-10-12 (docs.bullmq.io and redis.io). Each row
 | https://redis.io/docs/latest/develop/reference/eviction/ | "noeviction: Keys are not evicted but the server will return an error when you try to execute commands that cache new data." | 2026-10-12 |
 | https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/ | "With the default policy of fsync every second ... you can only lose one second worth of writes."; "RDB is NOT good if you need to minimize the chance of data loss in case Redis stops working ... you'll usually create an RDB snapshot every five minutes or more" | 2026-10-12 |
 
+## Independent QA, 2026-10-12
+
+All 35 source URLs (33 on docs.bullmq.io, 2 on redis.io) were fetched again by a second reviewer and every quoted sentence above was found. Version: the changelog's top entry is "6.3.13 (2026-10-12)". Option, method and state names checked on their pages: attempts, backoff (fixed, exponential, jitter "between 0 and 1"), backoffStrategy returning -1, UnrecoverableError, removeOnComplete / removeOnFail, concurrency, setGlobalConcurrency, limiter max / duration, worker.rateLimit with `throw Worker.RateLimitError()`, maxStalledCount default 1, deduplication (ttl, keepLastIfActive), changeDelay, upsertJobScheduler with every / pattern / tz, priority 1 to 2 097 151, getJobCounts, getMetrics, exportPrometheusMetrics, enableOfflineQueue, maxRetriesPerRequest, and the states wait, prioritized, delayed, active, completed, failed, waiting-children.
+
+PostgreSQL backend, read in full (https://docs.bullmq.io/guide/postgresql): "BullMQ ships with an optional PostgreSQL backend that runs the exact same Queue / Worker / QueueEvents / FlowProducer API on PostgreSQL instead of Redis." · "PostgreSQL 13 or newer (14+ recommended)." · "Connections do not apply migrations automatically." · "Job-processing throughput is usually lower than Redis (often around ~1.5–2× fewer jobs/s on similar setups), but this is workload-dependent." The article repeats the requirement, the migration step and "usually lower than Redis" without the figures, which the page itself calls a rough illustration. That v6 introduced it rests on the changelog's 6.0.0 entry: "Introduce the IQueueBackend abstraction, Redis and PostgreSQL backends".
+
+Changed in QA:
+
+- Removed: "When BullMQ creates the connection from options, it sets this itself" (maxRetriesPerRequest). The connections page says only "If you create an ioredis client manually, BullMQ will throw an exception if this setting is not set to null when it is passed into worker instances."
+- Removed: the lock mechanism as "the commonest source of jobs that run twice" (no source).
+- The manual rate limit now shows the documented call, `throw Worker.RateLimitError()`, and the documented warning that limiter options must be set on the worker.
+- Code bug: the handler checked "already sent?", sent, then recorded under a unique constraint. Two runs of a stalled job both pass the check and both send; the constraint only stops the second record. The handler now claims the key first with an insert under the unique constraint, and the text explains the claim, its takeover time and how that time relates to the retry schedule (all illustrative).
+- The job-id comment now says to strip ':' from listing keys, since the documentation says a custom id "must not contain the : separator".
+
+Cut for length: the closing checklist and two FAQ entries that restated sections; the Queue, Worker, Job and QueueEvents bullets that paraphrased the documentation's introductions (so https://docs.bullmq.io/guide/queues is no longer cited); a "defaults live on the queue" bullet.
+
 ## Peregrine statements and their source
 - None. The article makes no statement about a Peregrine project; no case study is attached because none describes a BullMQ job system.
 
