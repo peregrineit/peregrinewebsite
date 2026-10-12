@@ -5,7 +5,7 @@ import SyncCycleDiagram from '../../components/diagrams/SyncCycleDiagram';
 const SLUG = 'mls-sync-engine';
 export const metadata = guideMetadata(SLUG);
 
-// Sources fetched and checked 2026-10-12; the sentence relied on for each link is logged in
+// Sources fetched 2026-10-12 and re-checked 2026-10-13; the sentence relied on for each link is logged in
 // docs/content/sources/mls-sync-engine.md. Code and schema blocks are illustrative, not from a client system.
 const RESO_API = 'https://www.reso.org/reso-web-api/';
 const RESO_CORE = 'https://transport.reso.org/proposals/web-api-core/';
@@ -67,7 +67,7 @@ export default function Guide() {
 
       <h2>The checkpoint: what to store and when to move it</h2>
       <p>
-        On the platforms most US integrations use, the cursor is a timestamp. RESO&apos;s Web API Core tests page
+        On MLS Grid and Trestle the cursor is a timestamp. RESO&apos;s Web API Core tests page
         through results filtered on ModificationTimestamp because it is{' '}
         <Src href={RESO_CORE}>the only required field at this point</Src>, and providers{' '}
         <Src href={RESO_CORE}>must support server-driven paging using @odata.nextLink</Src>. Three platform rules
@@ -81,10 +81,9 @@ export default function Guide() {
           <Src href={RESO_EE_BLOG}>clock drift can cause events to be out of order and consumers to miss data</Src>.
         </li>
         <li>
-          <strong>It covers what you received, not what you chose to keep.</strong> MLS Grid requires the query to
-          contain <Src href={GRID_V2}>the greatest ModificationTimestamp you have received, regardless of whether you store the records</Src>.
-          Writing every received record to a raw store makes &ldquo;received&rdquo; and &ldquo;stored&rdquo; the
-          same thing, which removes the distinction.
+          <strong>It covers what you received, not what you chose to keep.</strong> MLS Grid requires{' '}
+          <Src href={GRID_V2}>the greatest ModificationTimestamp you have received, regardless of whether you store the records</Src>.
+          Writing every received record to a raw store makes the two the same thing.
         </li>
         <li>
           <strong>There is one cursor per feed, originating system and resource.</strong> MLS Grid requires{' '}
@@ -114,10 +113,10 @@ CREATE TABLE sync_checkpoint (
       <p>
         <strong>Why the cursor moves only after a durable write.</strong> The cursor is a claim: everything up to
         this timestamp is safely in our store. If it advances when the page is fetched and the process dies before
-        the write, the claim is false and nothing will ever re-request those records, because the next query
-        starts after them. If it advances after the write, a crash costs one repeated page. So the write and the
-        cursor update belong in one database transaction where the raw store and the checkpoint share a database.
-        Where they do not, write first, advance second, and rely on the write being repeatable.
+        the write, nothing will ever re-request those records, because the next query starts after them. If it
+        advances after the write, a crash costs one repeated page. So the write and the cursor update belong in
+        one transaction where the raw store and the checkpoint share a database. Where they do not, write first,
+        advance second, and rely on the write being repeatable.
       </p>
       <p>
         <strong>Page boundaries.</strong> MLS Grid warns against{' '}
@@ -125,48 +124,47 @@ CREATE TABLE sync_checkpoint (
         cursor&rdquo;. That raises a question the documentation does not answer: if a page ends on timestamp T and
         the next page begins with more records stamped T, a cursor saved as T would skip them after a crash. Our
         recommendation is to treat the last timestamp of a page that has a next link as incomplete, and save the
-        greatest timestamp below it. The final page, with no next link, saves its true maximum. The cost is a few
-        records fetched twice after a restart, which the idempotent write absorbs.
+        greatest timestamp below it. The final page, with no next link, saves its true maximum. This is more
+        conservative than MLS Grid&apos;s own wording, which is to use the greatest timestamp received: it can
+        only re-request records, never skip them, and the cost is a few records fetched twice after a restart.
       </p>
       <p>
         <strong>The lease.</strong> MLS Grid says not to{' '}
         <Src href={GRID_BP}>send more than one replication request at a time</Src>, because requests must be in
         sequential order. A lease on the checkpoint row, with an expiry so a dead worker cannot hold it forever,
-        guarantees one run per row. It also stops a slow run and the next scheduled run from interleaving.
+        keeps a slow run and the next scheduled run from interleaving. Two details make it hold: the run renews
+        the lease as it works, and the transaction that advances the cursor checks that the run still owns it,
+        so a worker that stalled past its expiry cannot write.
       </p>
 
       <h2>Initial full import</h2>
       <p>
-        The pipeline guide covers the platform limits for the first load: MLS Grid&apos;s is resumable and
-        Trestle&apos;s replication endpoint is not. What matters for the engine is the handoff from import to
-        incremental sync, because a gap there loses changes silently.
+        The pipeline guide covers the platform limits for the first load. What matters for the engine is the
+        handoff from import to incremental sync, because a gap there loses changes silently.
       </p>
       <p>
-        On MLS Grid the handoff is clean by design. Results are{' '}
+        On MLS Grid the import is the same loop as incremental sync with one extra filter. Results are{' '}
         <Src href={GRID_V2}>ordered by ModificationTimestamp so that you do not miss changes that occur during your download</Src>,
-        and after an error the instruction is blunt:{' '}
-        <Src href={GRID_BP}>do not start over</Src>, add the greatest timestamp received so far and continue. The
-        import is therefore the same loop as incremental sync with one extra filter. The initial query filters on{' '}
+        and after an error the instruction is to <Src href={GRID_BP}>not start over</Src> but continue from the
+        greatest timestamp received. The initial query filters on{' '}
         <Src href={GRID_V2}>MlgCanView equal to true</Src>; once it has drained, the engine flips the checkpoint
         to incremental and{' '}
         <Src href={GRID_V2}>drops that filter, so that changes to MlgCanView arrive and removals can be applied</Src>.
         Forgetting to drop it is a real bug: the site keeps syncing and never removes anything.
       </p>
       <p>
-        Trestle is different above a million records. Its replication endpoint{' '}
+        Trestle is different above a million records, where its replication endpoint{' '}
         <Src href={TRESTLE_REF}>cannot skip records, so a process that fails part way through has to restart</Src>,
         and <Src href={TRESTLE_REF}>its links expire after 5 minutes of inactivity</Src>. Two recommendations
-        follow. First, do nothing slow between pages: write the raw payload and request the next link; defer
-        normalization and indexing to the queue. Second, do not derive the starting cursor from the bulk download,
-        whose order the documentation does not state. We would read the greatest ModificationTimestamp in the
-        feed <em>before</em> the bulk load begins and start incremental sync from that value. Records changed
-        during the load are then fetched a second time, which is harmless, instead of being missed.
+        follow. First, do nothing slow between pages: write the raw payload and request the next link. Second, do
+        not derive the starting cursor from the bulk download, whose order the documentation does not state. We
+        would read the greatest ModificationTimestamp in the feed <em>before</em> the bulk load begins and start
+        incremental sync from that value. Records changed during the load are then fetched a second time, which
+        is harmless, instead of being missed.
       </p>
       <p>
         During an import, per-record downstream jobs are wasteful. A sound default is to mark rows unprocessed and
-        let batch workers normalize and bulk-index them, switching to per-record jobs when the phase changes. One
-        platform constraint limits how far media can be deferred on MLS Grid; the{' '}
-        <Link href="/blog/mls-data-pipeline-architecture">pipeline guide</Link> covers it.
+        let batch workers normalize and bulk-index them, switching to per-record jobs when the phase changes.
       </p>
 
       <h2>Incremental sync: the loop</h2>
@@ -176,41 +174,51 @@ CREATE TABLE sync_checkpoint (
       </p>
       <pre className="cp-code"><code>{`// Illustrative. One run for one (feed, originating system, resource).
 async function runSync(key) {
-  const cp = await checkpoints.acquireLease(key)   // null if another run holds it
-  if (!cp || cp.paused_until > now()) return       // circuit breaker is open
+  // Returns null if another run holds the lease or the circuit breaker is open.
+  const cp = await checkpoints.acquireLease(key)
+  if (!cp) return
 
-  let url = buildQuery(key, { modifiedAfter: cp.cursor_ts, phase: cp.phase })
-  while (url) {
-    await limiter.take(key.feed_id)                // requests and bytes, under the published limits
-    const page = await fetchWithBackoff(url)       // retries 429 and 5xx, then throws
+  try {
+    let url = buildQuery(key, { modifiedAfter: cp.cursor_ts, phase: cp.phase })
+    while (url) {
+      await limiter.take(key.feed_id)              // requests and bytes, under the published limits
+      const page = await fetchWithBackoff(url)     // retries 429, 5xx and timeouts, then throws
 
-    const maxTs  = maxTimestamp(page.value)
-    const safeTs = page.nextLink
-      ? greatestBelow(page.value, maxTs) ?? cp.cursor_ts   // last timestamp may continue on the next page
-      : maxTs
+      if (page.value.length > 0) {
+        const maxTs  = maxTimestamp(page.value)
+        const safeTs = page.nextLink
+          ? greatestBelow(page.value, maxTs) ?? cp.cursor_ts   // last timestamp may continue on the next page
+          : maxTs
 
-    const changed = await db.transaction(async (tx) => {
-      const ids = []
-      for (const rec of page.value) {
-        // No-op when the stored copy is the same version or newer.
-        if (await tx.upsertRaw(key, rec)) ids.push(rec.key)
+        const changed = await db.transaction(async (tx) => {
+          const ids = []
+          for (const rec of page.value) {
+            // Skips a copy older than the stored one. Returns true only if the payload hash changed.
+            if (await tx.upsertRaw(key, rec)) ids.push(rec.key)
+          }
+          // Forward only. Throws, and so rolls the page back, if this run no longer owns the lease.
+          await tx.advanceCursor(key, safeTs, cp.lease_owner)
+          return ids
+        })
+
+        await queue.enqueueChanged(key, changed)   // a sweeper covers a failure here
+        cp.cursor_ts = safeTs
       }
-      await tx.advanceCursor(key, safeTs)          // forward only
-      return ids
-    })
-
-    await queue.enqueueChanged(key, changed)       // a sweeper covers a failure here
-    cp.cursor_ts = safeTs
-    url = page.nextLink
+      await checkpoints.renewLease(key, cp.lease_owner)
+      url = page.nextLink
+    }
+    await checkpoints.markSuccess(key, cp.lease_owner)      // last_success_at, failures = 0, release lease
+  } catch (err) {
+    await checkpoints.markFailure(key, cp.lease_owner, err) // failures + 1, last_error, release lease
+    throw err
   }
-  await checkpoints.markSuccess(key)               // last_success_at, failures = 0, release lease
 }`}</code></pre>
       <p>
-        Two details are easy to miss. The run only records success when the feed is drained, so a run that dies on
-        page three leaves a truthful <code>last_success_at</code>. And the cursor changes on every page, which
+        Three details are easy to miss. The run only records success when the feed is drained, so a run that dies
+        on page three leaves a truthful <code>last_success_at</code>. A failed run records the failure and
+        releases the lease instead of holding it until expiry. And the cursor changes on every page, which
         keeps the engine inside another MLS Grid rule:{' '}
-        <Src href={GRID_BP}>do not send the same request multiple times</Src>. An engine whose cursor is stuck
-        repeats one request forever, which is the usage pattern that guide exists to prevent.
+        <Src href={GRID_BP}>do not send the same request multiple times</Src>.
       </p>
 
       <h2>Idempotent writes</h2>
@@ -228,7 +236,10 @@ async function runSync(key) {
         <li>
           <strong>Never let an older copy overwrite a newer one.</strong> Make the update conditional on the
           incoming ModificationTimestamp being greater than or equal to the stored one. This matters whenever a
-          replay or a reconciliation job runs beside the incremental sync.
+          replay or a reconciliation job runs beside the incremental sync. A removal is a write too: on MLS Grid
+          a record that arrives with MlgCanView false{' '}
+          <Src href={GRID_V2}>must be removed from your local data store</Src>, so the upsert replaces the
+          payload with a removal marker instead of keeping it.
         </li>
         <li>
           <strong>Detect &ldquo;changed&rdquo; by content, not by arrival.</strong> A record&apos;s timestamp can
@@ -241,17 +252,16 @@ async function runSync(key) {
         </li>
       </ul>
       <p>
-        The third rule is what turns a mass update from an incident into a slow afternoon: the engine still
-        downloads every record, but the index, the alert emails and the media queue see only what really changed.
-        It also protects anything that notifies people: a re-stamped record must not look like a new listing or a
-        price change.
+        With the third rule a mass update still downloads every record, but the index, the media queue and the
+        alert emails see only what really changed. A re-stamped record must never look like a new listing or a
+        price change to anything that notifies people.
       </p>
 
       <h2>Queues: separate fetching from processing</h2>
       <p>
         Fetching is sequential by rule and limited by quota. Processing (normalization, media, indexing) is
-        neither. Joining them in one process means a slow image host or an indexing error stalls replication.
-        Separate them with a queue, and treat the raw store, not the queue, as the record of what is outstanding:
+        neither, and in one process a slow image host or an indexing error would stall replication. Separate
+        them with a queue, and treat the raw store, not the queue, as the record of what is outstanding:
       </p>
       <ul>
         <li>Each raw row carries a processed marker. The transaction that writes the row clears it.</li>
@@ -274,16 +284,15 @@ async function runSync(key) {
         <li>
           <strong>MLS Grid</strong> limits requests and bytes:{' '}
           <Src href={GRID}>no more than 2 requests per second, 7,200 requests in any hour, 4 GB downloaded in any hour and 40,000 requests per 24-hour period</Src>.
-          The arithmetic is worth doing: two per second for an hour is exactly 7,200, but 40,000 a day averages
-          one request every 2.16 seconds. The daily cap is the one a steady engine has to plan around, and the
-          limiter has to count bytes as well as requests.
+          Our arithmetic on those figures: two per second for an hour is exactly 7,200, but 40,000 spread over
+          the 86,400 seconds of a day is one request every 2.16 seconds. The daily cap is the one a steady
+          engine has to plan around, and the limiter has to count bytes as well as requests.
         </li>
         <li>
           <strong>Trestle</strong> sets <Src href={TRESTLE_API}>a per-hour baseline quota and a per-minute burst quota</Src>,{' '}
           <Src href={TRESTLE_API}>calculated per product and feed type pair</Src>, and reports them in response
           headers: <Src href={TRESTLE_API}>Minute-Quota-Limit, Hour-Quota-Limit and Hour-Quota-ResetTime</Src>.
-          Read the headers instead of hard-coding the baseline. Trestle itself points to{' '}
-          <Src href={TRESTLE_SCALE}>leaky bucket or token bucket</Src> algorithms for throttling.
+          Read the headers instead of hard-coding the baseline.
         </li>
       </ul>
       <p>
@@ -295,12 +304,12 @@ async function runSync(key) {
         <Src href={BULLMQ_RETRY}>exponential backoff with a jitter option</Src> if the retries run as queue jobs.
       </p>
       <p>
-        A 429 on MLS Grid means more than &ldquo;slow down&rdquo;. A suspended token{' '}
-        <Src href={GRID}>receives an HTTP 429 error in response to any requests</Src>, and access is{' '}
+        On MLS Grid a 429 can mean the token is suspended: it then{' '}
+        <Src href={GRID}>receives an HTTP 429 error in response to any requests</Src> until access is{' '}
         <Src href={GRID}>reinstated automatically once usage falls back within the limits</Src>. Retrying each
-        request on its own schedule is the wrong response. The engine should open a circuit breaker for the whole
-        credential: set <code>paused_until</code>, stop every job that uses it, alert, and probe with a single
-        request when the pause ends.
+        request on its own schedule is the wrong response. Open a circuit breaker for the whole credential: set{' '}
+        <code>paused_until</code>, stop every job that uses it, alert, and probe with a single request when the
+        pause ends.
       </p>
 
       <h2>Monitoring: three numbers per feed</h2>
@@ -327,8 +336,7 @@ async function runSync(key) {
         Four secondary signals explain the first three: records received per run against that feed&apos;s usual
         range (a spike is a mass update; a long run of zeros on a busy feed is a scoping or credential problem),
         the count of unprocessed raw rows and its oldest age, the size of the quarantine, and requests and bytes
-        spent against each published limit. Record every run in a history table as well as on the checkpoint; the
-        checkpoint tells you the state, the history tells you when it changed.
+        spent against each published limit. Keep a history row per run as well as the checkpoint.
       </p>
 
       <h2>Failure recovery</h2>
@@ -350,13 +358,12 @@ async function runSync(key) {
         does not interpret the payload, so an unexpected value cannot fail it, and the cursor moves on. The
         failure surfaces in a downstream worker, where the rule is: retry a bounded number of times with backoff,
         then move the record to a quarantine table with the error and the raw payload, and alert. After the
-        mapping is fixed, re-queue the quarantine. The alternative, a cursor that waits for a record to succeed,
-        turns one bad listing into a stopped feed.
+        mapping is fixed, re-queue the quarantine.
       </p>
       <p>
         The harder case is a page that cannot be read at all. We would retry it with a smaller page size to narrow
-        the fault (MLS Grid defaults to <Src href={GRID_V2}>500 records per request and allows up to 5,000</Src>),
-        and contact the platform. Advancing the cursor by hand past the fault should be a logged, deliberate act,
+        the fault (MLS Grid defaults to <Src href={GRID_V2}>500 records per request and allows up to 5,000</Src>,
+        or <Src href={GRID_V2}>1,000 when the request uses $expand</Src>), and contact the platform. Advancing the cursor by hand past the fault should be a logged, deliberate act,
         followed by a reconciliation.
       </p>
       <h3>A feed that goes down</h3>
@@ -374,8 +381,7 @@ async function runSync(key) {
         code. The one decision is whether the incremental query is still enough. Compare the length of the outage
         with the platform&apos;s retention for removal signals, and run a reconciliation if it was exceeded or if
         the platform, like Trestle, <Src href={TRESTLE_SCALE}>does not report records that are no longer available</Src>{' '}
-        in incremental updates at all. Decide in advance, with the license in hand, what the website shows when
-        data is older than the refresh rule allows.
+        in incremental updates at all.
       </p>
       <h3>A field or schema change</h3>
       <p>
@@ -391,9 +397,8 @@ async function runSync(key) {
       <p>
         The larger version of this event is an MLS moving to a new system. When MARIS did, MLS Grid told consumers
         to <Src href={GRID_MARIS}>treat the change as an initial import of a new MLS source</Src> under a new
-        OriginatingSystemName. Because the checkpoint is keyed by originating system, that is a
-        new row, not a code change. The same reasoning applies when a platform itself is replaced: listing data is
-        re-fetched from the feed, not carried across. See{' '}
+        OriginatingSystemName. Because the checkpoint is keyed by originating system, that is a new row, not a
+        code change. Replacing your own platform works the same way; see{' '}
         <Link href="/blog/legacy-real-estate-platform-data-migration">data migration for legacy real estate platforms</Link>.
       </p>
 
@@ -419,7 +424,6 @@ async function runSync(key) {
 
       <GuideFaq slug={SLUG} items={[
         { question: 'What should an MLS sync checkpoint store?', answer: ['At minimum, one row per feed, originating system and resource holding the cursor, the time of the last successful run and a failure count. The cursor is a value received from the feed: Trestle recommends ', ['tracking the latest value you received', TRESTLE_SCALE], ', and MLS Grid requires ', ['the greatest ModificationTimestamp you have received', GRID_V2], '.'] },
-        { question: 'When should the sync cursor advance?', answer: ['Only after the page it describes is durably written, ideally in the same database transaction. If the cursor moves first and the process dies, those records are never requested again. If it moves after, a crash costs one repeated page, which an idempotent write absorbs.'] },
         { question: 'How should a sync engine respond to HTTP 429?', answer: ['Stop sending on that credential, wait, and retry with increasing delays. Trestle recommends ', ['an exponential wait', TRESTLE_SCALE], '. On MLS Grid a suspended token ', ['receives an HTTP 429 error in response to any requests', GRID], ' until usage falls back within the limits, so the whole feed should pause, not one request.'] },
         { question: 'Can an MLS sync be resumed after a failure?', answer: ['Usually. MLS Grid says that after an error you should ', ['not start over', GRID_BP], ' and should continue from the greatest timestamp received. Trestle’s replication endpoint for very large resources is the exception: ', ['if the process fails part way through, you have to restart it', TRESTLE_REF], '.'] },
         { question: 'What is a poison record in a sync pipeline?', answer: ['A record that fails every time it is processed, for example because of a value the mapping does not expect. Store the raw payload first so replication is not blocked, retry processing a bounded number of times, then quarantine the record with its error and alert. The cursor should never wait for it.'] },
@@ -427,7 +431,7 @@ async function runSync(key) {
 
       <p className="cp-note">
         Platform behavior and limits were read from the linked RESO, MLS Grid, Trestle, PostgreSQL, BullMQ and
-        RFC pages on October 12, 2026. They change, and they differ by MLS and by license; the current
+        RFC pages on October 12, 2026, and checked again the next day. They change, and they differ by MLS and by license; the current
         documentation and your agreement decide. Code and schema blocks are illustrative.
       </p>
       <p>
