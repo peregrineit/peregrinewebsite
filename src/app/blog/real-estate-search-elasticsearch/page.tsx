@@ -5,7 +5,8 @@ import SearchIndexArchitectureDiagram from '../../components/diagrams/SearchInde
 const SLUG = 'real-estate-search-elasticsearch';
 export const metadata = guideMetadata(SLUG);
 
-// Every capability, default and limit below was read on elastic.co on 2026-10-12; the sentence
+// Every capability, default and limit below was read on elastic.co on 2026-10-12 and re-checked on
+// 2026-10-13; the sentence
 // relied on for each link is logged in docs/content/sources/real-estate-search-elasticsearch.md.
 // OpenSearch documentation was not fetched for this article, so no OpenSearch behavior is stated.
 // The mapping and the query are illustrative and were not run against a cluster.
@@ -59,18 +60,16 @@ export default function Guide() {
         filters. Which of them are inside this map view. What was that address I started typing. How many condos
         are left if I add a price cap. And, occasionally, which listings mention a fenced yard. A relational or
         document database answers the first well, the second with a spatial index, and the rest with increasing
-        effort. That is the point at which teams add a search engine as a second, derived copy of the listing data.
+        effort, which is when teams add a search engine as a second, derived copy of the listing data.
       </p>
       <p>
         Whether you need one at all is covered in our{' '}
         <Link href="/blog/real-estate-platform-tech-stack">tech stack guide</Link>, and how listings reach your
-        database is covered in the{' '}
+        database in the{' '}
         <Link href="/blog/mls-data-pipeline-architecture">MLS data pipeline architecture guide</Link>. This
-        article starts after both decisions: you have chosen Elasticsearch, the listings are in a system of record,
-        and the question is how to design the index, the queries and the sync so that search stays correct and
-        fast as inventory changes all day. Each capability and limit is linked to Elastic&apos;s documentation as
-        read on October 12, 2026. If you run OpenSearch, check the same points in its own documentation; we have
-        not verified them for this article.
+        article starts after both decisions: you have chosen Elasticsearch, the listings are in a system of
+        record, and the question is how to design the index, the queries and the sync. Each capability and limit
+        is linked to Elastic&apos;s documentation as read on October 12 and 13, 2026.
       </p>
 
       <h2>Where the index sits</h2>
@@ -83,14 +82,14 @@ export default function Guide() {
       </figure>
       <p>The same architecture in words:</p>
       <ul>
-        <li><strong>Write path.</strong> The primary database holds the displayable listings. When rows change, an indexer builds one search document per listing and sends bulk upserts and deletes to the live index (here <code>listings_v7</code>).</li>
-        <li><strong>Rebuild.</strong> When the mapping changes, the indexer fills a new index (<code>listings_v8</code>) with a full load and applies the same ongoing changes to it. Nothing searches it yet.</li>
-        <li><strong>Read path.</strong> The website and apps call a search API. The API builds the query, adds the display filters, and queries only the alias <code>listings</code>.</li>
-        <li><strong>Swap.</strong> The alias points to <code>listings_v7</code> now. After the new index is verified it is moved to <code>listings_v8</code> in one atomic step, and the old index is kept for rollback.</li>
+        <li><strong>Write path.</strong> When rows change in the primary database, an indexer builds one search document per listing and sends bulk upserts and deletes to the live index (here <code>listings_v7</code>).</li>
+        <li><strong>Rebuild.</strong> When the mapping changes, the indexer fills a new index (<code>listings_v8</code>) with a full load plus the same ongoing changes. Nothing searches it yet.</li>
+        <li><strong>Read path.</strong> The website and apps call a search API, which builds the query, adds the display filters, and queries only the alias <code>listings</code>.</li>
+        <li><strong>Swap.</strong> After the new index is verified, the alias moves from <code>listings_v7</code> to <code>listings_v8</code> in one atomic step, and the old index is kept for rollback.</li>
       </ul>
       <p>
-        Two rules follow from the picture. The application never names a physical index, and the index never holds
-        anything that cannot be rebuilt from the database. Everything below depends on those two rules.
+        Two rules follow: the application never names a physical index, and the index never holds anything that
+        cannot be rebuilt from the database.
       </p>
 
       <h2>Index design: one document per listing</h2>
@@ -98,7 +97,7 @@ export default function Guide() {
         Start with explicit mappings. Elasticsearch will guess types if you let it, but with{' '}
         <code>&quot;dynamic&quot;: &quot;strict&quot;</code>, when new fields are detected{' '}
         <Src href={DYNAMIC}>an exception is thrown and the document is rejected</Src>. For MLS data, where a feed can
-        add a field without notice, a rejected document that raises an alert is a better failure than a silently
+        add a field without notice, we would take a rejected document that raises an alert over a silently
         mis-typed field, because <Src href={UPDATE_MAPPING}>you cannot change the field type of an existing field</Src>;
         the fix is a new index and a reindex.
       </p>
@@ -163,8 +162,8 @@ export default function Guide() {
         </table>
       </div>
       <p>
-        One field often needs two types. A city name is filtered and counted as a keyword but also typed into a
-        search box. Multi-fields exist for this:{' '}
+        One field often needs two types: a city name is filtered and counted as a keyword but also typed into a
+        search box. Multi-fields exist for this, since{' '}
         <Src href={MULTI_FIELDS}>it is often useful to index the same field in different ways for different purposes</Src>.
         For keyword fields that users type, add a normalizer, which is{' '}
         <Src href={NORMALIZER}>similar to analyzer except that it guarantees that the analysis chain produces a single token</Src>,
@@ -182,24 +181,23 @@ export default function Guide() {
       <ul>
         <li>
           <strong>Nested</strong> keeps each object separate:{' '}
-          <Src href={NESTED}>each nested object can be queried independently of the others</Src>. It costs
-          something, because every nested object is indexed{' '}
-          <Src href={NESTED}>as a separate hidden document</Src>, and Elastic says plainly that{' '}
+          <Src href={NESTED}>each nested object can be queried independently of the others</Src>. The cost is
+          that every nested object is indexed <Src href={NESTED}>as a separate hidden document</Src>, and Elastic
+          says that{' '}
           <Src href={NESTED}>nested documents and queries are typically expensive</Src>. The defaults cap an index
           at <Src href={NESTED}>100 distinct nested mappings and a document at 10,000 nested objects</Src>.
         </li>
         <li>
           <strong>Flattened</strong> maps a whole object as one field and indexes its leaf values{' '}
           <Src href={FLATTENED}>into one field as keywords</Src>. It suits the long tail of board-specific fields
-          you want to keep searchable without mapping each one. Its limit matters:{' '}
+          you want searchable without mapping each one. Its limit:{' '}
           <Src href={FLATTENED}>all values in the JSON object are treated as keywords</Src>, so there are no numeric
           ranges on it.
         </li>
         <li>
           <strong>Neither.</strong> Often the question buyers ask is simpler than the data. &quot;Has an open house
           this weekend&quot; needs one top-level date, the next open house start, computed by the indexer. We
-          would reach for nested only when the product really filters on two properties of the same object, such
-          as open houses of a given type inside a time window.
+          would use nested only when the product filters on two properties of the same object.
         </li>
       </ul>
 
@@ -260,10 +258,9 @@ export default function Guide() {
         <Src href={BOOL}>meaning that scoring is ignored and clauses are considered for caching</Src>.
       </p>
       <p>
-        Almost everything in a property search is a filter. Status, price range, bedrooms, property type and the
-        map bounds are yes-or-no conditions; ranking by how well a home &quot;matches&quot; three bedrooms means
-        nothing. Only free text belongs in query context. A search with no text at all should have an empty{' '}
-        <code>must</code> and an explicit sort.
+        Almost everything in a property search is a filter: status, price range, bedrooms, property type and the
+        map bounds are yes-or-no conditions. Only free text belongs in query context. A search with no text
+        should have an empty <code>must</code> and an explicit sort.
       </p>
       <p>The caching has edges worth knowing, because they shape how you write filters:</p>
       <ul>
@@ -273,8 +270,8 @@ export default function Guide() {
           per segment only where{' '}
           <Src href={QUERY_CACHE}>a segment contains at least 10000 documents and the segment has at least 3% of the total documents of a shard</Src>.
           The same page says that{' '}
-          <Src href={QUERY_CACHE}>term queries and queries used outside of a filter context are not eligible for caching</Src>.
-          So the benefit is on the heavier filters: ranges, geo clauses and compound conditions that many users share.
+          <Src href={QUERY_CACHE}>term queries and queries used outside of a filter context are not eligible for caching</Src>,
+          so the benefit is on ranges, geo clauses and compound conditions that many users share.
         </li>
         <li>
           The shard request cache stores whole responses, but by default{' '}
@@ -289,49 +286,37 @@ export default function Guide() {
         </li>
       </ul>
       <p>
-        A practical consequence: make filters repeatable. A viewport snapped to a tile grid and a price range
-        chosen from fixed steps produce the same clause for many users; a raw bounding box with fourteen decimal
-        places is unique to one mouse movement.
+        So make filters repeatable. A viewport snapped to a tile grid and a price range chosen from fixed steps
+        produce the same clause for many users; a raw bounding box with fourteen decimal places is unique to one
+        mouse movement.
       </p>
 
       <h2>Geospatial search</h2>
-      <p>Three shapes cover what buyers do on a map, and each has its own query:</p>
-      <ul>
-        <li>
-          <strong>Viewport.</strong> <code>geo_bounding_box</code>{' '}
-          <Src href={GEO_BBOX}>matches geo_point and geo_shape values that intersect a bounding box</Src>, defined
-          by two opposite corners.
-        </li>
-        <li>
-          <strong>Radius.</strong> <code>geo_distance</code>{' '}
-          <Src href={GEO_DISTANCE}>matches geo_point and geo_shape values within a given distance of a geopoint</Src>,
-          for &quot;within 5 miles of this school&quot;.
-        </li>
-        <li>
-          <strong>Polygon.</strong> A drawn area or a neighborhood boundary uses the <code>geo_shape</code> query,
-          which filters <Src href={GEO_SHAPE_Q}>documents indexed using either the geo_shape or the geo_point type</Src>{' '}
-          by a spatial relationship: <Src href={GEO_SHAPE_Q}>intersects, contains, within, or disjoint</Src>. The
-          older <code>geo_polygon</code> query is <Src href={GEO_POLYGON}>deprecated in 7.12</Src>, so new code
-          should not use it.
-        </li>
-      </ul>
+      <p>
+        Three shapes cover what buyers do on a map. The viewport is a <code>geo_bounding_box</code>, which{' '}
+        <Src href={GEO_BBOX}>matches geo_point and geo_shape values that intersect a bounding box</Src>. A radius
+        (&quot;within 5 miles of this school&quot;) is <code>geo_distance</code>, which{' '}
+        <Src href={GEO_DISTANCE}>matches geo_point and geo_shape values within a given distance of a geopoint</Src>.
+        A drawn area or a neighborhood boundary is the <code>geo_shape</code> query, which filters{' '}
+        <Src href={GEO_SHAPE_Q}>documents indexed using either the geo_shape or the geo_point type</Src> by a
+        spatial relationship: <Src href={GEO_SHAPE_Q}>intersects, contains, within, or disjoint</Src>. The older{' '}
+        <code>geo_polygon</code> query is <Src href={GEO_POLYGON}>deprecated in 7.12</Src>; new code should not
+        use it.
+      </p>
       <p>
         For named areas, do not send the boundary with every request. The <code>geo_shape</code> query accepts{' '}
         <Src href={GEO_SHAPE_Q}>a shape which has already been indexed in another index</Src>, so a neighborhood
-        search references the boundary by ID. An alternative we would weigh for stable boundaries is to resolve
-        them at index time and store neighborhood IDs on the listing as keywords, which turns a spatial test into
-        a term filter at the cost of reindexing listings when a boundary changes.
-      </p>
-      <p>
-        Viewport behavior, clustering and drawn-area search have enough detail of their own that we cover them in{' '}
-        <Link href="/blog/map-based-property-search">building map-based property search</Link>.
+        search references the boundary by ID. For stable boundaries we would also weigh resolving them at index
+        time and storing neighborhood IDs on the listing as keywords: a spatial test becomes a term filter, at the
+        cost of reindexing listings when a boundary changes. Viewport behavior, clustering and drawn areas are
+        covered in <Link href="/blog/map-based-property-search">building map-based property search</Link>.
       </p>
 
       <h2>Autocomplete: two tools for two jobs</h2>
       <p>
-        The search box suggests two kinds of thing, and they behave differently. Places (cities, neighborhoods,
-        postal codes, schools) form a small, slowly changing list typed from the beginning. Addresses are a large,
-        constantly changing set typed in any order: &quot;main 123&quot;, &quot;123 n main&quot;.
+        The search box suggests two kinds of thing. Places (cities, neighborhoods, postal codes, schools) form a
+        small, slowly changing list typed from the beginning. Addresses are a large, constantly changing set
+        typed in any order: &quot;main 123&quot;, &quot;123 n main&quot;.
       </p>
       <div className="cp-table-wrap">
         <table>
@@ -372,11 +357,11 @@ export default function Guide() {
         </table>
       </div>
       <p>
-        The distinction that matters for listings is the middle column of the second row. An address suggestion
-        that leads to a listing you may no longer display is a compliance problem, not only a dead link. Because{' '}
-        <code>search_as_you_type</code> is queried like any other field, the same filter that hides a listing from
-        results hides it from suggestions. The completion suggester needs separate handling for that, which is one
-        reason we would keep it for places and not for listings.
+        The second row matters most for listings. Because <code>search_as_you_type</code> is queried like any
+        other field, the filter that hides a listing from results also hides it from suggestions. The completion
+        suggester needs separate handling for that, which is one reason we would keep it for places. A
+        suggestion for a listing you no longer display is more than a dead link: whether it may appear at all is
+        a question for your MLS rules.
       </p>
 
       <h2>Sorting and pagination</h2>
@@ -407,13 +392,12 @@ export default function Guide() {
         <Src href={PAGINATE}>you cannot page through more than 10,000 hits</Src>; the cap is{' '}
         <code>index.max_result_window</code>, and it exists because{' '}
         <Src href={INDEX_SETTINGS}>search requests take heap memory and time proportional to from + size</Src>.
-        Raising it is the wrong fix. Three patterns cover a listing site:
+        We would not raise it. Three patterns cover a listing site:
       </p>
       <ul>
         <li>
           <strong>Numbered pages for people.</strong> <code>from</code> and <code>size</code> are fine for the
-          first pages of a result list. Stop offering page numbers well before the cap; a buyer on page 300 needs
-          a filter, not a page.
+          first pages of a result list. Stop offering page numbers well before the cap.
         </li>
         <li>
           <strong>&quot;Load more&quot; and deep paging.</strong> <code>search_after</code> retrieves the next page{' '}
@@ -429,8 +413,8 @@ export default function Guide() {
         </li>
       </ul>
       <p>
-        A map does not paginate at all. When ten thousand listings fall inside the viewport, the right response is
-        clusters from a grid aggregation and a short list, not page 1 of 417.
+        A map does not paginate. When thousands of listings fall inside the viewport, return clusters from a grid
+        aggregation and a short list.
       </p>
 
       <h2>Facet counts with aggregations</h2>
@@ -444,8 +428,8 @@ export default function Guide() {
       </p>
       <p>
         The design question is what a count should mean once the user has selected something in that same facet.
-        If the buyer ticks &quot;Condo&quot; and the property-type filter is applied to everything, every other
-        type shows zero and the facet becomes useless for adding a second type. Elasticsearch separates the two
+        If the buyer ticks &quot;Condo&quot; and that filter is applied to everything, every other type shows zero
+        and the facet is useless for adding a second type. Elasticsearch separates the two
         scopes: boolean filters apply <Src href={POST_FILTER}>to both search hits and aggregations</Src>, while a{' '}
         <code>post_filter</code> applies <Src href={POST_FILTER}>only to search hits, not aggregations</Src>. So
         filters that should narrow every count go in the <code>bool</code> filter, and a multi-select facet&apos;s
@@ -453,8 +437,8 @@ export default function Guide() {
         <code>filter</code> aggregation that re-applies the selections it should respect.
       </p>
       <p>
-        Counts cost work on every request. Ask only for the facets on screen, and consider sending counts as a
-        separate <code>size: 0</code> request, which is the form the shard request cache stores.
+        Ask only for the facets on screen, and consider sending counts as a separate <code>size: 0</code>{' '}
+        request, which is the form the shard request cache stores.
       </p>
 
       <h3>An illustrative query</h3>
@@ -496,13 +480,10 @@ export default function Guide() {
 
       <h2>Relevance for addresses and free text</h2>
       <p>
-        Most listing searches have no relevance problem because they have no text. Where text appears, it is one
-        of two very different things.
-      </p>
-      <p>
-        <strong>Addresses are identifiers that people type inconsistently.</strong> &quot;123 N Main St #4&quot;
-        and &quot;123 north main street apt 4&quot; are the same place. Treating that as prose search gives poor
-        results. What we would build:
+        Most listing searches have no text and so no relevance problem. Where text appears, it is one of two
+        different things. <strong>Addresses are identifiers that people type inconsistently:</strong>{' '}
+        &quot;123 N Main St #4&quot; and &quot;123 north main street apt 4&quot; are the same place. What we would
+        build:
       </p>
       <ul>
         <li>An exact path first: the normalized full address and the listing ID as keyword fields, checked before anything fuzzy. A user who pastes an MLS number wants that listing.</li>
@@ -521,14 +502,12 @@ export default function Guide() {
         <li>Sparing use of typo tolerance. <Src href={MATCH}>Fuzziness</Src> on a house number turns 123 into 128, which is a different house.</li>
       </ul>
       <p>
-        <strong>Remarks are prose.</strong> Use a language analyzer, require all terms for short queries, and boost
-        with field weights where a headline field exists:{' '}
+        <strong>Remarks are prose.</strong> Use a language analyzer, require all terms for short queries, and
+        weight a headline field where one exists:{' '}
         <Src href={MULTI_MATCH}>individual fields can be boosted with the caret (^) notation</Src>. If a text
         search should still favor fresh inventory, a decay function scores a document by{' '}
         <Src href={FUNCTION_SCORE}>the distance of a numeric field value of the document from a user given origin</Src>,
-        for example the list date from today. Keep any such boost mild and never apply it when the user has chosen
-        an explicit sort. Paid placement or agent preference in ranking is a business and MLS-rules decision before
-        it is a scoring function.
+        for example the list date from today. Keep such a boost mild and drop it when the user has chosen a sort.
       </p>
 
       <h2>Keeping the index in sync with the database</h2>
@@ -544,19 +523,19 @@ export default function Guide() {
       <ol>
         <li>Create the next versioned index with the new mapping.</li>
         <li>Start sending live changes to both the current and the new index.</li>
-        <li>Fill the new index from the database, not from the old index, so that the rebuild also proves the index is rebuildable.</li>
+        <li>Fill the new index from the database, not from the old index, so that the rebuild also proves the index is rebuildable. With external versions (below), the backfill cannot overwrite a newer live change.</li>
         <li>Verify: document count against displayable rows in the database, and a fixed set of saved queries run against both indices.</li>
         <li>Swap the alias in one request. Keep the old index until you are sure, then delete it.</li>
       </ol>
       <p>
-        For the load itself, Elastic&apos;s indexing guidance applies directly. Bulk requests{' '}
+        For the load itself, bulk requests{' '}
         <Src href={INDEXING_SPEED}>will yield much better performance than single-document index requests</Src>;
-        the right batch size is found by testing, and it is{' '}
+        the batch size is found by testing, and it is{' '}
         <Src href={INDEXING_SPEED}>advisable to avoid going beyond a couple tens of megabytes per request</Src>.
         During a large load you can{' '}
         <Src href={INDEXING_SPEED}>disable refreshing by setting the refresh interval to -1</Src> and set{' '}
-        <Src href={INDEXING_SPEED}>index.number_of_replicas to 0</Src>, which Elastic pairs with a condition that
-        suits a derived index: <Src href={INDEXING_SPEED}>it is important that the data lives elsewhere</Src>.
+        <Src href={INDEXING_SPEED}>index.number_of_replicas to 0</Src>, which Elastic pairs with a condition a
+        derived index meets: <Src href={INDEXING_SPEED}>it is important that the data lives elsewhere</Src>.
         Restore both before the swap. If the cluster answers{' '}
         <Src href={INDEXING_SPEED}>TOO_MANY_REQUESTS (429)</Src>, pause and retry with{' '}
         <Src href={INDEXING_SPEED}>randomized exponential backoff</Src>.
@@ -564,8 +543,8 @@ export default function Guide() {
 
       <h3>Incremental updates and the refresh interval</h3>
       <p>
-        Between rebuilds, the indexer follows the sync pipeline: each batch of changed listings becomes one bulk
-        request of index and delete actions. A bulk request can{' '}
+        Between rebuilds, each batch of changed listings becomes one bulk request of index and delete actions. A
+        bulk request can{' '}
         <Src href={BULK}>perform multiple index, create, delete, and update actions in a single request</Src>, and
         it can partly fail: the response carries an <code>errors</code> flag that is true when{' '}
         <Src href={BULK}>one or more of the operations in the bulk request did not complete successfully</Src>,
@@ -574,29 +553,31 @@ export default function Guide() {
       <p>
         Changes are not searchable at once. By default Elasticsearch{' '}
         <Src href={NRT}>periodically refreshes indices every second, but only on indices that have received one search request or more in the last 30 seconds</Src>.
-        A listing index fed by an MLS sync that runs every few minutes gains nothing from one-second refreshes, and
+        A listing index fed by a sync that runs every few minutes has little use for one-second refreshes, and
         Elastic notes that raising <code>index.refresh_interval</code>,{' '}
         <Src href={INDEXING_SPEED}>e.g. 30s, might help improve indexing speed</Src>. A longer interval also keeps
-        cached facet responses valid for longer. Do not force a refresh after every write to make a test pass.
+        cached facet responses valid for longer.
       </p>
       <p>
         Out-of-order writes are the subtle failure. Two workers process two changes to the same listing and the
         older one lands last. With external versioning, a document is indexed only{' '}
         <Src href={INDEX_API}>if the specified version is strictly higher than the version of the stored document</Src>.
-        Using the listing&apos;s modification timestamp as that version makes a late, stale write a harmless
-        rejection.
+        Using the listing&apos;s modification timestamp as that version turns a late, stale write into a
+        version conflict you can ignore. Deletes need the same care: send the version with the delete, and note
+        that <code>index.gc_deletes</code>, the time{' '}
+        <Src href={INDEX_SETTINGS}>a deleted document&apos;s version number remains available for further versioned operations</Src>,
+        defaults to 60 seconds. A stale write that arrives later than that can bring a removed listing back,
+        which is one job of the reconciliation below.
       </p>
 
       <h3>Removals</h3>
       <p>
-        A listing that is sold, withdrawn or no longer licensed for display must leave search results, and an
-        index does not forget on its own. We would handle removal in three layers. First, the display-policy stage
-        of the pipeline decides what is displayable, and the indexer turns &quot;no longer displayable&quot; into a
-        delete action in the same bulk request as the updates. Second, the search API adds the status and display
-        filters to every query, so a document that lingers is still not returned. Third, a scheduled
-        reconciliation compares listing keys in the index against displayable keys in the database and deletes the
-        difference, because a missed event should be caught by a count, not by a complaint. How long a removed
-        listing may remain visible is set by your MLS license, not by the search engine; the{' '}
+        A listing that is sold, withdrawn or no longer licensed for display must leave search results. We would
+        handle that in three layers. The indexer turns &quot;no longer displayable&quot; into a delete action in
+        the same bulk request as the updates. The search API adds the status and display filters to every query,
+        so a document that lingers is still not returned. And a scheduled reconciliation compares listing keys in
+        the index against displayable keys in the database and deletes the difference. How long a removed listing
+        may remain visible is set by your MLS license; the{' '}
         <Link href="/blog/mls-data-pipeline-architecture">pipeline guide</Link> covers those rules.
       </p>
 
@@ -626,24 +607,21 @@ export default function Guide() {
         milliseconds. That is one platform&apos;s result as published there, not a figure to expect elsewhere.
       </p>
       <p>
-        Search is also what powers alerts: a saved search is a stored query. That design is covered in{' '}
+        A saved search is a stored query; that design is covered in{' '}
         <Link href="/blog/saved-searches-listing-alerts">saved searches and listing alerts</Link>, and the field
-        mapping that feeds this index in{' '}
-        <Link href="/blog/mls-data-normalization">MLS data normalization</Link>.
+        mapping that feeds this index in <Link href="/blog/mls-data-normalization">MLS data normalization</Link>.
       </p>
 
-      <GuideFaq slug={SLUG} items={[
+            <GuideFaq slug={SLUG} items={[
         { question: 'Should Elasticsearch be the primary database for listings?', answer: ['We recommend against it. Treat the index as a derived copy that can be rebuilt from the system of record. Elastic’s own guidance for fast initial loads with no replicas depends on the fact that ', ['the data lives elsewhere', INDEXING_SPEED], ', and a mapping change requires a new index because ', ['you cannot change the field type of an existing field', UPDATE_MAPPING], '.'] },
         { question: 'How deep can users page through search results?', answer: ['With from and size, ', ['you cannot page through more than 10,000 hits', PAGINATE], ' by default. Beyond that, use search_after with a unique tiebreaker in the sort, and a point in time when the pages must be consistent with each other.'] },
-        { question: 'Should rooms and open houses be nested fields?', answer: ['Only if you filter on two properties of the same room or open house. Nested objects are indexed ', ['as a separate hidden document', NESTED], ' each, and Elastic calls nested queries ', ['typically expensive', NESTED], '. Often a single computed field, such as the next open house date, answers the question buyers ask.'] },
-        { question: 'How quickly does a price change appear in search?', answer: ['After the sync delivers it and the index refreshes. Elasticsearch by default ', ['refreshes indices every second', NRT], ' on indices that are being searched; many listing platforms set a longer refresh interval, because the MLS sync cycle, not the refresh, is the larger delay.'] },
         { question: 'Completion suggester or search-as-you-type for the search box?', answer: ['Both, for different lists. The completion suggester is ', ['optimized for speed', SUGGEST], ' and suits a small index of place names. Addresses fit a search_as_you_type field, which matches ', ['the query terms in any order', SAYT], ' and is filtered like any other query, so listings you may not display stay out of suggestions.'] },
       ]} />
 
       <p className="cp-note">
-        Capabilities, defaults and limits were read from the linked Elastic documentation pages on October 12, 2026
-        and can change between versions; check the documentation for the version you run. The mapping and the query
-        are illustrative and are not a drop-in configuration. OpenSearch was not checked for this article.
+        Capabilities, defaults and limits were read from the linked Elastic documentation on October 12 and 13,
+        2026 and can change between versions. The mapping and the query are illustrative, were not run against a
+        cluster, and are not a drop-in configuration. OpenSearch was not checked.
       </p>
       <p>
         Building or repairing listing search? See our{' '}

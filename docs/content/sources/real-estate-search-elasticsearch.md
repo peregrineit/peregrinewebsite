@@ -93,6 +93,7 @@ Every URL below was fetched on **2026-10-12** with `curl` (browser user agent, H
 | https://www.elastic.co/docs/manage-data/data-store/near-real-time-search | periodically refreshes indices every second, but only on indices that have received one search request or more in the last 30 seconds | verbatim on the page |
 | https://www.elastic.co/docs/manage-data/data-store/near-real-time-search | refreshes indices every second | verbatim on the page |
 | https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-create | if the specified version is strictly higher than the version of the stored document | verbatim on the page |
+| https://www.elastic.co/docs/reference/elasticsearch/index-settings/index-modules | a deleted document&apos;s version number remains available for further versioned operations | "index.gc_deletes: The length of time that a deleted document's version number remains available for further versioned operations. Defaults to 60s." (added in QA, 2026-10-13) |
 
 ## Notes
 
@@ -101,3 +102,13 @@ Every URL below was fetched on **2026-10-12** with `curl` (browser user agent, H
 - The mapping and query in the article are illustrative and were not executed against a cluster. Syntax follows the examples on the linked pages (normalizer definition, `geo_bounding_box` with `top_left` / `bottom_right`, `search_after` with a two-field sort, `post_filter` with a `terms` aggregation).
 - Peregrine statement: the case-study page `/case-studies/scaling-real-estate-saas-platform` states "MongoDB direct queries for property search were taking 3–5 seconds under load", "Elasticsearch — Search Layer: Handles property search, filters, geo-queries, auto-suggestions", "MongoDB — Source of Truth" and "Search response time 3.5s → 180ms". The article repeats only those.
 - Left out as unverified: any statement about RESO resource names for rooms and open houses (not fetched); context-suggester filtering details beyond the one quoted sentence; any latency or capacity figure for Elasticsearch itself.
+
+## Independent QA, 2026-10-13
+
+- Every URL above was fetched again with `curl` on 2026-10-13 (39 distinct URLs, all HTTP 200) and every link text re-checked against the page text; the paraphrased links were read in context. No statement was found to be wrong.
+- Confirmed in context: `from`/`size` limit ("By default, you cannot use from and size to page through more than 10,000 hits. This limit is a safeguard set by the index.max_result_window index setting."), `search_after` and point in time, the one-second refresh default, filter-context caching (bool query page: `filter` and `must_not`), completion suggester against `search_as_you_type`, the three geo queries and the `geo_polygon` deprecation, the atomic alias swap, and `version_type: external`.
+- Added: the `index.gc_deletes` default (row above), because external versioning does not protect a delete from a stale write that arrives after that window.
+- Changed wording: "a compliance problem" for a suggestion that shows a withheld listing became a question for the MLS rules; "Raising it is the wrong fix" became a recommendation.
+- The mapping and both request bodies were parsed as JSON (valid). They were still not run against a cluster.
+- Case study statements re-read in `src/app/case-studies/scaling-real-estate-saas-platform/page.tsx`: "MongoDB direct queries for property search were taking 3–5 seconds under load", "MongoDB — Source of Truth", "Elasticsearch — Search Layer: Handles property search, filters, geo-queries, auto-suggestions", "Search response time 3.5s → 180ms".
+- Cut for length: one FAQ entry on refresh timing and one on nested fields (both restated the body), and the sentence on paid placement in ranking.
