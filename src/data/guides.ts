@@ -367,6 +367,22 @@ export const guides: Guide[] = [
     service: 'mls-idx-integration',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
+  {
+    slug: 'mls-data-normalization',
+    related: ['mls-sync-engine', 'listing-lifecycle-sold-expired-deleted'],
+    cta: {
+      heading: 'Adding a Second or Third MLS Board?',
+      text: 'Tell us which boards you pull, through which platforms, and where the fields disagree. An engineer will walk through the mapping layer and canonical schema for your feeds.',
+    },
+    title: 'MLS Data Normalization Across Multiple Real Estate Boards',
+    metaTitle: 'MLS Data Normalization Across Multiple Boards',
+    description:
+      'How to normalize MLS data from several boards: RESO field mapping, identifiers, property types, units, media, display flags, provenance and a canonical schema.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+    caseStudy: 'w3re-ai-real-estate-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {
