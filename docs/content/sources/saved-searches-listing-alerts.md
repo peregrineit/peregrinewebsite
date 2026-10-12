@@ -57,3 +57,15 @@ Every URL below was fetched on **2026-10-13** with `curl` (browser user agent, H
 - Provider named: Resend only, as an example of documented behavior (idempotency keys, event types, suppressions). AWS SES suppression-list documentation was fetched but is not cited.
 - No Peregrine case study is cited: none of the published case studies describes saved searches or listing alerts.
 - The schema and pseudocode are illustrative and were not executed.
+
+## Independent QA, 2026-10-13
+
+- Every URL above was fetched again on 2026-10-13 and every link text re-checked; paraphrased links were read in context.
+- FTC: the page still returns HTTP 404 to `curl`. It was opened in a browser on 2026-10-13 (page title "CAN-SPAM Act: A Compliance Guide for Business | Federal Trade Commission"). The sentence is on the page word for word, under "Honor opt-out requests promptly": "You must honor a recipient's opt-out request within 10 business days." The same page says the Act "covers all commercial messages" and treats "transactional or relationship" messages differently, so the article now says the deadline applies to the commercial email the Act covers and leaves whether listing alerts are such messages as a question for counsel.
+- RFC 8058 confirmed: "The List-Unsubscribe-Post header MUST contain the single key/value pair \"List-Unsubscribe=One-Click\"", "MUST contain one HTTPS URI", the DKIM requirement, and "The POST request MUST NOT include cookies, HTTP authorization, or any other context information."
+- Google (answer 81126) confirmed: the 5,000 messages per day threshold, "Starting February 1, 2024", one-click unsubscribe for marketing and subscribed messages, spam rate "below 0.3%" (the page also prints "0.30%"). Google FAQ (answer 14229414): the table cell beside "Unsubscribe requests aren't honored within 48 hours" reads "Delivery support or mitigations unavailable"; the article now uses that wording.
+- Yahoo confirmed: "honor unsubscribes within 2 days", the list-unsubscribe header sentence and the no-login sentence.
+- Resend confirmed on its three pages: `email.bounced`, `email.delivery_delayed`, `email.complained`, `email.suppressed`; "Idempotency keys are kept in the system for 24 hours"; "up to 256 characters".
+- Reworded as questions for the MLS agreement or counsel, or as our recommendation: "An email about it would display data you no longer hold a right to show", "Removal is not optional", "is a license matter", "Agents are not exempt", "It must not be sent". Removed as unsourced: "Other providers use different names for the same four ideas", "Many platforms end up with both".
+- Pseudocode fix: the earlier version of a listing is matched only if it was displayable, so a listing that becomes displayable again counts as a new match.
+- Cut for length: two FAQ entries that restated the body.
