@@ -29,9 +29,9 @@ export default function Guide() {
         feed, one list of agents, one leads table. The engineering problem starts when a second customer signs.
         Now every query, cache key, background job, uploaded file and email has to answer a question it never had
         to answer before: <em>whose is this?</em> Adding a <code>brokerage_id</code> column to a few tables is the
-        easy tenth of the work. The rest is deciding where the tenant boundary runs through the edge, the
-        application, the data, the MLS licenses and the invoice, and enforcing it somewhere a forgotten{' '}
-        <code>WHERE</code> clause cannot defeat it.
+        easy part. The rest is deciding where the tenant boundary runs through the edge, the application, the
+        data, the MLS licenses and the invoice, and enforcing it somewhere a forgotten <code>WHERE</code>{' '}
+        clause cannot defeat it.
       </p>
       <p>
         This article is the architecture view. Whether to build a platform at all is covered in{' '}
@@ -216,7 +216,7 @@ BEGIN;
 SELECT set_config('app.tenant_id', $1, true);    -- true = local to this transaction
 SELECT id, email FROM contact;                   -- returns this tenant's rows only
 COMMIT;`}</code></pre>
-      <p>Four details in that example come straight from the documentation, and each one is a way to get it wrong:</p>
+      <p>Five details in that example come straight from the documentation, and each one is a way to get it wrong:</p>
       <ul>
         <li>
           <strong>Owners and superusers skip it.</strong>{' '}
@@ -237,6 +237,12 @@ COMMIT;`}</code></pre>
           This matters behind a pooler: PgBouncer&apos;s feature table marks session-level{' '}
           <Src href={PGBOUNCER}>SET/RESET as never compatible with transaction pooling</Src>, so a session-level
           tenant setting could be seen by the next customer&apos;s request on the same connection.
+        </li>
+        <li>
+          <strong>An unset tenant is an error, not an empty filter.</strong> <code>current_setting</code>{' '}
+          <Src href={PG_FUNCS}>throws an error if there is no such setting</Src>, unless its optional{' '}
+          <code>missing_ok</code> argument is true, in which case it returns NULL. Leave that argument off: a
+          request that reaches the table without a tenant context should fail loudly.
         </li>
         <li>
           <strong>Constraints can leak.</strong>{' '}
@@ -282,8 +288,7 @@ COMMIT;`}</code></pre>
         <Src href={LE_CHALLENGE}>allows you to issue wildcard certificates</Src>. A workable plan is a DNS-01
         wildcard for platform subdomains and on-demand HTTP-01 certificates for customer domains, issued only for
         hosts already present and verified in the domain table, with a queue for issuance and an alert on
-        renewals that fail. A managed edge that issues certificates for customer host names removes the
-        mechanics, not the need for the domain table and the verification step.
+        renewals that fail.
       </p>
 
       <h2>Authentication and authorization boundaries</h2>
@@ -295,19 +300,16 @@ COMMIT;`}</code></pre>
         <li><strong>Platform staff are a separate path.</strong> Support access to a tenant goes through an explicit, time-limited, logged impersonation flow under its own role, not a flag that bypasses checks.</li>
       </ul>
       <p>
-        Role design inside a tenant (who may see which records, field-level restrictions, audit trails, and how
-        to verify them against OWASP ASVS) is covered in the{' '}
-        <Link href="/blog/investor-portal-security-checklist">investor portal security checklist</Link>; the
-        access-model section there applies to brokerage roles with the names changed.
+        Role design inside a tenant (record visibility, field-level restrictions, audit trails) is covered in
+        the <Link href="/blog/investor-portal-security-checklist">investor portal security checklist</Link>.
       </p>
 
       <h2>Per-tenant configuration and white-label branding</h2>
       <p>
-        White-label means the tenant&apos;s visitors never see the platform. That is configuration, and the
-        discipline is to keep it data, not code. We would store, per tenant and per site: design tokens (colors,
-        fonts, logo, favicon), navigation and page content, lead-form settings, email sender identity, analytics
-        ids, feature flags and plan limits. Themes are a fixed set of layouts driven by those tokens; a tenant
-        that needs a custom template gets it through the same theme interface, not a fork of the application.
+        White-label means the tenant&apos;s visitors never see the platform. The discipline is to keep that as
+        data, not code: design tokens, navigation and page content, lead-form settings, email sender identity,
+        feature flags and plan limits, stored per tenant and per site. A tenant that needs a custom template
+        gets it through the same theme interface, not a fork of the application.
       </p>
       <p>Three engineering points follow:</p>
       <ul>
@@ -359,17 +361,15 @@ COMMIT;`}</code></pre>
         <li><strong>Quotas from plan limits:</strong> sites, seats, contacts, storage, monthly sends. Enforced where the resource is created, and visible to the tenant before they hit them.</li>
         <li><strong>Database guardrails:</strong> statement timeouts on the application role, tenant-leading indexes so one tenant&apos;s query never scans another&apos;s rows, and heavy reports sent to a replica or an asynchronous export.</li>
         <li><strong>Fair background work.</strong> Every job carries the tenant id and re-establishes tenant context before touching data. A single first-in, first-out queue lets one tenant&apos;s 50,000-row import (an illustrative figure) delay everyone&apos;s lead notifications, so we would separate queues by urgency and cap concurrency per tenant within each. The mechanics are in <Link href="/blog/background-jobs-redis-bullmq">reliable background jobs with Redis and BullMQ</Link>.</li>
-        <li><strong>Scale the shared tiers first,</strong> and keep the option to move a very large tenant to dedicated capacity through the connection router described above.</li>
       </ul>
 
       <h2>Billing boundaries</h2>
       <p>
-        Billing is a consumer of tenancy data, not its source. The platform decides what a tenant has and has
-        used; the billing system turns that into invoices. Keeping the direction clear avoids the common trap of
-        feature checks that call the payment provider.
+        Billing is a consumer of tenancy data, not its source: the platform decides what a tenant has and has
+        used, and the billing system turns that into invoices. A feature check should never need to call the
+        payment provider.
       </p>
       <ul>
-        <li><strong>What is metered</strong> is a product decision with engineering consequences. Usual candidates: seats (agents), sites or domains, contacts, messages sent, MLS sources connected, storage.</li>
         <li><strong>Usage is an append-only record</strong> per tenant, written by the system that did the work, with an idempotency key so a retried job is not counted twice.</li>
         <li><strong>Entitlements live in the platform.</strong> The tenant row holds the plan and limits; billing events update them through a webhook handler built as described in <Link href="/blog/webhook-event-driven-integrations">reliable webhook integrations</Link>.</li>
         <li><strong>Suspension is a tenant state,</strong> with defined behavior: public sites keep serving or not, logins read-only or blocked, data retained for how long. Decide it before the first failed payment.</li>
@@ -397,8 +397,6 @@ COMMIT;`}</code></pre>
         { question: 'Which tenancy model should a real estate SaaS start with?', answer: ['For many similar tenants, a shared schema with a tenant id on every row, enforced by the database, is a sound default. MongoDB’s guidance points the same way: shared collections with ', ['a tenantId field in each document', MDB_MT], ' when tenant numbers keep growing, and ', ['one database per tenant for a small and stable number of tenants with strict access control requirements', MDB_MT], '. Design the connection layer so a large tenant can be moved to its own database later.'] },
         { question: 'Is row-level security enough to isolate tenants in PostgreSQL?', answer: ['It is a strong second line, not the only one. With it enabled and no policy, ', ['a default-deny policy is used', PG_RLS], ', but ', ['superusers and roles with the BYPASSRLS attribute always bypass the row security system', PG_RLS], ', and caches, search indexes and file storage sit outside the database. Keep the application filter, connect as a role that owns no tables, and test cross-tenant access through the API.'] },
         { question: 'Can several brokerages share one MLS feed on a multi-tenant platform?', answer: ['That is decided by each MLS, not by the platform. As one published example, MLS Grid’s IDX Rules require that ', ['any IDX display be under the actual and apparent control of a single Member Participant who has executed a data license agreement', GRID_IDX], '. Record each tenant’s approved licenses and filter listings by them, and ask each MLS in writing whether a shared vendor feed is permitted.'] },
-        { question: 'How do custom domains get HTTPS on a multi-tenant platform?', answer: ['Each verified customer domain needs its own certificate, issued and renewed automatically. If you use Let’s Encrypt, plan around its published limits, such as ', ['up to 300 new orders per account every 3 hours', LE_RATE], ', and use a wildcard certificate for platform subdomains, which requires the DNS-01 challenge because HTTP-01 ', ['cannot be used to issue wildcard certificates', LE_CHALLENGE], '.'] },
-        { question: 'What happens to a brokerage’s data when it leaves the platform?', answer: ['It should be exportable and then deletable from every store that held it: database, search index, caches, file storage and backups after a stated retention period. Listing data is different: it is licensed from the MLS, so the tenant’s sites stop displaying it when the license ends and it is not part of the tenant’s export.'] },
       ]} />
 
       <p className="cp-note">

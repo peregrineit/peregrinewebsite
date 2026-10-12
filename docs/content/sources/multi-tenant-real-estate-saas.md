@@ -26,6 +26,18 @@ All pages fetched and read on 2026-10-12. Each row is the sentence or figure the
 | same | Rule 6, apparent control: "that the domain name and branding on the website distinguish the Member Participant from nonparticipating firms" | 2026-10-12 |
 | https://docs.mlsgrid.com/ | "Once a subscription has been created, a licensee added, and the MLS has approved, an API token will be generated and presented on the token tab when viewing a subscription." | 2026-10-12 |
 
+## Independent QA, 2026-10-12
+
+All 11 source URLs were fetched again by a second reviewer (`curl -L --compressed`, HTML stripped; the MLS Grid PDF with `pdftotext`) and every quoted sentence above was found on its page. Nothing was wrong or stale.
+
+Added in QA:
+
+| URL | Relied on | Date |
+|---|---|---|
+| https://www.postgresql.org/docs/current/functions-admin.html | current_setting: "If there is no such setting, current_setting throws an error unless missing_ok is supplied and is true (in which case NULL is returned)." Used for the new point that an unset tenant context is an error, not an empty filter. | 2026-10-12 |
+
+Case-study figures re-checked against `src/data/case-studies.ts` ("5 agents to 200+"). Cut for length: a generic "scale the shared tiers first" bullet, a generic list of what can be metered, the sentence on managed edge certificates, and two FAQ entries that repeated the TLS and lifecycle sections.
+
 ## Peregrine statements and their source
 - White-label agent website platform; "All agents shared configuration, leads, and property data in flat collections. One agent's misconfiguration could affect every other agent's website"; "Restructured MongoDB collections for clean multi-tenant separation"; "Deployed white-label agent themes"; 5 to 200+ agents: `src/app/case-studies/scaling-real-estate-saas-platform/page.tsx`.
 
