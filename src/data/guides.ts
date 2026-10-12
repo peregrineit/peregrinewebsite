@@ -335,6 +335,22 @@ export const guides: Guide[] = [
     service: 'nextjs-development',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
+  {
+    slug: 'mls-sync-engine',
+    related: ['mls-data-pipeline-architecture', 'reso-web-api-vs-rets'],
+    cta: {
+      heading: 'Building or Repairing an MLS Sync Engine?',
+      text: 'Tell us which feeds you replicate, how the cursor is stored and what happens today when a run fails. An engineer will walk through where records can be lost.',
+    },
+    title: 'Building a Scalable MLS Synchronization Engine',
+    metaTitle: 'Building a Scalable MLS Sync Engine',
+    description:
+      'How to build an MLS sync engine: full import, incremental sync, checkpoints, queues, rate limits, backoff, idempotent writes, monitoring and failure recovery.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {
