@@ -463,6 +463,69 @@ export const guides: Guide[] = [
     service: 'saas-development',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
+  {
+    slug: 'real-estate-search-elasticsearch',
+    related: ['real-estate-platform-tech-stack', 'mls-data-pipeline-architecture'],
+    cta: {
+      heading: 'Designing or Repairing Listing Search?',
+      text: 'Tell us your listing volume, the filters and map features you need, and where search is slow or wrong today. An engineer will walk through the index and sync design with you.',
+    },
+    title: 'Designing a Real Estate Search Engine with Elasticsearch',
+    metaTitle: 'Real Estate Search with Elasticsearch',
+    description:
+      'Designing listing search on Elasticsearch: mappings, filters, geo queries, autocomplete, pagination, facet counts, relevance and zero-downtime reindexing.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
+  {
+    slug: 'map-based-property-search',
+    related: ['real-estate-search-elasticsearch', 'real-estate-platform-tech-stack'],
+    cta: {
+      heading: 'Building Map Search on Listing Data?',
+      text: 'Tell us your data store, listing volume and how the map should behave on desktop and mobile. An engineer will walk through the query, clustering and sync design with you.',
+    },
+    title: 'Building Map-Based Property Search with Geospatial Queries',
+    metaTitle: 'Map-Based Property Search: Geospatial Queries',
+    description:
+      'How to build map search for listings: viewport and polygon queries, spatial indexes, clustering, list and map sync, URL state, mobile and address display.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
+  {
+    slug: 'saved-searches-listing-alerts',
+    related: ['real-estate-search-elasticsearch', 'mls-data-pipeline-architecture'],
+    cta: {
+      heading: 'Building Saved Searches and Listing Alerts?',
+      text: 'Tell us how listings reach your platform and how alerts should behave. An engineer will walk through matching, deduplication, scheduling and the rules that must stop a send.',
+    },
+    title: 'Designing Reliable Saved Searches and Listing Alerts',
+    metaTitle: 'Designing Saved Searches and Listing Alerts',
+    description:
+      'How to build saved searches and listing alerts that do not miss, duplicate or misfire: storage, matching, dedupe, scheduling, unsubscribe and delivery.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+  },
+  {
+    slug: 'listing-page-core-web-vitals',
+    related: ['real-estate-website-seo-aeo-geo', 'map-based-property-search'],
+    cta: {
+      heading: 'Listing Pages Failing Core Web Vitals?',
+      text: 'Tell us how your listing, search and area pages are rendered and what your field data shows. An engineer will tell you which template to fix first and how.',
+    },
+    title: 'Real Estate Website Performance: Optimizing Listing Pages for Core Web Vitals',
+    metaTitle: 'Listing Page Core Web Vitals: What to Build',
+    description:
+      'How to build listing, search and area pages that meet Core Web Vitals: rendering, the hero photo, galleries, maps, third-party scripts, caching and INP.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'nextjs-development',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {
