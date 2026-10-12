@@ -382,6 +382,22 @@ export const guides: Guide[] = [
     dateModified: '2026-10-12',
     service: 'mls-idx-integration',
   },
+  {
+    slug: 'listing-page-core-web-vitals',
+    related: ['real-estate-website-seo-aeo-geo', 'map-based-property-search'],
+    cta: {
+      heading: 'Listing Pages Failing Core Web Vitals?',
+      text: 'Tell us how your listing, search and area pages are rendered and what your field data shows. An engineer will tell you which template to fix first and how.',
+    },
+    title: 'Real Estate Website Performance: Optimizing Listing Pages for Core Web Vitals',
+    metaTitle: 'Listing Page Core Web Vitals: What to Build',
+    description:
+      'How to build listing, search and area pages that meet Core Web Vitals: rendering, the hero photo, galleries, maps, third-party scripts, caching and INP.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'nextjs-development',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {
