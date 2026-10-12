@@ -16,12 +16,14 @@ export interface Guide {
   caseStudy?: string;
   /** Slugs of guides on a neighboring question, shown under "Related". */
   related?: string[];
+  /** Alt text of the hero image at public/images/blog/<slug>-hero.webp (design/blog-heroes); omitted when there is none. */
+  hero?: string;
 }
 
 export const guides: Guide[] = [
   {
     slug: 'mls-idx-integration-cost',
-    related: ['idx-vendor-vs-custom-build', 'how-to-get-mls-data-access'],
+    related: ['cheapest-idx-options', 'idx-vendor-vs-custom-build'],
     cta: {
       heading: 'Scoping an MLS or IDX Integration?',
       text: 'Tell us which MLS boards you need and what you are building on top. We will tell you which feeds, vendors and license types apply before you budget.',
@@ -53,7 +55,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'cost-to-build-a-real-estate-platform',
-    related: ['mls-idx-integration-cost', 'investor-portal-vs-file-sharing', 'investor-portal-security-checklist'],
+    related: ['real-estate-platform-tech-stack', 'mls-idx-integration-cost'],
     cta: {
       heading: 'Planning a Real Estate Platform?',
       text: 'Tell us the scope: MLS boards, user groups and first-release features. We will map what drives the cost for your build.',
@@ -69,7 +71,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'how-to-get-mls-data-access',
-    related: ['mls-data-pipeline-architecture', 'reso-web-api-vs-rets', 'mls-data-access-canada'],
+    related: ['mls-boards-compared', 'reso-web-api-vs-rets'],
     cta: {
       heading: 'Have MLS Access and Need the Pipeline Built?',
       text: 'Tell us which boards have approved you, or which you are applying to. We build the ingestion, normalization and search on top of that access.',
@@ -101,7 +103,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'idx-vendor-vs-custom-build',
-    related: ['mls-idx-integration-cost', 'reso-web-api-vs-rets', 'mls-data-pipeline-architecture'],
+    related: ['idx-website-features-checklist', 'cheapest-idx-options'],
     cta: {
       heading: 'Deciding Whether to Move Off Your IDX Vendor?',
       text: 'Tell us which MLSs you work in and what your current IDX cannot do. An engineer will tell you whether a data vendor, a custom pipeline or staying put makes sense.',
@@ -117,7 +119,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'reso-web-api-vs-rets',
-    related: ['mls-data-pipeline-architecture', 'how-to-get-mls-data-access', 'mls-data-access-canada'],
+    related: ['mls-data-pipeline-architecture', 'mls-boards-compared'],
     cta: {
       heading: 'Still on a RETS Feed?',
       text: 'Tell us which MLSs you pull from and what the data feeds today. An engineer will tell you what the move to the RESO Web API involves for your setup.',
@@ -181,7 +183,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'mls-data-pipeline-architecture',
-    related: ['reso-web-api-vs-rets', 'how-to-get-mls-data-access', 'idx-vendor-vs-custom-build'],
+    related: ['real-estate-platform-tech-stack', 'mls-boards-compared'],
     cta: {
       heading: 'Designing or Repairing an MLS Pipeline?',
       text: 'Tell us which feeds you pull, how they sync today and where the data goes wrong. An engineer will tell you which parts of this architecture your setup is missing.',
@@ -242,6 +244,91 @@ export const guides: Guide[] = [
     dateModified: '2026-10-10',
     service: 'odoo-erp',
     // No caseStudy: Peregrine has no published Odoo case study and no confirmed named integration.
+  },
+  {
+    slug: 'cheapest-idx-options',
+    hero: 'Illustration: price cards showing the lowest published IDX plans, from $49 per month.',
+    related: ['mls-idx-integration-cost', 'idx-vendor-vs-custom-build'],
+    cta: {
+      heading: 'Outgrown a Low-Cost IDX Plan?',
+      text: 'Tell us which MLSs you work in and what your current IDX cannot do. An engineer will tell you whether another vendor plan, a data vendor or a custom build fits.',
+    },
+    title: 'Cheapest IDX Options in 2026: Lowest Published Prices by Vendor',
+    metaTitle: 'Cheapest IDX Options: 2026 Published Prices',
+    description:
+      'The lowest published IDX plan from each vendor in 2026, with setup and MLS fees, first-year totals, free MLS-provided links and what each low price leaves out.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+    // No caseStudy: the published case studies are custom builds, not low-cost vendor setups.
+  },
+  {
+    slug: 'idx-website-features-checklist',
+    hero: 'Illustration: a listing search page with a drawn map area, results and feature labels.',
+    related: ['idx-vendor-vs-custom-build', 'real-estate-website-seo-aeo-geo'],
+    cta: {
+      heading: 'Writing Requirements for an IDX Website?',
+      text: 'Tell us which MLSs you belong to and which rows of the checklist your current site fails. An engineer will tell you what a vendor can cover and what needs a build.',
+    },
+    title: 'IDX Website Features: A Checklist for Brokerages and Agent Teams',
+    metaTitle: 'IDX Website Features: Requirements Checklist',
+    description:
+      'The IDX website features that matter, grouped by who they serve: buyers, agents, the brokerage and search engines, with vendor questions and MLS rules.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
+  {
+    slug: 'mls-boards-compared',
+    hero: 'Illustration: nine MLS names connected to a RESO Web API hub.',
+    related: ['how-to-get-mls-data-access', 'mls-data-pipeline-architecture'],
+    cta: {
+      heading: 'Adding a New MLS Market?',
+      text: 'Tell us which MLSs you need and which brokers you work with. An engineer will tell you which platform, license and feed type each one involves before you estimate.',
+    },
+    title: 'MLS Boards Compared: Data Platforms, Access and Fees at 15 US MLSs',
+    metaTitle: 'MLS Boards Compared: Platforms, Access, Fees',
+    description:
+      'A side-by-side reference for 15 US MLSs: region, size, data platform, feed types, who may license, published fees and where to apply, each cell sourced.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+    caseStudy: 'w3re-ai-real-estate-platform',
+  },
+  {
+    slug: 'real-estate-platform-tech-stack',
+    hero: 'Illustration: stacked layers labelled frontend, backend, search, cache and system of record.',
+    related: ['cost-to-build-a-real-estate-platform', 'mls-data-pipeline-architecture'],
+    cta: {
+      heading: 'Choosing a Stack for a Listing Platform?',
+      text: 'Tell us your listing volume, MLS feeds, search features and what your team runs today. An engineer will walk through which layers you need and which you can leave out.',
+    },
+    title: 'Tech Stack for a Real Estate Platform: Database, Search, Backend and Frontend Choices',
+    metaTitle: 'Choosing a Real Estate Platform Tech Stack',
+    description:
+      'How to choose the database, search engine, cache, backend language, frontend rendering, media storage and hosting for a real estate platform, with sources.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'saas-development',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
+  {
+    slug: 'real-estate-website-seo-aeo-geo',
+    hero: 'Illustration: three overlapping circles labelled SEO, AEO and GEO around indexable listing pages.',
+    related: ['idx-vendor-vs-custom-build', 'mls-data-pipeline-architecture'],
+    cta: {
+      heading: 'Rebuilding Listing Pages So They Can Be Found?',
+      text: 'Tell us how your listing pages are served today and which MLSs feed them. An engineer will tell you which items on this checklist your setup is missing.',
+    },
+    title: 'SEO, AEO and GEO for Real Estate Websites: What to Build',
+    metaTitle: 'Real Estate Website SEO, AEO & GEO Checklist',
+    description:
+      'What a brokerage or proptech site must build to be found in search, answer features and AI answers: indexing, listing lifecycle, schema and crawlers, sourced.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'nextjs-development',
+    caseStudy: 'scaling-real-estate-saas-platform',
   },
 ];
 

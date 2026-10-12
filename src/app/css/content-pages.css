@@ -266,3 +266,9 @@ a.cp-card:hover { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 10px 30px
 /* Source links inside table cells wrap with the sentence instead of dropping to their own line. */
 .cp-page .cp-prose td a.cp-src { display: inline; }
 /* ==== end of guide diagrams block ==== */
+
+/* Guide illustrations (components/GuideFigure.tsx). */
+.cp-figure { margin: 28px 0; }
+.cp-figure img { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--cp-border); }
+.cp-figure figcaption { font-size: 13px; color: var(--cp-muted); margin-top: 8px; text-align: center; }
+.cp-hero-image { display: block; width: 100%; height: auto; margin-top: 28px; border-radius: 16px; border: 1px solid var(--cp-border); }

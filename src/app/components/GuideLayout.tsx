@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import ConsultationCta from './ConsultationCta';
 import type { Metadata } from 'next';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from './JsonLd';
@@ -83,6 +84,17 @@ export default function GuideLayout({ slug, children }: { slug: string; children
             {' · '}Published <time dateTime={g.datePublished}>{formatDate(g.datePublished)}</time>
             {g.dateModified !== g.datePublished && <> · Updated <time dateTime={g.dateModified}>{formatDate(g.dateModified)}</time></>}
           </p>
+          {g.hero && (
+            <Image
+              src={`/images/blog/${slug}-hero.webp`}
+              alt={g.hero}
+              width={1200}
+              height={630}
+              priority
+              sizes="(max-width: 860px) 100vw, 800px"
+              className="cp-hero-image"
+            />
+          )}
         </div>
       </section>
       <article className="cp-section">
