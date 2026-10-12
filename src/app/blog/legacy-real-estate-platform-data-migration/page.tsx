@@ -36,10 +36,6 @@ export default function Guide() {
         <li><strong>The most valuable data is small and relational.</strong> Users, saved searches, leads and their history are typically a small part of the rows and most of the business value. They are also the data most likely to be subtly wrong in the old system.</li>
         <li><strong>Visitors arrive on URLs you are about to change.</strong> Listing, area and agent pages are entry points from search, email alerts and printed material.</li>
       </ul>
-      <p>
-        This article covers what to move, the four strategies for moving it, how to prove the move was correct,
-        how to keep URLs working, and how to plan the way back.
-      </p>
 
       <h2>What moves, what is re-fetched, what is left behind</h2>
       <p>Start with an inventory that sorts every dataset into one of three treatments.</p>
@@ -109,18 +105,18 @@ export default function Guide() {
       <p>
         Three reasons, in order of weight. First, ownership: Trestle&apos;s documentation states that for
         multiple listing data{' '}
-        <Src href={TRESTLE_FAQ}>the MLO is the copyright holder and data licensor</Src>. Your right to hold a
-        listing comes from a license tied to a feed, a use and often a named vendor, and a platform change can
-        alter any of those. As one published example, MLS Grid&apos;s IDX rules prohibit{' '}
+        <Src href={TRESTLE_FAQ}>the MLO is the copyright holder and data licensor</Src>, and that MLOs{' '}
+        <Src href={TRESTLE_FAQ}>typically require a real estate broker or agent to ratify the contract</Src> and
+        disallow certain uses. A license that specific may not carry over to a new platform. As one published
+        example, MLS Grid&apos;s IDX rules prohibit{' '}
         <Src href={GRID_IDX}>sharing the MLS Grid data compilation with any third party not authorized by MLS Grid</Src>.
         If the new platform is run by a different vendor or under a different agreement, check before a single
         record is copied.
       </p>
       <p>
-        Second, correctness. A legacy listings table holds whatever the old sync got wrong: missed removals,
-        stale statuses, fields mapped years ago. A fresh import from the feed carries none of that. Third,
-        mechanics: the new sync engine needs its own cursor and raw store, and it only has them after its own
-        initial import. MLS platforms treat a change of source the same way; when MARIS moved to a new MLS
+        Second, correctness: a legacy listings table holds whatever the old sync got wrong, and a fresh import
+        carries none of it. Third, mechanics: the new sync engine needs its own cursor and raw store, and it only
+        has them after its own initial import. MLS platforms treat a change of source the same way; when MARIS moved to a new MLS
         system, MLS Grid told consumers to{' '}
         <Src href={GRID_MARIS}>treat the change as an initial import of a new MLS source</Src>. Plan the import
         as a project task with a lead time: MLS Grid asks consumers to{' '}
@@ -153,23 +149,22 @@ export default function Guide() {
 
       <h2>Four strategies</h2>
       <p>
-        The strategies differ in one thing: how long both systems are live, and therefore how much machinery is
-        needed to keep them consistent.
+        The strategies differ in how long both systems are live, and therefore in how much machinery is needed to
+        keep them consistent.
       </p>
       <h3>Big-bang cutover</h3>
       <p>
-        Stop the old system, copy everything, start the new one. It is the simplest to reason about, because
-        there is never a moment with two writable systems. Its costs are a downtime window sized by the slowest
-        dataset, and a rollback that gets worse by the hour, since anything written to the new system after
-        launch is lost on return. It suits small datasets, a tolerant audience and a schedule with a real quiet
-        period.
+        Stop the old system, copy everything, start the new one. There is never a moment with two writable
+        systems, which makes it the simplest to reason about. Its costs are a downtime window sized by the
+        slowest dataset, and a rollback that gets worse by the hour, since anything written to the new system
+        after launch is lost on return.
       </p>
       <h3>Phased by tenant or by feature</h3>
       <p>
-        Move one office, one brand or one group of agents at a time, or move one capability at a time (content
-        first, then accounts, then the CRM). Each phase is a small big-bang with a small blast radius, and the
-        first phases find the mapping errors while they are cheap. The cost is a routing layer that knows which
-        tenant or feature lives where, and a period in which reports span two systems. Google gives the same
+        Move one office, one brand or one group of agents at a time, or one capability at a time (content first,
+        then accounts, then the CRM). Each phase is a small big-bang, and the first phases find the mapping
+        errors while they are cheap. The cost is a routing layer that knows which tenant or feature lives where,
+        and a period in which reports span two systems. Google gives the same
         advice for the URL side of a move:{' '}
         <Src href={G_MOVE}>initially move just a piece of the site to test any effects on traffic and search indexing</Src>.
       </p>
@@ -212,8 +207,7 @@ export default function Guide() {
         <Src href={FOWLER}>strangler fig as a gradual approach to legacy modernization</Src> and argues that{' '}
         <Src href={FOWLER}>the reduced risk and earlier value from the gradual approach outweigh its costs</Src>.
         For data it means each slice brings its tables with it, and for a while some entities are owned by the
-        old system and some by the new, with a defined owner for every one. It is the right choice when the
-        system is too large or too poorly understood to specify a full replacement up front.
+        old system and some by the new, with a defined owner for every one.
       </p>
       <h3>Choosing</h3>
       <div className="cp-table-wrap cp-table-wide">
@@ -244,7 +238,7 @@ export default function Guide() {
       <ol>
         <li><strong>Backfill.</strong> The legacy system serves all traffic. Its data is bulk-copied into the new system through the transformation code.</li>
         <li><strong>Sync and verify.</strong> Changes flow continuously from legacy to new, by CDC or dual writes. The new system receives shadow reads. Three verification gates must pass: counts, checksums and sampled records.</li>
-        <li><strong>Cutover.</strong> Freeze writes, let the final changes drain, run the gates one last time, switch traffic and turn on redirects.</li>
+        <li><strong>Cutover.</strong> Freeze writes, let the final changes drain, run the gates one last time, arm reverse sync, switch traffic and turn on redirects.</li>
         <li><strong>Rollback window.</strong> The new system is the source of truth. Changes are synced back to the legacy system, which stands by read-only, so a return loses nothing.</li>
         <li><strong>Retire.</strong> When the window closes, reverse sync stops, rollback is no longer possible and the legacy system is archived.</li>
         <li><strong>Throughout,</strong> listing data follows its own lane: a fresh import from the MLS feed into the new system, then incremental sync. It is never copied from legacy.</li>
@@ -261,7 +255,7 @@ export default function Guide() {
 CREATE TABLE migration_id_map (
   entity         text        NOT NULL,   -- 'user', 'lead', 'saved_search', 'agent', 'page'
   legacy_id      text        NOT NULL,
-  new_id         uuid        NOT NULL,
+  new_id         uuid        NOT NULL,   -- several legacy ids may share one when duplicates are merged
   tenant_id      uuid        NOT NULL,
   source_hash    text        NOT NULL,   -- hash of the legacy row as last migrated
   migrated_at    timestamptz NOT NULL,
@@ -271,7 +265,7 @@ CREATE TABLE migration_id_map (
       <p>
         <strong>Make every load repeatable.</strong> A loader looks up the map, inserts when the legacy id is new
         and updates when the source hash has changed. Then the backfill, the continuous sync and a re-run after a
-        bug fix are the same code path, and running the migration ten times in rehearsal is normal, not a risk.
+        bug fix are the same code path.
       </p>
       <p>
         <strong>Write the mapping down as a table people can review.</strong> One row per target field: source
@@ -281,8 +275,8 @@ CREATE TABLE migration_id_map (
       </p>
       <p>
         <strong>Quarantine, do not drop.</strong> A row that fails transformation goes to a rejects table with
-        its reason. The count of rejects by reason is the most useful progress report the project has, and it
-        must reach zero or an agreed, written exception list before cutover.
+        its reason. The count of rejects by reason is a progress report in itself, and it must reach zero or an
+        agreed, written exception list before cutover.
       </p>
       <p>
         Watch the usual technical edges as well: time zones (legacy systems often store local time with no
@@ -313,13 +307,16 @@ CREATE TABLE migration_id_map (
           because their hashes are supposed to differ.
         </li>
       </ul>
-      <p>An illustrative checksum query, run on each side and compared by key:</p>
+      <p>An illustrative checksum query in PostgreSQL syntax, run on each side and compared by key:</p>
       <pre className="cp-code"><code>{`-- Illustrative. Same projection on both systems, keyed by the legacy id.
+-- Every field is wrapped in coalesce: concat_ws skips NULLs, which would let
+-- (NULL, 'x') and ('x', NULL) produce the same hash.
 SELECT legacy_id,
        md5(concat_ws('|',
-           lower(trim(email)),
+           coalesce(lower(trim(email)), ''),
            coalesce(phone_e164, ''),
-           to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS'),
+           -- created_at is timestamptz on both sides; compare it in UTC
+           coalesce(to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS'), ''),
            coalesce(assigned_agent_legacy_id, '')
        )) AS row_hash
 FROM   leads_for_comparison
@@ -333,8 +330,8 @@ ORDER  BY legacy_id;`}</code></pre>
       </p>
       <p>
         Finally, shadow reads: during the parallel run, send a copy of real read requests to the new system and
-        compare the answers. It is the only test that uses the queries users actually make. Run all of these
-        continuously during the parallel run, not once at the end. A gate is a query that returns zero rows.
+        compare the answers, so the test uses the queries users actually make. Run all of these continuously, not
+        once at the end. A gate is a query that returns zero rows.
       </p>
 
       <h2>URL preservation and redirects</h2>
@@ -374,13 +371,12 @@ ORDER  BY legacy_id;`}</code></pre>
       <ul>
         <li><strong>Where new writes go.</strong> From the moment the new system accepts writes, returning to the old one loses them unless they are synced back. Reverse sync is the price of a clean rollback. If it is not built, say so plainly: the plan is then &ldquo;fix forward&rdquo;, and the gates before cutover must be stricter.</li>
         <li><strong>The window.</strong> A fixed period, agreed beforehand, during which the legacy system is kept current and can take traffic again. It ends on a date, with a named person deciding to close it.</li>
-        <li><strong>The triggers.</strong> Written conditions that cause a rollback without debate: a gate failing after cutover, logins failing above a threshold, leads not reaching agents, alerts sending wrongly. Choosing thresholds in a calm week is easier than at two in the morning.</li>
+        <li><strong>The triggers.</strong> Written conditions that cause a rollback without debate: a gate failing after cutover, logins failing above a threshold, leads not reaching agents, alerts sending wrongly.</li>
         <li><strong>What does not roll back.</strong> Emails already sent, redirects that search engines and browsers have already seen, changes in third-party systems, and the MLS-side configuration of the new feed. List them, so nobody expects a rollback to undo them.</li>
       </ul>
       <p>
-        Rehearse the rollback as well as the cutover. In a rehearsal, switch to the new system, write test data,
-        switch back, and confirm the data arrived in the legacy system. A rollback that has never been run is an
-        assumption.
+        Rehearse the rollback as well as the cutover: switch to the new system, write test data, switch back,
+        and confirm the data arrived in the legacy system.
       </p>
 
       <h2>Cutover runbook</h2>
@@ -396,16 +392,16 @@ ORDER  BY legacy_id;`}</code></pre>
         <li><strong>Drain:</strong> wait for replication lag or the dual-write queue to reach zero.</li>
         <li><strong>Final gates:</strong> counts, checksums, invariants. Bring sequences and counters in the new database up to date.</li>
         <li><strong>Go or no-go,</strong> decided by the named owner against the written criteria. A no-go here costs only the unfreeze.</li>
+        <li><strong>Arm reverse sync</strong> from the new system to the legacy one before any traffic moves, so the first write the new system accepts is captured. The legacy system stays closed to user writes.</li>
         <li><strong>Switch traffic</strong> to the new system and enable redirects.</li>
-        <li><strong>Start reverse sync</strong> to the legacy system, now read-only.</li>
         <li><strong>Smoke tests</strong> through the public site: log in as a test user, submit a lead and confirm it reaches the right agent, run a saved search, open a listing, follow ten old URLs.</li>
         <li><strong>Resume side effects</strong> one at a time, alert email last, after checking that the first batch is the size you expect.</li>
         <li><strong>Watch</strong> error rates, the 404 log, login failures, lead flow and sync lag for the MLS feeds through the rollback window.</li>
         <li><strong>Close the window:</strong> stop reverse sync, take a final archive of the legacy data under your retention policy, remove legacy copies of MLS data as your license requires, and decommission.</li>
       </ol>
       <p>
-        The case study mentioned above reports one more step worth copying: the rebuilt stack was load-tested
-        with simulated 200-agent traffic before go-live.
+        The case study mentioned above reports one more step worth copying: the full stack was load-tested with
+        simulated 200-agent traffic before go-live.
       </p>
 
       <GuideFaq slug={SLUG} items={[

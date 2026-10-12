@@ -1,6 +1,6 @@
 # Source log: /blog/legacy-real-estate-platform-data-migration
 
-Every URL below was fetched on **2026-10-13** shortly after midnight IST (HTTP 200), in the same working session that began on 2026-10-12, and the quoted text was read on the page then. Quotes are verbatim. Method: `curl` with a browser user agent, HTML stripped to text; PDFs with `pdftotext -layout`.
+Every URL below was fetched on **2026-10-13** shortly after midnight IST (HTTP 200), in the same working session that began on 2026-10-12, and the quoted text was read on the page then. Quotes are verbatim. QA re-fetched every URL later on 2026-10-13 and found each quoted sentence still on its page. Method: `curl` with a browser user agent, HTML stripped to text; PDFs with `pdftotext -layout`.
 
 ## Google Search Central
 
@@ -25,7 +25,7 @@ Every URL below was fetched on **2026-10-13** shortly after midnight IST (HTTP 2
 
 | URL | Text relied on |
 |---|---|
-| https://trestle-documentation.corelogic.com/support/faq/ | "In the case of multiple listing data, the MLO is the copyright holder and data licensor. Trestle only facilitates the license agreement between you and the MLO" |
+| https://trestle-documentation.corelogic.com/support/faq/ | "In the case of multiple listing data, the MLO is the copyright holder and data licensor. Trestle only facilitates the license agreement between you and the MLO" · "IMPORTANT NOTE: Generally, MLOs license data to technology providers that provide value to their membership. As a result, MLOs typically require a real estate broker or agent to ratify the contract ... MLOs typically disallow certain uses of their data" (added in QA) |
 | https://www.mlsgrid.com/s/MLS-Grid-IDX-Rules.pdf | Header "Updated September 17,2026" · Rule 12: "Sharing of the MLS GRID Data compilation with any third party not authorized by MLS GRID is prohibited." |
 | https://www.mlsgrid.com/s/MLS-Grid-Best-Practices-Guide-2.pdf | "When conducting your initial import of data please reach out to support@mlsgrid.com in advance to request a "Grace Period" to exceed normal rate limits and data caps" |
 | https://docs.mlsgrid.com/recent-releases/maris-mls-migration-to-new-mls-system-and-new-originatingsystemname | "ALL Data Consumers should treat this change as an initial import of a new MLS source" |
@@ -37,6 +37,7 @@ The move / re-fetch / regenerate / leave inventory; re-keying listing references
 ## Not used because it could not be verified
 
 - https://developers.google.com/search/docs/crawling-indexing/site-move-overview returned 404; only the "site move with URL changes" page is cited.
+- "Your right to hold a listing comes from a license tied to a feed, a use and often a named vendor": no fetched page says this in general; replaced in QA with what Trestle's FAQ states.
 - No statistic on what share of real estate site traffic lands on listing pages was found in a primary source; none is given.
 - Whether a specific MLS agreement lets listing data be transferred between vendors or platforms: depends on each agreement; the article cites MLS Grid rule 12 as one example and says to check.
 - Debezium, pglogical and other named CDC tools: not fetched, so not named.
@@ -44,5 +45,5 @@ The move / re-fetch / regenerate / leave inventory; re-keying listing references
 ## Statements about Peregrine and where they come from
 
 - "a platform where all agents shared configuration, leads and property data in flat collections, and MongoDB collections were restructured for clean multi-tenant separation": `src/app/case-studies/scaling-real-estate-saas-platform/page.tsx` ("No Multi-Tenant Isolation"; "Phase 3").
-- "the rebuilt stack was load-tested with simulated 200-agent traffic before go-live": same page ("Phase 4": "Load-tested the full stack with simulated 200-agent traffic before go-live").
+- "the full stack was load-tested with simulated 200-agent traffic before go-live": same page ("Phase 4": "Load-tested the full stack with simulated 200-agent traffic before go-live").
 - 30-minute technical discovery call with an engineer: allowed general fact (writing brief).
