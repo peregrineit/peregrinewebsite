@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-12",
+ "captured": "2026-10-13",
  "fields": [
   "status",
   "title",
@@ -111,6 +111,42 @@
    "robots": "index, follow",
    "status": 200,
    "title": "Guides for Real Estate & SaaS Buyers | Peregrine IT"
+  },
+  "/blog/background-jobs-redis-bullmq": {
+   "canonical": "https://peregrine-it.com/blog/background-jobs-redis-bullmq",
+   "description": "How to run BullMQ on Redis in production: retries and backoff, concurrency, stalled jobs, idempotent handlers, Job Schedulers, Redis settings and failure modes.",
+   "h1": [
+    "Designing Reliable Background Jobs with Redis and BullMQ"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "Reliable Background Jobs with Redis & BullMQ | Peregrine IT"
   },
   "/blog/cheapest-idx-options": {
    "canonical": "https://peregrine-it.com/blog/cheapest-idx-options",
@@ -468,11 +504,11 @@
    "status": 200,
    "title": "Laravel Upgrade & Modernization Checklist | Peregrine IT"
   },
-  "/blog/mls-boards-compared": {
-   "canonical": "https://peregrine-it.com/blog/mls-boards-compared",
-   "description": "A side-by-side reference for 15 US MLSs: region, size, data platform, feed types, who may license, published fees and where to apply, each cell sourced.",
+  "/blog/legacy-real-estate-platform-data-migration": {
+   "canonical": "https://peregrine-it.com/blog/legacy-real-estate-platform-data-migration",
+   "description": "How to migrate a legacy real estate platform: what to move or re-fetch, cutover strategies, validation, URL redirects, rollback planning and a cutover runbook.",
    "h1": [
-    "MLS Boards Compared: Data Platforms, Access and Fees at 15 US MLSs"
+    "Data Migration Strategies for Legacy Real Estate Platforms"
    ],
    "jsonld_types": [
     "Answer",
@@ -506,7 +542,157 @@
    ],
    "robots": "index, follow",
    "status": 200,
-   "title": "MLS Boards Compared: Platforms, Access, Fees | Peregrine IT"
+   "title": "Legacy Real Estate Platform Data Migration | Peregrine IT"
+  },
+  "/blog/listing-lifecycle-sold-expired-deleted": {
+   "canonical": "https://peregrine-it.com/blog/listing-lifecycle-sold-expired-deleted",
+   "description": "How to handle sold, expired, withdrawn and deleted MLS listings: status mapping, removal signals, reconciliation, index cleanup, HTTP status and license rules.",
+   "h1": [
+    "Handling Deleted, Expired and Sold Listings Correctly"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "Handling Deleted, Expired & Sold Listings | Peregrine IT"
+  },
+  "/blog/listing-page-core-web-vitals": {
+   "canonical": "https://peregrine-it.com/blog/listing-page-core-web-vitals",
+   "description": "How to build listing, search and area pages that meet Core Web Vitals: rendering, the hero photo, galleries, maps, third-party scripts, caching and INP.",
+   "h1": [
+    "Real Estate Website Performance: Optimizing Listing Pages for Core Web Vitals"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "Listing Page Core Web Vitals: What to Build | Peregrine IT"
+  },
+  "/blog/map-based-property-search": {
+   "canonical": "https://peregrine-it.com/blog/map-based-property-search",
+   "description": "How to build map search for listings: viewport and polygon queries, spatial indexes, clustering, list and map sync, URL state, mobile and address display.",
+   "h1": [
+    "Building Map-Based Property Search with Geospatial Queries"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "Map-Based Property Search: Geospatial Queries | Peregrine IT"
+  },
+  "/blog/mls-boards-compared": {
+   "canonical": "https://peregrine-it.com/blog/mls-boards-compared",
+   "description": "Reference profiles of 15 US MLSs in alphabetical order: who each serves, data delivery, feed types, who may license and where to apply, each fact sourced.",
+   "h1": [
+    "15 US MLS Boards: A Data Access Reference"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "15 US MLS Boards: A Data Access Reference | Peregrine IT"
   },
   "/blog/mls-data-access-canada": {
    "canonical": "https://peregrine-it.com/blog/mls-data-access-canada",
@@ -547,6 +733,46 @@
    "robots": "index, follow",
    "status": 200,
    "title": "MLS Data in Canada: CREA DDF & Board Feeds | Peregrine IT"
+  },
+  "/blog/mls-data-normalization": {
+   "canonical": "https://peregrine-it.com/blog/mls-data-normalization",
+   "description": "How to normalize MLS data from several boards: RESO field mapping, identifiers, property types, units, media, display flags, provenance and a canonical schema.",
+   "h1": [
+    "MLS Data Normalization Across Multiple Real Estate Boards"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "MLS Data Normalization Across Multiple Boards | Peregrine IT"
   },
   "/blog/mls-data-pipeline-architecture": {
    "canonical": "https://peregrine-it.com/blog/mls-data-pipeline-architecture",
@@ -636,6 +862,80 @@
    "status": 200,
    "title": "MLS & IDX Cost per Month and per Year (2026) | Peregrine IT"
   },
+  "/blog/mls-sync-engine": {
+   "canonical": "https://peregrine-it.com/blog/mls-sync-engine",
+   "description": "How to build an MLS sync engine: full import, incremental sync, checkpoints, queues, rate limits, backoff, idempotent writes, monitoring and failure recovery.",
+   "h1": [
+    "Building a Scalable MLS Synchronization Engine"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "Building a Scalable MLS Sync Engine | Peregrine IT"
+  },
+  "/blog/multi-tenant-real-estate-saas": {
+   "canonical": "https://peregrine-it.com/blog/multi-tenant-real-estate-saas",
+   "description": "How to design tenancy for a real estate SaaS: tenant hierarchy, data isolation with row-level security, custom domains, per-tenant MLS licenses and lifecycle.",
+   "h1": [
+    "Building a Multi-Tenant Real Estate SaaS Platform"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "Multi-Tenant Real Estate SaaS Architecture | Peregrine IT"
+  },
   "/blog/odoo-implementation-cost": {
    "canonical": "https://peregrine-it.com/blog/odoo-implementation-cost",
    "description": "What an Odoo implementation costs: per-user plans, Odoo.sh hosting, Success Packs and the upkeep of custom modules and integrations, from Odoo's own pages.",
@@ -718,6 +1018,42 @@
    "status": 200,
    "title": "Odoo–Shopify Sync: Integration Design Guide | Peregrine IT"
   },
+  "/blog/real-estate-crm-architecture": {
+   "canonical": "https://peregrine-it.com/blog/real-estate-crm-architecture",
+   "description": "How to design a real estate CRM: enquiry capture, attribution, deduplication, lead routing, an event timeline, consent records and integration boundaries.",
+   "h1": [
+    "Real Estate CRM Architecture: From Property Enquiry to Lead Management"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "Real Estate CRM Architecture: Lead Management | Peregrine IT"
+  },
   "/blog/real-estate-platform-tech-stack": {
    "canonical": "https://peregrine-it.com/blog/real-estate-platform-tech-stack",
    "description": "How to choose the database, search engine, cache, backend language, frontend rendering, media storage and hosting for a real estate platform, with sources.",
@@ -753,6 +1089,42 @@
    "robots": "index, follow",
    "status": 200,
    "title": "Choosing a Real Estate Platform Tech Stack | Peregrine IT"
+  },
+  "/blog/real-estate-search-elasticsearch": {
+   "canonical": "https://peregrine-it.com/blog/real-estate-search-elasticsearch",
+   "description": "Designing listing search on Elasticsearch: mappings, filters, geo queries, autocomplete, pagination, facet counts, relevance and zero-downtime reindexing.",
+   "h1": [
+    "Designing a Real Estate Search Engine with Elasticsearch"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "Real Estate Search with Elasticsearch | Peregrine IT"
   },
   "/blog/real-estate-website-seo-aeo-geo": {
    "canonical": "https://peregrine-it.com/blog/real-estate-website-seo-aeo-geo",
@@ -830,6 +1202,42 @@
    "status": 200,
    "title": "RESO Web API vs RETS: How to Migrate | Peregrine IT"
   },
+  "/blog/saved-searches-listing-alerts": {
+   "canonical": "https://peregrine-it.com/blog/saved-searches-listing-alerts",
+   "description": "How to build saved searches and listing alerts that do not miss, duplicate or misfire: storage, matching, dedupe, scheduling, unsubscribe and delivery.",
+   "h1": [
+    "Designing Reliable Saved Searches and Listing Alerts"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "Designing Saved Searches and Listing Alerts | Peregrine IT"
+  },
   "/blog/self-storage-software-build-vs-buy": {
    "canonical": "https://peregrine-it.com/blog/self-storage-software-build-vs-buy",
    "description": "When off-the-shelf self-storage software is enough, when to extend it through its API, and when a multi-site operator should build, with vendor facts sourced.",
@@ -869,6 +1277,42 @@
    "robots": "index, follow",
    "status": 200,
    "title": "Self-Storage Software: Build or Buy? | Peregrine IT"
+  },
+  "/blog/webhook-event-driven-integrations": {
+   "canonical": "https://peregrine-it.com/blog/webhook-event-driven-integrations",
+   "description": "How to receive and send webhooks reliably: signature checks, idempotency, ordering, retries with jitter, the outbox pattern, reconciliation and SSRF defenses.",
+   "h1": [
+    "Building Reliable Webhook and Event-Driven Integrations"
+   ],
+   "jsonld_types": [
+    "Answer",
+    "Answer",
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "Country",
+    "Country",
+    "Country",
+    "FAQPage",
+    "ImageObject",
+    "ImageObject",
+    "ListItem",
+    "ListItem",
+    "ListItem",
+    "Organization",
+    "Person",
+    "Place",
+    "PostalAddress",
+    "QuantitativeValue",
+    "Question",
+    "Question",
+    "Question",
+    "WebSite"
+   ],
+   "robots": "index, follow",
+   "status": 200,
+   "title": "Reliable Webhooks & Event-Driven Integrations | Peregrine IT"
   },
   "/case-studies": {
    "canonical": "https://peregrine-it.com/case-studies",
