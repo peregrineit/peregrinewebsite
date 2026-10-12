@@ -351,6 +351,22 @@ export const guides: Guide[] = [
     service: 'saas-development',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
+  {
+    slug: 'real-estate-crm-architecture',
+    related: ['multi-tenant-real-estate-saas', 'custom-saas-vs-off-the-shelf-crm-for-brokerages'],
+    cta: {
+      heading: 'Designing Lead Capture, Routing or a CRM Integration?',
+      text: 'Tell us where your enquiries come from, which CRM your agents use and where leads get lost or duplicated. An engineer will walk through capture, routing and sync for your setup.',
+    },
+    title: 'Real Estate CRM Architecture: From Property Enquiry to Lead Management',
+    metaTitle: 'Real Estate CRM Architecture: Lead Management',
+    description:
+      'How to design a real estate CRM: enquiry capture, attribution, deduplication, lead routing, an event timeline, consent records and integration boundaries.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'saas-development',
+    caseStudy: 'w3re-ai-real-estate-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {
