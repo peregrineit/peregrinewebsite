@@ -367,6 +367,21 @@ export const guides: Guide[] = [
     service: 'mls-idx-integration',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
+  {
+    slug: 'saved-searches-listing-alerts',
+    related: ['real-estate-search-elasticsearch', 'mls-data-pipeline-architecture'],
+    cta: {
+      heading: 'Building Saved Searches and Listing Alerts?',
+      text: 'Tell us how listings reach your platform and how alerts should behave. An engineer will walk through matching, deduplication, scheduling and the rules that must stop a send.',
+    },
+    title: 'Designing Reliable Saved Searches and Listing Alerts',
+    metaTitle: 'Designing Saved Searches and Listing Alerts',
+    description:
+      'How to build saved searches and listing alerts that do not miss, duplicate or misfire: storage, matching, dedupe, scheduling, unsubscribe and delivery.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+  },
 ];
 
 export function getGuide(slug: string): Guide {
