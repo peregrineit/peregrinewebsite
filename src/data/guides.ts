@@ -367,6 +367,22 @@ export const guides: Guide[] = [
     service: 'saas-development',
     caseStudy: 'w3re-ai-real-estate-platform',
   },
+  {
+    slug: 'webhook-event-driven-integrations',
+    related: ['odoo-shopify-marketplace-integration', 'real-estate-crm-architecture'],
+    cta: {
+      heading: 'Building or Repairing a Webhook Integration?',
+      text: 'Tell us which providers you receive events from, what you send to your own customers and where events get lost or duplicated. An engineer will walk through both paths with you.',
+    },
+    title: 'Building Reliable Webhook and Event-Driven Integrations',
+    metaTitle: 'Reliable Webhooks & Event-Driven Integrations',
+    description:
+      'How to receive and send webhooks reliably: signature checks, idempotency, ordering, retries with jitter, the outbox pattern, reconciliation and SSRF defenses.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'api-integration',
+    caseStudy: 'supply-chain-visibility-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {
