@@ -16,6 +16,8 @@ export interface Guide {
   caseStudy?: string;
   /** Slugs of guides on a neighboring question, shown under "Related". */
   related?: string[];
+  /** Alt text of the hero image at public/images/blog/<slug>-hero.webp (design/blog-heroes); omitted when there is none. */
+  hero?: string;
 }
 
 export const guides: Guide[] = [
@@ -245,6 +247,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'cheapest-idx-options',
+    hero: 'Illustration: price cards showing the lowest published IDX plans, from $49 per month.',
     related: ['mls-idx-integration-cost', 'idx-vendor-vs-custom-build'],
     cta: {
       heading: 'Outgrown a Low-Cost IDX Plan?',
@@ -261,6 +264,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'idx-website-features-checklist',
+    hero: 'Illustration: a listing search page with a drawn map area, results and feature labels.',
     related: ['idx-vendor-vs-custom-build', 'real-estate-website-seo-aeo-geo'],
     cta: {
       heading: 'Writing Requirements for an IDX Website?',
@@ -277,6 +281,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'mls-boards-compared',
+    hero: 'Illustration: nine MLS names connected to a RESO Web API hub.',
     related: ['how-to-get-mls-data-access', 'mls-data-pipeline-architecture'],
     cta: {
       heading: 'Adding a New MLS Market?',
@@ -293,6 +298,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'real-estate-platform-tech-stack',
+    hero: 'Illustration: stacked layers labelled frontend, backend, search, cache and system of record.',
     related: ['cost-to-build-a-real-estate-platform', 'mls-data-pipeline-architecture'],
     cta: {
       heading: 'Choosing a Stack for a Listing Platform?',
@@ -309,6 +315,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'real-estate-website-seo-aeo-geo',
+    hero: 'Illustration: three overlapping circles labelled SEO, AEO and GEO around indexable listing pages.',
     related: ['idx-vendor-vs-custom-build', 'mls-data-pipeline-architecture'],
     cta: {
       heading: 'Rebuilding Listing Pages So They Can Be Found?',
