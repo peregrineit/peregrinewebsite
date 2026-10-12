@@ -346,6 +346,64 @@ export const guides: Guide[] = [
     metaTitle: 'Multi-Tenant Real Estate SaaS Architecture',
     description:
       'How to design tenancy for a real estate SaaS: tenant hierarchy, data isolation with row-level security, custom domains, per-tenant MLS licenses and lifecycle.',
+    slug: 'mls-sync-engine',
+    related: ['mls-data-pipeline-architecture', 'reso-web-api-vs-rets'],
+    cta: {
+      heading: 'Building or Repairing an MLS Sync Engine?',
+      text: 'Tell us which feeds you replicate, how the cursor is stored and what happens today when a run fails. An engineer will walk through where records can be lost.',
+    },
+    title: 'Building a Scalable MLS Synchronization Engine',
+    metaTitle: 'Building a Scalable MLS Sync Engine',
+    description:
+      'How to build an MLS sync engine: full import, incremental sync, checkpoints, queues, rate limits, backoff, idempotent writes, monitoring and failure recovery.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
+  {
+    slug: 'listing-lifecycle-sold-expired-deleted',
+    related: ['mls-sync-engine', 'real-estate-website-seo-aeo-geo'],
+    cta: {
+      heading: 'Sold or Removed Listings Still Showing on Your Site?',
+      text: 'Tell us which feeds you pull and how removals reach you today. An engineer will walk through reconciliation, index cleanup and what each listing URL should return.',
+    },
+    title: 'Handling Deleted, Expired and Sold Listings Correctly',
+    metaTitle: 'Handling Deleted, Expired & Sold Listings',
+    description:
+      'How to handle sold, expired, withdrawn and deleted MLS listings: status mapping, removal signals, reconciliation, index cleanup, HTTP status and license rules.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
+  {
+    slug: 'mls-data-normalization',
+    related: ['mls-sync-engine', 'listing-lifecycle-sold-expired-deleted'],
+    cta: {
+      heading: 'Adding a Second or Third MLS Board?',
+      text: 'Tell us which boards you pull, through which platforms, and where the fields disagree. An engineer will walk through the mapping layer and canonical schema for your feeds.',
+    },
+    title: 'MLS Data Normalization Across Multiple Real Estate Boards',
+    metaTitle: 'MLS Data Normalization Across Multiple Boards',
+    description:
+      'How to normalize MLS data from several boards: RESO field mapping, identifiers, property types, units, media, display flags, provenance and a canonical schema.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+    caseStudy: 'w3re-ai-real-estate-platform',
+  },
+  {
+    slug: 'legacy-real-estate-platform-data-migration',
+    related: ['mls-sync-engine', 'mls-data-normalization'],
+    cta: {
+      heading: 'Planning a Move Off a Legacy Platform?',
+      text: 'Tell us what the old system holds, how many tenants and users it serves and how much downtime you can accept. An engineer will walk through strategy, validation and rollback for your case.',
+    },
+    title: 'Data Migration Strategies for Legacy Real Estate Platforms',
+    metaTitle: 'Legacy Real Estate Platform Data Migration',
+    description:
+      'How to migrate a legacy real estate platform: what to move or re-fetch, cutover strategies, validation, URL redirects, rollback planning and a cutover runbook.',
     datePublished: '2026-10-12',
     dateModified: '2026-10-12',
     service: 'saas-development',
