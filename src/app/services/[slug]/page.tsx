@@ -2,12 +2,13 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../../components/JsonLd';
-import { engagement, engagementModel, getService, ipFaq, services, startAnswer } from '@/data/services';
+import { buyerGuideFor, engagement, engagementModel, getService, ipFaq, relatedServicesFor, services, startAnswer } from '@/data/services';
 import { getCaseStudy } from '@/data/case-studies';
 import { industries } from '@/data/industries';
 import { technologyPageFor, technologyServices } from '@/data/technology-services';
 import { formatDate, getGuide, type Guide } from '@/data/guides';
 import ConsultationCta from '../../components/ConsultationCta';
+import { BringBlock, FitBlock, ProofLinks, ScopeBlock } from '../_components/BuyerBlocks';
 import '../../css/content-pages.css';
 
 export const dynamicParams = false;
@@ -59,6 +60,8 @@ export default async function ServicePage({ params }: Props) {
   const faq = [...service.faq, ipFaq];
   // Industry pages that list this service.
   const serviceIndustries = industries.filter((i) => i.services.includes(service.slug));
+  const buyer = buyerGuideFor(service.slug);
+  const related = relatedServicesFor(service.slug);
 
   const schema = {
     '@context': 'https://schema.org',
@@ -150,6 +153,16 @@ export default async function ServicePage({ params }: Props) {
         </div>
       </section>
 
+      {buyer && (
+        <section className="cp-section" id="fit">
+          <div className="cp-container">
+            <span className="cp-label">Fit</span>
+            <h2>Is {service.name} the Right Fit?</h2>
+            <FitBlock guide={buyer} />
+          </div>
+        </section>
+      )}
+
       <section className="cp-section">
         <div className="cp-container">
           <span className="cp-label">What we build</span>
@@ -160,6 +173,7 @@ export default async function ServicePage({ params }: Props) {
               <div key={item.title} className="cp-card">
                 <h3>{item.title}</h3>
                 <p>{item.body}</p>
+                <ProofLinks slugs={item.proof} />
               </div>
             ))}
           </div>
@@ -188,6 +202,16 @@ export default async function ServicePage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {buyer && (
+        <section className="cp-section" id="scope">
+          <div className="cp-container">
+            <span className="cp-label">Scope</span>
+            <h2>What Determines the Scope of {withArticle(service.name)} Project?</h2>
+            <ScopeBlock guide={buyer} />
+          </div>
+        </section>
+      )}
 
       <section className="cp-section">
         <div className="cp-container">
@@ -219,6 +243,7 @@ export default async function ServicePage({ params }: Props) {
           <span className="cp-label">Getting started</span>
           <h2>How Does {withArticle(service.name)} Project Start?</h2>
           <p className="cp-answer">{startAnswer(service.name)}</p>
+          {buyer && <BringBlock guide={buyer} />}
           <p><Link href="/contact" className="cp-standalone-link">Book a discovery call or send a quick project request</Link></p>
         </div>
       </section>
@@ -267,6 +292,20 @@ export default async function ServicePage({ params }: Props) {
         </div>
       </section>
 
+      {related.length > 0 && (
+        <section className="cp-section">
+          <div className="cp-container cp-narrow">
+            <span className="cp-label">Related services</span>
+            <h2>Services Often Scoped With {service.name}</h2>
+            <ul className="cp-related">
+              {related.map(({ service: r, why }) => (
+                <li key={r.slug}><Link href={`/services/${r.slug}`}>{r.name}</Link>: {why}.</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       <section className="cp-section">
         <div className="cp-container cp-narrow cp-faq">
           <span className="cp-label">FAQ</span>
@@ -280,6 +319,10 @@ export default async function ServicePage({ params }: Props) {
               <p>{answer}</p>
             </details>
           ))}
+          <p className="cp-muted" style={{ marginTop: 20, fontSize: 15 }}>
+            Questions about the team, contract models and how progress is shown are answered on the{' '}
+            <Link href="/services#working-with-us">services page</Link>.
+          </p>
         </div>
       </section>
 

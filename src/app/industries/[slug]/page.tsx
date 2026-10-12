@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../../components/JsonLd';
 import ConsultationCta from '../../components/ConsultationCta';
+import { BringBlock, FitBlock, ProofLinks, ScopeBlock } from '../../services/_components/BuyerBlocks';
 import { getIndustry, industries } from '@/data/industries';
 import { getService } from '@/data/services';
 import { getCaseStudy } from '@/data/case-studies';
@@ -105,6 +106,16 @@ export default async function IndustryPage({ params }: Props) {
         </div>
       </section>
 
+      {industry.buyer && (
+        <section className="cp-section" id="fit">
+          <div className="cp-container">
+            <span className="cp-label">Fit</span>
+            <h2>Is Custom {industry.name} Software the Right Fit?</h2>
+            <FitBlock guide={industry.buyer} />
+          </div>
+        </section>
+      )}
+
       {industry.whatWeBuild && (
         <section className="cp-section">
           <div className="cp-container">
@@ -115,6 +126,7 @@ export default async function IndustryPage({ params }: Props) {
                 <div key={item.title} className="cp-card">
                   <h3>{item.title}</h3>
                   <p>{item.body}</p>
+                  <ProofLinks slugs={item.proof} />
                 </div>
               ))}
             </div>
@@ -164,6 +176,18 @@ export default async function IndustryPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {industry.buyer && (
+        <section className="cp-section" id="scope">
+          <div className="cp-container">
+            <span className="cp-label">Scope</span>
+            <h2>What Determines the Scope of {industry.name} Software?</h2>
+            <ScopeBlock guide={industry.buyer} />
+            <BringBlock guide={industry.buyer} />
+            <p><Link href="/contact" className="cp-standalone-link">Book a discovery call or send a project enquiry</Link></p>
+          </div>
+        </section>
+      )}
 
       {guides.length > 0 && (
         <section className="cp-section">

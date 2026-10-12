@@ -1,10 +1,9 @@
+import CalendlyLink from './CalendlyLink';
 import { StrategyCallForm } from './LeadForms';
-
-const CALENDLY = 'https://calendly.com/mukesh-peregrine-it/30min';
 
 /**
  * Closing "technical consultation" block: one line of context, the short qualification
- * form and a Calendly link. `source` is sent with the lead (which page it came from) and
+ * form and a Calendly link (with the page and `source` as UTM parameters). `source` is sent with the lead (which page it came from) and
  * used as the CTA location in tracking; `guide` marks guide CTAs for guide_cta_click.
  */
 export default function ConsultationCta({ heading, text, source, guide }: { heading: string; text: string; source: string; guide?: string }) {
@@ -23,7 +22,7 @@ export default function ConsultationCta({ heading, text, source, guide }: { head
             </ul>
             <p>
               Prefer to pick a time?{' '}
-              <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="cp-standalone-link">Book a call on Calendly</a>
+              <CalendlyLink location={source} className="cp-standalone-link">Book a call on Calendly</CalendlyLink>
             </p>
           </div>
           <div className="cp-form-panel">

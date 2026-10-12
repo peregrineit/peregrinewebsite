@@ -5,6 +5,7 @@ import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 import CaseStudyGlance from '../../components/CaseStudyGlance';
+import CaseStudyCta from '../../components/CaseStudyCta';
 
 export const metadata: Metadata = {
   title: 'HR & Payroll SaaS for Mid-Market Companies',
@@ -442,28 +443,9 @@ export default function HRPayrollSaaSPlatform() {
         <RelatedCaseStudies slug="hr-payroll-saas-platform" />
 
         {/* CTA */}
-        <div className="csd-cta-section">
-          <h2>Building an HR or Payroll Platform?</h2>
-          <p>
-            We help HR Tech and FinTech companies build compliant payroll, benefits integration,
-            and self-service portals. Let&apos;s talk about your architecture.
-          </p>
-          <div className="csd-cta-buttons">
-            <a href="#" data-open-contact className="csd-cta-btn">
-              Tell Us About Your Project
-              <i className="ri-arrow-right-line" />
-            </a>
-            <a
-              href="https://calendly.com/mukesh-peregrine-it/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="csd-cta-btn csd-cta-btn-secondary"
-            >
-              Book a Strategy Call
-              <i className="ri-calendar-line" />
-            </a>
-          </div>
-        </div>
+        <CaseStudyCta slug="hr-payroll-saas-platform" heading="Building an HR or Payroll Platform?">
+          We help HR Tech and FinTech companies build compliant payroll, benefits integration, and self-service portals. Let&apos;s talk about your architecture.
+        </CaseStudyCta>
       </div>
     </main>
   );

@@ -513,3 +513,12 @@ div.footer-section .paragraph-41 {
 .consent-bar button.consent-accept { background: #06b6d4; border-color: #06b6d4; color: #0f172a; }
 /* Sit above the fixed mobile CTA bar. */
 @media (max-width: 767px) { .consent-bar { bottom: calc(88px + env(safe-area-inset-bottom, 0px)); } }
+
+/* Homepage "Technologies We Work With": on phones the cards' grid track was sized by its
+   content (416px on a 375px screen), so the text was clipped at the right edge. */
+@media (max-width: 767px) {
+  .wrap-grids, .wrap-grids .content-4-copy { width: 100%; max-width: 100%; box-sizing: border-box; }
+  .wrap-grids .content-4-copy { grid-template-columns: minmax(0, 1fr); }
+  .wrap-grids .tech-cell { min-width: 0; max-width: 100%; }
+  .wrap-grids .tech-cell .titleandcaption { min-width: 0; flex: 1 1 0; }
+}

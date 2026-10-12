@@ -5,6 +5,7 @@ import CaseStudyByline from '../../components/CaseStudyByline';
 import Link from 'next/link';
 import '../../css/case-study-detail.css';
 import CaseStudyGlance from '../../components/CaseStudyGlance';
+import CaseStudyCta from '../../components/CaseStudyCta';
 
 export const metadata: Metadata = {
   title: 'Multi-Location Clinic Management System',
@@ -431,28 +432,9 @@ export default function MultiLocationClinicManagement() {
         <RelatedCaseStudies slug="multi-location-clinic-management" />
 
         {/* CTA */}
-        <div className="csd-cta-section">
-          <h2>Digitizing a Healthcare Operation?</h2>
-          <p>
-            We build HIPAA-compliant platforms for healthcare networks, clinics, and HealthTech
-            companies. Let&apos;s talk about your compliance and architecture needs.
-          </p>
-          <div className="csd-cta-buttons">
-            <a href="#" data-open-contact className="csd-cta-btn">
-              Tell Us About Your Project
-              <i className="ri-arrow-right-line" />
-            </a>
-            <a
-              href="https://calendly.com/mukesh-peregrine-it/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="csd-cta-btn csd-cta-btn-secondary"
-            >
-              Book a Strategy Call
-              <i className="ri-calendar-line" />
-            </a>
-          </div>
-        </div>
+        <CaseStudyCta slug="multi-location-clinic-management" heading="Digitizing a Healthcare Operation?">
+          We build HIPAA-compliant platforms for healthcare networks, clinics, and HealthTech companies. Let&apos;s talk about your compliance and architecture needs.
+        </CaseStudyCta>
       </div>
     </main>
   );

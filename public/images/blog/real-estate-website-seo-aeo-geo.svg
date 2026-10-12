@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+<title id="t">SEO, AEO and GEO for a real estate website</title><desc id="d">Three columns. SEO: listing pages on your own domain, HTML in the first response, status codes for ended listings, sitemaps, Core Web Vitals. AEO: direct answers, tables and dated facts, authorship, matching structured data, original area data. GEO: allow AI search crawlers, decide on training crawlers, no published ranking formula, llms.txt is a proposal, same foundations as SEO.</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b1220"/><stop offset="1" stop-color="#111c33"/></linearGradient>
+<linearGradient id="ac" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#60a5fa"/></linearGradient></defs>
+<rect width="1200" height="630" fill="url(#bg)"/>
+<rect x="48" y="44" width="56" height="6" rx="3" fill="url(#ac)"/>
+<text x="48" y="92" fill="#f1f5f9" font-size="34" font-weight="700">SEO, AEO and GEO for a real estate website</text>
+<text x="48" y="124" fill="#94a3b8" font-size="18">What to build for each. The foundations are shared; the promises are not.</text>
+<rect x="48" y="150" width="356" height="412" rx="14" fill="#162036" stroke="#2a3a59"/>
+<text x="72" y="206" fill="#22d3ee" font-size="44" font-weight="800">SEO</text>
+<text x="72" y="236" fill="#94a3b8" font-size="16">Classic search results</text>
+<line x1="72" y1="256" x2="380" y2="256" stroke="#2a3a59"/>
+<path d="M74 290 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="104" y="296" fill="#f1f5f9" font-size="16.5">Listing pages on your own domain</text>
+<path d="M74 342 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="104" y="348" fill="#f1f5f9" font-size="16.5">HTML in the first response</text>
+<path d="M74 394 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="104" y="400" fill="#f1f5f9" font-size="16.5">Status codes for ended listings</text>
+<path d="M74 446 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="104" y="452" fill="#f1f5f9" font-size="16.5">Sitemaps with accurate lastmod</text>
+<path d="M74 498 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="104" y="504" fill="#f1f5f9" font-size="16.5">Core Web Vitals on photo pages</text>
+<rect x="422" y="150" width="356" height="412" rx="14" fill="#162036" stroke="#2a3a59"/>
+<text x="446" y="206" fill="#22d3ee" font-size="44" font-weight="800">AEO</text>
+<text x="446" y="236" fill="#94a3b8" font-size="16">Answer features</text>
+<line x1="446" y1="256" x2="754" y2="256" stroke="#2a3a59"/>
+<path d="M448 290 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="478" y="296" fill="#f1f5f9" font-size="16.5">Direct answers near the top</text>
+<path d="M448 342 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="478" y="348" fill="#f1f5f9" font-size="16.5">Tables and dated facts</text>
+<path d="M448 394 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="478" y="400" fill="#f1f5f9" font-size="16.5">Named author and sources</text>
+<path d="M448 446 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="478" y="452" fill="#f1f5f9" font-size="16.5">Structured data that matches</text>
+<path d="M448 498 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="478" y="504" fill="#f1f5f9" font-size="16.5">Original area data, not doorways</text>
+<rect x="796" y="150" width="356" height="412" rx="14" fill="#162036" stroke="#2a3a59"/>
+<text x="820" y="206" fill="#22d3ee" font-size="44" font-weight="800">GEO</text>
+<text x="820" y="236" fill="#94a3b8" font-size="16">AI-generated answers</text>
+<line x1="820" y1="256" x2="1128" y2="256" stroke="#2a3a59"/>
+<path d="M822 290 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="852" y="296" fill="#f1f5f9" font-size="16.5">Let the AI search crawlers in</text>
+<path d="M822 342 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="852" y="348" fill="#f1f5f9" font-size="16.5">Decide on training crawlers</text>
+<path d="M822 394 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="852" y="400" fill="#f1f5f9" font-size="16.5">No published ranking formula</text>
+<path d="M822 446 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="852" y="452" fill="#f1f5f9" font-size="16.5">llms.txt: a proposal, not a lever</text>
+<path d="M822 498 l6 6 l11 -12" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="852" y="504" fill="#f1f5f9" font-size="16.5">Same foundations as SEO</text>
+<text x="48" y="602" fill="#94a3b8" font-size="14">From the SEO, AEO and GEO guide, based on primary documentation read October 12, 2026.</text>
+<text x="1152" y="602" fill="#94a3b8" font-size="14" text-anchor="end">peregrine-it.com</text>
+</svg>

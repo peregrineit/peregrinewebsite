@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../components/JsonLd';
-import { coreServices, engagement, services, technologyServices } from '@/data/services';
+import { buyerFaq, engagement, getService, serviceNeeds, services, technologyServices, vendorQuestions } from '@/data/services';
 import { getCaseStudy } from '@/data/case-studies';
 import '../css/content-pages.css';
 
@@ -39,6 +39,15 @@ export default function ServicesPage() {
         about: ORGANIZATION_REF,
         hasPart: services.map((s) => ({ '@id': `${SITE_URL}/services/${s.slug}#service` })),
       },
+      {
+        '@type': 'FAQPage',
+        '@id': `${url}#faq`,
+        mainEntity: buyerFaq.map(({ question, answer }) => ({
+          '@type': 'Question',
+          name: question,
+          acceptedAnswer: { '@type': 'Answer', text: answer },
+        })),
+      },
       breadcrumbList(url, [
         { name: 'Home', path: '' },
         { name: 'Services', path: '/services' },
@@ -65,28 +74,37 @@ export default function ServicesPage() {
             Each service below links to case studies that show how we did the work, so you can judge the approach
             before you talk to us.
           </p>
+          <nav className="cp-jump" aria-label="On this page">
+            {serviceNeeds.map((n) => <a key={n.id} href={`#${n.id}`} className="cp-tag">{n.heading}</a>)}
+            <a href="#technologies" className="cp-tag">By Technology</a>
+            <a href="#working-with-us" className="cp-tag">Working With Us</a>
+          </nav>
         </div>
       </section>
 
-      <section className="cp-section">
-        <div className="cp-container">
-          <div className="cp-grid-2">
-            {coreServices.map((s) => (
-              <Link key={s.slug} href={`/services/${s.slug}`} className="cp-card">
-                <span className="cp-card-icon"><i className={s.icon} aria-hidden="true" /></span>
-                <h2 style={{ fontSize: 22, margin: 0 }}>{s.name}</h2>
-                <p>{s.offer}</p>
-                {s.caseStudies.length > 0 && (
+      {serviceNeeds.map((need) => (
+        <section key={need.id} className="cp-section" id={need.id}>
+          <div className="cp-container">
+            <h2>{need.heading}</h2>
+            <p className="cp-muted">{need.blurb}</p>
+            <div className="cp-grid">
+              {need.slugs.map(getService).map((s) => (
+                <Link key={s.slug} href={`/services/${s.slug}`} className="cp-card">
+                  <span className="cp-card-icon"><i className={s.icon} aria-hidden="true" /></span>
+                  <h3>{s.name}</h3>
+                  <p>{s.offer}</p>
                   <p style={{ fontSize: 14 }}>
-                    Case studies: {s.caseStudies.map((c) => getCaseStudy(c.slug).title).join(' · ')}
+                    {s.caseStudies.length > 0
+                      ? <>Case studies: {s.caseStudies.map((c) => getCaseStudy(c.slug).title).join(' · ')}</>
+                      : 'No case study published yet.'}
                   </p>
-                )}
-                <span className="cp-card-more">View service <i className="ri-arrow-right-line" aria-hidden="true" /></span>
-              </Link>
-            ))}
+                  <span className="cp-card-more">View service <i className="ri-arrow-right-line" aria-hidden="true" /></span>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ))}
 
       <section className="cp-section" id="technologies">
         <div className="cp-container">
@@ -115,6 +133,41 @@ export default function ServicesPage() {
           <h2>{engagement.heading}</h2>
           {engagement.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
           <p className="cp-muted">{engagement.pricingNote}</p>
+        </div>
+      </section>
+
+      <section className="cp-section" id="working-with-us">
+        <div className="cp-container cp-narrow cp-faq">
+          <span className="cp-label">Working with us</span>
+          <h2>Working With Peregrine From the US or Canada</h2>
+          {buyerFaq.map(({ question, answer }) => (
+            <details key={question}>
+              <summary>
+                <h3>{question}</h3>
+                <i className="ri-add-line" aria-hidden="true" />
+              </summary>
+              <p>{answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section className="cp-section" id="vendor-questions">
+        <div className="cp-container cp-narrow">
+          <span className="cp-label">Checklist</span>
+          <h2>Questions to Ask Any Engineering Firm, Including Us</h2>
+          <p className="cp-muted">
+            Ask every firm on your shortlist the same questions and compare the answers in writing. Where this
+            site already answers one, the answer is shown; the rest are for the discovery call.
+          </p>
+          <dl className="cp-factors">
+            {vendorQuestions.map(({ question, here }) => (
+              <div key={question}>
+                <dt>{question}</dt>
+                <dd>{here ?? 'Not published on this site. Ask on the discovery call.'}</dd>
+              </div>
+            ))}
+          </dl>
           <div className="cp-buttons" style={{ justifyContent: 'flex-start', marginTop: 24 }}>
             <Link href="/contact" className="cp-btn">Contact Us <i className="ri-arrow-right-line" aria-hidden="true" /></Link>
             <Link href="/case-studies" className="cp-btn cp-btn-secondary">Case Studies</Link>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+<title id="t">IDX website features, by who they serve</title><desc id="d">Four columns listing IDX website features: eight for the home buyer, five for the agent or team, five for the brokerage and seven for search engines.</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b1220"/><stop offset="1" stop-color="#111c33"/></linearGradient>
+<linearGradient id="ac" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#60a5fa"/></linearGradient></defs>
+<rect width="1200" height="630" fill="url(#bg)"/>
+<rect x="48" y="44" width="56" height="6" rx="3" fill="url(#ac)"/>
+<text x="48" y="92" fill="#f1f5f9" font-size="34" font-weight="700">IDX website features, by who they serve</text>
+<text x="48" y="124" fill="#94a3b8" font-size="18">25 features in the checklist. MLS rules constrain several of them.</text>
+<rect x="48" y="150" width="262" height="412" rx="14" fill="#162036" stroke="#2a3a59"/>
+<text x="66" y="184" fill="#22d3ee" font-size="19" font-weight="700">Home buyer</text>
+<text x="292" y="184" fill="#94a3b8" font-size="15" text-anchor="end">8</text>
+<circle cx="74" cy="211" r="4" fill="#60a5fa"/><text x="88" y="216" fill="#f1f5f9" font-size="14.5">Search filters and status</text>
+<circle cx="74" cy="253" r="4" fill="#60a5fa"/><text x="88" y="258" fill="#f1f5f9" font-size="14.5">Map search, drawn boundary</text>
+<circle cx="74" cy="295" r="4" fill="#60a5fa"/><text x="88" y="300" fill="#f1f5f9" font-size="14.5">Saved searches and alerts</text>
+<circle cx="74" cy="337" r="4" fill="#60a5fa"/><text x="88" y="342" fill="#f1f5f9" font-size="14.5">Listing detail pages</text>
+<circle cx="74" cy="379" r="4" fill="#60a5fa"/><text x="88" y="384" fill="#f1f5f9" font-size="14.5">Photos from your storage</text>
+<circle cx="74" cy="421" r="4" fill="#60a5fa"/><text x="88" y="426" fill="#f1f5f9" font-size="14.5">Sold and off-market</text>
+<circle cx="74" cy="463" r="4" fill="#60a5fa"/><text x="88" y="468" fill="#f1f5f9" font-size="14.5">Same content on a phone</text>
+<circle cx="74" cy="505" r="4" fill="#60a5fa"/><text x="88" y="510" fill="#f1f5f9" font-size="14.5">Speed</text>
+<rect x="328" y="150" width="262" height="412" rx="14" fill="#162036" stroke="#2a3a59"/>
+<text x="346" y="184" fill="#22d3ee" font-size="19" font-weight="700">Agent or team</text>
+<text x="572" y="184" fill="#94a3b8" font-size="15" text-anchor="end">5</text>
+<circle cx="354" cy="211" r="4" fill="#60a5fa"/><text x="368" y="216" fill="#f1f5f9" font-size="14.5">Lead capture, registration</text>
+<circle cx="354" cy="253" r="4" fill="#60a5fa"/><text x="368" y="258" fill="#f1f5f9" font-size="14.5">Lead routing</text>
+<circle cx="354" cy="295" r="4" fill="#60a5fa"/><text x="368" y="300" fill="#f1f5f9" font-size="14.5">CRM sync</text>
+<circle cx="354" cy="337" r="4" fill="#60a5fa"/><text x="368" y="342" fill="#f1f5f9" font-size="14.5">Agent subdomains or sites</text>
+<circle cx="354" cy="379" r="4" fill="#60a5fa"/><text x="368" y="384" fill="#f1f5f9" font-size="14.5">Market reports</text>
+<rect x="608" y="150" width="262" height="412" rx="14" fill="#162036" stroke="#2a3a59"/>
+<text x="626" y="184" fill="#22d3ee" font-size="19" font-weight="700">Brokerage</text>
+<text x="852" y="184" fill="#94a3b8" font-size="15" text-anchor="end">5</text>
+<circle cx="634" cy="211" r="4" fill="#60a5fa"/><text x="648" y="216" fill="#f1f5f9" font-size="14.5">Several MLSs in one search</text>
+<circle cx="634" cy="253" r="4" fill="#60a5fa"/><text x="648" y="258" fill="#f1f5f9" font-size="14.5">Attribution, disclaimers</text>
+<circle cx="634" cy="295" r="4" fill="#60a5fa"/><text x="648" y="300" fill="#f1f5f9" font-size="14.5">Refresh and removals</text>
+<circle cx="634" cy="337" r="4" fill="#60a5fa"/><text x="648" y="342" fill="#f1f5f9" font-size="14.5">Seller opt-outs</text>
+<circle cx="634" cy="379" r="4" fill="#60a5fa"/><text x="648" y="384" fill="#f1f5f9" font-size="14.5">Analytics, scraping watch</text>
+<rect x="888" y="150" width="262" height="412" rx="14" fill="#162036" stroke="#2a3a59"/>
+<text x="906" y="184" fill="#22d3ee" font-size="19" font-weight="700">Search engines</text>
+<text x="1132" y="184" fill="#94a3b8" font-size="15" text-anchor="end">7</text>
+<circle cx="914" cy="211" r="4" fill="#60a5fa"/><text x="928" y="216" fill="#f1f5f9" font-size="14.5">Pages on your domain, in HTML</text>
+<circle cx="914" cy="253" r="4" fill="#60a5fa"/><text x="928" y="258" fill="#f1f5f9" font-size="14.5">Crawlable links, pagination</text>
+<circle cx="914" cy="295" r="4" fill="#60a5fa"/><text x="928" y="300" fill="#f1f5f9" font-size="14.5">Control of filter URLs</text>
+<circle cx="914" cy="337" r="4" fill="#60a5fa"/><text x="928" y="342" fill="#f1f5f9" font-size="14.5">Sitemaps, accurate lastmod</text>
+<circle cx="914" cy="379" r="4" fill="#60a5fa"/><text x="928" y="384" fill="#f1f5f9" font-size="14.5">Status codes for removed</text>
+<circle cx="914" cy="421" r="4" fill="#60a5fa"/><text x="928" y="426" fill="#f1f5f9" font-size="14.5">Structured data</text>
+<circle cx="914" cy="463" r="4" fill="#60a5fa"/><text x="928" y="468" fill="#f1f5f9" font-size="14.5">Canonicals across agent sites</text>
+<text x="48" y="602" fill="#94a3b8" font-size="14">From the IDX website features checklist.</text>
+<text x="1152" y="602" fill="#94a3b8" font-size="14" text-anchor="end">peregrine-it.com</text>
+</svg>

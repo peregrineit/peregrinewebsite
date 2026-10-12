@@ -63,22 +63,73 @@ export default function ContactPage() {
             Tell us what you are building or fixing. Real engineers reply, not sales, and technical questions are
             answered by engineers.
           </p>
+          <ul className="cp-checks" style={{ maxWidth: 760, marginTop: 20 }}>
+            <li>
+              <strong>Planning a build, a rebuild or a larger integration:</strong>{' '}
+              <a href="#project-form">use the project form</a>. It asks for the project type and timeline.
+            </li>
+            <li>
+              <strong>One integration, fix or automation you can describe in a few lines:</strong>{' '}
+              <a href="#quick-form">use the quick project form</a> for a scoped estimate.
+            </li>
+            <li>
+              <strong>Ready to talk it through:</strong>{' '}
+              <a href={CALENDLY} target="_blank" rel="noopener noreferrer">pick a time for the 30-minute discovery call</a>.
+            </li>
+          </ul>
         </div>
       </section>
 
       <section className="cp-section">
         <div className="cp-container">
           <div className="cp-grid-2">
-            <div className="cp-form-panel">
+            <div className="cp-form-panel" id="project-form">
               <h2>Tell Us About Your Project</h2>
               <StrategyCallForm />
             </div>
-            <div className="cp-form-panel">
+            <div className="cp-form-panel" id="quick-form">
               <h2>Request a Quick Project Quote</h2>
               <p className="cp-muted" style={{ fontSize: 15 }}>For a single integration, fix or automation.</p>
               <QuickProjectForm />
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="cp-section" id="next-steps">
+        <div className="cp-container">
+          <span className="cp-label">Next steps</span>
+          <h2>What Happens After You Send It</h2>
+          {/* Owner-confirmed facts only: reply within 1 business day; 30-minute technical
+              discovery call with an engineer; engagement model agreed after the call; larger
+              builds start with a discovery sprint and run in two-week sprints with weekly demos. */}
+          <div className="cp-steps">
+            <div className="cp-card cp-step">
+              <h3>We reply within 1 business day</h3>
+              <p>By email, to the address you gave, so use one you read. Booking a call on Calendly skips this step.</p>
+            </div>
+            <div className="cp-card cp-step">
+              <h3>A 30-minute technical discovery call</h3>
+              <p>With an engineer, not a salesperson. The call covers the system you have, the outcome you need and whether we are the right team for it.</p>
+            </div>
+            <div className="cp-card cp-step">
+              <h3>Scope and engagement model</h3>
+              <p>A fixed-scope project, a monthly retainer or a combination is agreed after the call. Larger builds start with a discovery sprint, then run in two-week sprints with weekly demos.</p>
+            </div>
+          </div>
+
+          <h3 style={{ marginTop: 32 }}>What to include in your message</h3>
+          <ul className="cp-checks" style={{ maxWidth: 820 }}>
+            <li>What you are building or fixing, and who uses it.</li>
+            <li>What exists today: the stack, where it is hosted, and what is failing or missing.</li>
+            <li>The other systems involved, such as MLS boards, a CRM, an ERP, payment or e-signature providers.</li>
+            <li>What sets your timeline: a launch, a contract, a renewal or a season.</li>
+            <li>Rough size: customers, users, records or locations, whichever fits.</li>
+          </ul>
+          <p className="cp-muted" style={{ maxWidth: 820, fontSize: 15 }}>
+            Two or three sentences are enough to start. Each <Link href="/services">service page</Link> has a longer
+            checklist of what to bring to the scoping call. Pricing is scoped per project; no price list is published.
+          </p>
         </div>
       </section>
 

@@ -55,6 +55,9 @@ export default function IndustriesPage() {
             An industry has its own page only where we have published work to show. Every figure on these pages comes
             from the linked case study.
           </p>
+          <nav className="cp-jump" aria-label="Industry pages">
+            {industries.map((i) => <Link key={i.slug} href={`/industries/${i.slug}`} className="cp-tag">{i.name}</Link>)}
+          </nav>
         </div>
       </section>
 

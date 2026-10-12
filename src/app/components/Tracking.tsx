@@ -2,7 +2,9 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
-import { rememberAttribution, track } from '@/lib/track';
+import { usePathname } from 'next/navigation';
+import { applyConsentChoice, calendlyUrl, countPageView, locationOf, rememberAttribution, rememberCta } from '@/lib/attribution';
+import { formTracker, track } from '@/lib/track';
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 const CONSENT_KEY = 'pit_analytics_consent';
@@ -30,6 +32,9 @@ function ConsentBar() {
   const choose = (value: Consent) => {
     try { localStorage.setItem(CONSENT_KEY, value); } catch { /* choice lasts for this page only */ }
     window.gtag?.('consent', 'update', { analytics_storage: value });
+    // The same choice governs the first-touch record: kept in localStorage only when
+    // accepted, deleted from it when declined (lib/attribution.ts).
+    applyConsentChoice();
     setClosed(true);
   };
   return (
@@ -46,29 +51,32 @@ function ConsentBar() {
   );
 }
 
-// Nearest meaningful container, so reports say where on the page a CTA was clicked.
-function locationOf(el: Element) {
-  const tagged = el.closest<HTMLElement>('[data-cta-location]');
-  if (tagged) return tagged.dataset.ctaLocation || '';
-  if (el.closest('nav')) return 'nav';
-  if (el.closest('.footer-section')) return 'footer';
-  return el.closest('section[id], div[id]')?.id || 'page';
-}
+// Every element that opens the quick-project popup (the same list as components/Footer.tsx).
+const QUICK_TRIGGERS = '[data-open-quick-project], #quick-project-btn, #quick-project-btn-footer, #quick-project-btn-footer-col';
 
 /** Site-wide click tracking (delegated, so no page needs its own handlers) and optional GA4
  *  with Consent Mode. Without NEXT_PUBLIC_GA_ID nothing from Google loads and no bar shows. */
 export default function Tracking() {
+  const pathname = usePathname();
+  // Pages viewed this tab session: the first load and every client-side navigation.
+  useEffect(() => {
+    countPageView();
+  }, [pathname]);
+
   useEffect(() => {
     rememberAttribution();
     const onClick = (e: MouseEvent) => {
       const target = e.target as Element | null;
       if (!target?.closest) return;
       const page = window.location.pathname;
-      const cta = target.closest('[data-open-contact], #lets-talk-btn, [data-open-quick-project]');
+      const cta = target.closest(`[data-open-contact], #lets-talk-btn, ${QUICK_TRIGGERS}`);
       if (cta) {
-        const form = cta.matches('[data-open-quick-project]') ? 'quick-project' : 'strategy-call';
+        const form = cta.matches(QUICK_TRIGGERS) ? 'quick-project' : 'strategy-call';
         const guide = cta.closest<HTMLElement>('[data-guide]')?.dataset.guide;
-        track('cta_open', { form, location: locationOf(cta), page });
+        const location = locationOf(cta);
+        // Sent with the lead if this popup form is submitted (lib/attribution.ts).
+        rememberCta(form, location);
+        track('cta_open', { form, location, page });
         if (guide) track('guide_cta_click', { guide, action: 'popup' });
         return;
       }
@@ -82,14 +90,47 @@ export default function Tracking() {
       }
       else if (href.startsWith('mailto:')) track('email_click', { page });
     };
+    // Booking attribution: every Calendly link, wherever it is written, leaves the site with
+    // the page and the CTA location as UTM parameters (lib/attribution.ts). Done here, once,
+    // because the links are hardcoded in many pages. Runs in the capture phase, before the
+    // browser follows the link; auxclick and contextmenu cover middle-click and
+    // "open in new tab" / "copy link address".
+    const tagCalendly = (e: Event) => {
+      const link = (e.target as Element | null)?.closest?.<HTMLAnchorElement>('a[href]');
+      if (!link) return;
+      const href = link.getAttribute('href') || '';
+      const tagged = calendlyUrl(href, window.location.pathname, locationOf(link));
+      if (tagged !== href) link.setAttribute('href', tagged);
+    };
     // A form submitted inside a guide's consultation block counts as a guide CTA.
     const onSubmit = (e: Event) => {
       const guide = (e.target as Element | null)?.closest<HTMLElement>('[data-guide]')?.dataset.guide;
       if (guide) track('guide_cta_click', { guide, action: 'form' });
     };
+    // Form abandonment (lib/form-tracking.ts). Only the form's name is read, never a field.
+    const onInput = (e: Event) => {
+      const field = e.target as (Element & { name?: string }) | null;
+      const form = field?.closest?.<HTMLElement>('form[data-lead-form]');
+      // The hidden anti-spam field is filled by bots, not by a visitor starting the form.
+      if (!form || field?.name === 'pit_confirm_field') return;
+      formTracker.input(form.dataset.leadForm || '', window.location.pathname);
+    };
+    const onHidden = () => {
+      if (document.visibilityState === 'hidden') formTracker.hidden();
+    };
+    const onPageHide = () => formTracker.hidden();
+    document.addEventListener('input', onInput, true);
+    document.addEventListener('visibilitychange', onHidden);
+    window.addEventListener('pagehide', onPageHide);
+    const CALENDLY_EVENTS = ['click', 'auxclick', 'contextmenu'] as const;
+    CALENDLY_EVENTS.forEach((type) => document.addEventListener(type, tagCalendly, true));
     document.addEventListener('click', onClick, true);
     document.addEventListener('submit', onSubmit, true);
     return () => {
+      CALENDLY_EVENTS.forEach((type) => document.removeEventListener(type, tagCalendly, true));
+      document.removeEventListener('input', onInput, true);
+      document.removeEventListener('visibilitychange', onHidden);
+      window.removeEventListener('pagehide', onPageHide);
       document.removeEventListener('click', onClick, true);
       document.removeEventListener('submit', onSubmit, true);
     };

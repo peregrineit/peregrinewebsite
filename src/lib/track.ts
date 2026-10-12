@@ -1,4 +1,5 @@
 import { track as vercelTrack } from '@vercel/analytics';
+import { createFormTracker } from './form-tracking';
 
 // One place for conversion events. Every event goes to Vercel Analytics and, when GA4
 // is loaded (NEXT_PUBLIC_GA_ID set), to GA4 as well. Event names and properties are
@@ -22,28 +23,7 @@ export function track(event: string, props: Props = {}) {
   }
 }
 
-const ATTRIBUTION_KEY = 'pit_attribution';
-export type Attribution = { landingPage: string; referrer: string; utm: string };
+/** Form start and abandonment for this page load (rules in ./form-tracking.ts). */
+export const formTracker = createFormTracker(({ event, form, page }) => track(event, { form, page }));
 
-/** Remembers how the visitor arrived (first page, referrer, UTM tags) for this tab session. */
-export function rememberAttribution() {
-  try {
-    if (sessionStorage.getItem(ATTRIBUTION_KEY)) return;
-    const utm = Array.from(new URLSearchParams(window.location.search))
-      .filter(([k]) => k.startsWith('utm_') || k === 'gclid')
-      .map(([k, v]) => `${k}=${v}`)
-      .join('&');
-    const value: Attribution = { landingPage: window.location.pathname, referrer: document.referrer, utm };
-    sessionStorage.setItem(ATTRIBUTION_KEY, JSON.stringify(value));
-  } catch {
-    // Storage can be unavailable (private mode); attribution is optional.
-  }
-}
-
-export function getAttribution(): Partial<Attribution> {
-  try {
-    return JSON.parse(sessionStorage.getItem(ATTRIBUTION_KEY) || '{}');
-  } catch {
-    return {};
-  }
-}
+// Attribution (how the visitor arrived) lives in ./attribution.ts.

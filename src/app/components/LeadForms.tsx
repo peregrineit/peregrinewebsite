@@ -1,11 +1,14 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { getAttribution, track } from '@/lib/track';
+import { ctaLocationFor, getAttribution } from '@/lib/attribution';
+import { formTracker, track } from '@/lib/track';
 
 // The site's two lead forms (strategy call and quick project request). Used in the
 // Footer popups, inline on /contact and at the foot of service and landing pages.
-// Both post to /api/lead with attribution (landing page, referrer, UTM) and fire
-// lead_submit / lead_error events (see docs/seo/TASKS.md).
+// Both post to /api/lead with attribution (first and last touch, click ids, the CTA that
+// opened the form, pages viewed; see lib/attribution.ts) and fire
+// lead_submit / lead_error events (see docs/seo/TASKS.md). `data-lead-form` marks a form for
+// lead_form_start / lead_form_abandon, which components/Tracking.tsx fires.
 /** `fallback` is a pre-filled mailto: link, set when the server could not accept the lead.
  *  `receipt` is what the server reported when it did: accepted by the mail provider, which
  *  is not the same as delivered. */
@@ -32,9 +35,11 @@ type Fields = Record<string, HTMLInputElement | HTMLSelectElement | HTMLTextArea
 
 // One id per attempt, kept while the outcome is unknown (network error, gateway timeout)
 // so a retry reaches the server as the same submission and cannot produce a second email.
+// The server pairs the id with the content: if the visitor edits the form before retrying,
+// it is treated as a new message with a new reference.
 const pendingIds: Record<string, string> = {};
 
-async function submitLead(formData: Record<string, string>, setStatus: (s: Status) => void) {
+async function submitLead(formEl: HTMLFormElement, formData: Record<string, string>, setStatus: (s: Status) => void) {
   setStatus({ loading: true, success: false, error: '' });
   const page = window.location.pathname;
   const event = { form: formData.form, page, service: formData.service || '' };
@@ -43,11 +48,18 @@ async function submitLead(formData: Record<string, string>, setStatus: (s: Statu
     const res = await fetch('/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...formData, submissionId, ...getAttribution(), pageUrl: window.location.href }),
+      body: JSON.stringify({
+        ...formData,
+        submissionId,
+        ...getAttribution(ctaLocationFor(formEl, formData.form)),
+        pageUrl: window.location.href,
+      }),
     });
     const json = await res.json();
-    // The server gave a definite answer; the next attempt is a new submission.
-    if (res.status < 500 || json.status) delete pendingIds[formData.form];
+    // Accepted or refused as invalid: the next attempt is a new submission. After a 5xx the id
+    // is kept: an email that timed out on our side may still have been sent, and the same id
+    // lets the mail provider recognise the retry instead of sending it twice.
+    if (res.status < 500) delete pendingIds[formData.form];
     // "accepted" = the mail provider or the webhook took the lead. Anything else is not a lead.
     if (res.ok && json.success && json.status === 'accepted' && json.ref) {
       const ids = [json.notification?.id, json.acknowledgement?.id].filter((id): id is string => typeof id === 'string');
@@ -57,6 +69,7 @@ async function submitLead(formData: Record<string, string>, setStatus: (s: Statu
         error: '',
         receipt: { ref: json.ref, acknowledgement: json.acknowledgement?.status || 'skipped', ids, notificationId: json.notification?.id },
       });
+      formTracker.submitted(formData.form);
       track('lead_submit', event);
     } else {
       setStatus({
@@ -70,12 +83,14 @@ async function submitLead(formData: Record<string, string>, setStatus: (s: Statu
           json.diagnostic ? `email: ${json.diagnostic.notification}; webhook: ${json.diagnostic.webhook}` : '',
         ].filter(Boolean).join(' · '),
       });
-      track('lead_error', event);
+      // `status` is the HTTP status: 400 validation, 429 rate limit, 502 nothing accepted the lead.
+      track('lead_error', { ...event, status: res.status });
     }
   } catch {
     // No JSON came back: the request did not reach the API, or something in front of it answered.
     setStatus({ loading: false, success: false, error: 'Network error. Please try again.', fallback: mailtoFallback(formData), note: 'no response from /api/lead' });
-    track('lead_error', event);
+    // 0 = no HTTP response at all.
+    track('lead_error', { ...event, status: 0 });
   }
 }
 
@@ -150,10 +165,10 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
     {formStatus.success && formStatus.receipt ? (
       <Received receipt={formStatus.receipt} form="strategy-call">An engineer will review it and reply within 1 business day.</Received>
     ) : (
-    <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+    <form data-lead-form="strategy-call" onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const f = e.currentTarget as HTMLFormElement & Fields;
-      submitLead({
+      submitLead(f, {
         form: 'strategy-call',
         service,
         name: f.scName.value,
@@ -219,10 +234,10 @@ export function QuickProjectForm() {
     {qpFormStatus.success && qpFormStatus.receipt ? (
       <Received receipt={qpFormStatus.receipt} form="quick-project">We&apos;ll review your request and reply within 1 business day.</Received>
     ) : (
-    <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+    <form data-lead-form="quick-project" onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const f = e.currentTarget as HTMLFormElement & Fields;
-      submitLead({
+      submitLead(f, {
         form: 'quick-project',
         name: f.qpName.value,
         email: f.qpEmail.value,
