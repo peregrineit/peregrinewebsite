@@ -60,7 +60,6 @@ Every URL below was fetched on **2026-10-13** with `curl` (browser user agent, H
 | https://web.dev/articles/embed-best-practices | many users may not interact with them | verbatim on the page |
 | https://web.dev/articles/embed-best-practices | a facade is a static element that looks similar to the actual embedded third-party but is not functional and, therefore, much less taxing on the page load | verbatim on the page |
 | https://nextjs.org/docs/app/guides/third-party-libraries | uses the loading attribute to lazy-load the embed below the fold | verbatim on the page |
-| https://web.dev/articles/optimizing-content-efficiency-loading-third-party-javascript | if you&apos;ve optimized your code, but your site still loads too slowly, it&apos;s probably the fault of third-party scripts | verbatim on the page |
 | https://web.dev/articles/optimizing-content-efficiency-loading-third-party-javascript | always use async or defer for third-party scripts, unless the script is necessary for the critical rendering path | verbatim on the page |
 | https://web.dev/articles/optimizing-content-efficiency-loading-third-party-javascript | if the script doesn&apos;t add clear value to your site, remove it | verbatim on the page |
 | https://nextjs.org/docs/app/api-reference/components/script | before any Next.js code and before any page hydration occurs | verbatim on the page |
@@ -76,6 +75,7 @@ Every URL below was fetched on **2026-10-13** with `curl` (browser user agent, H
 | https://web.dev/articles/optimize-long-tasks | any task that takes longer than 50 milliseconds is a long task | verbatim on the page |
 | https://react.dev/reference/react/useTransition | lets you render a part of the UI in the background | verbatim on the page |
 | https://web.dev/articles/performance-budgets-101 | a performance budget is a set of limits imposed on metrics that affect site performance | verbatim on the page |
+| https://nextjs.org/docs/app/api-reference/functions/revalidateTag | pass { expire: 0 } to expire the data immediately | "When the invalidation comes from outside a Server Action, for example a webhook or another service calling a Route Handler, updateTag is not available. Pass { expire: 0 } to expire the data immediately" (added in QA, 2026-10-13) |
 
 ## Notes
 
@@ -89,3 +89,14 @@ Every URL below was fetched on **2026-10-13** with `curl` (browser user agent, H
 - Peregrine statement: `/case-studies/scaling-real-estate-saas-platform` states "Optimized Next.js frontend with ISR, dynamic imports, image optimization via S3 + CDN." The article repeats only that. The case study's search-time and percentage figures are deliberately not repeated in this article.
 - Not stated: any benchmark, Lighthouse score, CrUX figure or before-and-after result for any site, including peregrine-it.com; any numeric input budget (bundle size, image bytes), because those are site-specific.
 - The JSX sample is illustrative and was not built.
+
+## Independent QA, 2026-10-13
+
+- Every URL above was fetched again with `curl` on 2026-10-13 (31 distinct URLs, all HTTP 200) and every link text re-checked; paraphrased links were read in context.
+- Thresholds confirmed on web.dev/articles/vitals: LCP "within 2.5 seconds of when the page first starts loading", INP "200 milliseconds or less", CLS "0.1. or less", "the 75th percentile of page loads, segmented across mobile and desktop devices".
+- PageSpeed Insights confirmed: "PSI will fall back to origin-level granularity, which encompasses all user experiences on all pages of the website", the 28-day collection period, and that lab data comes from Lighthouse.
+- Next.js Image page (documentation version 16.4.0; this repository runs `next` 16.1.6), exact text. Under `preload`: "A boolean that indicates if the image should be preloaded ... true: Preloads the image by inserting a <link> in the <head>" and "In most cases, you should use loading=\"eager\" or fetchPriority=\"high\" instead of preload." Under `priority`: "Starting with Next.js 16, the priority property has been deprecated in favor of the preload property in order to make the behavior clear." The article's statement is accurate; it now also says what `preload` does.
+- Corrected: the article implied `revalidateTag(tag)` alone. The current page documents a second argument (single-argument form deprecated) and the `{ expire: 0 }` form for callers outside a Server Action (row above).
+- Removed as unsupported: "most MLS licenses require your own copy in any case" (now "Some feeds also require your own copy of media", with a link to the pipeline guide, which cites MLS Grid). Softened as unsourced generalizations: "almost always the first photo", "Hydration is the largest task on most server-rendered pages", "will not finish inside the threshold on a mid-range phone", "rarely has page-level data in CrUX".
+- Case study statement re-read in the case-study page: "Optimized Next.js frontend with ISR, dynamic imports, image optimization via S3 + CDN." No figure from the case study is repeated.
+- Cut for length: the opening web.dev quotation on third-party scripts (row removed above), two FAQ entries, and the listing-detail and search checklists, which restated the sections above them. The area-page checklist stays.

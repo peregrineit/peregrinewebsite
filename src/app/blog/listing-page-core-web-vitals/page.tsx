@@ -47,22 +47,21 @@ export default function Guide() {
     <GuideLayout slug={SLUG}>
       <h2>Three templates, three different problems</h2>
       <p>
-        A real estate site is mostly three page templates repeated many thousands of times, and each one strains a
-        different metric. A listing detail page is a large photograph followed by forty more, a map and a contact
+        A real estate site is mostly three page templates repeated many thousands of times, and each strains a
+        different metric. A listing detail page is a large photograph followed by dozens more, a map and a contact
         form: its risk is the time until the first photo appears and the layout moving as the rest arrives. A
-        search results page is filters, a map and a list that all re-render together when a checkbox changes: its
+        search results page is filters, a map and a list that re-render together when a checkbox changes: its
         risk is responsiveness. An area page is statistics and a grid of listing cards, often with embedded
         charts: its risk is layout shift and script weight.
       </p>
       <p>
         So &quot;make the site faster&quot; is not one task. It is a per-template budget and a set of build
         decisions that hold on every page generated from the template. Our{' '}
-        <Link href="/blog/real-estate-website-seo-aeo-geo">SEO, AEO and GEO guide</Link> explains why photo
-        galleries are a hard case for Core Web Vitals and what Google says about their role in ranking. This
-        article is the implementation side: how to render, load and measure each template. Examples use Next.js
-        because its documentation states the relevant behavior precisely; the principles apply to any server-side
-        framework. No measured result for any site appears here, since the only numbers that matter are the ones
-        from your own visitors.
+        <Link href="/blog/real-estate-website-seo-aeo-geo">SEO, AEO and GEO guide</Link> covers what Google says
+        about Core Web Vitals and ranking; this article is the implementation side. Examples use Next.js because
+        its documentation states the relevant behavior precisely; the principles apply to any server-rendering
+        framework. No measured result for any site appears here: the numbers that matter are the ones from your
+        own visitors.
       </p>
 
       <h2>The three metrics and their thresholds</h2>
@@ -101,13 +100,12 @@ export default function Guide() {
         The target is not an average. web.dev sets the bar at{' '}
         <Src href={VITALS}>the 75th percentile of page loads, segmented across mobile and desktop devices</Src>,
         and says a page passes when it meets the targets{' '}
-        <Src href={VITALS}>at the 75th percentile for all three</Src>. A page that is quick on the office network
-        and slow on a buyer&apos;s phone in a parking lot is judged by the phone.
+        <Src href={VITALS}>at the 75th percentile for all three</Src>.
       </p>
 
       <h2>Field data and lab data answer different questions</h2>
       <p>
-        There are two kinds of measurement, and confusing them wastes weeks. web.dev&apos;s definitions: lab data
+        There are two kinds of measurement. web.dev&apos;s definitions: lab data
         is <Src href={LAB_FIELD}>collected in a controlled environment with predefined device and network settings</Src>;
         field data is <Src href={LAB_FIELD}>collected from the real users visiting your site</Src>. The thresholds
         above are judged on field data.
@@ -116,14 +114,13 @@ export default function Guide() {
         <li>
           <strong>CrUX</strong> is the public field dataset. The Chrome User Experience Report{' '}
           <Src href={CRUX}>reflects how real-world Chrome users experience popular destinations on the web</Src>.
-          A page or origin is included only if it is{' '}
-          <Src href={CRUX_METHOD}>publicly discoverable</Src> and{' '}
+          A page or origin is included only if it is <Src href={CRUX_METHOD}>publicly discoverable</Src> and{' '}
           <Src href={CRUX_METHOD}>sufficiently popular</Src>.
         </li>
         <li>
           <strong>PageSpeed Insights</strong> shows both kinds for a URL. Its field section is CrUX data{' '}
           <Src href={PSI}>over the previous 28-day collection period</Src>; its lab section is a Lighthouse run.
-          Google&apos;s own description of the trade-off: lab data{' '}
+          Lab data{' '}
           <Src href={PSI}>is useful for debugging issues, as it is collected in a controlled environment</Src>,
           while field data <Src href={PSI}>is useful for capturing true, real-world user experience - but has a more limited set of metrics</Src>.
         </li>
@@ -131,25 +128,25 @@ export default function Guide() {
           <strong>The web-vitals library</strong> is how you collect your own field data. It is{' '}
           <Src href={WEB_VITALS_LIB}>a tiny (~3K, brotli&apos;d), modular library for measuring all the Web Vitals metrics on real users</Src>,{' '}
           <Src href={WEB_VITALS_LIB}>in a way that accurately matches how they&apos;re measured by Chrome</Src>.
-          In a Next.js app, the <code>useReportWebVitals</code> hook{' '}
-          <Src href={NEXT_VITALS}>can be used in combination with your analytics service</Src> for the same purpose.
+          In Next.js, the <code>useReportWebVitals</code> hook{' '}
+          <Src href={NEXT_VITALS}>can be used in combination with your analytics service</Src>.
         </li>
       </ul>
       <p>
-        Listing sites have a particular reason to collect their own. An individual listing page is live for weeks
-        and visited by few people, so it rarely has page-level data in CrUX. When that happens, PageSpeed Insights{' '}
+        Listing sites have a particular reason to collect their own. An individual listing page is live for a
+        limited time and may have few visitors, so it can lack page-level data in CrUX. When that happens,
+        PageSpeed Insights{' '}
         <Src href={PSI}>will fall back to origin-level granularity, which encompasses all user experiences on all pages of the website</Src>.
-        The number you then see for a listing URL is a blend of the homepage, blog, search and every listing. It
-        cannot tell you that listing detail pages have an LCP problem while search pages have an INP problem. Your
-        own measurements, tagged with the template name, can.
+        The number you then see for a listing URL blends the homepage, blog, search and every listing. It cannot
+        tell you that listing detail pages have an LCP problem while search pages have an INP problem. Your own
+        measurements, tagged with the template name, can.
       </p>
       <p>
-        Lab and field also disagree for structural reasons that apply here.{' '}
-        <Src href={LAB_FIELD}>The LCP element identified in a lab test may not be the same LCP element users see</Src>:
-        a lab run loads the page cold at one viewport size, while a returning visitor on a phone has a cookie
-        banner, a different crop and a warm cache. And a lab run that loads a page without clicking anything tells
-        you nothing about how the filter panel responds. Use the lab to find causes and prevent regressions; use
-        the field to decide whether there is a problem.
+        Lab and field also disagree for structural reasons.{' '}
+        <Src href={LAB_FIELD}>The LCP element identified in a lab test may not be the same LCP element users see</Src>,
+        and a lab run that loads a page without clicking anything says nothing about how the filter panel
+        responds. Use the lab to find causes and prevent regressions; use the field to decide whether there is a
+        problem.
       </p>
 
       <h2>A listing detail page, annotated</h2>
@@ -175,10 +172,10 @@ export default function Guide() {
         LCP cannot be better than the time it takes the HTML to arrive. web.dev breaks LCP into four subparts and
         gives a guideline in which <Src href={OPT_LCP}>time to first byte</Src> and the resource load each take
         roughly 40% on a well-optimized page, with the two &quot;delay&quot; subparts under 10% each, adding that
-        these <Src href={OPT_LCP}>are guidelines, not strict rules</Src>. For server response it offers a rough
-        guide: <Src href={TTFB}>most sites should strive to have a TTFB of 0.8 seconds or less</Src>. A listing
-        page that queries a database, a search index and a mortgage widget before sending a byte spends its budget
-        before the photo is even requested.
+        these <Src href={OPT_LCP}>are guidelines, not strict rules</Src>. For server response its rough guide is
+        that <Src href={TTFB}>most sites should strive to have a TTFB of 0.8 seconds or less</Src>. A listing
+        page that waits on a database, a search index and a mortgage widget before sending a byte spends that
+        time before the photo is even requested.
       </p>
       <p>The three rendering modes map onto the three templates:</p>
       <ul>
@@ -190,12 +187,16 @@ export default function Guide() {
           revalidation period, <Src href={NEXT_ISR}>the next visitor will still receive the cached (stale) version of the page immediately</Src>{' '}
           while a fresh one is generated. For price and status changes, do not wait for a timer:{' '}
           <code>revalidateTag</code> <Src href={NEXT_TAG}>allows you to invalidate cached data on-demand for a specific cache tag</Src>,
-          and the listing sync can call it for the listings it changed.
+          and the listing sync can call it through a route handler for the listings it changed. In the current
+          documentation the function takes a second argument that sets how long stale content may still be
+          served; for a caller outside a Server Action that needs the old data gone, it says to{' '}
+          <Src href={NEXT_TAG}>pass {'{ expire: 0 }'} to expire the data immediately</Src>.
         </li>
         <li>
           <strong>Search results: rendered per request.</strong> Filter combinations are unbounded, so the first
           page of results is rendered on the server for the requested criteria and cached briefly, if at all.
-          What matters is that the result list is in the HTML rather than fetched after the script loads.
+          What matters is that the result list is in the HTML, not fetched after the script loads, with only the
+          first row of card images eager.
         </li>
         <li>
           <strong>Area pages: static with revalidation,</strong> on a schedule that matches how often the
@@ -207,24 +208,23 @@ export default function Guide() {
         <Src href={NEXT_FETCHING}>if you have any slow data requests, the whole route will be blocked from rendering until all the data is fetched</Src>.
         With a Suspense boundary or a <code>loading.js</code> file you can{' '}
         <Src href={NEXT_LOADING}>show an instant loading state from the server while the content of a route segment streams in</Src>.
-        The rule for listing pages is about where the boundary goes: the hero photo, price and address belong in
-        the part that is sent first. Similar homes, price history, school data and anything fetched from a third
-        party go inside boundaries, with fallbacks that have the final height so that the arriving content does
-        not shift the page.
+        On a listing page, the hero photo, price and address belong in the part that is sent first. Similar
+        homes, price history, school data and anything fetched from a third party go inside boundaries, with
+        fallbacks of the final height so that arriving content does not shift the page.
       </p>
       <p>
         Keep the server-rendered part large and the hydrated part small. In the App Router, pages and layouts are
         Server Components by default, which among other things{' '}
         <Src href={NEXT_SERVER}>reduce the amount of JavaScript sent to the browser</Src>. Next.js&apos;s advice
-        for the interactive pieces is to put <code>&apos;use client&apos;</code> on{' '}
-        <Src href={NEXT_SERVER}>the files that define your interactive components instead of marking large parts of your UI as Client Components</Src>.
-        On a listing page that means the gallery controls, the save button and the contact form are client
-        components; the description, facts table and breadcrumbs are not.
+        is to put <code>&apos;use client&apos;</code> on{' '}
+        <Src href={NEXT_SERVER}>the files that define your interactive components instead of marking large parts of your UI as Client Components</Src>:
+        the gallery controls, the save button and the contact form, but not the description, facts table or
+        breadcrumbs.
       </p>
 
       <h2>The LCP image: the first listing photo</h2>
       <p>
-        On a listing detail page the LCP element is almost always the first photo. Four things decide how soon it
+        On a listing detail page the LCP element is usually the first photo. Four things decide how soon it
         paints.
       </p>
       <h3>1. The browser must find it in the HTML</h3>
@@ -233,18 +233,20 @@ export default function Guide() {
         which is the case when the LCP element is an <code>img</code> whose{' '}
         <Src href={OPT_LCP}>src or srcset attributes are present in the initial HTML markup</Src>. A gallery
         component that renders an empty container and inserts the photo after its script runs fails this, however
-        fast the script is. The same guide is blunt about the other common mistake:{' '}
+        fast the script is. The same guide warns about the other common mistake:{' '}
         <Src href={OPT_LCP}>never lazy-load your LCP image</Src>.
       </p>
       <h3>2. It must be requested at high priority</h3>
       <p>
         Images do not start at the top of the browser&apos;s queue. Fetch Priority exists for this:{' '}
         <Src href={FETCH_PRIORITY}>boosting the priority of the LCP image by specifying fetchpriority=&quot;high&quot; on the image element, causing LCP to happen sooner</Src>.
-        In Next.js the relevant props changed recently, which is worth knowing if you maintain older code:{' '}
+        In Next.js the props changed in version 16, which matters if you maintain older code. The Image
+        documentation says that{' '}
         <Src href={NEXT_IMAGE}>starting with Next.js 16, the priority property has been deprecated in favor of the preload property</Src>,
-        and the same page says that <Src href={NEXT_IMAGE}>in most cases, you should use loading=&quot;eager&quot; or fetchPriority=&quot;high&quot; instead of preload</Src>.
-        Apply it to exactly one image per page. Marking the first five gallery photos as high priority makes them
-        compete with each other.
+        where <code>preload</code> inserts a preload link in the document head, and adds that{' '}
+        <Src href={NEXT_IMAGE}>in most cases, you should use loading=&quot;eager&quot; or fetchPriority=&quot;high&quot; instead of preload</Src>.
+        Apply it to one image per page. Marking the first five gallery photos as high priority makes them compete
+        with each other.
       </p>
       <h3>3. It must be the right size and format</h3>
       <p>
@@ -253,7 +255,7 @@ export default function Guide() {
         <Src href={NEXT_IMAGE}>if sizes is missing, the browser assumes the image will be as wide as the viewport (100vw). This can cause unnecessarily large images to be downloaded</Src>.
         For format, the Image component negotiates by the browser&apos;s <code>Accept</code> header; WebP is the
         default and <Src href={NEXT_IMAGE}>you can enable AVIF support</Src> in configuration. One caution from
-        web.dev before spending effort on compression: if the photo is discovered late, shrinking it{' '}
+        web.dev: if the photo is discovered late, shrinking it{' '}
         <Src href={OPT_LCP}>wouldn&apos;t actually improve LCP because the time would just shift</Src> to another
         subpart. Fix discovery and priority first.
       </p>
@@ -264,8 +266,8 @@ export default function Guide() {
         or reserve the space with CSS <code>aspect-ratio</code>. The Next.js Image component requires{' '}
         <code>width</code> and <code>height</code> (or <code>fill</code> inside a sized container), which it uses
         to <Src href={NEXT_IMAGE}>reserve space for the image and avoid layout shift during loading</Src>. MLS
-        photos come in mixed aspect ratios, so give the hero slot a fixed ratio and fit the photo inside it; store
-        each photo&apos;s pixel dimensions when the media worker downloads it, so the page never has to guess.
+        photos come in mixed aspect ratios, so give the hero slot a fixed ratio and fit the photo inside it, and
+        store each photo&apos;s pixel dimensions when the media worker downloads it.
       </p>
       <p>Illustrative: a hero photo in a Next.js 16 Server Component. Names, sizes and breakpoints are examples.</p>
       <pre className="cp-code"><code>{`import Image from 'next/image';
@@ -288,16 +290,16 @@ export function HeroPhoto({ photo, address }) {
       <p>
         Where the photo is served from matters too. web.dev notes that hosting critical resources on the same
         origin as the document lets them{' '}
-        <Src href={OPT_LCP}>save time by reusing the existing connection</Src>. Photos you have copied to your own
-        storage and serve through your own CDN hostname meet that more easily than a hot link to a third-party
-        media host, and most MLS licenses require your own copy in any case (see the media stage of the{' '}
-        <Link href="/blog/mls-data-pipeline-architecture">MLS data pipeline architecture guide</Link>).
+        <Src href={OPT_LCP}>save time by reusing the existing connection</Src>. Photos copied to your own storage
+        can be served that way, or at least from a hostname you control; a hot link to a third-party media host
+        cannot. Some feeds also require your own copy of media: see the media stage of the{' '}
+        <Link href="/blog/mls-data-pipeline-architecture">MLS data pipeline architecture guide</Link>.
       </p>
 
       <h2>Galleries and carousels: one photo now, the rest when asked</h2>
       <p>
-        A listing has dozens of photos and most visitors look at a few. The gallery&apos;s job at load time is to
-        show one and stay out of the way.
+        A listing can have dozens of photos. The gallery&apos;s job at load time is to show one and stay out of
+        the way.
       </p>
       <ul>
         <li>
@@ -313,10 +315,9 @@ export function HeroPhoto({ photo, address }) {
           <Src href={LAZY_IMG}>don&apos;t lazy-load images that are likely to be in-viewport when the page loads</Src>.
         </li>
         <li>
-          <strong>Do not put forty image elements in the first response.</strong> Lazy loading saves the
+          <strong>Do not put every image element in the first response.</strong> Lazy loading saves the
           downloads, not the markup. Render the first slide and its neighbors, and add slides as the visitor
-          advances. Keep the full list of photo URLs available to crawlers through structured data or a plain
-          linked photo page rather than by rendering every image up front.
+          advances.
         </li>
         <li>
           <strong>The full-screen viewer is a separate bundle.</strong> Zoom, swipe physics and thumbnail strips
@@ -325,8 +326,8 @@ export function HeroPhoto({ photo, address }) {
           load the viewer with <code>next/dynamic</code> on first interaction.
         </li>
         <li>
-          <strong>No autoplay.</strong> Besides being unwanted on a page someone is studying, autoplaying
-          carousels with non-composited animations have, in web.dev&apos;s words,{' '}
+          <strong>No autoplay.</strong> Autoplaying carousels with non-composited animations have, in
+          web.dev&apos;s words,{' '}
           <Src href={CAROUSEL}>the potential to cause infinite CLS</Src>.
         </li>
         <li>
@@ -337,19 +338,18 @@ export function HeroPhoto({ photo, address }) {
 
       <h2>Maps are expensive; load them when they are wanted</h2>
       <p>
-        An interactive map is a large script, a stylesheet, tile requests and often a billing event, placed on a
-        page where, as web.dev observes about map embeds generally,{' '}
-        <Src href={EMBEDS}>many users may not interact with them</Src>. On a listing detail page the map is below
-        the photos; on a search page it may be the main feature. The treatment differs.
+        An interactive map is a script, a stylesheet, tile requests and often a billing event, placed on a page
+        where, as web.dev observes about map embeds generally,{' '}
+        <Src href={EMBEDS}>many users may not interact with them</Src>.
       </p>
       <ul>
         <li>
-          <strong>Listing detail and area pages: a facade.</strong> Show a static map image, or a styled
-          placeholder with the address and an &quot;open map&quot; control, in a box of the final size. web.dev
-          describes the pattern: <Src href={EMBEDS}>a facade is a static element that looks similar to the actual embedded third-party but is not functional and, therefore, much less taxing on the page load</Src>.
-          Load the real map when the visitor taps it or when it scrolls into view, using an intersection
-          observer. For an iframe embed, <code>loading=&quot;lazy&quot;</code> on the iframe does the same with no
-          script; the Next.js Google Maps embed component, for example,{' '}
+          <strong>Listing detail and area pages: a facade.</strong> Show a static map image, or a placeholder
+          with the address and an &quot;open map&quot; control, in a box of the final size. In web.dev&apos;s words,{' '}
+          <Src href={EMBEDS}>a facade is a static element that looks similar to the actual embedded third-party but is not functional and, therefore, much less taxing on the page load</Src>.
+          Load the real map when the visitor taps it or scrolls it into view. For an iframe embed,{' '}
+          <code>loading=&quot;lazy&quot;</code> does the same with no script; the Next.js Google Maps embed
+          component, for example,{' '}
           <Src href={NEXT_3P}>uses the loading attribute to lazy-load the embed below the fold</Src>.
         </li>
         <li>
@@ -357,7 +357,7 @@ export function HeroPhoto({ photo, address }) {
           content and an LCP candidate without the map. Load the map library as a client-only component; in
           Next.js, <code>ssr: false</code> with <code>next/dynamic</code>{' '}
           <Src href={NEXT_LAZY}>will only work for Client Components</Src>. On phones, where the list is the
-          default view, do not load the map until the visitor switches to it.
+          default view, wait until the visitor switches to the map.
         </li>
         <li>
           <strong>Always reserve the box.</strong> A map that appears and pushes the description down is a layout
@@ -365,21 +365,12 @@ export function HeroPhoto({ photo, address }) {
           common causes.
         </li>
       </ul>
-      <p>
-        What the map does once it is loaded, and how to keep it responsive, is covered in{' '}
-        <Link href="/blog/map-based-property-search">building map-based property search</Link>.
-      </p>
 
       <h2>Third-party scripts: analytics, chat and tag managers</h2>
       <p>
-        web.dev opens its guide on the subject this way:{' '}
-        <Src href={THIRD_PARTY}>if you&apos;ve optimized your code, but your site still loads too slowly, it&apos;s probably the fault of third-party scripts</Src>.
-        Real estate sites collect them: analytics, a tag manager, chat, a CRM tracker, a mortgage calculator, a
-        scheduling widget, review badges, ad pixels. Each one was added for a reason, and each runs on the same
-        main thread as your filter panel.
-      </p>
-      <p>
-        The baseline rule from web.dev:{' '}
+        Real estate sites collect third-party scripts: analytics, a tag manager, chat, a CRM tracker, a mortgage
+        calculator, a scheduling widget, review badges, ad pixels. Each runs on the same main thread as your
+        filter panel. The baseline rule from web.dev:{' '}
         <Src href={THIRD_PARTY}>always use async or defer for third-party scripts, unless the script is necessary for the critical rendering path</Src>,
         and <Src href={THIRD_PARTY}>if the script doesn&apos;t add clear value to your site, remove it</Src>.
         Next.js turns the loading choice into a named strategy on its Script component:
@@ -415,9 +406,9 @@ export function HeroPhoto({ photo, address }) {
       </div>
       <p>Beyond the loading strategy, four practices keep third parties from eroding the work above:</p>
       <ul>
-        <li><strong>Load widgets where they are used.</strong> A mortgage calculator script belongs on listing pages, below the fold, loaded on visibility. It does not belong in the root layout.</li>
-        <li><strong>Use a facade for chat.</strong> A button that looks like the chat launcher and loads the real widget on click costs nothing until someone wants to talk.</li>
-        <li><strong>Govern the tag manager.</strong> A tag manager lets people outside engineering add scripts to every page without a deploy. Give it an owner, a review step and a budget, and include its tags in your measurements. A tag added on a Friday is a common cause of an INP change nobody can explain.</li>
+        <li><strong>Load widgets where they are used.</strong> A mortgage calculator script belongs on listing pages, below the fold, loaded on visibility, not in the root layout.</li>
+        <li><strong>Use a facade for chat.</strong> A button that looks like the chat launcher and loads the real widget on click costs almost nothing until someone wants to talk.</li>
+        <li><strong>Govern the tag manager.</strong> It lets people outside engineering add scripts to every page without a deploy. Give it an owner, a review step and a budget, and include its tags in your measurements.</li>
         <li><strong>Reserve space for anything that renders.</strong> Consent banners, promotion bars and badges that insert themselves above content shift everything below them.</li>
       </ul>
 
@@ -435,7 +426,7 @@ export function HeroPhoto({ photo, address }) {
         </li>
         <li>
           <strong>Build assets.</strong> Scripts and styles with a content hash in the file name get{' '}
-          <Src href={NEXT_SELF}>public, max-age=31536000, immutable</Src> and can sit at the edge indefinitely.
+          <Src href={NEXT_SELF}>public, max-age=31536000, immutable</Src>.
         </li>
         <li>
           <strong>Photos.</strong> The heaviest bytes on the site. Serve resized variants from a CDN in front of
@@ -453,16 +444,14 @@ export function HeroPhoto({ photo, address }) {
       <p>
         Peregrine&apos;s{' '}
         <Link href="/case-studies/scaling-real-estate-saas-platform">real estate SaaS case study</Link> describes
-        a front end built this way: a Next.js frontend optimized with ISR, dynamic imports and image optimization
-        through S3 and a CDN. See also our{' '}
-        <Link href="/services/nextjs-development">Next.js development service</Link>.
+        a Next.js frontend optimized with ISR, dynamic imports and image optimization through S3 and a CDN.
       </p>
 
       <h2>INP on filter-heavy search pages</h2>
       <p>
-        A search page is the most interactive page on the site, and INP reports close to the worst interaction a
-        visitor had: <Src href={INP}>the final INP value is the longest interaction observed, ignoring outliers</Src>.
-        One slow filter click sets the number. web.dev splits every interaction into{' '}
+        A search page is the most interactive page on the site, and{' '}
+        <Src href={INP}>the final INP value is the longest interaction observed, ignoring outliers</Src>, so one
+        slow filter click can set the number. web.dev splits every interaction into{' '}
         <Src href={OPT_INP}>three subparts</Src>: input delay, processing duration and presentation delay. Each has
         a typical cause on a search page.
       </p>
@@ -471,18 +460,18 @@ export function HeroPhoto({ photo, address }) {
           <strong>Input delay: the main thread is busy.</strong> The visitor taps a filter while the page is still
           hydrating or a third-party script is executing. web.dev defines the unit:{' '}
           <Src href={LONG_TASKS}>any task that takes longer than 50 milliseconds is a long task</Src>, and the
-          browser cannot respond while one runs. Hydration is the largest task on most server-rendered pages; in
+          browser cannot respond while one runs. Hydration is often such a task on a server-rendered page; in
           Next.js&apos;s description it is{' '}
           <Src href={NEXT_SERVER}>React&apos;s process for attaching event handlers to the DOM, to make the static HTML interactive</Src>.
-          The less of the page that is a client component, the shorter that task. Keep result cards as server
-          output and hydrate only the filter panel, the sort control and the save buttons.
+          The less of the page that is a client component, the less there is to hydrate. Keep result cards as
+          server output and hydrate only the filter panel, the sort control and the save buttons.
         </li>
         <li>
           <strong>Processing: the handler does everything at once.</strong> A checkbox handler that updates state,
-          rewrites the URL, re-renders fifty cards, recomputes the map markers and fires three analytics events
-          before returning will not finish inside the threshold on a mid-range phone. Paint the cheap feedback
-          first (the checkbox, a pending state on the list), then do the expensive work in a separate task and
-          let the network request run in the background. In React, <code>useTransition</code>{' '}
+          rewrites the URL, re-renders fifty cards, recomputes the map markers and fires analytics events before
+          returning risks missing the threshold on a mid-range phone. Paint the cheap feedback first (the
+          checkbox, a pending state on the list), then do the expensive work in a separate task. In React,{' '}
+          <code>useTransition</code>{' '}
           <Src href={REACT_TRANSITION}>lets you render a part of the UI in the background</Src>, which suits the
           list update.
         </li>
@@ -492,14 +481,12 @@ export function HeroPhoto({ photo, address }) {
           change.
         </li>
       </ul>
-      <p>Other habits that help on this template:</p>
-      <ul>
-        <li>Debounce text inputs and range sliders so that a drag is one search, not thirty.</li>
-        <li>Cancel superseded requests, so a late response does not trigger a second full re-render.</li>
-        <li>Load the map library after the list is interactive, not in the same task as hydration.</li>
-        <li>Keep analytics calls out of the handler&apos;s synchronous path.</li>
-        <li>Test with the filter panel a real listing site has, not a three-checkbox demo.</li>
-      </ul>
+      <p>
+        Also debounce text inputs and range sliders so that a drag is one search, cancel superseded requests so a
+        late response does not trigger a second full re-render, and keep analytics calls out of the
+        handler&apos;s synchronous path. The request side of this is covered in{' '}
+        <Link href="/blog/map-based-property-search">building map-based property search</Link>.
+      </p>
 
       <h2>Measuring and setting a budget</h2>
       <p>
@@ -529,60 +516,36 @@ export function HeroPhoto({ photo, address }) {
       <p>
         The outcome thresholds are published. The input limits are yours to set: measure the current state of
         each template, decide what you are willing to defend, and write the numbers down. We do not suggest
-        figures here because they depend on your design and audience. The process is what matters:
+        figures because they depend on your design and audience. The process:
       </p>
       <ol>
-        <li>Report LCP, INP and CLS from real visitors with the web-vitals library, tagging each report with the template, the device class and whether the visit was a first load.</li>
+        <li>Report LCP, INP and CLS from real visitors with the web-vitals library, tagging each report with the template and the device class.</li>
         <li>Use the library&apos;s attribution build, which lets you <Src href={WEB_VITALS_LIB}>send additional data to help you debug why the metric values are the way they are</Src>: which element was the LCP, which interaction was slow.</li>
-        <li>Look at the 75th percentile per template, not the site average.</li>
-        <li>Reproduce the worst template in the lab on a throttled mid-range profile and find the cause.</li>
-        <li>Fix it, add an input budget that would have caught it, and watch the field number over the following four weeks, because public field data is a 28-day window.</li>
+        <li>Look at the 75th percentile per template, not the site average, and reproduce the worst template in the lab on a throttled mid-range profile.</li>
+        <li>Fix the cause, add an input budget that would have caught it, and watch the field number over the following four weeks, because public field data is a 28-day window.</li>
       </ol>
 
-      <h2>A checklist for each template</h2>
-      <h3>Listing detail</h3>
-      <ul className="cp-checklist">
-        <li>First photo is an <code>img</code> in the server HTML, eager, high priority, with <code>sizes</code> and reserved dimensions.</li>
-        <li>No other image is high priority; photos after the first are lazy and not all rendered up front.</li>
-        <li>Photos come from your own storage through a CDN, in a modern format, at the slot&apos;s width.</li>
-        <li>Price, status, address and facts are in the first chunk of HTML; slow sections stream in behind sized fallbacks.</li>
-        <li>The page is statically generated and invalidated by the listing sync on change.</li>
-        <li>Map and full-screen viewer load on visibility or tap, into reserved boxes.</li>
-        <li>Chat and widgets load on idle or on click; nothing third-party loads before interactivity without a reason.</li>
-      </ul>
-      <h3>Search results</h3>
-      <ul className="cp-checklist">
-        <li>The first page of results is in the server HTML for the requested criteria.</li>
-        <li>Only the first row of card images is eager; the rest are lazy, all with dimensions.</li>
-        <li>Result cards are server-rendered; client components are limited to filters, sort, save and the map.</li>
-        <li>A filter change paints feedback at once and does the heavy update in a separate task.</li>
-        <li>Inputs are debounced and superseded requests canceled.</li>
-        <li>The map loads after the list is interactive, and not at all on phones until requested.</li>
-        <li>The number of cards rendered at once is bounded.</li>
-      </ul>
-      <h3>Area and neighborhood pages</h3>
+      <h2>Area and neighborhood pages: the same rules, applied</h2>
       <ul className="cp-checklist">
         <li>Statically generated with revalidation; statistics computed ahead of the request, not during it.</li>
         <li>The heading and summary text can be the LCP element; if a banner image is, it follows the hero photo rules.</li>
         <li>Charts render as server-side SVG or images where possible; an interactive chart library loads on visibility.</li>
-        <li>Listing card grid images are lazy with dimensions; the grid has a stable height while loading.</li>
+        <li>Listing card images are lazy with dimensions, and the grid keeps a stable height while loading.</li>
         <li>Embedded maps and school or transit widgets use facades and reserved boxes.</li>
         <li>Late-inserted elements (consent bar, promotion bar) have reserved space or overlay the page instead of pushing it.</li>
       </ul>
 
-      <GuideFaq slug={SLUG} items={[
+            <GuideFaq slug={SLUG} items={[
         { question: 'What are the Core Web Vitals thresholds?', answer: ['As published on web.dev: LCP ', ['within 2.5 seconds of when the page first starts loading', VITALS], ', INP of ', ['200 milliseconds or less', VITALS], ' and CLS of 0.1 or less, each assessed at ', ['the 75th percentile of page loads, segmented across mobile and desktop devices', VITALS], '.'] },
         { question: 'Why does PageSpeed Insights show the same field data for every listing page?', answer: ['Because a single listing page rarely has enough visits to appear in the Chrome UX Report on its own. In that case PageSpeed Insights ', ['will fall back to origin-level granularity, which encompasses all user experiences on all pages of the website', PSI], '. To see how one template performs, collect your own field data and tag it by template.'] },
-        { question: 'Should the first listing photo be lazy-loaded?', answer: ['No. It is usually the LCP element, and web.dev’s guidance is to ', ['never lazy-load your LCP image', OPT_LCP], '. Load it eagerly with high fetch priority, make sure it is in the server HTML, and lazy-load the photos after it.'] },
         { question: 'Does Next.js still use the priority prop for the hero image?', answer: ['The Image documentation says that ', ['starting with Next.js 16, the priority property has been deprecated in favor of the preload property', NEXT_IMAGE], ', and that in most cases you should use loading="eager" or fetchPriority="high" instead of preload.'] },
-        { question: 'How should a chat widget or tag manager be loaded?', answer: ['After the page is usable. In Next.js, the default afterInteractive strategy loads a script ', ['early but after some hydration on the page occurs', NEXT_SCRIPT], ', which the documentation suggests for tag managers and analytics, and lazyOnload loads ', ['during browser idle time', NEXT_SCRIPT], ', which it suggests for chat support plugins. A click-to-load facade is lighter still.'] },
       ]} />
 
       <p className="cp-note">
-        Thresholds, definitions and framework behavior were read from the linked web.dev, Chrome, Google and
-        Next.js pages on October 13, 2026 (Next.js documentation at version 16.4.0). They change; check the
+        Thresholds, definitions and framework behavior were read from the linked web.dev, Chrome, Google, React
+        and Next.js pages on October 13, 2026 (Next.js documentation at version 16.4.0). They change; check the
         current pages for the version you run. No performance result is claimed for any site. The code sample is
-        illustrative.
+        illustrative and was not built.
       </p>
       <p>
         Rebuilding listing, search or area pages on Next.js? See our{' '}
