@@ -6,7 +6,8 @@ const SLUG = 'real-estate-crm-architecture';
 export const metadata = guideMetadata(SLUG);
 
 // Sources fetched and checked 2026-10-12; the sentence relied on for each link is logged in
-// docs/content/sources/real-estate-crm-architecture.md. CTIA's messaging principles page did not
+// docs/content/sources/real-estate-crm-architecture.md. The FTC and FCC pages refuse plain HTTP
+// clients and were re-read word for word in a browser during QA. CTIA's messaging principles page did not
 // return its content to a plain fetch, so it is not cited; SMS rules are quoted from the FCC's
 // consumer guide and 47 CFR 64.1200 and otherwise left as questions for counsel.
 const FTC_CANSPAM = 'https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business';
@@ -31,12 +32,12 @@ export default function Guide() {
         happens if nobody responds.
       </p>
       <p>
-        Most CRM problems in brokerages are one of those six answers going missing between systems: the website
+        The failures to design against are those six answers going missing between systems: the website
         knows the listing but the CRM only receives a name and a phone number; the same buyer exists three times
         under three email addresses; a portal lead lands in a shared inbox; a text goes to someone who opted out
         by replying to a different agent. This article is about the architecture that keeps those answers
         attached to the lead from capture to follow-up. It applies whether you build the CRM, or keep a
-        commercial one and build around it, which is the more common route (the trade-off is in{' '}
+        commercial one and build around it (the trade-off is in{' '}
         <Link href="/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages">custom SaaS vs an off-the-shelf CRM</Link>).
       </p>
 
@@ -125,12 +126,12 @@ export default function Guide() {
         <strong>Where did the visitor come from?</strong> Capture the landing URL, the referrer, and campaign
         parameters on the first page view, and keep them in first-party storage until a form is submitted. The
         common convention is Google&apos;s campaign parameters, such as{' '}
-        <Src href={GA_UTM}>utm_source for the referrer, utm_medium for the marketing medium and utm_campaign for the campaign</Src>.
+        <Src href={GA_UTM}>utm_source for the referrer, utm_medium for the marketing medium and utm_campaign for the product, slogan or promo code</Src>.
         Store first touch and the touch at conversion separately; overwriting one with the other is how
         &ldquo;all our leads come from direct&rdquo; reports are made.
       </p>
       <p>
-        <strong>What did they want?</strong> This is the part generic CRMs do not model. For a listing enquiry,
+        <strong>What did they want?</strong> This part is specific to real estate. For a listing enquiry,
         store the listing&apos;s key and its source system, not just an address string. The RESO Data Dictionary
         defines ListingKey as{' '}
         <Src href={DD_LISTING_KEY}>a unique identifier for this record from the immediate source</Src>, and warns
@@ -157,8 +158,13 @@ export default function Guide() {
       </ol>
       <p>
         Uniqueness has to be enforced by the database, since two submissions from the same person can arrive in
-        the same second. In PostgreSQL, the insert-or-update form is safe under that race:{' '}
+        the same second and a &ldquo;look up, then insert&rdquo; in application code will create two contacts.
+        In PostgreSQL, the insert-or-update form is safe under that race:{' '}
         <Src href={PG_INSERT}>ON CONFLICT DO UPDATE guarantees an atomic INSERT or UPDATE outcome, even under high concurrency</Src>.
+        In one transaction, insert a candidate contact and claim each identifier with <code>ON CONFLICT</code>;
+        if a claim finds an existing owner, attach the enquiry to that contact and roll the candidate back.
+        When the email and the phone number resolve to two different contacts, do not merge automatically:
+        attach to one by a fixed rule and raise a possible duplicate.
       </p>
 
       <h2>An illustrative data model</h2>
@@ -166,7 +172,8 @@ export default function Guide() {
         Four tables carry the core: contact, enquiry, activity and assignment. Names and columns are examples to
         show the relationships, not a client schema.
       </p>
-      <pre className="cp-code"><code>{`-- Illustrative. Every table also carries tenant_id (omitted from keys here for brevity).
+      <pre className="cp-code"><code>{`-- Illustrative. In a multi-tenant product every table carries tenant_id and every
+-- key and unique constraint starts with it; it is left out of this sketch for brevity.
 CREATE TABLE contact (
   id            uuid PRIMARY KEY,
   display_name  text,
@@ -181,12 +188,12 @@ CREATE TABLE contact_identifier (
   kind          text NOT NULL,                   -- email | phone | visitor_id | external_crm_id
   value_norm    text NOT NULL,                   -- normalized form used for matching
   value_raw     text,
-  UNIQUE (kind, value_norm)                      -- one owner per identifier
+  UNIQUE (kind, value_norm)                      -- one owner per identifier (per tenant)
 );
 
 CREATE TABLE enquiry (
   id              uuid PRIMARY KEY,
-  capture_id      text NOT NULL UNIQUE,          -- sender-generated; makes retries harmless
+  capture_id      text NOT NULL UNIQUE,          -- sender-generated; INSERT ... ON CONFLICT DO NOTHING
   contact_id      uuid REFERENCES contact(id),   -- null until resolved
   channel         text NOT NULL,                 -- listing_form | call | portal | chat | import
   listing_source  text,                          -- originating MLS system
@@ -220,28 +227,30 @@ CREATE TABLE assignment (
   responded_at  timestamptz,
   ended_at      timestamptz,                     -- reassigned or closed
   end_reason    text
-);`}</code></pre>
+);
+
+-- "Exactly one owner" is a constraint, not a convention:
+CREATE UNIQUE INDEX one_open_assignment ON assignment (enquiry_id) WHERE ended_at IS NULL;`}</code></pre>
 
       <h2>The timeline as an append-only event log</h2>
       <p>
-        The <code>activity</code> table is never updated or deleted in normal operation. Stage, owner, last
-        contacted and &ldquo;hot lead&rdquo; flags on the contact row are projections computed from it. That
-        choice costs some storage and buys four things: an audit trail for &ldquo;who reassigned this lead and
+        The <code>activity</code> table is never updated or deleted in normal operation; stage and owner on the
+        contact row are projections computed from it. That costs some storage and buys four things: an audit trail for &ldquo;who reassigned this lead and
         when&rdquo;; the ability to rebuild a projection after a logic change; safe ingestion of late and
-        duplicate events, because inserting the same event id twice does nothing; and one stream to feed
+        duplicate events, because the insert is <code>ON CONFLICT DO NOTHING</code> on the event id; and one stream to feed
         reporting, notifications and outbound integrations.
       </p>
       <p><strong>Illustrative event</strong>, as it might be stored and published:</p>
       <pre className="cp-code"><code>{`{
-  "id": "evt_01JAB3F7Q2",
+  "id": "0192f7c4-5b1e-7a3c-9d42-6f0e8a1b2c3d",
   "type": "enquiry.created",
   "version": 1,
   "occurred_at": "2026-10-12T21:04:11Z",
   "recorded_at": "2026-10-12T21:04:12Z",
   "actor": "website:oak-realty",
-  "contact_id": "c_8842",
+  "contact_id": "7d3a9e10-2f4b-4c8e-b1a6-0c5d9e7f8a21",
   "payload": {
-    "enquiry_id": "enq_5521",
+    "enquiry_id": "c1b2a3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
     "channel": "listing_form",
     "listing": { "source": "example_mls", "key": "L-1042",
                  "price_at_enquiry": 525000, "status_at_enquiry": "Active" },
@@ -253,7 +262,9 @@ CREATE TABLE assignment (
       <p>
         Two timestamps are deliberate. Events arrive out of order (a call recording posted minutes after the
         call, a portal lead delayed by an email relay), so the timeline is ordered by when things happened and
-        the log is processed in the order it was recorded.
+        the log is processed in the order it was recorded. Consumers should follow the log by a sequence
+        position or through an outbox, not by <code>recorded_at</code> alone: a transaction that commits late
+        carries an earlier timestamp, and a reader that has already moved past it would skip the row.
       </p>
 
       <h2>Assignment and routing</h2>
@@ -273,8 +284,7 @@ CREATE TABLE assignment (
         <li><strong>The round-robin pointer is shared state.</strong> Two enquiries arriving together must not both read &ldquo;next agent = 4&rdquo;. Advance the pointer in the same transaction that writes the assignment, or with an atomic counter.</li>
         <li><strong>Rules are tenant data with versions,</strong> and each assignment stores which rule and version decided, so &ldquo;why did I not get this lead&rdquo; has an answer.</li>
         <li><strong>Response targets are a design input, not a promise.</strong> If a brokerage wants a first response within some number of minutes, that becomes a <code>respond_by</code> time on the assignment and a delayed job that checks it. What the timer does on expiry (remind, escalate to a manager, reassign) is the brokerage&apos;s policy. The platform&apos;s job is to make the timer reliable and the outcome visible, not to guarantee that a person answers.</li>
-        <li><strong>Reassignment appends.</strong> The old assignment gets an end time and reason; a new row is created. Nothing is overwritten.</li>
-        <li><strong>Office hours and time zones</strong> belong to the agent and the office, and timers pause or not by explicit rule.</li>
+        <li><strong>Reassignment appends.</strong> The old assignment gets an end time and reason and a new row is created, in one transaction, so the index above never sees two open owners.</li>
       </ul>
       <p>
         Timers and escalations are delayed jobs; the mechanics, including what happens to them in a restart, are
@@ -287,11 +297,10 @@ CREATE TABLE assignment (
 
       <h2>Communication records, consent and opt-out</h2>
       <p>
-        Emails, texts and calls are sent through providers, but the record of them belongs on the timeline. For
-        each message we would store: direction, channel, the provider&apos;s message id, the template and version
-        or the body, who or what sent it, and then each status the provider reports (accepted, delivered,
-        bounced, complained, replied) as its own event. Provider message ids are what make status webhooks
-        idempotent.
+        Emails, texts and calls are sent through providers, but the record of them belongs on the timeline:
+        direction, channel, the provider&apos;s message id, the template version or body, the sender, and each
+        status the provider reports as its own event. The provider&apos;s message id is what makes status
+        webhooks idempotent.
       </p>
       <p>
         Consent is modeled per contact, per channel and per purpose, as its own append-only record with the
@@ -308,8 +317,10 @@ CREATE TABLE assignment (
           that you <Src href={FTC_CANSPAM}>must honor a recipient&apos;s opt-out request within 10 business days</Src>,
           and that the message <Src href={FTC_CANSPAM}>must include your valid physical postal address</Src>. It
           also says that hiring another company to handle email does not{' '}
-          <Src href={FTC_CANSPAM}>contract away your legal responsibility to comply with the law</Src>: the
-          brokerage is responsible for what the platform sends in its name.
+          <Src href={FTC_CANSPAM}>contract away your legal responsibility to comply with the law</Src>, and that
+          both the company promoted in a message and the company that sends it{' '}
+          <Src href={FTC_CANSPAM}>may be held legally responsible</Src>. How that falls between a brokerage and
+          its platform is a question for counsel and the contract.
         </li>
         <li>
           <strong>US texts and automated calls.</strong> The FCC&apos;s consumer guide states that{' '}
@@ -323,10 +334,11 @@ CREATE TABLE assignment (
           the brokerage&apos;s counsel.
         </li>
         <li>
-          <strong>Canada.</strong> Canada&apos;s anti-spam legislation is built on consent: the federal
-          government describes it as requiring that{' '}
-          <Src href={CASL}>businesses obtain consent before sending commercial electronic messages</Src>. A
-          platform serving both countries needs the contact&apos;s jurisdiction as an input to the send check.
+          <strong>Canada.</strong> The federal government&apos;s page on Canada&apos;s anti-spam legislation
+          (CASL) describes it as asking, among other things, that{' '}
+          <Src href={CASL}>businesses obtain consent before sending commercial electronic messages</Src>. What
+          counts as consent under CASL is for counsel; for the design, a platform serving both countries needs
+          the contact&apos;s jurisdiction as an input to the send check.
         </li>
       </ul>
       <p>Engineering consequences that follow from those rules:</p>
@@ -348,7 +360,7 @@ CREATE TABLE assignment (
         <li><strong>Raw interactions go to a high-volume store;</strong> the timeline gets a digest. Fifty views in one session become one &ldquo;viewed 12 listings, mostly three-bedroom, one zip code&rdquo; (illustrative) activity, with the detail one click away.</li>
         <li><strong>Listing data is referenced, not copied.</strong> The CRM stores source and key, plus a small snapshot for display. Price and status are read from the listing store at view time, so the agent sees that a saved listing has dropped in price or gone pending.</li>
         <li><strong>Listing changes fan out to people.</strong> A price change on a listing is a reason to contact everyone who saved it; that is a query from listing to contacts, which the interaction store must support. The alert side of this is covered in the guide to <Link href="/blog/saved-searches-listing-alerts">saved searches and listing alerts</Link>.</li>
-        <li><strong>MLS display rules still apply.</strong> A listing that leaves the feed may have to stop being shown; the interaction record stays, the listing detail may not.</li>
+        <li><strong>MLS display rules still apply.</strong> Whether a listing that leaves the feed may still be shown inside the CRM is set by the MLS license; the interaction record stays either way.</li>
       </ul>
 
       <h2>Pipeline stages</h2>
@@ -382,16 +394,12 @@ CREATE TABLE assignment (
         When a third-party CRM stays in place, decide field by field which side wins, and write it down. A sound
         default is that the system where agents work owns stage and notes, and the platform owns capture,
         attribution, consent and property interactions. Sync is then two one-way flows, not one two-way merge:
-      </p>
-      <ul>
-        <li><strong>Outbound:</strong> events are written to an outbox in the same transaction as the change and delivered with retries. The receiving call is an upsert keyed by your contact id stored as an external id on their side, so a retry updates and never duplicates.</li>
-        <li><strong>Inbound:</strong> their webhooks are verified, acknowledged, queued and applied idempotently, with the provider&apos;s event id recorded. Ordering is not assumed.</li>
-        <li><strong>Echo suppression:</strong> a change you pushed will come back as their webhook. Tag writes with their origin and drop the echo, or two systems will update each other indefinitely.</li>
-        <li><strong>Reconciliation:</strong> a scheduled comparison of recently changed records on both sides catches what webhooks missed.</li>
-      </ul>
-      <p>
-        Signature checks, retries, the outbox and reconciliation are covered in detail in{' '}
+        outbound events delivered from an outbox as upserts keyed by an external id, and inbound webhooks
+        verified, queued and applied idempotently, with a scheduled reconciliation for what both miss. Those
+        mechanics are in{' '}
         <Link href="/blog/webhook-event-driven-integrations">reliable webhook and event-driven integrations</Link>.
+        One point is specific to two-way CRM sync: a change you pushed comes back as their webhook. Tag each
+        write with its origin and drop the echo, or the two systems will update each other indefinitely.
       </p>
 
       <h2>Privacy and data-subject requests: questions to plan for</h2>
@@ -416,11 +424,9 @@ CREATE TABLE assignment (
       </ul>
 
       <GuideFaq slug={SLUG} items={[
-        { question: 'What should a real estate CRM record when an enquiry arrives?', answer: ['The raw submission, a sender-generated capture id, server time, the tenant and site, the listing’s source and key with a price and status snapshot, the search that led to it, first-touch and last-touch campaign data, and the consent wording and choices shown on the form. Store the enquiry as its own record and resolve it to a contact afterwards.'] },
-        { question: 'How do you stop duplicate contacts in a CRM?', answer: ['Normalize emails and phone numbers, keep them in an identifier table with a unique constraint, and match on exact identifiers only. Offer fuzzy matches as suggestions for a person to confirm. Use an atomic upsert so two simultaneous submissions cannot create two rows: in PostgreSQL, ', ['ON CONFLICT DO UPDATE guarantees an atomic INSERT or UPDATE outcome', PG_INSERT], '. Merge by pointer so a wrong merge can be reversed.'] },
+        { question: 'How do you stop duplicate contacts in a CRM?', answer: ['Normalize emails and phone numbers, keep them in an identifier table with a unique constraint, and match on exact identifiers only. Offer fuzzy matches as suggestions for a person to confirm. Claim identifiers with an atomic upsert so two simultaneous submissions cannot create two contacts: in PostgreSQL, ', ['ON CONFLICT DO UPDATE guarantees an atomic INSERT or UPDATE outcome', PG_INSERT], '. Merge by pointer so a wrong merge can be reversed.'] },
         { question: 'How should lead routing handle an agent who does not respond?', answer: ['Record a respond-by time on the assignment from the brokerage’s own response target and run a delayed job that checks it. On expiry, apply the brokerage’s policy: remind, escalate or reassign, appending a new assignment and keeping the old one with its end reason. The target is an input to the design; the platform makes the timer reliable but cannot promise a person answers.'] },
         { question: 'How quickly must an SMS or email opt-out take effect?', answer: ['Build it to take effect immediately. The published outer limits are longer: the FTC says you ', ['must honor a recipient’s opt-out request within 10 business days', FTC_CANSPAM], ' for commercial email, and the FCC rule says consent revocations ', ['must be honored within a reasonable time not to exceed ten business days', CFR_1200], '. Which rules apply to your messages is a question for counsel.'] },
-        { question: 'Should the CRM store listing data?', answer: ['It should store a reference: the listing’s source system and key, plus a small snapshot of price and status at the time of the event. Current listing details are read from the listing store, which owns them and applies MLS display rules. The RESO Data Dictionary defines ListingKey as ', ['a unique identifier for this record from the immediate source', DD_LISTING_KEY], ', which is why the reference includes the source.'] },
       ]} />
 
       <p className="cp-note">

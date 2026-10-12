@@ -22,6 +22,22 @@ All pages fetched and read on 2026-10-12. Each row is the sentence or figure the
 
 Note: ftc.gov returned 404 to a plain curl request and its content was read through the WebFetch tool instead; the quoted sentences are as that tool returned them from the page.
 
+## Independent QA, 2026-10-12
+
+All 9 source URLs were checked again by a second reviewer. Seven answer `curl` and every quoted sentence was found. The two that refuse plain clients were opened in a real browser and read from the rendered page text:
+
+- **ftc.gov CAN-SPAM guide** (404 to curl, loads in a browser): all four sentences logged above are on the page word for word. Added from the same page: "Both the company whose product is promoted in the message and the company that actually sends the message may be held legally responsible." The WebFetch caveat in the note above no longer applies.
+- **fcc.gov consumer guide** (403 to curl): both logged sentences are on the page word for word ("Robotexts" and "Opting out of autodialed calls" sections).
+
+Changed in QA:
+
+- "the brokerage is responsible for what the platform sends in its name" was a legal conclusion the FTC page does not state. Replaced with the FTC sentence above and a question for counsel.
+- CASL: the article said the government describes the law as "requiring" consent. The page's sentence is "by requesting amongst other things, that businesses obtain consent before sending commercial electronic messages"; the wording now follows it, and what counts as consent is left to counsel. "Built on consent" was removed.
+- utm_campaign is described on Google's page as "Product, slogan, promo code"; the link text now says so.
+- Removed as unsupported: that keeping a commercial CRM "is the more common route", that "most CRM problems in brokerages" have one cause, and that "generic CRMs do not model" listing interest.
+- "A listing that leaves the feed may have to stop being shown" is now a statement that the MLS license decides.
+- Schema and code: a partial unique index now enforces one open assignment per enquiry; the illustrative event ids are UUIDs, matching the `uuid` columns; the identity-resolution text describes the claim-with-ON CONFLICT transaction and the case where email and phone resolve to different contacts; a warning was added against following the log by `recorded_at` alone.
+
 ## Peregrine statements and their source
 - "Inbound leads were routed to a shared inbox"; a lead-qualification chatbot that "Qualifies by budget, timeline, location, and pre-approval status": `src/app/case-studies/w3re-ai-real-estate-platform/page.tsx`. No figures from that page are repeated.
 
