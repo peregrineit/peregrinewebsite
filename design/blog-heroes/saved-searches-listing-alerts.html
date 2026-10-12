@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=1200">
+<title>Architecture · Alerts</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{font-family:Inter,'SF Pro Display',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#f8fafc;
+ background:#060b18;position:relative}
+.bg{position:absolute;inset:0;background:
+ radial-gradient(620px 420px at 86% 18%,rgba(34,211,238,.30),transparent 62%),
+ radial-gradient(560px 460px at 96% 96%,rgba(129,140,248,.34),transparent 60%),
+ radial-gradient(520px 380px at 4% 100%,rgba(14,165,233,.20),transparent 60%),
+ linear-gradient(135deg,#060b18 0%,#0b1630 55%,#0a1026 100%)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(148,163,184,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.07) 1px,transparent 1px);
+ background-size:44px 44px;mask-image:radial-gradient(900px 520px at 70% 45%,#000 20%,transparent 75%);-webkit-mask-image:radial-gradient(900px 520px at 70% 45%,#000 20%,transparent 75%)}
+.wrap{position:absolute;inset:0;padding:52px 56px;display:flex;gap:28px}
+.left{width:560px;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.14em;font-size:15px;color:#e2e8f0}
+.brand img{width:40px;height:40px;display:block;filter:drop-shadow(0 0 14px rgba(34,211,238,.45))}
+.pill{margin-top:44px;align-self:flex-start;font-size:13.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#67e8f9;
+ padding:8px 14px;border-radius:999px;background:rgba(34,211,238,.10);border:1px solid rgba(34,211,238,.35)}
+h1{margin-top:22px;font-size:58px;line-height:1.04;font-weight:800;letter-spacing:-.025em}
+h1 em{font-style:normal;background:linear-gradient(90deg,#22d3ee,#818cf8 70%,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin-top:20px;font-size:21px;line-height:1.45;color:#cbd5e1;max-width:520px}
+.foot{margin-top:auto;display:flex;gap:18px;align-items:center;font-size:15px;color:#94a3b8}
+.foot b{color:#e2e8f0;font-weight:600}
+.dot{width:5px;height:5px;border-radius:50%;background:#475569}
+.right{flex:1;position:relative}
+.glass{background:linear-gradient(180deg,rgba(30,41,69,.82),rgba(15,23,42,.82));border:1px solid rgba(148,163,184,.22);border-radius:20px;
+ box-shadow:0 30px 80px rgba(2,6,23,.65),inset 0 1px 0 rgba(255,255,255,.07);backdrop-filter:blur(6px)}
+.glow{box-shadow:0 0 0 1px rgba(34,211,238,.45),0 24px 70px rgba(34,211,238,.28),inset 0 1px 0 rgba(255,255,255,.1)}
+.muted{color:#94a3b8}.cy{color:#67e8f9}
+.left{width:590px}.sub{font-size:19.5px;max-width:540px}.bx{position:absolute;border-radius:16px;padding:12px 16px;font-weight:700;font-size:16px}h1{font-size:48px}.ss,.nl{position:absolute;top:8px;width:232px;padding:14px 16px;border-radius:16px;display:flex;flex-direction:column}.ss{right:262px}.nl{right:0}small{font-size:13px;color:#94a3b8;font-weight:600}.ss b,.nl b{font-size:17px;margin-top:3px}
+.jn{position:absolute;right:0;top:86px;width:494px;height:118px}.mt{position:absolute;right:157px;top:204px;width:180px;text-align:center;padding:16px;border-radius:18px;font-size:26px;font-weight:800}.mt small{display:block}
+.jn2{position:absolute;right:0;top:296px;width:494px;height:70px}.nt{position:absolute;top:372px;width:218px;display:flex;align-items:center;gap:10px;padding:15px 18px;border-radius:16px;font-size:18px;font-weight:700}.n1{right:268px}.n2{right:8px}</style></head><body><div class="bg"></div><div class="grid"></div>
+<div class="wrap"><div class="left"><div class="brand"><img src="../../public/favicons/favicon-192x192.png" alt="">PEREGRINE IT</div><div class="pill">Architecture · Alerts</div>
+<h1>Designing Reliable <em>Saved Searches and Listing Alerts</em></h1><p class="sub">Matching, change detection, deduplication, schedules and delivery failures.</p><div class="foot"><b>Match</b><span class='dot'></span><b>Deduplicate</b><span class='dot'></span><b>Deliver</b></div></div><div class="right"><div class="ss glass"><small>Saved search</small><b>3+ beds · drawn area</b></div><div class="nl glass"><small>Listing change</small><b>New listing</b></div>
+<svg class="jn" viewBox="0 0 500 120"><defs><linearGradient id='ga' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='520' y2='440'><stop offset='0' stop-color='#22d3ee'/><stop offset='1' stop-color='#818cf8'/></linearGradient><marker id='ah' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='7' markerHeight='7' orient='auto-start-reverse'><path d='M0 0L10 5L0 10z' fill='#818cf8'/></marker></defs><g fill="none" stroke="url(#ga)" stroke-width="2.5" marker-end="url(#ah)"><path d="M120 0 C120 60 220 50 240 98"/><path d="M380 0 C380 60 280 50 260 98"/></g></svg>
+<div class="mt glass glow">Match<small>once per change</small></div>
+<svg class="jn2" viewBox="0 0 500 70"><defs><linearGradient id='ga' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='520' y2='440'><stop offset='0' stop-color='#22d3ee'/><stop offset='1' stop-color='#818cf8'/></linearGradient><marker id='ah' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='7' markerHeight='7' orient='auto-start-reverse'><path d='M0 0L10 5L0 10z' fill='#818cf8'/></marker></defs><g fill="none" stroke="url(#ga)" stroke-width="2.5" marker-end="url(#ah)"><path d="M250 0 C250 34 130 30 120 62"/><path d="M250 0 C250 34 370 30 380 62"/></g></svg>
+<div class="nt glass n1"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 1 1 12 0c0 6 2.5 7 2.5 7h-17S6 15 6 9"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>Instant alert</div>
+<div class="nt glass n2"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>Daily digest</div></div></div></body></html>

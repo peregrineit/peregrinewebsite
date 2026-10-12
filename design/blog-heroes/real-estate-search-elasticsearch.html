@@ -1,0 +1,39 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=1200">
+<title>Architecture · Search</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{font-family:Inter,'SF Pro Display',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#f8fafc;
+ background:#060b18;position:relative}
+.bg{position:absolute;inset:0;background:
+ radial-gradient(620px 420px at 86% 18%,rgba(34,211,238,.30),transparent 62%),
+ radial-gradient(560px 460px at 96% 96%,rgba(129,140,248,.34),transparent 60%),
+ radial-gradient(520px 380px at 4% 100%,rgba(14,165,233,.20),transparent 60%),
+ linear-gradient(135deg,#060b18 0%,#0b1630 55%,#0a1026 100%)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(148,163,184,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.07) 1px,transparent 1px);
+ background-size:44px 44px;mask-image:radial-gradient(900px 520px at 70% 45%,#000 20%,transparent 75%);-webkit-mask-image:radial-gradient(900px 520px at 70% 45%,#000 20%,transparent 75%)}
+.wrap{position:absolute;inset:0;padding:52px 56px;display:flex;gap:28px}
+.left{width:560px;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.14em;font-size:15px;color:#e2e8f0}
+.brand img{width:40px;height:40px;display:block;filter:drop-shadow(0 0 14px rgba(34,211,238,.45))}
+.pill{margin-top:44px;align-self:flex-start;font-size:13.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#67e8f9;
+ padding:8px 14px;border-radius:999px;background:rgba(34,211,238,.10);border:1px solid rgba(34,211,238,.35)}
+h1{margin-top:22px;font-size:58px;line-height:1.04;font-weight:800;letter-spacing:-.025em}
+h1 em{font-style:normal;background:linear-gradient(90deg,#22d3ee,#818cf8 70%,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin-top:20px;font-size:21px;line-height:1.45;color:#cbd5e1;max-width:520px}
+.foot{margin-top:auto;display:flex;gap:18px;align-items:center;font-size:15px;color:#94a3b8}
+.foot b{color:#e2e8f0;font-weight:600}
+.dot{width:5px;height:5px;border-radius:50%;background:#475569}
+.right{flex:1;position:relative}
+.glass{background:linear-gradient(180deg,rgba(30,41,69,.82),rgba(15,23,42,.82));border:1px solid rgba(148,163,184,.22);border-radius:20px;
+ box-shadow:0 30px 80px rgba(2,6,23,.65),inset 0 1px 0 rgba(255,255,255,.07);backdrop-filter:blur(6px)}
+.glow{box-shadow:0 0 0 1px rgba(34,211,238,.45),0 24px 70px rgba(34,211,238,.28),inset 0 1px 0 rgba(255,255,255,.1)}
+.muted{color:#94a3b8}.cy{color:#67e8f9}
+.left{width:590px}.sub{font-size:19.5px;max-width:540px}.bx{position:absolute;border-radius:16px;padding:12px 16px;font-weight:700;font-size:16px}h1{font-size:47px}.sb{position:absolute;right:0;top:10px;width:480px;display:flex;align-items:center;gap:12px;padding:16px 20px;border-radius:16px;font-size:19px;color:#e2e8f0}.sb span{width:2px;height:22px;background:#67e8f9;display:block}
+.fl{position:absolute;right:0;top:92px;width:480px;display:flex;flex-wrap:wrap;gap:10px}.fl b{font-size:15px;padding:9px 14px;border-radius:999px;background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.4);color:#a5f3fc}
+.al{position:absolute;right:160px;top:206px;width:160px;padding:14px;text-align:center;border-radius:16px}.al small,.ix small{display:block;font-size:13px;color:#94a3b8;font-weight:600}.al b{font-size:22px;color:#c4b5fd}
+.ln{position:absolute;right:238px;top:286px;width:3px;height:46px;background:linear-gradient(#818cf8,#22d3ee)}.ix{position:absolute;top:332px;width:224px;padding:18px;border-radius:16px}.ix b{font-family:ui-monospace,Menlo,monospace;font-size:20px}.v2{right:256px}.v3{right:0;opacity:.72;border-style:dashed}</style></head><body><div class="bg"></div><div class="grid"></div>
+<div class="wrap"><div class="left"><div class="brand"><img src="../../public/favicons/favicon-192x192.png" alt="">PEREGRINE IT</div><div class="pill">Architecture · Search</div>
+<h1>Designing a <em>Real Estate Search Engine</em> with Elasticsearch</h1><p class="sub">Mappings, filters, geo queries, autocomplete and zero-downtime reindexing.</p><div class="foot"><b>Index design</b><span class='dot'></span><b>Filters</b><span class='dot'></span><b>Reindex behind an alias</b></div></div><div class="right"><div class="sb glass glow"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>3 bed house near the lake<span></span></div>
+<div class="fl"><b>Price range</b><b>Beds 3+</b><b>Status: Active</b><b>Within drawn area</b></div>
+<div class="al glass"><small>alias</small><b>listings</b></div><div class="ln"></div>
+<div class="ix v2 glass glow"><b>listings_v2</b><small>live</small></div><div class="ix v3 glass"><b>listings_v3</b><small>reindexing</small></div></div></div></body></html>
