@@ -351,6 +351,22 @@ export const guides: Guide[] = [
     service: 'mls-idx-integration',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
+  {
+    slug: 'map-based-property-search',
+    related: ['real-estate-search-elasticsearch', 'real-estate-platform-tech-stack'],
+    cta: {
+      heading: 'Building Map Search on Listing Data?',
+      text: 'Tell us your data store, listing volume and how the map should behave on desktop and mobile. An engineer will walk through the query, clustering and sync design with you.',
+    },
+    title: 'Building Map-Based Property Search with Geospatial Queries',
+    metaTitle: 'Map-Based Property Search: Geospatial Queries',
+    description:
+      'How to build map search for listings: viewport and polygon queries, spatial indexes, clustering, list and map sync, URL state, mobile and address display.',
+    datePublished: '2026-10-12',
+    dateModified: '2026-10-12',
+    service: 'mls-idx-integration',
+    caseStudy: 'scaling-real-estate-saas-platform',
+  },
 ];
 
 export function getGuide(slug: string): Guide {
