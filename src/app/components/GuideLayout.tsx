@@ -100,6 +100,13 @@ export default function GuideLayout({ slug, children }: { slug: string; children
       <article className="cp-section">
         <div className="cp-container cp-narrow cp-prose">{children}</div>
       </article>
+      {g.examples && (
+        <section className="cp-section" style={{ paddingTop: 0 }}>
+          <div className="cp-container cp-narrow">
+            <p className="cp-examples-note"><strong>About the examples.</strong> Every code sample here is illustrative. {g.examples}</p>
+          </div>
+        </section>
+      )}
       <section className="cp-section">
         <div className="cp-container cp-narrow">
           <span className="cp-label">Related</span>
