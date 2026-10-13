@@ -271,18 +271,19 @@ export const guides: Guide[] = [
   },
   {
     slug: 'idx-website-features-checklist',
-    hero: 'Illustration: a listing search page with a drawn map area, results and feature labels.',
-    related: ['idx-vendor-vs-custom-build', 'real-estate-website-seo-aeo-geo'],
+    // Rewritten 2026-10-13 as an engineering requirements article; the slug is unchanged pending the owner's decision.
+    hero: 'Illustration: five stacked requirement layers for an IDX platform: architecture, data, security, performance and operations.',
+    related: ['mls-sync-engine', 'multi-tenant-real-estate-saas'],
     cta: {
-      heading: 'Writing Requirements for an IDX Website?',
-      text: 'Tell us which MLSs you belong to and which rows of the checklist your current site fails. An engineer will tell you what a vendor can cover and what needs a build.',
+      heading: 'Writing Requirements for an IDX Platform?',
+      text: 'Tell us which MLS feeds you replicate and which rows of the requirements table you cannot verify today. An engineer will tell you how we would approach closing them.',
     },
-    title: 'IDX Website Features: A Checklist for Brokerages and Agent Teams',
-    metaTitle: 'IDX Website Features: Requirements Checklist',
+    title: 'Engineering Requirements for a Production-Ready IDX Platform',
+    metaTitle: 'Engineering Requirements for an IDX Platform',
     description:
-      'The IDX website features that matter, grouped by who they serve: buyers, agents, the brokerage and search engines, with vendor questions and MLS rules.',
+      'Testable engineering requirements for an IDX platform: architecture, data reliability, security, performance and operations, each with a way to verify it.',
     datePublished: '2026-10-12',
-    dateModified: '2026-10-12',
+    dateModified: '2026-10-13',
     service: 'mls-idx-integration',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
