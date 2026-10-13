@@ -350,11 +350,12 @@
   },
   "/blog/idx-website-features-checklist": {
    "canonical": "https://peregrine-it.com/blog/idx-website-features-checklist",
-   "description": "The IDX website features that matter, grouped by who they serve: buyers, agents, the brokerage and search engines, with vendor questions and MLS rules.",
+   "description": "Testable engineering requirements for an IDX platform: architecture, data reliability, security, performance and operations, each with a way to verify it.",
    "h1": [
-    "IDX Website Features: A Checklist for Brokerages and Agent Teams"
+    "Engineering Requirements for a Production-Ready IDX Platform"
    ],
    "jsonld_types": [
+    "Answer",
     "Answer",
     "Answer",
     "Answer",
@@ -378,11 +379,12 @@
     "Question",
     "Question",
     "Question",
+    "Question",
     "WebSite"
    ],
    "robots": "index, follow",
    "status": 200,
-   "title": "IDX Website Features: Requirements Checklist | Peregrine IT"
+   "title": "Engineering Requirements for an IDX Platform | Peregrine IT"
   },
   "/blog/investor-portal-security-checklist": {
    "canonical": "https://peregrine-it.com/blog/investor-portal-security-checklist",
@@ -2815,5 +2817,5 @@
    "title": "MLS & IDX Cost Calculator: Published Fees | Peregrine IT"
   }
  },
- "source": "http://localhost:3057"
+ "source": "http://localhost:3061"
 }
