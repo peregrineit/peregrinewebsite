@@ -145,7 +145,7 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 ### Q8 — release readiness
 - Draft pull request opened: https://github.com/peregrineit/peregrinewebsite/pull/7 (`seo/phase-12` → `main`, draft). Not merged; merging is the owner's decision (B1) after DEPLOYMENT.md section 2.
 
-## Loop status
+## Loop status (as of 2026-10-10)
 - **Mechanism:** Claude Code `/loop` in self-paced mode (ScheduleWakeup), started 2026-10-09 in this session. Each wake-up re-reads `CLAUDE.md` and `docs/seo/`, takes the first `ready` row in the loop queue, and pushes to `seo/phase-12`. It runs only while this Claude Code session stays open.
 - **Iteration 1 completed:** Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8.
 - **Queue now:** Q13 (Odoo implementation cost guide; research running) and Q14 (data-access guide citation follow-up) are `ready`. Q9–Q12 are blocked on the owner or on production data.
@@ -261,3 +261,13 @@ One entry per task, newest last. Hashes are on `seo/phase-12`.
 
 ## Loop status
 - Stopped. The only remaining step is the owner's authorization to merge PR #7.
+
+## Post-deployment (2026-10-10)
+- **Merge commit:** `48ed23f` (PR #7), deployed to production by Vercel.
+- **Verified on production:** `seo_check.py` FAILS: 0 on 57 URLs; no `noindex`, canonicals match the sitemap; `robots.txt` and redirects correct; lead status endpoint reports Resend configured with a verified custom sender in the production environment; all new pages 200; calculator computes; homepage as released; IndexNow accepted 57 URLs; Lighthouse accessibility, best practices and SEO 100 on five pages.
+- **No deployment defect found.**
+- **Looked into and not acted on:** case-study lab LCP (3.7 s simulated). First paint on this machine was too variable across runs and pages to call it a site defect; real-user data in Vercel Speed Insights should decide.
+- **Blocked:** Search Console (no access), so sitemap submission, indexing status and the data-driven queue wait on the owner (B26).
+
+## Loop status
+- Waiting on data. Nothing further is safe or useful to change without new Search Console numbers or an owner answer in BLOCKERS.md.
