@@ -30,39 +30,6 @@ def frame(title, subtitle, body, desc, foot):
 def chip(x, y, w, text, h=34, fill=CARD, ink=INK, size=15, stroke=LINE):
     return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="8" fill="{fill}" stroke="{stroke}"/><text x="{x+w/2}" y="{y+h/2+5}" fill="{ink}" font-size="{size}" text-anchor="middle">{e(text)}</text>'
 
-def cheapest():
-    data = [("Buying Buddy, Agent", 49), ("MLSImport, Single MLS", 49), ("Flexmls IDX, SmartFrame", 49), ("Wovax IDX", 59),
-            ("Placester, Agent Essential", 59), ("IDX Broker, Core", 60), ("myRealPage", 69.99), ("Showcase IDX, Essentials", 94.95), ("Realtyna, MLS On The Fly", 99)]
-    x0, y0, row, maxw = 330, 156, 44, 700
-    b = []
-    for i, (name, price) in enumerate(data):
-        y = y0 + i * row; w = maxw * price / 110
-        b.append(f'<text x="{x0-16}" y="{y+22}" fill="{INK}" font-size="16" text-anchor="end">{e(name)}</text>')
-        b.append(f'<rect x="{x0}" y="{y+4}" width="{w:.0f}" height="26" rx="6" fill="url(#ac)" opacity="{0.95 if price < 50 else 0.7}"/>')
-        label = f"${price:g}" if price == int(price) else f"${price:.2f}"
-        b.append(f'<text x="{x0+w+12:.0f}" y="{y+23}" fill="{INK}" font-size="16" font-weight="600">{label}</text>')
-    return frame("Lowest published IDX plan, per month", "Nine vendors that publish prices. Setup fees and MLS fees are extra and vary.", "\n".join(b),
-                 "Bar chart of the lowest published monthly IDX plan from nine vendors: Buying Buddy, MLSImport and Flexmls IDX at 49 dollars; Wovax and Placester at 59; IDX Broker at 60; myRealPage at 69.99; Showcase IDX at 94.95; Realtyna at 99 dollars.",
-                 "Prices as published by each vendor on October 12, 2026.")
-
-def features():
-    groups = [("Home buyer", ["Search filters and status", "Map search, drawn boundary", "Saved searches and alerts", "Listing detail pages", "Photos from your storage", "Sold and off-market", "Same content on a phone", "Speed"]),
-              ("Agent or team", ["Lead capture, registration", "Lead routing", "CRM sync", "Agent subdomains or sites", "Market reports"]),
-              ("Brokerage", ["Several MLSs in one search", "Attribution, disclaimers", "Refresh and removals", "Seller opt-outs", "Analytics, scraping watch"]),
-              ("Search engines", ["Pages on your domain, in HTML", "Crawlable links, pagination", "Control of filter URLs", "Sitemaps, accurate lastmod", "Status codes for removed", "Structured data", "Canonicals across agent sites"])]
-    b, cw, gap, x = [], 262, 18, 48
-    for name, items in groups:
-        b.append(f'<rect x="{x}" y="150" width="{cw}" height="412" rx="14" fill="{CARD}" stroke="{LINE}"/>')
-        b.append(f'<text x="{x+18}" y="184" fill="{ACCENT}" font-size="19" font-weight="700">{e(name)}</text>')
-        b.append(f'<text x="{x+cw-18}" y="184" fill="{MUTED}" font-size="15" text-anchor="end">{len(items)}</text>')
-        for j, it in enumerate(items):
-            yy = 216 + j * 42
-            b.append(f'<circle cx="{x+26}" cy="{yy-5}" r="4" fill="{ACCENT2}"/><text x="{x+40}" y="{yy}" fill="{INK}" font-size="14.5">{e(it)}</text>')
-        x += cw + gap
-    return frame("IDX website features, by who they serve", "25 features in the checklist. MLS rules constrain several of them.", "\n".join(b),
-                 "Four columns listing IDX website features: eight for the home buyer, five for the agent or team, five for the brokerage and seven for search engines.",
-                 "From the IDX website features checklist.")
-
 def boards():
     cols = [("MLS Grid", ["Stellar MLS", "MRED", "OneKey MLS", "NWMLS", "NorthstarMLS"]), ("Trestle", ["CRMLS", "NTREIS", "MIAMI MLS"]),
             ("Bridge Interactive", ["Stellar MLS", "MIAMI MLS", "FMLS", "REcolorado"]), ("Spark", ["ARMLS"]), ("Its own API", ["Bright MLS", "MLS PIN", "Realcomp", "Metro MLS"])]
@@ -113,7 +80,7 @@ def seo():
                  "Three columns. SEO: listing pages on your own domain, HTML in the first response, status codes for ended listings, sitemaps, Core Web Vitals. AEO: direct answers, tables and dated facts, authorship, matching structured data, original area data. GEO: allow AI search crawlers, decide on training crawlers, no published ranking formula, llms.txt is a proposal, same foundations as SEO.",
                  "From the SEO, AEO and GEO guide, based on primary documentation read October 12, 2026.")
 
-IMAGES = {"cheapest-idx-options": cheapest, "idx-website-features-checklist": features, "mls-boards-compared": boards,
+IMAGES = {"mls-boards-compared": boards,
           "real-estate-platform-tech-stack": stack, "real-estate-website-seo-aeo-geo": seo}
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)

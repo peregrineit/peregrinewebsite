@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-13",
+ "captured": "2026-10-14",
  "fields": [
   "status",
   "title",
@@ -147,46 +147,6 @@
    "robots": "index, follow",
    "status": 200,
    "title": "Reliable Background Jobs with Redis & BullMQ | Peregrine IT"
-  },
-  "/blog/cheapest-idx-options": {
-   "canonical": "https://peregrine-it.com/blog/cheapest-idx-options",
-   "description": "The lowest published IDX plan from each vendor in 2026, with setup and MLS fees, first-year totals, free MLS-provided links and what each low price leaves out.",
-   "h1": [
-    "Cheapest IDX Options in 2026: Lowest Published Prices by Vendor"
-   ],
-   "jsonld_types": [
-    "Answer",
-    "Answer",
-    "Answer",
-    "Answer",
-    "Answer",
-    "Article",
-    "BreadcrumbList",
-    "ContactPoint",
-    "Country",
-    "Country",
-    "Country",
-    "FAQPage",
-    "ImageObject",
-    "ImageObject",
-    "ListItem",
-    "ListItem",
-    "ListItem",
-    "Organization",
-    "Person",
-    "Place",
-    "PostalAddress",
-    "QuantitativeValue",
-    "Question",
-    "Question",
-    "Question",
-    "Question",
-    "Question",
-    "WebSite"
-   ],
-   "robots": "index, follow",
-   "status": 200,
-   "title": "Cheapest IDX Options: 2026 Published Prices | Peregrine IT"
   },
   "/blog/cost-to-build-a-real-estate-platform": {
    "canonical": "https://peregrine-it.com/blog/cost-to-build-a-real-estate-platform",
@@ -350,11 +310,12 @@
   },
   "/blog/idx-website-features-checklist": {
    "canonical": "https://peregrine-it.com/blog/idx-website-features-checklist",
-   "description": "The IDX website features that matter, grouped by who they serve: buyers, agents, the brokerage and search engines, with vendor questions and MLS rules.",
+   "description": "Testable engineering requirements for an IDX platform: architecture, data reliability, security, performance and operations, each with a way to verify it.",
    "h1": [
-    "IDX Website Features: A Checklist for Brokerages and Agent Teams"
+    "Engineering Requirements for a Production-Ready IDX Platform"
    ],
    "jsonld_types": [
+    "Answer",
     "Answer",
     "Answer",
     "Answer",
@@ -378,11 +339,12 @@
     "Question",
     "Question",
     "Question",
+    "Question",
     "WebSite"
    ],
    "robots": "index, follow",
    "status": 200,
-   "title": "IDX Website Features: Requirements Checklist | Peregrine IT"
+   "title": "Engineering Requirements for an IDX Platform | Peregrine IT"
   },
   "/blog/investor-portal-security-checklist": {
    "canonical": "https://peregrine-it.com/blog/investor-portal-security-checklist",

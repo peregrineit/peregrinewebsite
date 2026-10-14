@@ -29,6 +29,11 @@ Per article: cover `public/images/blog/<slug>-hero.webp` (source `design/blog-he
 - IndexNow: 17 URLs submitted, HTTP 200.
 - Examples: SQL run on PostgreSQL 16 and Elasticsearch requests on 8.19.1; PostGIS SQL, BullMQ TypeScript and pseudocode not executed, stated on each page.
 
+## Housekeeping (owner decisions of 2026-10-14; branch `release/idx-housekeeping`, not yet deployed)
+
+- `/blog/cheapest-idx-options` retired: 301 to `/blog/mls-idx-integration-cost`; removed from the sitemap, `/blog`, `llms.txt`, related lists and the MLS/IDX service page. Reasoning in `RETIREMENT-cheapest-idx-options.md`. Sitemap: 77 URLs.
+- `/blog/idx-website-features-checklist` rewritten as "Engineering Requirements for a Production-Ready IDX Platform" at the same URL and canonical; new cover and diagram; `datePublished` 2026-10-12 kept, `dateModified` 2026-10-14. Sources in `sources/idx-website-features-checklist.md`.
+
 ## Revised guides (original publication date kept)
 
 | Title | URL | Change | Status |

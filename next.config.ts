@@ -71,6 +71,12 @@ const nextConfig: NextConfig = {
         destination: "/case-studies/w3re-ai-real-estate-platform",
         statusCode: 301 as const,
       },
+      // Retired 2026-10-14: the price roundup is covered by the MLS/IDX cost guide.
+      {
+        source: "/blog/cheapest-idx-options",
+        destination: "/blog/mls-idx-integration-cost",
+        statusCode: 301 as const,
+      },
     ];
   },
 };

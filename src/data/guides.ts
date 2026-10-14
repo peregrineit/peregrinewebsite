@@ -25,7 +25,7 @@ export interface Guide {
 export const guides: Guide[] = [
   {
     slug: 'mls-idx-integration-cost',
-    related: ['cheapest-idx-options', 'idx-vendor-vs-custom-build'],
+    related: ['idx-vendor-vs-custom-build', 'idx-website-features-checklist'],
     cta: {
       heading: 'Scoping an MLS or IDX Integration?',
       text: 'Tell us which MLS boards you need and what you are building on top. We will tell you which feeds, vendors and license types apply before you budget.',
@@ -105,7 +105,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'idx-vendor-vs-custom-build',
-    related: ['idx-website-features-checklist', 'cheapest-idx-options'],
+    related: ['idx-website-features-checklist', 'mls-idx-integration-cost'],
     cta: {
       heading: 'Deciding Whether to Move Off Your IDX Vendor?',
       text: 'Tell us which MLSs you work in and what your current IDX cannot do. An engineer will tell you whether a data vendor, a custom pipeline or staying put makes sense.',
@@ -253,36 +253,20 @@ export const guides: Guide[] = [
     // No caseStudy: Peregrine has no published Odoo case study and no confirmed named integration.
   },
   {
-    slug: 'cheapest-idx-options',
-    hero: 'Illustration: price cards for the lowest published IDX plans ($49, $60 and $99 per month) beside a listing search screen.',
-    related: ['mls-idx-integration-cost', 'idx-vendor-vs-custom-build'],
-    cta: {
-      heading: 'Outgrown a Low-Cost IDX Plan?',
-      text: 'Tell us which MLSs you work in and what your current IDX cannot do. An engineer will tell you whether another vendor plan, a data vendor or a custom build fits.',
-    },
-    title: 'Cheapest IDX Options in 2026: Lowest Published Prices by Vendor',
-    metaTitle: 'Cheapest IDX Options: 2026 Published Prices',
-    description:
-      'The lowest published IDX plan from each vendor in 2026, with setup and MLS fees, first-year totals, free MLS-provided links and what each low price leaves out.',
-    datePublished: '2026-10-12',
-    dateModified: '2026-10-12',
-    service: 'mls-idx-integration',
-    // No caseStudy: the published case studies are custom builds, not low-cost vendor setups.
-  },
-  {
     slug: 'idx-website-features-checklist',
-    hero: 'Illustration: a listing search page with a drawn map area, results and feature labels.',
-    related: ['idx-vendor-vs-custom-build', 'real-estate-website-seo-aeo-geo'],
+    // Rewritten 2026-10-13 as an engineering requirements article; the slug is unchanged pending the owner's decision.
+    hero: 'Illustration: five stacked requirement layers for an IDX platform: architecture, data, security, performance and operations.',
+    related: ['mls-sync-engine', 'multi-tenant-real-estate-saas'],
     cta: {
-      heading: 'Writing Requirements for an IDX Website?',
-      text: 'Tell us which MLSs you belong to and which rows of the checklist your current site fails. An engineer will tell you what a vendor can cover and what needs a build.',
+      heading: 'Writing Requirements for an IDX Platform?',
+      text: 'Tell us which MLS feeds you replicate and which rows of the requirements table you cannot verify today. An engineer will tell you how we would approach closing them.',
     },
-    title: 'IDX Website Features: A Checklist for Brokerages and Agent Teams',
-    metaTitle: 'IDX Website Features: Requirements Checklist',
+    title: 'Engineering Requirements for a Production-Ready IDX Platform',
+    metaTitle: 'Engineering Requirements for an IDX Platform',
     description:
-      'The IDX website features that matter, grouped by who they serve: buyers, agents, the brokerage and search engines, with vendor questions and MLS rules.',
+      'Testable engineering requirements for an IDX platform: architecture, data reliability, security, performance and operations, each with a way to verify it.',
     datePublished: '2026-10-12',
-    dateModified: '2026-10-12',
+    dateModified: '2026-10-14',
     service: 'mls-idx-integration',
     caseStudy: 'scaling-real-estate-saas-platform',
   },
