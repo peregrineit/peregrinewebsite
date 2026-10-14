@@ -40,18 +40,6 @@ def page(pill, title, sub, foot, right, extra=""):
 <div class="wrap"><div class="left"><div class="brand"><img src="../../public/favicons/favicon-192x192.png" alt="">PEREGRINE IT</div><div class="pill">{pill}</div>
 <h1>{title}</h1><p class="sub">{sub}</p><div class="foot">{foot}</div></div><div class="right">{right}</div></div></body></html>"""
 
-cheapest = page("Guide · IDX pricing 2026", "The <em>cheapest IDX</em> options, compared", "Lowest published plan from nine vendors, and what each price leaves out.",
- "<b>From $49 / month</b><span class='dot'></span>Prices as published Oct 12, 2026",
- """<div class="card c3 glass"><div class="muted t">Realtyna</div><div class="p">$99<span>/mo</span></div></div>
-<div class="card c2 glass"><div class="muted t">IDX Broker · Core</div><div class="p">$60<span>/mo</span></div></div>
-<div class="card c1 glass glow"><div class="tag">Lowest published</div><div class="muted t">Buying Buddy · MLSImport · Flexmls IDX</div><div class="p big">$49<span>/mo</span></div>
-<div class="bars"><b style="height:38%"></b><b style="height:38%"></b><b style="height:38%"></b><b style="height:46%"></b><b style="height:46%"></b><b style="height:47%"></b><b style="height:55%"></b><b style="height:75%"></b><b style="height:78%"></b></div></div>""",
- """.card{position:absolute;padding:22px 24px}.card .t{font-size:15px;font-weight:600}.p{font-size:46px;font-weight:800;letter-spacing:-.02em;margin-top:6px}.p span{font-size:18px;color:#94a3b8;font-weight:600;margin-left:4px}
-.c3{right:0;top:22px;width:250px;transform:rotate(5deg);opacity:.75}.c2{right:150px;top:96px;width:270px;transform:rotate(-4deg);opacity:.9}
-.c1{right:20px;top:214px;width:440px;padding:26px 28px}.p.big{font-size:92px;line-height:1;background:linear-gradient(90deg,#fff,#a5f3fc);-webkit-background-clip:text;background-clip:text;color:transparent}.p.big span{-webkit-text-fill-color:#94a3b8;font-size:24px}
-.tag{display:inline-block;font-size:12.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#06202b;background:linear-gradient(90deg,#22d3ee,#a5b4fc);padding:6px 11px;border-radius:999px;margin-bottom:12px}
-.bars{display:flex;align-items:flex-end;gap:9px;height:96px;margin-top:18px}.bars b{flex:1;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#22d3ee,#6366f1);opacity:.55}.bars b:nth-child(-n+3){opacity:1;box-shadow:0 0 18px rgba(34,211,238,.6)}""")
-
 features = page("Engineering · IDX platform", "<em>Engineering Requirements</em> for a Production-Ready IDX Platform", "Architecture, data reliability, security, performance and operations, each as a requirement you can verify.",
  "<b>Testable requirements</b><span class='dot'></span>How to verify each one",
  """<div class="ly glass l1"><i>1</i><b>Architecture</b><small>data ownership · boundaries</small><u></u></div>
@@ -314,7 +302,7 @@ bullmq = page("Engineering · Background jobs", "Designing Reliable <em>Backgrou
 <rect x="10" y="360" width="510" height="56" rx="16" fill="#101c38" stroke="#2a3a59"/><text x="265" y="394" text-anchor="middle" fill="#e2e8f0" font-size="17" font-weight="700">Redis: queues, locks and job state</text></svg>""",
  X+"h1{font-size:47px}.jb{position:absolute;right:-4px;top:6px;width:524px;height:454px}")
 
-PAGES = {"cheapest-idx-options": cheapest, "idx-website-features-checklist": features, "mls-boards-compared": boards,
+PAGES = {"idx-website-features-checklist": features, "mls-boards-compared": boards,
          "real-estate-platform-tech-stack": stack, "real-estate-website-seo-aeo-geo": seo,
          "mls-data-pipeline-architecture": pipeline, "investor-portal-security-checklist": security, "laravel-upgrade-checklist": laravel,
          "odoo-shopify-marketplace-integration": odoo, "self-storage-software-build-vs-buy": storage,

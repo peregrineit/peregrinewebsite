@@ -1,6 +1,6 @@
 # Retirement recommendation: `/blog/cheapest-idx-options`
 
-**Date:** 2026-10-13. **Status:** recommendation only. Nothing on the site has been changed.
+**Date:** 2026-10-13. **Status:** approved by the owner on 2026-10-14 (301 to `/blog/mls-idx-integration-cost`, no 410); implemented on branch `release/idx-housekeeping`, not yet deployed.
 
 ## Recommendation
 
