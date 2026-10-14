@@ -2,6 +2,8 @@
 
 **Date:** 2026-10-10 · **Branch:** `seo/phase-12` · **Pull request:** [#7](https://github.com/peregrineit/peregrinewebsite/pull/7) (draft) · **Not merged, not deployed.**
 
+> **Released.** PR #7 was merged on 2026-10-09 as `48ed23f` and is live. Post-deployment results: `MONITORING.md`, "Day-0 results". The text below is the pre-release report, kept as the record.
+
 ## Decision
 
 **READY TO DEPLOY, pending the owner's authorization to merge.** The release blocker is cleared: a real submission on the preview was delivered. PR #7 is not merged and nothing is deployed.
