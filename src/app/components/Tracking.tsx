@@ -4,37 +4,45 @@ import Link from 'next/link';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { applyConsentChoice, calendlyUrl, countPageView, locationOf, rememberAttribution, rememberCta } from '@/lib/attribution';
+import { clearGaCookies, readConsent, shouldLoadGa, subscribeConsent, writeConsent, type Consent } from '@/lib/consent';
 import { formTracker, track } from '@/lib/track';
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
-const CONSENT_KEY = 'pit_analytics_consent';
-type Consent = 'granted' | 'denied';
 
-const noSubscription = () => () => {};
+/** True when GA4 is configured, so a consent choice means something. */
+export const analyticsConfigured = Boolean(GA_ID);
 
-function storedConsent(): Consent | null {
-  try {
-    const v = localStorage.getItem(CONSENT_KEY);
-    return v === 'granted' || v === 'denied' ? v : null;
-  } catch {
-    return null;
+/** The stored choice, kept in step across components and tabs. Null on the server and before a choice. */
+export function useConsent(): Consent | null {
+  return useSyncExternalStore(subscribeConsent, readConsent, () => null);
+}
+
+/**
+ * Records the visitor's analytics choice. Accepting lets <Tracking> load GA4 on this page.
+ * Declining after GA4 has loaded on this page (a withdrawal) cannot unload the script that is
+ * already running, so consent is set to denied for it, its cookies are deleted, and the page
+ * reloads: the reloaded page has no GA4 at all.
+ */
+export function chooseAnalytics(value: Consent) {
+  const gaRunning = typeof window.gtag === 'function';
+  writeConsent(value);
+  // The same choice governs the first-touch record: kept in localStorage only when
+  // accepted, deleted from it when declined (lib/attribution.ts).
+  applyConsentChoice();
+  if (value === 'denied') {
+    window.gtag?.('consent', 'update', { analytics_storage: 'denied' });
+    clearGaCookies();
+    if (gaRunning) window.location.reload();
   }
 }
 
-// Shown only when GA4 is enabled and the visitor has not chosen yet. Until they accept,
-// Consent Mode keeps analytics storage denied, so GA4 sets no cookies.
+// Shown only when GA4 is configured and the visitor has not chosen yet. Until they accept,
+// nothing from Google Analytics loads (Basic Consent Mode).
 function ConsentBar() {
-  // localStorage is not available during server rendering, so the server snapshot is
-  // "no choice needed" and the bar appears only after hydration.
-  const needsChoice = useSyncExternalStore(noSubscription, () => storedConsent() === null, () => false);
   const [closed, setClosed] = useState(false);
-  if (!needsChoice || closed) return null;
+  if (closed) return null;
   const choose = (value: Consent) => {
-    try { localStorage.setItem(CONSENT_KEY, value); } catch { /* choice lasts for this page only */ }
-    window.gtag?.('consent', 'update', { analytics_storage: value });
-    // The same choice governs the first-touch record: kept in localStorage only when
-    // accepted, deleted from it when declined (lib/attribution.ts).
-    applyConsentChoice();
+    chooseAnalytics(value);
     setClosed(true);
   };
   return (
@@ -55,9 +63,11 @@ function ConsentBar() {
 const QUICK_TRIGGERS = '[data-open-quick-project], #quick-project-btn, #quick-project-btn-footer, #quick-project-btn-footer-col';
 
 /** Site-wide click tracking (delegated, so no page needs its own handlers) and optional GA4
- *  with Consent Mode. Without NEXT_PUBLIC_GA_ID nothing from Google loads and no bar shows. */
+ *  in Basic Consent Mode: gtag.js loads only after the visitor accepts. Without
+ *  NEXT_PUBLIC_GA_ID nothing from Google loads and no bar shows. */
 export default function Tracking() {
   const pathname = usePathname();
+  const consent = useConsent();
   // Pages viewed this tab session: the first load and every client-side navigation.
   useEffect(() => {
     countPageView();
@@ -137,17 +147,19 @@ export default function Tracking() {
   }, []);
 
   if (!GA_ID) return null;
+  if (!shouldLoadGa(GA_ID, consent)) return consent === null ? <ConsentBar /> : null;
+  // Rendered only with consent, so the tag loads at most once per page (next/script dedupes by
+  // id). gtag('config') sends the page view for the current page; later client-side
+  // navigations are counted by GA4's history-change page views, once each.
   return (
     <>
-      <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+      <Script id="ga4-src" src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
       <Script id="ga4-init" strategy="afterInteractive">
         {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;` +
-          // Consent Mode v2: everything denied until the visitor accepts analytics.
-          `var c='denied';try{if(localStorage.getItem('${CONSENT_KEY}')==='granted')c='granted';}catch(e){}` +
-          `gtag('consent','default',{analytics_storage:c,ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});` +
+          // Analytics granted (the visitor accepted); advertising stays denied.
+          `gtag('consent','default',{analytics_storage:'granted',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});` +
           `gtag('js',new Date());gtag('config','${GA_ID}');`}
       </Script>
-      <ConsentBar />
     </>
   );
 }

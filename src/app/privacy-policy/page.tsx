@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import JsonLd, { ORGANIZATION_REF, SITE_URL } from '../components/JsonLd';
+import AnalyticsChoice from '../components/AnalyticsChoice';
 import { formatDate } from '@/data/guides';
 import { privacyPolicyUpdated } from '@/data/legal';
 
@@ -101,6 +102,7 @@ export default function PrivacyPolicy() {
             We use Google Analytics to understand website traffic and visitor behaviour. Google Analytics uses cookies to collect anonymized data such as pages visited, session duration, and geographic region. This data is processed by Google under their own privacy terms. You can opt out of Google Analytics by installing the{' '}
             <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" style={{ color: '#06b6d4', textDecoration: 'underline' }}>Google Analytics Opt-out Browser Add-on</a>.
           </p>
+          <AnalyticsChoice />
 
           <h3 style={{ fontSize: '1.1rem', fontWeight: '600', color: '#1e293b', marginTop: '1.25rem', marginBottom: '0.5rem' }}>Calendly</h3>
           <p>
