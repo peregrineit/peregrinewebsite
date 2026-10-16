@@ -122,7 +122,7 @@ export default function Home() {
       />
       {/* Start Migrated Content */}
 
-      <div className="body">
+      <main className="body">
         <section id="sec-hero" data-w-id="b9726cc1-f3ba-3db9-8b83-e79b6286ceea" className="section-hero"><svg
           viewBox="0 0 1200 120" preserveAspectRatio="none" fill="currentColor"
           className="section-divider-bae_divider_1723811974442"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"
@@ -1193,7 +1193,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-      </div>
+      </main>
       {/* End Migrated Content */}
     </div >
   );

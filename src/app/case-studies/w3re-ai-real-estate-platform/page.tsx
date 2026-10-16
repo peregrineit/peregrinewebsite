@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   authors: [{ name: 'Peregrine IT Solutions', url: 'https://peregrine-it.com' }],
   openGraph: {
     title: 'Case Study — AI-Powered Multi-Market Real Estate Platform | Peregrine IT Solutions',
-    description: 'How we built an AI-native platform for W3|re — 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy.',
+    description: 'How we built an AI-native platform for W3|re — 62% workload reduction, 3.8× lead-to-showing rate, 94% valuation accuracy.',
     type: 'article',
     url: 'https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform',
     siteName: 'Peregrine IT Solutions',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Case Study — AI-Powered Multi-Market Real Estate Platform',
-    description: 'AI-native platform: 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy.',
+    description: 'AI-native platform: 62% workload reduction, 3.8× lead-to-showing rate, 94% valuation accuracy.',
   },
   alternates: { canonical: 'https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform' },
 };
@@ -193,7 +193,7 @@ export default function W3reAIRealEstatePlatform() {
             <div className="csd-cs-card csd-solution">
               <div className="csd-cs-card-icon"><i className="ri-flow-chart" /></div>
               <h3>Unified Multi-MLS Data Pipeline</h3>
-              <p>Real-time ETL pipeline ingests from 4 MLS systems, normalizes schemas, deduplicates cross-listed properties, and syncs within 90 seconds of MLS publication. Processes 40K+ listing updates daily.</p>
+              <p>Real-time ETL pipeline <Link href="/services/mls-idx-integration">ingests from 4 MLS systems</Link>, normalizes schemas, deduplicates cross-listed properties, and syncs within 90 seconds of MLS publication. Processes 40K+ listing updates daily.</p>
             </div>
           </div>
 

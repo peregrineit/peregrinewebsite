@@ -357,7 +357,7 @@ export default function ScalingRealEstateSaas() {
               <div className="csd-timeline-phase">Phase 3 — Weeks 11–18</div>
               <div className="csd-timeline-title">Cron Sync &amp; Multi-Tenant Hardening</div>
               <p className="csd-timeline-desc">
-                Rewrote the MLS sync engine with delta detection, retry logic, and per-feed error
+                Rewrote the <Link href="/services/mls-idx-integration">MLS sync engine</Link> with delta detection, retry logic, and per-feed error
                 isolation. Restructured MongoDB collections for clean multi-tenant separation. Split
                 environment configs for USA Live, Canada Live, and Staging.
               </p>

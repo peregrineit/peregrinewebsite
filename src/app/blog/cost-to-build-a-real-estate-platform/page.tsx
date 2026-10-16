@@ -37,7 +37,7 @@ export default function Guide() {
       <p>&ldquo;Real estate platform&rdquo; covers very different products. The main types, from our own case studies:</p>
       <ul>
         <li><strong>Agent and brokerage websites with IDX search.</strong> MLS sync, search, property pages and lead capture. Our <Link href="/case-studies/scaling-real-estate-saas-platform">real estate SaaS case study lists an 8-month project</Link> for a multi-tenant version serving agents in the US and Canada.</li>
-        <li><strong>Multi-market brokerage platforms with AI features.</strong> Several MLS feeds, a CRM, valuation and conversational search. Our <Link href="/case-studies/w3re-ai-real-estate-platform">W3|re case study lists 14 months</Link>.</li>
+        <li><strong>Multi-market brokerage platforms with AI features.</strong> Several MLS feeds, a CRM, valuation and <Link href="/services/ai-automation">conversational search</Link>. Our <Link href="/case-studies/w3re-ai-real-estate-platform">W3|re case study lists 14 months</Link>.</li>
         <li><strong>Investor and property-owner portals.</strong> Role-based access, documents, reporting and distributions. Our <Link href="/case-studies/proptech-investor-portal">investor portal case study lists 6 months</Link>.</li>
         <li><strong>Property operations software.</strong> Billing, access control and occupancy, as in our <Link href="/case-studies/self-storage-management-platform">self-storage platform case study</Link>.</li>
       </ul>

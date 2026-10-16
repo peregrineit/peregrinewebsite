@@ -13,8 +13,8 @@ import '../../css/content-pages.css';
 
 export const dynamicParams = false;
 
-// "an MLS ...", "an AI ...", "an Odoo ..." but "a SaaS ...", "a Cloud ...".
-const withArticle = (name: string) => `${/^(MLS|AI|API|Odoo)/.test(name) ? 'an' : 'a'} ${name}`;
+// "an MLS ...", "an AI ...", "an Odoo ...", "an Investor ..." but "a SaaS ...", "a Cloud ...".
+const withArticle = (name: string) => `${/^(MLS|AI|API|Odoo|Investor)/.test(name) ? 'an' : 'a'} ${name}`;
 
 // Replaces the [[guide]] token in a cost answer with a link to the service's first guide.
 function withGuideLink(text: string, guide?: Guide) {
