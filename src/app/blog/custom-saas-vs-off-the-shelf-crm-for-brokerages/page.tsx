@@ -85,7 +85,7 @@ export default function Guide() {
 
       <h2>What a custom platform involves</h2>
       <p>
-        A custom brokerage platform is a software product you own and maintain. Beyond the initial build, plan for:
+        A <Link href="/industries/real-estate">custom brokerage platform</Link> is a software product you own and maintain. Beyond the initial build, plan for:
       </p>
       <ul>
         <li><strong>MLS data.</strong> Listing feeds require data access from each MLS and a sync pipeline that keeps status current. Our guide to <Link href="/blog/mls-idx-integration-cost">MLS and IDX integration cost</Link> covers the fees.</li>

@@ -290,7 +290,7 @@ CREATE UNIQUE INDEX one_open_assignment ON assignment (enquiry_id) WHERE ended_a
         Timers and escalations are delayed jobs; the mechanics, including what happens to them in a restart, are
         in <Link href="/blog/background-jobs-redis-bullmq">reliable background jobs with Redis and BullMQ</Link>.
         Our <Link href="/case-studies/w3re-ai-real-estate-platform">W3|re case study</Link> describes a brokerage
-        whose inbound leads had been routed to a shared inbox, and a lead-qualification chatbot that qualifies by
+        whose inbound leads had been routed to a shared inbox, and a <Link href="/services/ai-automation">lead-qualification chatbot</Link> that qualifies by
         budget, timeline, location and pre-approval status; in this model, such an assistant is one more actor
         writing events to the timeline before a person takes over.
       </p>

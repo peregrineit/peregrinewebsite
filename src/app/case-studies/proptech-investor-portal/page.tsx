@@ -144,7 +144,7 @@ export default function PropTechInvestorPortal() {
             investors.
           </p>
           <p>
-            They needed a secure, investor-grade portal where LPs could log in and see their specific
+            They needed a secure, <Link href="/services/investor-portal-development">investor-grade portal</Link> where LPs could log in and see their specific
             investments, download watermarked documents, track project milestones, and view distribution
             history — all with role-based access that ensured each investor only saw what they were
             entitled to see.

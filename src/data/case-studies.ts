@@ -87,7 +87,7 @@ export const caseStudies: CaseStudy[] = [
       flow: "AI · NLP Search · AVM · Chatbot",
       industryIcon: "ri-building-line",
       duration: "14 month project",
-      summary: "How we built an AI-native platform for W3|re — 62% workload reduction, 3.8× lead conversion, 94% valuation accuracy across 4 MLS markets.",
+      summary: "How we built an AI-native platform for W3|re — 62% workload reduction, 3.8× lead-to-showing rate, 94% valuation accuracy across 4 MLS markets.",
       badges: ["4 MLS", "AI/ML"],
     },
     glance: {

@@ -77,7 +77,7 @@ export default function Guide() {
     <GuideLayout slug={SLUG}>
       <h2>The short answer</h2>
       <p>
-        Several stacks work for a real estate platform, and the one your team already runs well is a legitimate
+        Several stacks work for a <Link href="/industries/real-estate">real estate platform</Link>, and the one your team already runs well is a legitimate
         choice. Three decisions carry most of the weight: where map and filter search runs (in the database or in
         a separate search engine), how public listing pages are rendered (as HTML on the server), and how many
         systems your team can operate. Each layer below ends with a &ldquo;choose this when&rdquo; table, and the
