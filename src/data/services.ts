@@ -696,9 +696,7 @@ const coreServiceList: Service[] = [
       ],
     },
     stack: ['Next.js', 'React', 'TypeScript', 'Node.js', 'Supabase', 'PostgreSQL', 'Stripe', 'Redis', 'Docker', 'GitHub Actions', 'Vercel', 'AWS'],
-    caseStudies: [
-      { slug: 'scaling-real-estate-saas-platform', note: 'Not an AI-built app, but the same starting point: a first version that worked for 5 agents and was failing as it grew. The case study describes a full codebase audit, then a rebuild of search, the MLS sync and multi-tenant isolation.' },
-    ],
+    caseStudies: [],
     guides: ['webhook-event-driven-integrations', 'background-jobs-redis-bullmq', 'multi-tenant-real-estate-saas'],
     answers: {
       includes:
