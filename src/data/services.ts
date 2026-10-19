@@ -926,6 +926,140 @@ const coreServiceList: Service[] = [
     ],
     icon: 'ri-stack-line',
   },
+  {
+    // Engineering partner for agencies (an agency wins a client project and needs it built
+    // under its brand). Not a reseller program: businesses that want their own brandable
+    // product are pointed to saas-development. No case study is presented as white-label
+    // work; capability cards link to case studies that show the same kind of build.
+    //
+    // TODO(owner): contractual terms. The page only says these are set in each agreement.
+    // Wording proposed for owner approval before it can be stated as Peregrine policy:
+    //   - "We sign a mutual NDA before you share any client material."
+    //   - "We do not contact your client directly unless you ask us to; if we join client
+    //      calls, we do so under your agency's name."
+    //   - "Deliverables carry no Peregrine branding unless you ask for it."
+    //   - "Once the work is paid for, the intellectual property rights pass to your agency,
+    //      and you can assign them to your client."
+    //   - "The code lives in a repository owned by your agency or your client from day one."
+    // Also: the shared `ipFaq` appended by the template answers "You do." On this page the
+    // reader is an agency, so the owner should confirm that answer applies to agencies or
+    // approve a per-page override (template change, out of scope for this PR).
+    slug: 'white-label-development',
+    name: 'White-Label Development',
+    serviceType: 'White-label software development for agencies',
+    title: 'White-Label Development Partner for Agencies',
+    metaDescription:
+      'Custom software built for agencies under their brand: web and mobile apps, SaaS, integrations and e-commerce, scoped from your brief. Not a reseller program.',
+    h1: 'White-Label Software Development Partner for Agencies',
+    offer: 'Engineering for agencies: we build the custom software your client project needs, delivered under your brand.',
+    intro: [
+      'A white-label development partnership is an arrangement in which an agency sells a software project to its client and an engineering partner builds it on the agency\'s behalf, for delivery under the agency\'s brand. The agency stays the primary commercial partner for its client, on the terms agreed in the engagement.',
+      'It is for digital, creative, marketing and web development agencies, product consultancies and small technology consultancies that have won, or are pitching, a project beyond their current engineering capacity or outside the technologies their team works in.',
+      'Peregrine builds the custom software behind those projects: web applications, SaaS platforms, mobile apps, API integrations, e-commerce, and modernization of systems your client already runs. This is not a reseller program for an off-the-shelf product. If you want your own brandable product to sell to many customers, that is our SaaS development service.',
+    ],
+    whatWeBuild: [
+      {
+        title: 'Custom web applications',
+        body: 'Client portals, dashboards, booking and admin tools built with Next.js and React, with the backend and authentication they need. Useful when your client\'s project has outgrown a website and become an application.',
+      },
+      {
+        title: 'SaaS platforms',
+        body: 'Multi-tenant products with roles, billing and an admin side, for a client that is launching or rebuilding a subscription product. Our real estate SaaS case study shows a platform re-architected to grow from 5 agents to 200+.',
+        proof: ['scaling-real-estate-saas-platform'],
+      },
+      {
+        title: 'Mobile apps with React Native',
+        body: 'iOS and Android apps from one React Native codebase, sharing a backend with the web app. Our fleet tracking case study includes a React Native driver app with offline sync and a proof-of-delivery camera.',
+        proof: ['logistics-fleet-tracking-platform'],
+      },
+      {
+        title: 'API and third-party integrations',
+        body: 'Connections between your client\'s product and the CRMs, payment providers, ERPs and vendor APIs it depends on, with retries and reconciliation. Our supply chain case study describes a carrier abstraction layer over 12 carrier APIs.',
+        proof: ['supply-chain-visibility-platform'],
+      },
+      {
+        title: 'E-commerce and Shopify',
+        body: 'Custom Shopify apps, integrations between a store and the systems around it, headless storefronts and marketplace builds. Our marketplace case study covers a Next.js storefront with Stripe Connect split payments between vendors.',
+        proof: ['multi-vendor-ecommerce-marketplace'],
+      },
+      {
+        title: 'WordPress and Laravel builds',
+        body: 'Custom WordPress themes, plugins and headless WordPress, and Laravel backends, APIs and admin panels, for agencies whose clients already run on these platforms.',
+      },
+      {
+        title: 'Modernizing existing systems',
+        body: 'Taking over a codebase your client already has: reviewing it first, then upgrading, stabilizing or replacing parts of it in stages while it stays in use.',
+      },
+      {
+        title: 'Cloud hosting and deployment',
+        body: 'Environments, deployment pipelines and monitoring on AWS or your client\'s existing hosting, so the project ships and can be released safely after launch.',
+      },
+    ],
+    process: [
+      { title: 'Send the brief', body: 'Share your client\'s brief, designs or specification through the project form or the quick project form. Partial briefs are fine.' },
+      { title: 'Discovery call', body: 'A 30-minute technical call with an engineer to go through the brief, your client\'s constraints and the open questions.' },
+      { title: 'Scope and estimate', body: 'A written scope and estimate. Larger builds start with a discovery sprint that produces a written technical plan before development.' },
+      { title: 'Agree the engagement', body: 'Fixed scope, monthly retainer or a combination, plus confidentiality, client communication, branding and IP terms, all set out in the agreement.' },
+      { title: 'Build in two-week sprints', body: 'Development in two-week sprints with a demo every week, so you can review progress and change priorities before your client sees it.' },
+      { title: 'Test, hand over, support', body: 'Testing against the agreed scope, handover of what the scope lists, and ongoing changes or support as a monthly retainer if you need them.' },
+    ],
+    stack: ['Next.js', 'React', 'React Native', 'Node.js', 'Laravel', 'WordPress', 'Shopify', 'PostgreSQL', 'AWS'],
+    // Deliberately empty: no published case study is white-label work for an agency.
+    // Capability cards above link the case studies that show each kind of build.
+    caseStudies: [],
+    guides: ['laravel-upgrade-checklist', 'webhook-event-driven-integrations'],
+    answers: {
+      includes:
+        'Peregrine\'s white-label development service is engineering for agencies: we build the custom software a client project needs, including web applications, SaaS platforms, React Native mobile apps, API integrations, Shopify and WordPress work, Laravel backends, modernization of existing systems and cloud deployment. Your agency stays the primary partner to its client, as agreed in each engagement.',
+      timeline:
+        'Peregrine sets the timeline for a white-label project after scoping, because it depends on the brief, whether we start from an existing codebase and how many systems are involved. Larger builds begin with a discovery sprint and a written technical plan, then run in two-week sprints with a weekly demo your team can review.',
+      cost:
+        'Peregrine works with agencies on fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. A fixed scope suits a client project with a written brief; a retainer suits ongoing work and support after launch. Cost depends on the scope, the integrations and the starting codebase, and we do not publish a price list.',
+      work:
+        'Peregrine has not published a case study of work delivered for an agency under its brand, and none of the case studies on this site is presented as white-label work. The capability cards above link to published case studies that show the same kinds of build: a SaaS rebuild, a React Native app, carrier integrations and a marketplace.',
+    },
+    glance: {
+      delivered: 'Custom software for your agency\'s client project: web and mobile apps, SaaS platforms, integrations, e-commerce, modernization and deployment, under the terms agreed with your agency',
+      // TODO(owner): typical timeline; omitted until stated on the site.
+    },
+    updated: '2026-10-20',
+    faq: [
+      {
+        question: 'What is the difference between white-label development and a white-label reseller program?',
+        answer: 'A reseller program lets you rebrand and sell a product that already exists. White-label development is custom work: we build software to your client\'s brief and your agency delivers it under its brand. Peregrine does not offer a reseller program. If you want a brandable product of your own to sell to many customers, see our SaaS development service.',
+      },
+      {
+        question: 'Why would an agency use an engineering partner instead of hiring developers?',
+        answer: 'Usually for capacity: a won project needs more engineering than the team has, and hiring for one project is slow and hard to undo. Agencies also bring in a partner for specialized work their team does not do often, such as integrations or mobile apps, and for continuity and support after launch. It is not automatically cheaper or better than hiring; it suits work that is uneven or specialized.',
+      },
+      {
+        question: 'What do you need from our agency to get started?',
+        answer: 'The client brief and any designs, specifications or wireframes, the deadline your client expects, the systems the project must connect to, and access details if it extends an existing system. Tell us also how you want communication with your client to work. Partial answers are fine; the discovery call covers the rest.',
+      },
+      {
+        question: 'Can you work on a codebase our client already has?',
+        answer: 'Yes. We start by reviewing the code, dependencies, tests and hosting to find what limits it, then propose whether to extend it, upgrade it or replace parts of it in stages. The review comes before the estimate for the main work, because unfamiliar code is hard to estimate without looking at it first.',
+      },
+      {
+        question: 'How does communication run during the project?',
+        answer: 'Larger builds run in two-week sprints with a demo every week, which is the point to review progress, change priorities or raise a concern before your client sees the work. Who attends demos, which channels are used and whether anyone from Peregrine speaks with your client directly are agreed at the start of each engagement.',
+      },
+      {
+        question: 'How are confidentiality and branding handled?',
+        answer: 'Confidentiality, who communicates with your client, how deliverables are branded and where the code is hosted during the build are set out in the agreement for each project, so they are settled before work starts rather than assumed. Bring your agency\'s requirements to the discovery call and we will say plainly what we can agree to.',
+      },
+      {
+        // TODO(owner): see the proposed IP wording in the comment at the top of this entry.
+        question: 'Who owns the code in a white-label project?',
+        answer: 'Peregrine\'s position is that the client owns the IP rights to what Peregrine builds once the work is paid for. A white-label project has two clients in the chain, your agency and your end client, so the agreement for each project names which party receives those rights and when. Rights between your agency and your end client are a matter for your contract with them.',
+      },
+      {
+        question: 'What happens after launch?',
+        answer: 'What is handed over at the end, such as code, documentation and access, is listed in the scope. If your client needs changes, fixes or new features after launch, the work can continue as a monthly retainer, which is one of the engagement models we offer.',
+      },
+    ],
+    icon: 'ri-team-line',
+  },
 ];
 
 /** Every service page: core services first, then technology pages. */
@@ -1199,6 +1333,39 @@ const coreBuyerGuides: Record<string, BuyerGuide> = {
       'Your go-live constraint, such as a financial year end or a peak season to avoid.',
     ],
   },
+  'white-label-development': {
+    fit: [
+      'Your agency has won, or is pitching, a client project that needs custom software beyond its current engineering capacity.',
+      'The project needs work your team does not do often, such as API integrations, a SaaS backend, a mobile app or a move off a legacy system.',
+      'Your agency keeps the client relationship, strategy or design, and needs the engineering delivered to an agreed scope.',
+      'You want the same engineering team across successive client projects, or for ongoing changes and support after launch.',
+    ],
+    notFit: [
+      { text: 'You want to resell an existing software product under your brand. Peregrine does not run a reseller program.' },
+      { text: 'You want your own brandable, multi-tenant product to sell to many customers. That is a product build, covered on the', link: { href: '/services/saas-development', label: 'SaaS development page' } },
+      { text: 'You need a fixed price before anyone has seen the brief. Pricing is scoped per project after the discovery call.' },
+    ],
+    scope: [
+      { factor: 'State of the brief', effect: 'A specification with finished designs can be estimated directly. A client brief with open questions needs a discovery step first.' },
+      { factor: 'New build or existing code', effect: 'An existing codebase needs a review before an estimate, and its condition decides whether it is extended, upgraded or partly replaced.' },
+      { factor: 'Platforms', effect: 'Web only is the smallest build. iOS and Android apps add a second client to build, test and release through the app stores.' },
+      { factor: 'Integrations', effect: 'Each third-party system the project depends on is its own piece of work, sized by the quality of that system\'s API and sandbox.' },
+      { factor: 'Client-facing arrangement', effect: 'Who joins demos, who answers your client\'s questions and how deliverables are branded change the communication work in each sprint.' },
+      { factor: 'Repository and hosting', effect: 'Whose repository and cloud accounts the project uses during the build and after launch is agreed up front, because moving it later costs time.' },
+      { factor: 'Fixed dates', effect: 'A launch date fixed in your contract with your client shapes the phases: what ships first and what follows.' },
+      { factor: 'After launch', effect: 'Whether the project ends at handover or continues as a monthly retainer for changes and support.' },
+    ],
+    firstPhase:
+      'A sensible first phase turns your client\'s brief into a written scope before the build is priced: the screens and workflows, the integrations, the risks in any existing code, and what is handed over at the end. For larger builds this is the discovery sprint, which ends with a written technical plan you can take back to your client.',
+    bring: [
+      'Your client\'s brief, and any designs, specifications or wireframes.',
+      'The deadline your client expects, and what is fixed in your contract with them.',
+      'For an existing system: the stack, hosting and how access would be granted.',
+      'The third-party systems the project must connect to.',
+      'Your agency\'s requirements for confidentiality, client communication and branding.',
+      'Who on your side owns design, project management and client sign-off.',
+    ],
+  },
 };
 
 const buyerGuides: Record<string, BuyerGuide> = { ...coreBuyerGuides, ...technologyBuyerGuides };
@@ -1250,6 +1417,16 @@ const related: Record<string, [string, string][]> = {
     ['api-integration', 'for the adapters, retries and reconciliation between Odoo and other systems'],
     ['shopify-development', 'when the system on the other side is a Shopify store'],
   ],
+  'white-label-development': [
+    ['saas-development', 'when your client is launching a subscription product, or you want a brandable product of your own'],
+    ['api-integration', 'when the project depends on CRMs, payment providers, ERPs or vendor APIs'],
+    ['react-development', 'when the project needs iOS and Android apps in React Native'],
+    ['nextjs-development', 'for the web application, portal or storefront itself'],
+    ['shopify-development', 'when your client sells through a Shopify store'],
+    ['wordpress-development', 'when your client\'s site runs on WordPress'],
+    ['laravel-development', 'when your client\'s system is a Laravel or older PHP application'],
+    ['cloud-devops', 'for hosting, deployment pipelines and monitoring'],
+  ],
   'nextjs-development': [
     ['react-development', 'when the product also needs iOS and Android apps'],
     ['saas-development', 'when the frontend is part of a multi-tenant product with billing'],
@@ -1299,6 +1476,12 @@ export const serviceNeeds: { id: string; heading: string; blurb: string; slugs: 
     heading: 'Automate and Operate',
     blurb: 'Take repeated work off your staff, and make the platform you already run faster and safer to release.',
     slugs: ['ai-automation', 'cloud-devops'],
+  },
+  {
+    id: 'partner',
+    heading: 'Deliver Projects for Your Clients',
+    blurb: 'For agencies that have sold a software project and need the engineering delivered under their brand.',
+    slugs: ['white-label-development'],
   },
 ];
 
