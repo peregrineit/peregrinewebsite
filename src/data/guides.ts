@@ -361,7 +361,7 @@ export const guides: Guide[] = [
     slug: 'webhook-event-driven-integrations',
     hero: 'Cover: a webhook path from sender through verification and a queue to a worker, with a dead-letter step.',
     examples: 'The outbox table was created in PostgreSQL 16 on October 13, 2026. The receiver and the backoff function are pseudocode and were not executed.',
-    related: ['odoo-shopify-marketplace-integration', 'real-estate-crm-architecture'],
+    related: ['odoo-shopify-marketplace-integration', 'real-estate-crm-architecture', 'vibe-coded-app-security-checklist'],
     cta: {
       heading: 'Building or Repairing a Webhook Integration?',
       text: 'Tell us which providers you receive events from, what you send to your own customers and where events get lost or duplicated. An engineer will walk through both paths with you.',
@@ -392,6 +392,23 @@ export const guides: Guide[] = [
     dateModified: '2026-10-13',
     service: 'saas-development',
     // No caseStudy: no published case study describes a BullMQ job system.
+  },
+  {
+    slug: 'vibe-coded-app-security-checklist',
+    hero: 'Cover: a shield above a launch checklist: server-side authorization, row-level security, no secrets in the browser, verified webhooks, a tested restore and error alerts.',
+    related: ['webhook-event-driven-integrations', 'background-jobs-redis-bullmq', 'multi-tenant-real-estate-saas'],
+    cta: {
+      heading: 'Getting an AI-Built App Ready for Real Users?',
+      text: 'Tell us what the app does, what it was built with and which items on this checklist you are unsure about. An engineer will tell you what looks fine, what needs work and how much.',
+    },
+    title: 'Vibe-Coded App Security Checklist: What to Check Before Launch',
+    metaTitle: 'Vibe-Coded App Security Checklist',
+    description:
+      'What to check before an AI-built app takes real users and data: access rules, Supabase RLS, secrets, webhooks, backups and monitoring, each with a safe test.',
+    datePublished: '2026-10-20',
+    dateModified: '2026-10-20',
+    service: 'saas-development',
+    // No caseStudy: no published case study describes taking over an AI-generated codebase.
   },
   {
     slug: 'mls-sync-engine',

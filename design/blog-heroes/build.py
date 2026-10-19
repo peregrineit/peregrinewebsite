@@ -302,6 +302,20 @@ bullmq = page("Engineering · Background jobs", "Designing Reliable <em>Backgrou
 <rect x="10" y="360" width="510" height="56" rx="16" fill="#101c38" stroke="#2a3a59"/><text x="265" y="394" text-anchor="middle" fill="#e2e8f0" font-size="17" font-weight="700">Redis: queues, locks and job state</text></svg>""",
  X+"h1{font-size:47px}.jb{position:absolute;right:-4px;top:6px;width:524px;height:454px}")
 
+vibesec = page("Guide · AI-built apps", "Vibe-Coded App <em>Security Checklist</em>: What to Check Before Launch", "Eighteen checks, each with a safe way to verify it yourself.",
+ "<b>OWASP</b><span class='dot'></span><b>Supabase</b><span class='dot'></span><b>Stripe</b><span class='dot'></span><b>Next.js</b>",
+ """<svg class="vs" viewBox="0 0 120 140"><defs><linearGradient id="v1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs>
+<path d="M60 6 L110 24 V66 C110 100 88 124 60 134 C32 124 10 100 10 66 V24 Z" fill="#0b1630" stroke="url(#v1)" stroke-width="4"/>
+<path d="M38 70 L54 86 L84 52" fill="none" stroke="url(#v1)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="cl glass glow"><div class="hd">launch-checklist</div>
+<p><i>✓</i><span>Authorization on the server</span></p><p><i>✓</i><span>Row-level security on</span></p><p><i>✓</i><span>No secrets in the browser</span></p>
+<p><i>✓</i><span>Webhooks verified, processed once</span></p><p><i>✓</i><span>Backup restored and timed</span></p><p class="off"><i></i><span>Errors reach a person</span></p></div>""",
+ X+"""h1{font-size:46px}.vs{position:absolute;right:6px;top:0;width:120px;height:140px;filter:drop-shadow(0 0 18px rgba(34,211,238,.35))}
+.cl{position:absolute;right:30px;top:112px;width:440px;padding:18px 22px;border-radius:18px}.cl .hd{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#67e8f9;font-weight:700;margin-bottom:10px}
+.cl p{display:flex;align-items:center;gap:14px;padding:10px 0;border-top:1px solid rgba(148,163,184,.16);font-size:18.5px;font-weight:600;color:#e2e8f0}
+.cl i{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:16px;color:#04121c;background:linear-gradient(135deg,#22d3ee,#818cf8)}
+.cl p.off i{background:none;border:2px solid #475569}.cl p.off span{color:#94a3b8}""")
+
 PAGES = {"idx-website-features-checklist": features, "mls-boards-compared": boards,
          "real-estate-platform-tech-stack": stack, "real-estate-website-seo-aeo-geo": seo,
          "mls-data-pipeline-architecture": pipeline, "investor-portal-security-checklist": security, "laravel-upgrade-checklist": laravel,
@@ -310,6 +324,7 @@ PAGES = {"idx-website-features-checklist": features, "mls-boards-compared": boar
          "legacy-real-estate-platform-data-migration": migrate, "real-estate-search-elasticsearch": elastic, "map-based-property-search": mapsearch,
          "saved-searches-listing-alerts": alerts, "listing-page-core-web-vitals": vitals, "multi-tenant-real-estate-saas": tenant,
          "real-estate-crm-architecture": crm, "webhook-event-driven-integrations": webhooks, "background-jobs-redis-bullmq": bullmq}
+PAGES["vibe-coded-app-security-checklist"] = vibesec
 if __name__ == "__main__":
     for slug, doc in PAGES.items():
         open(os.path.join(D, slug + ".html"), "w").write(doc); print("wrote", slug + ".html")
