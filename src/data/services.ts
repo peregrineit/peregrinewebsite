@@ -697,7 +697,7 @@ const coreServiceList: Service[] = [
     },
     stack: ['Next.js', 'React', 'TypeScript', 'Node.js', 'Supabase', 'PostgreSQL', 'Stripe', 'Redis', 'Docker', 'GitHub Actions', 'Vercel', 'AWS'],
     caseStudies: [],
-    guides: ['webhook-event-driven-integrations', 'background-jobs-redis-bullmq', 'multi-tenant-real-estate-saas'],
+    guides: ['webhook-event-driven-integrations', 'vibe-coded-app-security-checklist', 'background-jobs-redis-bullmq', 'multi-tenant-real-estate-saas'],
     answers: {
       includes:
         'Peregrine\'s AI app to production service takes an app you built with an AI tool and prepares it for real users: a review of the code and infrastructure, written findings, then the agreed work on authentication, database access rules, backend and payments, tests, deployment, monitoring and handover. We keep what works and replace only what cannot be made reliable.',

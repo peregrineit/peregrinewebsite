@@ -407,7 +407,7 @@ export const guides: Guide[] = [
       'What to check before an AI-built app takes real users and data: access rules, Supabase RLS, secrets, webhooks, backups and monitoring, each with a safe test.',
     datePublished: '2026-10-20',
     dateModified: '2026-10-20',
-    service: 'saas-development',
+    service: 'ai-app-to-production',
     // No caseStudy: no published case study describes taking over an AI-generated codebase.
   },
   {
