@@ -1,0 +1,25 @@
+# Sources: /services/saas-development (white-label section)
+
+Fetched on 2026-10-19 (for the 2026-10-20 sprint) with `curl`; each phrase below was matched in the page text. Used in the "Building a White-Label SaaS Platform You Own" section. The new FAQ answer on per-customer databases paraphrases the PostgreSQL row; FAQ text carries no links.
+
+| URL | Relied on (exact text) | Where used | Date |
+|---|---|---|---|
+| https://docs.aws.amazon.com/wellarchitected/latest/saas-lens/tenant-isolation.html | "Tenant isolation is one of the foundational topics that every SaaS provider must address."; "the strategies and approaches to achieving this isolation are not universal."; "The domain, compliance, deployment model, and the selection of AWS services all bring their own unique set of considerations" | intro paragraph (no single architecture) | 2026-10-19 |
+| https://docs.aws.amazon.com/wellarchitected/latest/saas-lens/silo-pool-and-bridge-models.html | "These patterns fall into one of three categories—silo, bridge, and pool."; "The silo model refers to an architecture where tenants are provided dedicated resources."; "the pool model of SaaS refers to a scenario where tenants share resources."; bridge: "some of the system is implemented in a silo model and some is in a pooled model" | Tenant isolation options | 2026-10-19 |
+| https://www.postgresql.org/docs/current/ddl-rowsecurity.html (PostgreSQL 18) | "tables can have row security policies that restrict, on a per-user basis, which rows can be returned by normal queries or inserted, updated, or deleted by data modification commands."; "If no policy exists for the table, a default-deny policy is used, meaning that no rows are visible or can be modified."; "Superusers and roles with the BYPASSRLS attribute always bypass the row security system when accessing a table."; "Table owners normally bypass row security as well, though a table owner can choose to be subject to row security with ALTER TABLE ... FORCE ROW LEVEL SECURITY." | Tenant isolation options; FAQ | 2026-10-19 |
+| https://vercel.com/docs/platforms | "Multi-tenant products can serve many customers from one codebase with custom domains and subdomains."; "Automatic SSL for verified domains. Vercel issues and renews certificates after domain verification."; table: Multi-tenant "One codebase, one deployment serves every tenant", Complexity "Lower", Best for "Content and branding differ, but functionality is the same"; Multi-project "One project and deployment per tenant", "Higher", "Each tenant needs custom code or isolated infrastructure" | Custom domains and certificates; Deployment considerations | 2026-10-19 |
+| https://vercel.com/docs/platforms/multi-tenant-platforms/concepts (last updated August 20, 2026) | "A tenant represents a customer, workspace, or organization within your multi-tenant application. Each tenant has its own data, configuration, and branding, but all tenants share the same codebase and deployment."; "Vercel issues one wildcard SSL certificate for *.yourapp.com that covers every first-level subdomain"; "Delete or overwrite inbound x-tenant-* headers on every path through the proxy so clients can't supply tenant context themselves." | Per-tenant branding; Custom domains and certificates | 2026-10-19 |
+| https://docs.stripe.com/billing/subscriptions/overview | "When you create a subscription, Stripe automatically generates invoices, attempts payment collection and manages the subscription status throughout its lifecycle." | Billing architecture | 2026-10-19 |
+| https://docs.stripe.com/connect | "Use Connect to build a platform, marketplace, fintech, or other business that requires you to model multiple accounts and move money between parties."; "Build a SaaS platform" … "Provide platform services to businesses that collect payments from their own customers." | Billing architecture | 2026-10-19 |
+
+## Peregrine case studies quoted (read in this repository)
+| Page | Text relied on | Used for |
+|---|---|---|
+| /case-studies/scaling-real-estate-saas-platform | "Deployed white-label agent themes."; "Split environment configs for USA Live, Canada Live, and Staging." | Per-tenant branding; Deployment considerations; closing paragraph |
+| /case-studies/recruitment-ats-platform | "Built branded career pages with custom domains."; "Multi-tenant isolation — each company's data is separated. Role-based access for recruiters, hiring managers, and admins" | Custom domains; closing paragraph |
+| /case-studies/self-storage-management-platform | "Facility managers, corporate admins, and tenants each see only their data"; "Implemented PostgreSQL with per-operator schema isolation. Integrated Stripe for automated billing with retry logic." | Role-based access; closing paragraph |
+
+## Deliberately not linked
+- /services/white-label-development (PR 3, not on main): `TODO(link)` comment in services.ts.
+- /services/ai-app-to-production (PR 1, not on main): `TODO(link)` comment in services.ts.
+- AWS whitepaper "SaaS Tenant Isolation Strategies" (marked "for historical reference only"): not cited; the SaaS Lens is cited instead.

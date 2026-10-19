@@ -19,6 +19,25 @@ const NEXT_COUNT = usingStack('Next.js');
 // React page). Two more list React Native in their stack without describing a mobile app.
 const RN_COUNT = 5;
 const TOTAL = caseStudies.length;
+// Shopify documentation cited on the Shopify page (read 2026-10-19; quotes in
+// docs/content/sources/services-shopify-development.md).
+const SH = {
+  rateLimits: 'https://shopify.dev/docs/apps/build/apis/graphql-admin/rate-limits',
+  versioning: 'https://shopify.dev/docs/api/usage/versioning',
+  webhooks: 'https://shopify.dev/docs/apps/build/webhooks',
+  scopes: 'https://shopify.dev/docs/api/usage/access-scopes',
+  functions: 'https://shopify.dev/docs/api/functions',
+  checkout: 'https://shopify.dev/docs/apps/build/checkout',
+  headless: 'https://shopify.dev/docs/storefronts/headless/overview',
+  collaborators: 'https://help.shopify.com/en/manual/your-account/users/security/collaborator-accounts',
+  users: 'https://help.shopify.com/en/manual/your-account/users',
+  customApps: 'https://help.shopify.com/en/manual/apps/app-types/custom-apps',
+  distribution: 'https://shopify.dev/docs/apps/launch/distribution/select-distribution-method',
+  devStores: 'https://shopify.dev/docs/apps/build/stores/development-stores',
+  themeCli: 'https://shopify.dev/docs/storefronts/themes/tools/cli',
+  github: 'https://shopify.dev/docs/storefronts/themes/tools/github',
+  deploy: 'https://shopify.dev/docs/apps/launch/deployment',
+};
 const MODEL = 'fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call';
 
 export const technologyServices: Service[] = [
@@ -216,14 +235,21 @@ export const technologyServices: Service[] = [
     serviceType: 'Shopify app and integration development',
     title: 'Shopify App and Integration Development',
     metaDescription:
-      'Shopify development: custom apps, theme and headless storefront work, and integrations between Shopify and ERP, accounting and fulfillment systems.',
+      'Shopify apps, ERP and fulfillment integrations, and theme or headless storefront work by an engineering team in Noida, India, for US and Canadian merchants.',
     h1: 'Shopify App, Storefront and Integration Development',
     // Capability page: no Shopify project has been published. No project claims.
+    // TODO(owner): Shopify Partner status. The page claims no Partner, Plus Partner or
+    //   Partner Directory status (and "Shopify Experts" was retired in December 2023). If
+    //   Peregrine has a Partner organization, confirm its tier so one plain line can be added.
+    // TODO(owner): which store-access method Peregrine normally asks for (collaborator
+    //   request, staff account, custom app install link). The page lists Shopify's options
+    //   without claiming Peregrine always uses one.
+    // Shopify facts in `sections` and the FAQ: docs/content/sources/services-shopify-development.md.
     offer: 'Custom Shopify apps, storefront work and integrations with the systems around the store.',
     intro: [
       'Shopify development is extending a Shopify store beyond what themes and off-the-shelf apps provide: custom apps, storefront changes, and connections between Shopify and the other systems a business runs.',
       'It is for merchants whose store has outgrown app-store plugins, who need Shopify to exchange orders, stock and customers with an ERP, accounting or fulfillment system, or who want a custom storefront on top of Shopify\'s checkout.',
-      'Peregrine offers Shopify app, storefront and integration development. We have not published a Shopify case study yet, so this page describes the work rather than citing a project.',
+      'Peregrine is an engineering team in Noida, India, offering Shopify app, storefront and integration development to merchants and agencies, mainly in the US and Canada. We have not published a Shopify case study yet, so this page describes the work rather than citing a project.',
     ],
     whatWeBuild: [
       {
@@ -246,6 +272,10 @@ export const technologyServices: Service[] = [
         title: 'Migrations to Shopify',
         body: 'Moving products, customers and order history from another platform, with redirects planned so existing search rankings and links keep working.',
       },
+      {
+        title: 'Work on existing stores',
+        body: 'Fixes and new features in an app, integration or theme someone else built. We start by reading the code, the installed apps, the webhook subscriptions and the API version in use, so changes do not break what already works.',
+      },
     ],
     process: [
       { title: 'Store and systems review', body: 'We look at the store\'s theme, installed apps and the systems it must exchange data with, and decide what should be an app, a theme change or an integration.' },
@@ -255,7 +285,7 @@ export const technologyServices: Service[] = [
     ],
     stack: ['Shopify Admin API', 'Storefront API', 'Liquid', 'Hydrogen', 'Next.js', 'Node.js', 'Webhooks', 'PostgreSQL'],
     caseStudies: [],
-    guides: [],
+    guides: ['odoo-shopify-marketplace-integration', 'webhook-event-driven-integrations'],
     answers: {
       includes:
         'Peregrine\'s Shopify development covers custom apps built on Shopify\'s Admin API and webhooks, integrations between Shopify and ERP, accounting and fulfillment systems, Liquid theme customization, headless storefronts on the Storefront API, and migrations to Shopify from another platform. Work is done on a development store, not on the live one.',
@@ -269,7 +299,124 @@ export const technologyServices: Service[] = [
     glance: {
       delivered: 'Custom Shopify apps, ERP and fulfillment integrations, theme customization, headless storefronts and migrations',
     },
-    updated: '2026-10-10',
+    sections: [
+      {
+        id: 'shopify-platform',
+        placement: 'build',
+        label: 'Platform rules',
+        heading: 'What Shopify\'s Platform Rules Mean for Custom Apps and Integrations',
+        paragraphs: [
+          'Custom apps, API integrations and headless storefronts all run inside limits Shopify sets and changes on a schedule. These are the ones that shape a build, taken from Shopify\'s own documentation.',
+        ],
+        items: [
+          {
+            title: 'Admin API rate limits',
+            body: `The GraphQL Admin API is limited by calculated query cost, not by request count, and each combination of app and store gets its own bucket and restore rate based on the store's plan: [100 points per second on Standard, 200 on Advanced Shopify, 1,000 on Shopify Plus and 2,000 on Shopify for enterprise](${SH.rateLimits}). A single query may not exceed 1,000 points on any plan. For large catalog or order-history jobs, Shopify points to bulk operations, which [don't have the max cost limits or rate limits that single queries have](${SH.rateLimits}).`,
+          },
+          {
+            title: 'API versions expire',
+            body: `Shopify [releases a new API version every three months](${SH.versioning}), and each stable version [is supported for a minimum of 12 months](${SH.versioning}). A request to a retired version is answered by the oldest accessible stable version instead, so behavior can change without an error. A sound default is to pin the version in every request and plan an upgrade each quarter.`,
+          },
+          {
+            title: 'Webhooks can be missed',
+            body: `Shopify states that [webhook delivery isn't always guaranteed](${SH.webhooks}) and recommends [reconciliation jobs to periodically fetch data from Shopify](${SH.webhooks}). It also [doesn't guarantee ordering](${SH.webhooks}) within a topic. An integration therefore needs duplicate protection (each delivery carries an X-Shopify-Webhook-Id), timestamp checks and a scheduled reconciliation, as our [Odoo and Shopify integration guide](/blog/odoo-shopify-marketplace-integration) explains.`,
+          },
+          {
+            title: 'Access scopes',
+            body: `An app can read and write only what its access scopes allow, and Shopify's guidance is to [request only the data your app needs to function](${SH.scopes}). Some data needs more than a scope: by default an app sees [the last 60 days' worth of orders](${SH.scopes}), older orders need the read_all_orders scope that Shopify must approve, and protected customer data has its own requirements.`,
+          },
+          {
+            title: 'Shopify Functions',
+            body: `Functions [customize Shopify's backend logic by running custom code during the checkout process](${SH.functions}), for example discounts, delivery and payment customizations or cart validation, and compile to WebAssembly. Stores on any plan can use public App Store apps that contain functions (with exceptions noted per API), but [only stores on a Shopify Plus plan can use custom apps that contain Shopify Function APIs](${SH.functions}). The plan decides whether a custom function is an option at all.`,
+          },
+          {
+            title: 'Checkout extensibility',
+            body: `Checkout is customized with extensions: [UI extensions, Functions, web pixel extensions and payments extensions](${SH.checkout}). The old route is closed: [checkout.liquid is now unsupported for the Information, Shipping, and Payment checkout steps](${SH.checkout}), and checkout.liquid and additional scripts were sunset for the Thank you and Order status pages on August 28, 2025. A store still relying on those needs its customizations rebuilt as extensions.`,
+          },
+          {
+            title: 'Headless storefronts',
+            body: `A headless storefront reads products, carts and customers through the Storefront API while Shopify keeps checkout. Shopify's own advice is direct: [a headless storefront costs more to build and run than a theme](${SH.headless}), so the merchant should accept that cost and have developers to maintain it. We recommend it only when a theme and apps cannot deliver what the business needs.`,
+          },
+        ],
+        note: 'Shopify documentation read on October 19, 2026. Limits, plan rules and dates change; check the linked pages before relying on a figure.',
+      },
+      {
+        id: 'store-access',
+        placement: 'build',
+        label: 'Store access',
+        heading: 'How a Merchant Gives a Developer Access to a Shopify Store',
+        paragraphs: [
+          'Shopify supports several ways to let a developer work on a store. The merchant stays in control of each one and can remove access at any time. Which fits depends on the work and on your own security policies; we agree it with you before any work starts.',
+        ],
+        items: [
+          {
+            title: 'Collaborator account',
+            body: `Collaborators are Shopify Partners the merchant allows into the store. The merchant [must provide the collaborator with a request code](${SH.collaborators}) (a 4-digit code under Settings > Users > Security), reviews the permissions requested, can edit the role before accepting, and should [grant only the permissions that the partner needs](${SH.collaborators}). Collaborators must use two-step authentication, [don't count towards your store's user limit](${SH.collaborators}), and lose access automatically after 90 days without a login.`,
+          },
+          {
+            title: 'Staff account',
+            body: `The merchant can instead [add staff members to your store or organization by creating user accounts](${SH.users}) and assign a role with only the permissions the work needs. To create or edit custom apps, a staff member needs the App development > Develop permission; [collaborators can't access the Dev Dashboard](${SH.customApps}) where custom apps are managed.`,
+          },
+          {
+            title: 'Custom app installation',
+            body: `A custom app is [built exclusively for your Shopify store](${SH.customApps}). It can be created in the merchant's own organization in the Dev Dashboard, or in a developer's Partner organization with custom distribution, in which case the developer [generates an install link and sends it to the store owner](${SH.distribution}). Either way, the merchant can [update, uninstall or delete a custom app at any time](${SH.customApps}).`,
+          },
+          {
+            title: 'Development store',
+            body: `[Dev stores are testing environments](${SH.devStores}) for building and testing without affecting a live store. They [can't be used in production or process real transactions](${SH.devStores}), and can be created on a chosen plan, which matters when a feature such as a custom function depends on Shopify Plus. Theme work can also happen on an unpublished copy of the store's theme.`,
+          },
+        ],
+      },
+      {
+        id: 'release',
+        placement: 'build',
+        label: 'Release and handover',
+        heading: 'How Changes Reach the Live Store, and What Is Handed Over',
+        items: [
+          {
+            title: 'Theme changes',
+            body: `Shopify CLI runs a [development theme](${SH.themeCli}), a temporary, hidden theme connected to a store, and work can be pushed to an unpublished theme for a preview link. With Shopify's [GitHub theme integration](${SH.github}) a theme follows a connected branch, so changes are reviewed in Git before the theme is published.`,
+          },
+          {
+            title: 'App releases',
+            body: `Apps are tested against a dev store, then released as app versions through Shopify CLI or the Dev Dashboard. Shopify suggests that for production you [consider creating a separate app](${SH.deploy}) that shares the code base but has its own configuration, which keeps test settings away from the live store.`,
+          },
+          {
+            title: 'Integrations',
+            body: 'Test orders run end to end on the development store, then a dated switch-over moves the sync to the live store outside peak hours, with the reconciliation job running from day one so any gap is found and repaired.',
+          },
+          // TODO(owner): confirm Peregrine's handover practice (repository and app ownership,
+          //   access removal). Written as a recommendation until then.
+          {
+            title: 'Handover',
+            body: 'A sound handover leaves the merchant in control: the source code in a repository you own, the app registered where you can manage it, a list of webhook subscriptions, scopes and environment settings, the API version in use and when it expires, and developer access removed or reduced once it is no longer needed. Once the work is paid for, you own the IP.',
+          },
+          {
+            title: 'Ongoing engineering support',
+            body: 'Shopify releases API versions every quarter and changes plan rules and checkout features, so an app or integration needs regular maintenance. After launch this can continue as a monthly retainer: version upgrades, monitoring of sync jobs, fixes and new features.',
+          },
+        ],
+      },
+      {
+        id: 'working-with-us',
+        placement: 'start',
+        label: 'Working with us',
+        heading: 'Working With Our Engineering Team in Noida',
+        paragraphs: [
+          // TODO(link): after PR 3 merges, link "agencies" to /services/white-label-development.
+          'Peregrine\'s engineers work from our office in Noida, India, with merchants and agencies mainly in the US and Canada. A merchant may need an app, an integration or storefront work on its own store; an agency may need engineering on a client\'s store beyond theme setup. Both start the same way:',
+        ],
+        list: [
+          'A 30-minute technical discovery call with an engineer, not a salesperson, about the store, the systems around it and what has to change.',
+          'For larger builds, a discovery sprint that ends with a written technical plan. Smaller, well-defined tasks, such as one theme change or one webhook fix, get a scoped estimate instead.',
+          'For Shopify work the written scope has to settle what will be built, which system owns products, stock, prices and customers, which Shopify plan features the work depends on, and what is out of scope.',
+          'Development in two-week sprints with weekly demos on a development store or an unpublished theme, so you see working changes before they reach customers.',
+          `The engagement is ${MODEL}.`,
+          'Once the work is paid for, you own the intellectual property. We reply to every enquiry within 1 business day.',
+        ],
+      },
+    ],
+    updated: '2026-10-20',
     faq: [
       {
         question: 'When does a store need a custom Shopify app?',
@@ -285,11 +432,23 @@ export const technologyServices: Service[] = [
       },
       {
         question: 'Do you work on Shopify Plus?',
-        answer: 'The same APIs and theme system apply across Shopify plans, and some features, such as certain checkout customizations, are limited to Shopify Plus. We confirm which plan features a project depends on during the store review.',
+        answer: 'The same APIs and theme system apply across Shopify plans, and some features, such as certain checkout customizations, are limited to Shopify Plus. We confirm which plan features a project depends on during the store review. For example, Shopify\'s documentation states that only stores on a Shopify Plus plan can use custom apps that contain Shopify Function APIs, and Admin API rate limits are higher on Plus.',
       },
       {
         question: 'Have you published Shopify case studies?',
         answer: 'Not yet. Our published e-commerce case studies are custom-built platforms rather than Shopify stores. We will add Shopify work here when a project can be published.',
+      },
+      {
+        question: 'Do you work with US and Canadian merchants from India?',
+        answer: 'Yes. Peregrine is an engineering team in Noida, India, and most of our clients are in the US and Canada. Work starts with a 30-minute technical discovery call with an engineer, larger builds run in two-week sprints with weekly demos, and we reply to enquiries within 1 business day.',
+      },
+      {
+        question: 'How do we give a developer access to our Shopify store?',
+        answer: 'Shopify supports several options. You can accept a collaborator request from a Shopify Partner after sharing your collaborator request code, create a staff account with a limited role, or install a custom app the developer builds. Development itself can happen on a separate development store. In each case you choose the permissions and can remove access.',
+      },
+      {
+        question: 'How do you keep a Shopify integration from losing orders?',
+        answer: 'Shopify states that webhook delivery is not always guaranteed and recommends reconciliation jobs. A reliable integration acknowledges each webhook quickly, ignores duplicate deliveries, does not depend on delivery order, and runs a scheduled job that fetches recently updated orders and repairs any gap.',
       },
     ],
     icon: 'ri-shopping-bag-line',
@@ -557,6 +716,7 @@ export const technologyBuyerGuides: Record<string, BuyerGuide> = {
       'Shopify has to exchange orders, inventory, products or customers with an ERP, accounting or warehouse system, and manual exports are causing errors.',
       'You want a custom storefront while Shopify keeps handling checkout and payments.',
       'You are moving to Shopify from another platform and need products, customers, order history and URLs carried over.',
+      'You are an agency whose client store needs a custom app, an integration or storefront engineering beyond theme setup.',
     ],
     notFit: [
       { text: 'A theme from the Shopify Theme Store and existing apps cover what you need. A store-setup specialist will be quicker.' },
@@ -581,6 +741,7 @@ export const technologyBuyerGuides: Record<string, BuyerGuide> = {
       'Order volume on a normal day and on your busiest day, and the size of the catalog.',
       'A written description or screenshots of what happens today and what you want instead.',
       'Dates to avoid for go-live, such as a sale period.',
+      'How you prefer to grant access: a collaborator request, a staff account, or a custom app installation.',
     ],
   },
   'laravel-development': {
