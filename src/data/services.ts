@@ -43,6 +43,20 @@ export interface Service {
   answers: { includes: string; timeline: string; cost: string; work: string };
   /** "At a glance" table rows. `timeline` only where the site already states one. */
   glance: { delivered: string; timeline?: string };
+
+  // Optional sections. Rendered only when present, so pages without them are unchanged.
+  /** Buttons under the hero intro. Both reuse the site's popup forms (data-open-contact /
+   *  data-open-quick-project); `note` is a short line shown under them. */
+  heroCta?: { primary: string; secondary: string; note: string };
+  /** "Does this sound familiar?": the buyer's situation, as a checklist. */
+  symptoms?: { heading: string; intro: string; items: string[] };
+  /** A situation / approach / reasoning table, e.g. "Fix or rebuild?". */
+  decision?: { heading: string; intro: string; columns: [string, string, string]; rows: [string, string, string][]; note: string };
+  /** Published third-party requirements the page relies on, each linked to its source.
+   *  Log every item in docs/content/sources/services-<slug>.md. */
+  references?: { heading: string; intro: string; items: { text: string; source: string; href: string }[] };
+  /** Overrides the closing ConsultationCta heading and text. */
+  cta?: { heading: string; text: string };
 }
 
 /** Buyer guidance shown on a service or industry page. Vendor-neutral: it describes the
@@ -156,7 +170,7 @@ const coreServiceList: Service[] = [
       // Owner-confirmed (2026-09-30).
       timeline: 'Typical MVP 4 to 6 weeks; complex platforms 8 to 12 weeks',
     },
-    updated: '2026-10-10',
+    updated: '2026-10-20',
     faq: [
       {
         question: 'What does multi-tenant mean for a SaaS product?',
@@ -553,6 +567,187 @@ const coreServiceList: Service[] = [
     icon: 'ri-robot-2-line',
   },
   {
+    // Commercial page for teams that built an app with an AI coding tool or app builder and
+    // need it taken to production. Research and sources: docs/content/sources/
+    // services-ai-app-to-production.md. Tools are named as what the buyer used; no
+    // partnership with any tool vendor is implied or exists.
+    // TODO(owner): if Peregrine has completed AI-built-app projects it can publish, add a
+    //   case study here; until then the page says none is published.
+    slug: 'ai-app-to-production',
+    name: 'AI App to Production',
+    serviceType: 'Production engineering for AI-built applications',
+    title: 'AI App to Production & Vibe Coding Cleanup',
+    metaDescription:
+      'Built an app with Lovable, Cursor, Replit, Bolt or Claude Code? Our engineers review, fix, secure and deploy it, and rebuild only where it is justified.',
+    h1: 'Built an App with AI? We\'ll Help You Ship It.',
+    offer: 'Review, fix, secure and launch an app you built with an AI coding tool or app builder.',
+    intro: [
+      'If you built a prototype or a working app with Lovable, Cursor, Replit, Bolt, Claude Code, v0 or a similar tool, and it now has to handle real users, real data and real payments, Peregrine\'s engineers can assess it, fix it, finish it, secure it and launch it. We work with founders and product teams mainly in the US and Canada.',
+      'AI-assisted development is a legitimate way to get a product this far. What is left is the engineering a demo does not exercise: access rules, data isolation, payments, background work, tests and deployment. Keep what works. Fix what does not. Rebuild only where the review shows it is justified.',
+    ],
+    heroCta: {
+      primary: 'Book an AI App Launch Review',
+      secondary: 'Send a quick project request',
+      note: 'Both open a short form. Please do not send code, passwords or API keys through it: access to your repository and hosting is arranged securely after the scope is agreed.',
+    },
+    symptoms: {
+      heading: 'Does This Sound Familiar?',
+      intro: 'These are common blockers when an app built with AI tools moves from a demo to production. Each one is a specific engineering problem, and none of them means the work so far was wasted.',
+      items: [
+        'It works on your machine or in the builder\'s preview, but the production deployment fails or behaves differently.',
+        'Sign-up and login work, but password reset, email verification, roles or session expiry are incomplete.',
+        'You are not sure who can read or change which rows in the database, or whether one customer can see another customer\'s data.',
+        'A third-party API works most of the time, then times out, hits a rate limit or returns something the code does not handle.',
+        'Payments succeed in testing, but subscriptions, refunds or webhook events do not reliably update the app.',
+        'Emails, imports, reports or AI calls that should run in the background fail silently or hold up the page.',
+        'Each AI-generated change fixes one thing and breaks another.',
+        'There are no meaningful automated tests, so nobody knows what a change will affect.',
+        'The code uses several different patterns for the same job, and it is hard to tell which one is current.',
+        'Pages that were fast with test data are slow with real users and real data volumes.',
+        'You cannot tell whether to keep improving this code or start again.',
+      ],
+    },
+    whatWeBuild: [
+      {
+        title: 'Code and architecture review',
+        body: 'Engineers read the code, schema, configuration and integrations, run the app the way users will, and write down what is sound, what is risky and what blocks launch, in order of priority.',
+      },
+      {
+        title: 'Authentication and authorization',
+        body: 'Complete sign-up, login, password reset and session handling, and permission checks enforced on the server for every action, not only hidden buttons in the interface.',
+      },
+      {
+        title: 'Data model, database permissions and tenant isolation',
+        body: 'A data model that matches how the business works, database access rules on every table, and isolation so one customer can never read or change another customer\'s records.',
+      },
+      {
+        title: 'Backend and API completion',
+        body: 'The server-side logic the prototype skipped: validation, error handling, rate limits and the endpoints the interface calls but nothing yet implements properly.',
+      },
+      {
+        title: 'Payments and webhook reliability',
+        body: 'Payment flows where subscriptions, refunds and failed charges keep access and records correct, with webhook handlers that verify signatures, ignore duplicates and cope with events arriving out of order.',
+      },
+      {
+        title: 'Background processing',
+        body: 'Emails, imports, reports and AI calls moved out of the web request into a job queue with retries, so slow or failing work is retried and visible instead of lost.',
+      },
+      {
+        title: 'Security hardening',
+        body: 'Secrets kept out of the browser and the repository, input validation, dependency updates, and checks against published guidance such as the OWASP Top 10.',
+      },
+      {
+        title: 'Performance with real data',
+        body: 'Profiling the slow pages and queries, then adding the indexes, caching or query changes that make the app fast with real users and real data volumes.',
+      },
+      {
+        title: 'Automated tests and CI/CD',
+        body: 'Tests around sign-up, permissions, payments and the other paths that must not break, run on every change by a pipeline before anything reaches production.',
+      },
+      {
+        title: 'Production deployment, monitoring and backups',
+        body: 'Separate staging and production environments, a repeatable deployment, error and uptime monitoring, and database backups that have been restored at least once to prove they work.',
+      },
+      {
+        title: 'Documentation, handover and continued development',
+        body: 'Notes on the architecture, environments and how to release, then either a handover to your team or continued maintenance and feature work on a retainer.',
+      },
+    ],
+    process: [
+      { title: 'Initial discussion', body: 'A 30-minute technical discovery call with an engineer about what the app does, what it was built with, where it stands and what launch means for you. No code or credentials are needed.' },
+      { title: 'Scoped technical assessment', body: 'We agree what the review covers: which parts of the app and which environments, and the questions it has to answer, such as whether customer data is isolated or payments are reliable.' },
+      { title: 'Review of code and infrastructure', body: 'With access you grant through your own accounts, engineers review the code, the database and its access rules, hosting and deployment, and the third-party integrations.' },
+      { title: 'Written findings and priorities', body: 'A written report ordered by risk to your users and your launch, separating what must be fixed before launch from what can wait.' },
+      { title: 'Fix-or-rebuild recommendations', body: 'For each problem area, a recommendation to keep, fix, redesign or replace it, with the reasoning, so you decide with the trade-offs in view.' },
+      { title: 'Agreed scope', body: 'You choose what goes into the work: only the launch blockers, everything in the findings, or a staged plan. Scope and engagement model are agreed before work starts.' },
+      { title: 'Implementation and QA', body: 'The fixes, in two-week sprints with weekly demos, with tests added around each change so later changes, including AI-generated ones, do not quietly undo it.' },
+      { title: 'Production verification', body: 'The app is released through the pipeline and the critical paths, such as sign-up, payment and access for each role, are checked in the live environment.' },
+      { title: 'Handover or continuing support', body: 'Documentation of the architecture, environments and release process, then a handover to your team or continued development on a retainer.' },
+    ],
+    decision: {
+      heading: 'Fix or Rebuild?',
+      intro: 'Vibe coding cleanup is rarely one decision for the whole app: the answer is usually different for different parts of it. This table shows how we would typically approach common situations. It is a starting point for the conversation, not a verdict: the review of your code decides, and no outcome is promised before it.',
+      columns: ['Situation', 'Typical approach', 'Why'],
+      rows: [
+        ['The interface works and users like it, but the backend is unreliable', 'Keep the frontend. Fix or rebuild the backend behind a stable API', 'A working interface is worth keeping. If the API it calls stays the same, the backend can be replaced without redoing the screens.'],
+        ['The database schema is sound, but authorization is missing or only enforced in the interface', 'Keep the schema. Add access rules on the server and in the database, with tests for each role', 'Access control only works where users cannot modify it. A good schema makes the rules straightforward to add.'],
+        ['Customer data is not isolated: one account can reach another account\'s records', 'Redesign the tenancy model, and migrate existing data if the app has users', 'Isolation is a data-model decision. Patching individual queries tends to leave gaps, so this is one place where redesign is often justified.'],
+        ['Payments work in testing, but webhook handling is unverified or not idempotent', 'Keep the payment provider. Rework the webhook handler: signature checks, duplicate handling, ordering and retries', 'Stripe, for example, documents that events can be retried, delivered more than once and arrive out of order. The handler has to be written for that.'],
+        ['Slow or failing work runs inside web requests', 'Move it to a background job queue with retries and monitoring', 'Requests time out and failures disappear. A queue retries the work and shows what failed.'],
+        ['Every change breaks something else, and there are no tests', 'Add tests around the critical paths before changing more code', 'Tests make every later change safer, whether a person or an AI tool writes it.'],
+        ['The code is inconsistent but works', 'Refactor where the code is being changed anyway, not as a separate rewrite', 'Consistency matters most in the parts that change often. Rewriting stable code adds risk without adding value.'],
+        ['The data model cannot represent the business, security problems run throughout, or nothing can change without breaking', 'Partial replacement or a rebuild may be justified, reusing the interface and what the prototype taught you', 'When fixing costs more than replacing, rebuilding is the honest recommendation. The prototype remains a working specification.'],
+      ],
+      note: 'Typical approaches only. What applies to your app depends on what the review finds.',
+    },
+    references: {
+      heading: 'What the Platforms\' Own Documentation Says',
+      intro: 'The requirements below come from the standards bodies and vendors themselves, including the AI app builders. A production review checks an app against published guidance like this. Each item links to its source.',
+      items: [
+        { text: 'OWASP says access control is only effective when it is implemented in trusted server-side code or serverless APIs, and that everything except public resources should be denied by default.', source: 'OWASP Top 10:2025, A01 Broken Access Control', href: 'https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/' },
+        { text: 'Supabase says to enable Row Level Security on every table in an exposed schema, and never to use a secret key in the browser or expose it to customers.', source: 'Supabase: Row Level Security', href: 'https://supabase.com/docs/guides/database/postgres/row-level-security' },
+        { text: 'Supabase\'s production checklist also covers multi-factor authentication on the account and Point-in-Time Recovery when a lower recovery point objective is needed.', source: 'Supabase: Production Checklist', href: 'https://supabase.com/docs/guides/deployment/going-into-prod' },
+        { text: 'Stripe warns that without signature verification an attacker could send fake webhook events, that an endpoint might receive the same event more than once, and that it does not guarantee events arrive in the order they were generated.', source: 'Stripe: Receive Stripe events in your webhook endpoint', href: 'https://docs.stripe.com/webhooks' },
+        { text: 'Next.js advises verifying authentication and authorization inside each Server Action rather than relying on page or layout checks alone, and keeping .env files out of version control with only public variables prefixed NEXT_PUBLIC_.', source: 'Next.js: Production checklist', href: 'https://nextjs.org/docs/app/guides/production-checklist' },
+        { text: 'Next.js recommends a server-only data access layer that performs authorization checks and returns only the data the page needs.', source: 'Next.js: Data security', href: 'https://nextjs.org/docs/app/guides/data-security' },
+        { text: 'On Vercel, each environment variable is assigned to Production, Preview or Development, and changes apply only to new deployments, one thing to check when an app behaves differently once deployed.', source: 'Vercel: Environment variables', href: 'https://vercel.com/docs/environment-variables' },
+        { text: 'Lovable\'s security documentation says its built-in scans cannot guarantee complete security, and suggests an additional professional security review for apps that handle sensitive data or critical functions.', source: 'Lovable: Security overview', href: 'https://docs.lovable.dev/features/security' },
+        { text: 'Replit\'s security checklist recommends storing API keys in Replit Secrets and keeping secrets out of client-side code, local storage and session storage.', source: 'Replit: Security checklist', href: 'https://docs.replit.com/learn/security-checklist' },
+      ],
+    },
+    stack: ['Next.js', 'React', 'TypeScript', 'Node.js', 'Supabase', 'PostgreSQL', 'Stripe', 'Redis', 'Docker', 'GitHub Actions', 'Vercel', 'AWS'],
+    caseStudies: [
+      { slug: 'scaling-real-estate-saas-platform', note: 'Not an AI-built app, but the same starting point: a first version that worked for 5 agents and was failing as it grew. The case study describes a full codebase audit, then a rebuild of search, the MLS sync and multi-tenant isolation.' },
+    ],
+    guides: ['webhook-event-driven-integrations', 'background-jobs-redis-bullmq', 'multi-tenant-real-estate-saas'],
+    answers: {
+      includes:
+        'Peregrine\'s AI app to production service takes an app you built with an AI tool and prepares it for real users: a review of the code and infrastructure, written findings, then the agreed work on authentication, database access rules, backend and payments, tests, deployment, monitoring and handover. We keep what works and replace only what cannot be made reliable.',
+      timeline:
+        'Peregrine does not quote a timeline before the assessment, because two apps built with the same tool can need very different amounts of work. The scoped review comes first and ends in written findings and priorities. The schedule for the agreed fixes follows from those findings, and the work runs in two-week sprints with weekly demos.',
+      cost:
+        'Peregrine takes on this work as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on what the review finds: how much code can be kept, and how many roles and integrations the app has. We do not publish a price list. For one common rework area, read [[guide]].',
+      work:
+        'Peregrine has not published a case study about an app built with an AI coding tool. The closest published work is a real estate SaaS platform whose first version worked for 5 agents: the case study describes a full codebase audit, then a rebuild of search, the MLS sync and multi-tenant isolation, and reports growth to 200+ agents.',
+    },
+    glance: {
+      delivered: 'A scoped review with written findings and fix-or-rebuild recommendations, then the agreed work: authentication and access rules, backend and payments, tests and CI/CD, production deployment, monitoring and handover',
+      // TODO(owner): no timeline is stated; the review sets it.
+    },
+    updated: '2026-10-20',
+    faq: [
+      {
+        question: 'Do we have to rebuild the app from scratch?',
+        answer: 'Not by default. Most of the decision is made part by part: an interface that works is usually worth keeping, while a missing access model or broken data isolation may need redesign. The written findings give a keep, fix, redesign or replace recommendation for each area, with the reasoning, before any work is agreed.',
+      },
+      {
+        question: 'Can we keep using Lovable, Cursor or other AI tools after the app is fixed?',
+        answer: 'Yes. What changes is that every change, whoever or whatever wrote it, goes through version control, automated tests and the deployment pipeline before it reaches production, so a regression is caught before your users see it.',
+      },
+      {
+        question: 'What access do you need, and how do we share it safely?',
+        answer: 'Nothing for the first call. Once the scope is agreed, we ask for access to the repository, hosting and database through your own accounts, ideally as individual user invitations with only the permissions the work needs, which you can revoke at the end. Please never send passwords, API keys or code through a website form or email.',
+      },
+      {
+        question: 'Which stacks do you work with?',
+        answer: 'The tool you used matters less than the code it produced. Our engineers work with React, Next.js, TypeScript, Node.js, PostgreSQL and Supabase, with Stripe for payments, on hosting such as Vercel and AWS. If your app uses something else, say so on the first call and we will tell you plainly whether we are the right team.',
+      },
+      {
+        question: 'Our app already has users. Can it stay live while you work on it?',
+        answer: 'That is how we would plan it. Changes are tested in a staging environment first and released in steps, and data migrations are rehearsed on a copy before they run in production. If a change needs a maintenance window, for example a tenancy redesign, the findings say so in advance.',
+      },
+      {
+        question: 'How is the review priced?',
+        answer: 'The scope of the review, and how it is charged, are agreed after the first call, as a fixed-scope project, a monthly retainer or a combination. We do not publish a price list, because the effort depends on the size of the app and the questions the review has to answer.',
+      },
+    ],
+    cta: {
+      heading: 'Book an AI App Launch Review',
+      text: 'Tell us what you built, what you built it with and what is stopping launch. Your first conversation is with an engineer. Please leave out code and credentials; access is arranged securely after the scope is agreed.',
+    },
+    icon: 'ri-tools-line',
+  },
+  {
     slug: 'cloud-devops',
     name: 'Cloud & DevOps',
     serviceType: 'Cloud infrastructure and DevOps',
@@ -763,7 +958,7 @@ const coreBuyerGuides: Record<string, BuyerGuide> = {
     ],
     notFit: [
       { text: 'An existing product meets the need with configuration. Buying is usually cheaper than building; our brokerage comparison shows how to weigh it:', link: { href: '/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages', label: 'custom SaaS vs off-the-shelf CRM' } },
-      { text: 'You need a clickable prototype to test an idea with users. A design prototype or a no-code tool gets you there for less.' },
+      { text: 'You need a clickable prototype to test an idea with users. A design prototype or a no-code tool gets you there for less. If you have already built one with an AI tool and it now needs to be production-ready, see', link: { href: '/services/ai-app-to-production', label: 'AI app to production' } },
     ],
     scope: [
       { factor: 'Tenancy model', effect: 'How isolated each customer\'s data must be, and whether tenants get their own configuration, branding or domain. This is the hardest decision to change later.' },
@@ -908,6 +1103,41 @@ const coreBuyerGuides: Record<string, BuyerGuide> = {
       'Volume: items per day.',
     ],
   },
+  'ai-app-to-production': {
+    fit: [
+      'You have a prototype or a working app built with an AI coding tool or app builder, and it now has to be ready for real users, data or payments.',
+      'The app works in a demo, but something specific blocks launch: deployment, authentication, data access, payments or reliability.',
+      'You want an engineering view of what to keep, fix or rebuild before spending more on the current code.',
+      'You plan to keep developing after launch, with AI tools or without, and want tests and a deployment pipeline under the product.',
+    ],
+    notFit: [
+      { text: 'You are still testing whether the idea works with users. Keep building in the AI tool; it is the cheaper way to learn.' },
+      { text: 'You want a new product designed and built from the start, with no existing code to keep. That is a new build:', link: { href: '/services/saas-development', label: 'SaaS development' } },
+      { text: 'You want AI features such as natural-language search, assistants or document extraction added to a product. See', link: { href: '/services/ai-automation', label: 'AI automation' } },
+      { text: 'You need a formal penetration test report or a compliance attestation. That comes from a specialist security firm; this is an engineering review and remediation, not a certification.' },
+    ],
+    scope: [
+      { factor: 'Distance from launch', effect: 'Whether the app runs only locally or in the builder\'s preview, is deployed but unused, or already has paying users. Live users add staging, migrations and staged releases.' },
+      { factor: 'Size and roles', effect: 'The number of screens, workflows and user roles. Each role multiplies the access rules to write and test.' },
+      { factor: 'Data and tenancy', effect: 'Whether customers share one database, and how sensitive the data is. Personal, health or financial data raises the bar for access control, logging and backups.' },
+      { factor: 'Integrations', effect: 'Each payment provider, email service, AI API or other third-party system is its own piece of work, sized by how it fails and how it is called.' },
+      { factor: 'How much can be kept', effect: 'The review decides how much of the code stays. Keeping more means less work, but only where the kept code can be tested and trusted.' },
+      { factor: 'Hosting', effect: 'Staying on the platform the app was built on, or moving to your own hosting and database, changes the deployment and migration work.' },
+      { factor: 'Launch requirements', effect: 'What must be true on launch day, and what can follow later. A short must-have list keeps the first phase small.' },
+    ],
+    firstPhase:
+      'A sensible first phase is the scoped review, followed by the fixes that block launch: access control and data isolation, payment handling, and a deployment pipeline with tests around those paths. Further improvements can follow once real users are on the app and you can see what they actually use.',
+    bring: [
+      'A short overview of what the app does and who uses it.',
+      'The tool or platform it was built with, such as Lovable, Cursor, Replit, Bolt, Claude Code or v0.',
+      'Where it stands: running locally, on a preview link, or live with users.',
+      'The main blockers, in your own words.',
+      'What must work on launch day.',
+      'The hosting and database, if you know them.',
+      'Your timeline, and any date that cannot move.',
+      'No code, passwords or API keys. Access to the repository and hosting is arranged securely after the scope is agreed.',
+    ],
+  },
   'cloud-devops': {
     fit: [
       'Releases are manual, slow or risky, and the team avoids deploying.',
@@ -1007,6 +1237,12 @@ const related: Record<string, [string, string][]> = {
     ['mls-idx-integration', 'when the automation needs clean listing data underneath it'],
     ['saas-development', 'when the automation is a feature of a product you sell'],
   ],
+  'ai-app-to-production': [
+    ['saas-development', 'when the app is a multi-tenant product and the tenancy and billing design needs rework'],
+    ['nextjs-development', 'when the app is a Next.js or React frontend that needs finishing or speeding up'],
+    ['api-integration', 'when third-party APIs and webhooks are the unreliable part'],
+    ['cloud-devops', 'for environments, the release pipeline, monitoring and backups'],
+  ],
   'cloud-devops': [
     ['saas-development', 'when the limit is the application\'s data model, not its hosting'],
     ['api-integration', 'when incidents come from third-party systems failing or drifting out of sync'],
@@ -1052,7 +1288,7 @@ export const serviceNeeds: { id: string; heading: string; blurb: string; slugs: 
     id: 'build',
     heading: 'Build or Rebuild a Product',
     blurb: 'A new platform, or an existing one that has stopped keeping up with its customers.',
-    slugs: ['saas-development', 'investor-portal-development'],
+    slugs: ['saas-development', 'investor-portal-development', 'ai-app-to-production'],
   },
   {
     id: 'connect',

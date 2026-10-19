@@ -22,6 +22,7 @@ Each service page opens with an "At a glance" table and answers, in order: what 
 - [API integration](https://peregrine-it.com/services/api-integration): integration layers for CRMs, ERPs, payroll, e-signature and carrier APIs, with retries and reconciliation
 - [MLS & IDX integration](https://peregrine-it.com/services/mls-idx-integration): RESO Web API and RETS feeds, multi-MLS normalization and IDX search
 - [AI automation](https://peregrine-it.com/services/ai-automation): natural-language search, lead qualification assistants, document extraction and predictive models
+- [AI app to production](https://peregrine-it.com/services/ai-app-to-production): review, fix, secure and deploy an app built with Lovable, Cursor, Replit, Bolt, Claude Code or v0, keeping what works and rebuilding only where justified
 - [Cloud & DevOps](https://peregrine-it.com/services/cloud-devops): AWS architecture, CI/CD, caching and CDN, load testing and monitoring
 - [Investor portal development](https://peregrine-it.com/services/investor-portal-development): role-based investor portals with watermarked documents, capital calls and distribution reporting (one published case study)
 - [Odoo ERP](https://peregrine-it.com/services/odoo-erp): Odoo HR, CRM, Inventory and Accounting implementation, custom modules, data migration and integrations
