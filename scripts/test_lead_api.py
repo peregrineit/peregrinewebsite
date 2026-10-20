@@ -28,7 +28,7 @@ NOTIFY = "info@peregrine-it.com"
 DEFAULTS = dict(emails=[], attempts=0, hooks=[], keys={}, key_bodies={}, events={}, fail=None, fail_once=None, fail_ack=None,
                 hook_fail=False, hook_sleep=0, hook_plan=[], hook_attempts=[], email_sleep=0, ack_sleep=0,
                 alerts=[], alert_fail=False, alert_sleep=0,
-                blob_puts=[])
+                blob_puts=[], ts_calls=[], ts_seen=[], ts_mode=None, redis={}, redis_down=False, redis_calls=0)
 state = dict(DEFAULTS, domains=[{"name": "test.invalid", "status": "verified"}])
 ERRORS = {
     422: {"statusCode": 422, "name": "validation_error", "message": "Invalid `from` field: hello@test.invalid is not allowed."},
@@ -70,6 +70,52 @@ class Mock(http.server.BaseHTTPRequestHandler):
             if key: state["keys"][key] = mid; state["key_bodies"][key] = body
             state["emails"].append({**body, "to": to, "_id": mid, "_key": key})
             return self._send(200, {"id": mid})
+        if self.path.startswith("/upstash/pipeline"):
+            # Upstash REST pipeline (https://upstash.com/docs/redis/features/restapi): Bearer token,
+            # JSON array of commands, one {"result": ...} per command. Only the commands the app uses.
+            state["redis_calls"] += 1
+            if state["redis_down"] or self.headers.get("Authorization") != "Bearer upstash-test-token":
+                return self._send(500, {"error": "down"})
+            now = time.time() * 1000; db = state["redis"]; out = []
+            def live(k):
+                v = db.get(k)
+                if v and v[1] is not None and v[1] <= now: db.pop(k, None); return None
+                return v
+            for cmd in body:
+                op = cmd[0].upper(); k = cmd[1]
+                if op == "INCR":
+                    v = live(k); n = int(v[0]) + 1 if v else 1; db[k] = [str(n), v[1] if v else None]; out.append({"result": n})
+                elif op == "PEXPIRE":
+                    v = live(k)
+                    if v: v[1] = now + int(cmd[2])
+                    out.append({"result": 1 if v else 0})
+                elif op == "GET":
+                    v = live(k); out.append({"result": v[0] if v else None})
+                elif op == "EXISTS":
+                    out.append({"result": 1 if live(k) else 0})
+                elif op == "DEL":
+                    out.append({"result": 1 if db.pop(k, None) else 0})
+                elif op == "SET":
+                    args = [a.upper() for a in cmd[3:]]; px = None
+                    if "PX" in args: px = now + int(cmd[3 + args.index("PX") + 1])
+                    if "NX" in args and live(k): out.append({"result": None}); continue
+                    db[k] = [cmd[2], px]; out.append({"result": "OK"})
+                else:
+                    out.append({"error": "unsupported"})
+            return self._send(200, out)
+        if self.path.startswith("/turnstile"):
+            # Cloudflare siteverify, as documented (read 2026-10-20): single-use tokens, `success`,
+            # `hostname`, `error-codes`. The token value picks the behaviour.
+            tok = body.get("response", "")
+            state["ts_calls"].append({"token": tok, "secret": body.get("secret"), "remoteip": body.get("remoteip"), "ikey": body.get("idempotency_key")})
+            if state["ts_mode"] == "down" or tok == "down": return self._send(500, {})
+            if tok == "slow": time.sleep(6); return self._send(200, {"success": True, "hostname": "peregrine-it.com"})
+            if tok in state["ts_seen"]: return self._send(200, {"success": False, "error-codes": ["timeout-or-duplicate"]})
+            state["ts_seen"].append(tok)
+            if tok.startswith("pass"):
+                host = "evil.example" if tok == "pass-otherhost" else "peregrine-it.com"
+                return self._send(200, {"success": True, "hostname": host, "challenge_ts": "2026-10-20T00:00:00Z", "error-codes": []})
+            return self._send(200, {"success": False, "error-codes": ["invalid-input-response"]})
         if self.path.startswith("/alert"):
             if state["alert_sleep"]: time.sleep(state["alert_sleep"])
             if state["alert_fail"]: return self._send(500, {"error": "mock failure"})
@@ -114,29 +160,32 @@ class Mock(http.server.BaseHTTPRequestHandler):
 def get(path="/api/lead"):
     with urllib.request.urlopen(APP + path, timeout=30) as r: return json.loads(r.read())
 
-def post(payload, ip):
-    req = urllib.request.Request(APP + "/api/lead", data=json.dumps(payload).encode(),
+def post(payload, ip, base=None):
+    req = urllib.request.Request((base or APP) + "/api/lead", data=json.dumps(payload).encode(),
                                  headers={"Content-Type": "application/json", "X-Forwarded-For": ip})
     try:
         with urllib.request.urlopen(req, timeout=40) as r: return r.status, json.loads(r.read())
     except urllib.error.HTTPError as e: return e.code, json.loads(e.read() or b"{}")
 
 LOG = os.path.join(ROOT, ".lead-test.log")
-def start_app(env_extra):
+def start_app(env_extra, port=None):
     env = {k: v for k, v in os.environ.items() if k not in ("RESEND_API_KEY", "LEAD_WEBHOOK_URL", "LEAD_FROM_EMAIL", "RESEND_BASE_URL", "VERCEL_ENV")
-           and not k.startswith(("LEAD_", "BLOB_"))}
-    env.update(env_extra, PORT=str(APP_PORT))
-    proc = subprocess.Popen(["npx", "next", "start"], cwd=ROOT, env=env, stdout=open(LOG, "w"), stderr=subprocess.STDOUT)
+           and not k.startswith(("LEAD_", "BLOB_", "TURNSTILE_", "UPSTASH_"))}
+    # Most tests reuse one visitor address many times; the acknowledgement limit gets its own test.
+    env.update({"LEAD_ACK_MAX_PER_DAY": "1000"}, **env_extra, PORT=str(port or APP_PORT))
+    log = LOG if port is None else LOG + f".{port}"
+    proc = subprocess.Popen(["npx", "next", "start"], cwd=ROOT, env=env, stdout=open(log, "w"), stderr=subprocess.STDOUT)
+    base = APP if port is None else f"http://127.0.0.1:{port}"
     for _ in range(60):
-        try: urllib.request.urlopen(APP + "/robots.txt", timeout=2); return proc
+        try: urllib.request.urlopen(base + "/robots.txt", timeout=2); return proc
         except Exception: time.sleep(0.5)
     proc.kill(); raise RuntimeError("app did not start")
 
-def stop_app(proc):
+def stop_app(proc, port=None):
     proc.terminate()
     try: proc.wait(timeout=10)
     except subprocess.TimeoutExpired: proc.kill()
-    subprocess.run(f"lsof -tiTCP:{APP_PORT} -sTCP:LISTEN | xargs kill 2>/dev/null", shell=True)
+    subprocess.run(f"lsof -tiTCP:{port or APP_PORT} -sTCP:LISTEN | xargs kill 2>/dev/null", shell=True)
     time.sleep(0.5)
 
 def app_log():
@@ -147,6 +196,19 @@ LEAD = {"form": "strategy-call", "service": "service:saas-development", "name": 
         "company": "Acme", "projectType": "new-build", "timeline": "asap", "message": "Integration test message.",
         "pageUrl": "http://localhost/services/saas-development", "landingPage": "/blog/mls-idx-integration-cost",
         "referrer": "https://www.google.com/", "utm": "utm_source=test"}
+
+# A real enquiry (2026-10-20), supplied by the owner as a regression fixture: a legitimate lead
+# that the spam score must never quarantine.
+MARIO = {"form": "strategy-call", "service": "service:mls-idx-integration", "name": "Mario De Dios", "email": "mdedios7@gmail.com", "company": "",
+         "projectType": "new-build", "timeline": "asap", "landingPage": "/services/mls-idx-integration", "utm": "utm_source=chatgpt.com", "pagesViewed": 4,
+         "pageUrl": "https://peregrine-it.com/services/mls-idx-integration?utm_source=chatgpt.com", "elapsedMs": 240000, "pit_confirm_field": "",
+         "message": "MLS data integration: Connect to MLS data providers using APIs, including RESO Web API standards.\n"
+                    "Property database: Import and maintain active listings, pending sales, closed transactions, and historical property records.\n"
+                    "Agent information: Organize agent and brokerage records, including production history and contact information where licensed and available.\n"
+                    "Agent recruiting intelligence: Identify productive agents, track production trends, and support recruiting decisions.\n"
+                    "Homequest portal integration: Make the data available through your existing custom-built portal.\n"
+                    "Automated updates: Keep information current without manual downloads.\n"
+                    "Reporting and analytics: Create dashboards showing agent production, sales volume, listing activity, and market trends."}
 
 # Attribution fields added in sprint 2 (src/lib/attribution.ts). Sent as the form sends them.
 ATTR = {"lastTouchAt": "2026-10-10T09:30:00.000Z", "firstLandingPage": "/services/mls-idx-integration", "firstReferrer": "https://www.bing.com/",
@@ -260,8 +322,11 @@ def run():
         check("priority: never returned to the visitor", "priority" not in json.dumps(b).lower(), f"got {b}")
         reset(); s, b = post({**LEAD, "email": "someone@gmail.com", "company": "", "timeline": "exploring", "service": "", "form": "quick-project"}, ip())
         check("priority: a thin enquiry is low, and still delivered", s == 200 and state["hooks"] and state["hooks"][0].get("priority") == "low", f"got {state['hooks'][:1]}")
-        reset(); s, b = post({**LEAD, "pit_confirm_field": "x"}, ip())
-        check("priority: a filled anti-spam field is always low", s == 200 and state["hooks"] and state["hooks"][0].get("priority") == "low")
+        # Priority and spam scoring are independent: the honeypot quarantines the lead but does not change its priority.
+        reset(); s, b = post({**LEAD, "pit_confirm_field": "x"}, ip()); s2, b2 = post(LEAD, ip()); hk = state["hooks"]
+        check("priority: independent of the spam score (honeypot lead keeps the priority of the same lead without it)",
+              s == 200 and s2 == 200 and len(hk) == 2 and hk[0].get("spamSuspected") is True and hk[1].get("spamSuspected") is False
+              and hk[0].get("priority") == hk[1].get("priority") and hk[0].get("priorityReasons") == hk[1].get("priorityReasons"), f"got {[(h.get('priority'), h.get('spamSuspected')) for h in hk]}")
         s, _ = post({**LEAD, "budget": "2-6-months", "timeline": ""}, ip())
         check("webhook: legacy `budget` maps to timeline", s == 200 and state["hooks"][-1].get("timeline") == "2-6-months")
         check("webhook: no signature header and status says unsigned when LEAD_WEBHOOK_SECRET is not set", h and h[0].get("_sig") is None and get().get("webhookSigned") is False)
@@ -476,10 +541,15 @@ def run():
         check("forging: exactly one Priority line and one Email line", len([l for l in lines if l.startswith("Priority:")]) == 1 and [l for l in lines if l.startswith("Email:")] == ["Email: lead@example.com"], text)
         if a: check("forging: the acknowledgement greets on one line and gains no lines", "Hi Bob Priority: High (verified customer) Email: ceo@victim.example," in a[0].get("text", "").split("\n") and a[0]["text"].count("\n") == 8, a[0].get("text"))
         if h: check("forging: webhook name is one line", h[0].get("name") == "Bob Priority: High (verified customer) Email: ceo@victim.example", f"got {h[0].get('name')!r}")
-        reset(); single = ("name", "company", "form", "projectType", "timeline", "service", "pageUrl", "landingPage", "referrer", "utm")
+        reset(); single = ("name", "company", "form", "projectType", "timeline", "service", "landingPage", "referrer", "utm")
         s, b = post({**LEAD, **{k: f"a\r\nb\u0085c\u2028d\u2029e\tf\u0000g\u202eh\u2066i\u200bj\ufeffk\u0007l" for k in single}}, ip()); h = state["hooks"]
         check("forging: every single-line field loses line breaks, control, bidi and zero-width characters",
               s == 200 and h and all(h[0].get(k) == "a b c d e fghijkl" for k in single), f"got {[(k, h[0].get(k)) for k in single if h and h[0].get(k) != 'a b c d e fghijkl']}")
+        # pageUrl is reduced to origin, path and utm_* (lib/attribution.ts cleanPageUrl): text that is not a URL is dropped.
+        reset(); s, b = post({**LEAD, "pageUrl": "a\r\nb\u2028Priority: High"}, ip()); h = state["hooks"]
+        check("forging: a pageUrl that is not a URL is dropped", s == 200 and h and h[0].get("pageUrl") == "", f"got {h[0].get('pageUrl') if h else None!r}")
+        reset(); s, b = post({**LEAD, "pageUrl": "https://peregrine-it.com/contact?utm_source=a&scName=Bob&gclid=x"}, ip()); h = state["hooks"]
+        check("pageUrl: only origin, path and utm_* reach the webhook", s == 200 and h and h[0].get("pageUrl") == "https://peregrine-it.com/contact?utm_source=a", f"got {h[0].get('pageUrl') if h else None!r}")
         reset(); s, b = post({**LEAD, "email": "lead@example.com\nBcc: x@victim.example"}, ip())
         check("forging: an email address with a line break is refused", s == 400 and not state["emails"], f"got {s}")
         reset(); msg = "First line of a real message.\r\nPriority: High (verified)\nReference: 00000000\u2028Email: ceo@victim.example\n\u202eNew Project Inquiry"
@@ -556,6 +626,174 @@ def run():
         st = get(); s, b = post(LEAD, ip())
         check("no store: store variables alone are not a destination -> 502", st.get("ok") is False and s == 502 and b.get("success") is False and not state["blob_puts"], f"got {st} {s}")
     finally: stop_app(app)
+
+    # --- spam scoring and quarantine (no Turnstile), duplicates, concurrency, malformed input
+    reset(); app = start_app(RESEND_ENV)
+    try:
+        # The submission reported on 2026-10-20 (reference c05bc740), as the API received it.
+        C05 = {**LEAD, "name": "Yeoaihd Pylxdnmo", "email": "levin.2101@buckeyemail.osu.edu", "company": "", "message": "evNIOhEFuplOwQcdVjWg",
+               "pageUrl": "https://peregrine-it.com/contact?scName=Tedc+Pzktxzu&scCompany=Bvbhwg+LLC&scMessage=3875958733&pit_confirm_field=",
+               "pit_confirm_field": ""}
+        s, b = post(C05, ip()); n = to_notify()
+        check("spam: c05bc740 replica is accepted into quarantine, marked",
+              s == 200 and b.get("success") is True and len(n) == 1 and n[0]["subject"].startswith("[Possible spam]"), f"got {s} {[e.get('subject') for e in n]}")
+        check("spam: a quarantined lead gets no acknowledgement", not to_visitor() and b.get("acknowledgement", {}).get("status") == "skipped")
+        check("spam: the notification states the score and the reasons", bool(n) and "QUARANTINED: spam score" in n[0]["text"] and "random mixed-case text" in n[0]["text"])
+        check("spam: the page URL in the email carries no form fields", bool(n) and "scName" not in n[0]["text"] and "Page URL: https://peregrine-it.com/contact\n" in n[0]["text"])
+        check("spam: the visitor's response does not reveal the quarantine", "spam" not in json.dumps(b).lower() and "quarantin" not in json.dumps(b).lower(), f"got {b}")
+        check("spam: logged as quarantined, without the address", "Lead quarantined" in app_log() and "buckeyemail" not in app_log())
+        # Second real-world case (reference e1874d34, 2026-10-20). Same family as c05bc740.
+        E18 = {**LEAD, "form": "quick-project", "service": "", "company": "", "projectType": "Quick Project Request", "timeline": "asap",
+               "name": "Isklplz Fdxwyx", "email": "i.j.u.na.r.i.h.2.7@gmail.com", "message": "SitqWzEjTODPwfVquhVaUZuA",
+               "pageUrl": "https://peregrine-it.com/?scName=Cagxnz+Fhshc&scEmail=i.j.u.na.r.i.h.2.7%40gmail.com&scCompany=Aecarxrc+LLC&pit_confirm_field=&scType=new-build&scTimeline=asap&scMessage=8585431138",
+               "pit_confirm_field": "", "submissionId": str(uuid.uuid4())}
+        reset(); s, b = post(E18, ip()); n = to_notify()
+        check("spam e1874d34: quarantined, notification marked [Possible spam]", s == 200 and len(n) == 1 and n[0]["subject"].startswith("[Possible spam]"), f"got {s} {[e.get('subject') for e in n]}")
+        check("spam e1874d34: no acknowledgement", not to_visitor() and b.get("acknowledgement", {}).get("status") == "skipped")
+        check("spam e1874d34: the recorded page URL has no form fields or address",
+              bool(n) and "Page URL: https://peregrine-it.com/\n" in n[0]["text"] and "scEmail" not in n[0]["text"] and "%40gmail" not in n[0]["text"], n[0]["text"][:600] if n else "")
+        s2, b2 = post(E18, ip()); s3, b3 = post(E18, ip())
+        check("spam e1874d34: duplicate submissions add no notifications", s2 == 200 and s3 == 200 and len(to_notify()) == 1 and not to_visitor() and b2.get("ref") == b.get("ref"), f"notify={len(to_notify())}")
+        # Real enquiry received 2026-10-20 (owner-provided fixture). Must stay a normal, high-priority lead.
+        reset(); s, b = post(MARIO, ip()); n = to_notify()
+        check("legitimate: Mario De Dios is delivered normally, not quarantined", s == 200 and len(n) == 1 and not n[0]["subject"].startswith("[Possible spam]") and "QUARANTINED" not in n[0]["text"], f"got {s} {[e.get('subject') for e in n]}")
+        check("legitimate: Mario De Dios gets the normal acknowledgement", len(to_visitor()) == 1 and to_visitor()[0]["to"] == "mdedios7@gmail.com")
+        check("legitimate: Mario De Dios is high priority", bool(n) and "Priority: High (" in n[0]["text"], n[0]["text"][:400] if n else "")
+        check("legitimate: Mario De Dios page URL keeps only path and utm", bool(n) and "Page URL: https://peregrine-it.com/services/mls-idx-integration?utm_source=chatgpt.com\n" in n[0]["text"])
+        reset(); s, b = post({**LEAD, "elapsedMs": 400, "pageUrl": "https://peregrine-it.com/?qpName=x&qpNeed=y"}, ip())
+        check("spam: a form completed in 0.4 s with fields in the URL is quarantined", s == 200 and to_notify() and to_notify()[0]["subject"].startswith("[Possible spam]") and not to_visitor())
+        PEOPLE = [
+            {"name": "Nguyễn Thị Minh Khai", "email": "minh@hcmut.edu.vn", "message": "Need help with a Shopify app."},
+            {"name": "张伟", "email": "zhang.wei@tsinghua.edu.cn", "message": "IDX feed for 3 MLS boards"},
+            {"name": "DeShawn McDonald", "email": "deshawn.mcdonald@buckeyemail.osu.edu", "message": "Fix our Next.js deploy"},
+            {"name": "Siobhán Ó Dálaigh", "email": "siobhan@gmail.com", "message": "Quote for an investor portal please", "elapsedMs": 61000},
+        ]
+        for person in PEOPLE:
+            reset(); s, b = post({**LEAD, **person}, ip()); n = to_notify()
+            check(f"legitimate: {person['name']} is delivered normally and acknowledged",
+                  s == 200 and len(n) == 1 and not n[0]["subject"].startswith("[Possible spam]") and len(to_visitor()) == 1, f"got {s} {[e.get('subject') for e in n]} acks={len(to_visitor())}")
+        # Duplicates: one submission sent twice (a replay or a client retry) is one lead.
+        reset(); body = {**LEAD, "submissionId": str(uuid.uuid4())}
+        r1 = post(body, ip()); r2 = post(body, ip())
+        check("duplicate: the same submission twice -> both 200, one reference, one notification, one acknowledgement",
+              r1[0] == 200 and r2[0] == 200 and r1[1].get("ref") == r2[1].get("ref") and len(to_notify()) == 1 and len(to_visitor()) == 1,
+              f"got {r1[0]} {r2[0]} notify={len(to_notify())} ack={len(to_visitor())}")
+        check("duplicate: the repeat is logged", "Lead duplicate request" in app_log())
+        # Concurrent copies, with the first send held in flight.
+        reset(email_sleep=1); body = {**LEAD, "submissionId": str(uuid.uuid4())}; results = []
+        threads = [threading.Thread(target=lambda a=ip(): results.append(post(body, a))) for _ in range(5)]
+        for t in threads: t.start()
+        for t in threads: t.join()
+        check("concurrent: five identical requests at once -> all 200, one reference, one notification, one acknowledgement",
+              len(results) == 5 and all(r[0] == 200 for r in results) and len({r[1].get("ref") for r in results}) == 1
+              and len(to_notify()) == 1 and len(to_visitor()) == 1, f"got {[r[0] for r in results]} notify={len(to_notify())} ack={len(to_visitor())}")
+        reset()
+        for bad in [[], "text", 42, [LEAD]]:
+            s, b = post(bad, ip()); check(f"malformed: body {json.dumps(bad)[:24]} -> 400", s == 400, f"got {s}")
+        s, b = post({**LEAD, "name": ["a"], "email": {"x": 1}, "message": None}, ip())
+        check("malformed: wrong field types -> 400, nothing sent", s == 400 and not state["emails"], f"got {s}")
+        s, b = post({**LEAD, "name": "N" * 5000, "message": "word " * 4000, "pageUrl": "https://peregrine-it.com/" + "a" * 5000}, ip()); n = to_notify()
+        check("malformed: oversized fields are cut to size, not rejected", s == 200 and n and "N" * 201 not in n[0]["text"], f"got {s}")
+    finally: stop_app(app)
+
+    # --- acknowledgement limit per recipient address
+    reset(); app = start_app({**RESEND_ENV, "LEAD_ACK_MAX_PER_DAY": "2"})
+    try:
+        outs = [post({**LEAD, "email": "someone@uni.example.edu", "message": f"Third-party address test number {i}."}, ip()) for i in range(3)]
+        check("ack limit: three leads to one address -> three notifications, two acknowledgements",
+              all(o[0] == 200 for o in outs) and len(to_notify()) == 3 and len(to_visitor()) == 2 and outs[2][1].get("acknowledgement", {}).get("status") == "skipped",
+              f"got {[o[0] for o in outs]} notify={len(to_notify())} ack={len(to_visitor())}")
+        s, b = post({**LEAD, "email": "other@example.com"}, ip())
+        check("ack limit: another address is unaffected", s == 200 and len(to_visitor()) == 3)
+        results = [urllib.request.urlopen(urllib.request.Request(APP + "/api/lead?delivery=x", headers={"X-Forwarded-For": "10.9.9.9"}), timeout=10).status for _ in range(30)]
+        try: urllib.request.urlopen(urllib.request.Request(APP + "/api/lead?delivery=x", headers={"X-Forwarded-For": "10.9.9.9"}), timeout=10); last = 200
+        except urllib.error.HTTPError as e: last = e.code
+        check("rate limit: the 31st delivery lookup from one IP in 10 minutes is 429", results == [200] * 30 and last == 429, f"got {last}")
+    finally: stop_app(app)
+
+    # --- Cloudflare Turnstile (siteverify mocked)
+    TS_ENV = {**RESEND_ENV, "TURNSTILE_SECRET_KEY": "ts-test-secret", "TURNSTILE_VERIFY_URL": MOCK + "/turnstile", "TURNSTILE_TEST_SITE_KEY": "1"}
+    reset(); app = start_app(TS_ENV)
+    try:
+        st = get(); check("turnstile: status reports it enabled", st.get("turnstile") == "enabled" and st.get("sharedRateLimit") is False, f"got {st}")
+        s, b = post(LEAD, ip())
+        check("turnstile: a direct API call without a token is refused, nothing sent", s == 400 and b.get("code") == "verification_failed" and not state["emails"] and not state["ts_calls"], f"got {s} {b}")
+        s, b = post({**LEAD, "turnstileToken": "bad-1"}, ip())
+        check("turnstile: an invalid token is refused, nothing sent", s == 400 and b.get("code") == "verification_failed" and not state["emails"], f"got {s} {b}")
+        addr = ip(); s, b = post({**LEAD, "turnstileToken": "pass-1"}, addr); c = state["ts_calls"][-1] if state["ts_calls"] else {}
+        check("turnstile: a valid token -> accepted, notification and acknowledgement", s == 200 and len(to_notify()) == 1 and len(to_visitor()) == 1, f"got {s} {b}")
+        check("turnstile: siteverify gets the secret, the visitor IP and an idempotency key",
+              c.get("secret") == "ts-test-secret" and c.get("remoteip") == addr and len(c.get("ikey") or "") == 36, f"got {c}")
+        check("turnstile: the secret is never logged", "ts-test-secret" not in app_log())
+        reset(ts_seen=["pass-1"]); s, b = post({**LEAD, "message": "Another message entirely.", "turnstileToken": "pass-1"}, ip())
+        check("turnstile: a spent token is refused", s == 400 and not state["emails"], f"got {s}")
+        reset(); s, b = post({**LEAD, "turnstileToken": "pass-otherhost"}, ip())
+        check("turnstile: a token from another hostname is refused", s == 400 and not state["emails"], f"got {s}")
+        reset(); s, b = post({**LEAD, "message": "Cloudflare down test.", "turnstileToken": "down"}, ip()); n = to_notify()
+        check("turnstile: Cloudflare unavailable -> lead kept in quarantine, no acknowledgement",
+              s == 200 and len(n) == 1 and n[0]["subject"].startswith("[Possible spam]") and "verification unavailable" in n[0]["text"] and not to_visitor(), f"got {s} {[e.get('subject') for e in n]}")
+        reset(); s, b = post({**LEAD, "message": "Cloudflare slow test.", "turnstileToken": "slow"}, ip()); n = to_notify()
+        check("turnstile: siteverify timeout -> lead kept in quarantine", s == 200 and len(n) == 1 and n[0]["subject"].startswith("[Possible spam]"), f"got {s}")
+        reset(); body = {**LEAD, "submissionId": str(uuid.uuid4()), "turnstileToken": "pass-2"}
+        r1 = post(body, ip()); r2 = post(body, ip())
+        check("turnstile: a duplicate request with its spent token gets the first answer, one verification, one email",
+              r1[0] == 200 and r2[0] == 200 and len([x for x in state["ts_calls"] if x["token"] == "pass-2"]) == 1 and len(to_notify()) == 1,
+              f"got {r1[0]} {r2[0]} calls={len(state['ts_calls'])} notify={len(to_notify())}")
+        reset(); s, b = post({**C05, "turnstileToken": "pass-3"}, ip())
+        check("turnstile: a verified token does not exempt a lead from scoring", s == 200 and to_notify() and to_notify()[0]["subject"].startswith("[Possible spam]"))
+    finally: stop_app(app)
+
+    # --- Turnstile partially configured: nothing can be verified, so every lead is quarantined (never silently accepted or refused)
+    for label, env in (("secret only", {"TURNSTILE_SECRET_KEY": "ts-test-secret", "TURNSTILE_VERIFY_URL": MOCK + "/turnstile"}),
+                       ("site key only", {"TURNSTILE_TEST_SITE_KEY": "1"})):
+        reset(); app = start_app({**RESEND_ENV, **env})
+        try:
+            st = get(); s, b = post(MARIO, ip()); n = to_notify()
+            check(f"turnstile {label}: status says misconfigured", st.get("turnstile") == "misconfigured", f"got {st.get('turnstile')}")
+            check(f"turnstile {label}: a lead is accepted into quarantine, no acknowledgement, nothing verified",
+                  s == 200 and len(n) == 1 and n[0]["subject"].startswith("[Possible spam]") and "verification unavailable" in n[0]["text"] and not to_visitor() and not state["ts_calls"],
+                  f"got {s} {[e.get('subject') for e in n]}")
+            check(f"turnstile {label}: logged as an error", "Lead verification unavailable" in app_log() and "misconfigured" in app_log())
+            check(f"turnstile {label}: validation still applies", post({**MARIO, "email": "nope"}, ip())[0] == 400)
+        finally: stop_app(app)
+    reset(); app = start_app({**RESEND_ENV, "TURNSTILE_TEST_SITE_KEY": "1", "TURNSTILE_SECRET_KEY": "ts-test-secret", "TURNSTILE_VERIFY_URL": MOCK + "/turnstile", "VERCEL_ENV": "production"})
+    try:
+        check("turnstile: the test site-key override is ignored in production", get().get("turnstile") == "misconfigured")
+    finally: stop_app(app)
+    reset(); app = start_app({**TS_ENV, "LEAD_RATE_MAX": "2"})
+    try:
+        addr = ip(); codes = [post({**LEAD, "turnstileToken": "down", "message": f"Outage fallback {i} test message."}, addr)[0] for i in range(3)]
+        check("turnstile outage: the quarantine fallback still applies the rate limit", codes == [200, 200, 429], f"got {codes}")
+        check("turnstile outage: the fallback still validates input", post({**LEAD, "email": "bad", "turnstileToken": "down"}, ip())[0] == 400)
+    finally: stop_app(app)
+
+    # --- shared store (Upstash, mocked): two app instances share de-duplication and limits
+    P2 = APP_PORT + 7; APP2 = f"http://127.0.0.1:{P2}"
+    UP_ENV = {**RESEND_ENV, "UPSTASH_REDIS_REST_URL": MOCK + "/upstash", "UPSTASH_REDIS_REST_TOKEN": "upstash-test-token"}
+    reset(); app = start_app(UP_ENV); app2 = start_app(UP_ENV, port=P2)
+    try:
+        check("shared: status reports a shared rate limit", get().get("sharedRateLimit") is True)
+        reset(email_sleep=1); body = {**LEAD, "submissionId": str(uuid.uuid4())}; results = []
+        threads = [threading.Thread(target=lambda a=ip(), base=(APP if i % 2 else APP2): results.append(post(body, a, base))) for i in range(6)]
+        for t in threads: t.start()
+        for t in threads: t.join()
+        check("shared: six identical requests across two instances -> one notification, one acknowledgement, one reference",
+              len(results) == 6 and all(r[0] == 200 for r in results) and len({r[1].get("ref") for r in results}) == 1 and len(to_notify()) == 1 and len(to_visitor()) == 1,
+              f"got {[r[0] for r in results]} notify={len(to_notify())} ack={len(to_visitor())}")
+        reset(); addr = ip(); codes = [post({**LEAD, "message": f"Shared limit test message {i}."}, addr, APP if i % 2 else APP2)[0] for i in range(6)]
+        check("shared: the per-IP limit counts across instances (6th request 429)", codes[:5] == [200] * 5 and codes[5] == 429, f"got {codes}")
+        reset(fail=500); body = {**LEAD, "submissionId": str(uuid.uuid4())}; s1, b1 = post(body, ip(), APP)
+        state["fail"] = None; s2, b2 = post(body, ip(), APP2)
+        check("shared: a failed delivery is not stored, so a retry on another instance goes through once",
+              s1 == 502 and s2 == 200 and b1.get("ref") == b2.get("ref") and len(to_notify()) == 1, f"got {s1} {s2} notify={len(to_notify())}")
+        reset(redis_down=True); s, b = post({**LEAD, "submissionId": str(uuid.uuid4())}, ip(), APP2)
+        check("shared: Redis unavailable -> falls back to this instance, the lead is still accepted", s == 200 and len(to_notify()) == 1, f"got {s}")
+    finally: stop_app(app); stop_app(app2, port=P2)
+    reset(); app = start_app({**UP_ENV, "LEAD_ACK_MAX_PER_DAY": "2"}); app2 = start_app({**UP_ENV, "LEAD_ACK_MAX_PER_DAY": "2"}, port=P2)
+    try:
+        outs = [post({**LEAD, "email": "shared-ack@uni.example.edu", "message": f"Shared acknowledgement test {i}."}, ip(), APP if i % 2 else APP2) for i in range(3)]
+        check("shared: the acknowledgement limit counts across instances", all(o[0] == 200 for o in outs) and len(to_notify()) == 3 and len(to_visitor()) == 2, f"ack={len(to_visitor())}")
+    finally: stop_app(app); stop_app(app2, port=P2)
 
     server.shutdown()
     try: os.remove(LOG)

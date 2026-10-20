@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { ctaLocationFor, getAttribution } from '@/lib/attribution';
+import { cleanPageUrl, ctaLocationFor, getAttribution } from '@/lib/attribution';
+import { turnstileOn, useLeadGuard, type LeadGuard } from '@/lib/turnstile-client';
 import { formTracker, track } from '@/lib/track';
 
 // The site's two lead forms (strategy call and quick project request). Used in the
@@ -39,12 +40,18 @@ type Fields = Record<string, HTMLInputElement | HTMLSelectElement | HTMLTextArea
 // it is treated as a new message with a new reference.
 const pendingIds: Record<string, string> = {};
 
-async function submitLead(formEl: HTMLFormElement, formData: Record<string, string>, setStatus: (s: Status) => void) {
+
+const VERIFY_HELP = 'We could not verify this request. Please try again in a moment.';
+
+async function submitLead(formEl: HTMLFormElement, formData: Record<string, string>, setStatus: (s: Status) => void, guard: Pick<LeadGuard, 'getToken' | 'reset' | 'elapsedMs'>) {
   setStatus({ loading: true, success: false, error: '' });
   const page = window.location.pathname;
   const event = { form: formData.form, page, service: formData.service || '' };
   const submissionId = (pendingIds[formData.form] ??= crypto.randomUUID());
-  try {
+  // Posts once, and once more with a fresh token if the server could not verify the first.
+  const send = async (attempt: number): Promise<Response | null> => {
+    const turnstileToken = await guard.getToken();
+    if (turnstileOn && !turnstileToken) return null;
     const res = await fetch('/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -52,9 +59,27 @@ async function submitLead(formEl: HTMLFormElement, formData: Record<string, stri
         ...formData,
         submissionId,
         ...getAttribution(ctaLocationFor(formEl, formData.form)),
-        pageUrl: window.location.href,
+        // Origin, path and utm_* only: never other parameters of the address.
+        pageUrl: cleanPageUrl(window.location.href),
+        turnstileToken: turnstileToken || undefined,
+        elapsedMs: guard.elapsedMs(),
       }),
     });
+    // A Turnstile token is single use: spend it whatever the outcome.
+    guard.reset();
+    if (res.status === 400 && attempt === 0) {
+      const peek = await res.clone().json().catch(() => null);
+      if (peek?.code === 'verification_failed') return send(1);
+    }
+    return res;
+  };
+  try {
+    const res = await send(0);
+    if (!res) {
+      setStatus({ loading: false, success: false, error: VERIFY_HELP, fallback: mailtoFallback(formData), note: 'verification did not load' });
+      track('lead_error', { ...event, status: -1 });
+      return;
+    }
     const json = await res.json();
     // Accepted or refused as invalid: the next attempt is a new submission. After a 5xx the id
     // is kept: an email that timed out on our side may still have been sent, and the same id
@@ -76,7 +101,8 @@ async function submitLead(formEl: HTMLFormElement, formData: Record<string, stri
         loading: false,
         success: false,
         error: json.error || 'Something went wrong.',
-        fallback: res.status >= 500 ? mailtoFallback(formData) : undefined,
+        // Also when verification failed twice: a real visitor Cloudflare could not verify can still reach us.
+        fallback: res.status >= 500 || json.code === 'verification_failed' ? mailtoFallback(formData) : undefined,
         note: [
           `HTTP ${res.status}`,
           json.ref ? `reference ${json.ref}` : '',
@@ -160,12 +186,15 @@ function Received({ receipt, form, children }: { receipt: Receipt; form: string;
 /** `service` records which service or landing page the form sits on. */
 export function StrategyCallForm({ service = '' }: { service?: string }) {
   const [formStatus, setFormStatus] = useState<Status>(idle);
+  const { setContainer, start, getToken, reset, elapsedMs } = useLeadGuard('strategy-call');
   return (
     <>
     {formStatus.success && formStatus.receipt ? (
       <Received receipt={formStatus.receipt} form="strategy-call">An engineer will review it and reply within 1 business day.</Received>
     ) : (
-    <form data-lead-form="strategy-call" onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+    // method="post": if the form is ever submitted before the page's script runs, the browser
+    // must not put the visitor's details in the address (a GET would).
+    <form data-lead-form="strategy-call" method="post" onFocusCapture={start} onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const f = e.currentTarget as HTMLFormElement & Fields;
       submitLead(f, {
@@ -178,7 +207,7 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
         timeline: f.scTimeline.value,
         message: f.scMessage.value || 'Strategy call request',
         pit_confirm_field: f.pit_confirm_field.value,
-      }, setFormStatus);
+      }, setFormStatus, { getToken, reset, elapsedMs });
     }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
       <input type="text" name="scName" aria-label="Your name" placeholder="Your name" required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
@@ -205,6 +234,7 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
       </select>
       <textarea name="scMessage" aria-label="What you need" placeholder="Tell us briefly what you need" rows={2}
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', resize: 'vertical' as const }} />
+      {turnstileOn && <div ref={setContainer} style={{ display: 'contents' }} />}
       {formStatus.error && (
         <p role="alert" style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>
           {formStatus.error}
@@ -229,12 +259,13 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
 
 export function QuickProjectForm() {
   const [qpFormStatus, setQpFormStatus] = useState<Status>(idle);
+  const { setContainer, start, getToken, reset, elapsedMs } = useLeadGuard('quick-project');
   return (
     <>
     {qpFormStatus.success && qpFormStatus.receipt ? (
       <Received receipt={qpFormStatus.receipt} form="quick-project">We&apos;ll review your request and reply within 1 business day.</Received>
     ) : (
-    <form data-lead-form="quick-project" onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+    <form data-lead-form="quick-project" method="post" onFocusCapture={start} onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const f = e.currentTarget as HTMLFormElement & Fields;
       submitLead(f, {
@@ -245,7 +276,7 @@ export function QuickProjectForm() {
         timeline: f.qpTimeline.value,
         message: f.qpNeed.value,
         pit_confirm_field: f.pit_confirm_field.value,
-      }, setQpFormStatus);
+      }, setQpFormStatus, { getToken, reset, elapsedMs });
     }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
       <input type="text" name="qpName" aria-label="Your name" placeholder="Your name" required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
@@ -262,6 +293,7 @@ export function QuickProjectForm() {
         <option value="2-6-months">2–6 months</option>
         <option value="exploring">Just exploring</option>
       </select>
+      {turnstileOn && <div ref={setContainer} style={{ display: 'contents' }} />}
       {qpFormStatus.error && (
         <p role="alert" style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>
           {qpFormStatus.error}

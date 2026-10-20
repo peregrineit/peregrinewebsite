@@ -84,7 +84,7 @@ eq(leadPriority({ ...base, timeline: 'exploring', message: 'short one' }).priori
 
 // anti-spam field
 const spam = leadPriority({ ...best, spamSuspected: true });
-eq([spam.priority, spam.score, spam.reasons[0]], ['low', 8, 'anti-spam field was filled'], 'filled anti-spam field is low whatever the score');
+eq([spam.priority, spam.score, spam.reasons[0]], ['low', 8, 'quarantined as possible spam'], 'a quarantined lead is low whatever the score');
 
 // determinism and wording
 eq(leadPriority(best), leadPriority({ ...best }), 'same input, same result');

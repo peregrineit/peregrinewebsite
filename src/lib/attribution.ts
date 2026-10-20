@@ -77,6 +77,40 @@ export function stripReferrer(referrer: string): string {
   }
 }
 
+/** Field names of the site's lead forms (keep in step with FORM_FIELD_PARAMS in lib/lead-spam.ts).
+ *  They appear in a page URL only when a form was submitted natively, before the page's script
+ *  ran, which puts the visitor's name, company and message in the address. */
+export const FORM_FIELD_PARAMS = [
+  'scName', 'scEmail', 'scCompany', 'scType', 'scTimeline', 'scMessage',
+  'qpName', 'qpEmail', 'qpNeed', 'qpTimeline', 'pit_confirm_field',
+];
+
+/** The page URL sent with a lead: origin, path and `utm_*` parameters only. Every other
+ *  parameter is dropped, form fields and click ids included (click ids travel separately and
+ *  only with consent). Pure. */
+export function cleanPageUrl(url: string): string {
+  try {
+    const parsed = new URL(url);
+    const kept = Array.from(parsed.searchParams).filter(([k]) => k.startsWith('utm_'));
+    const query = new URLSearchParams(kept).toString();
+    return `${parsed.origin}${parsed.pathname}${query ? `?${query}` : ''}`;
+  } catch {
+    return '';
+  }
+}
+
+/** The address with form-field parameters removed, or null when there are none. Pure. */
+export function withoutFormParams(url: string): string | null {
+  try {
+    const parsed = new URL(url);
+    if (!FORM_FIELD_PARAMS.some((p) => parsed.searchParams.has(p))) return null;
+    for (const p of FORM_FIELD_PARAMS) parsed.searchParams.delete(p);
+    return parsed.toString();
+  } catch {
+    return null;
+  }
+}
+
 /** Reads one arrival from a page URL and its referrer. Pure. */
 export function parseTouch(url: string, referrer: string, now: Date): Touch {
   let pathname = '/';
@@ -352,6 +386,14 @@ const session = () => window.sessionStorage;
 /** Call once per full page load. */
 export function rememberAttribution() {
   if (typeof window === 'undefined') return;
+  // A native form submission (before the page's script ran, or a crafted link) can leave form
+  // fields in the address. Drop them from the address bar so this page and later pages do not
+  // carry them further. This cannot undo copies already made: the server and CDN logs of that
+  // request, the browser's history entry for it, or anything a third party already received.
+  const cleaned = withoutFormParams(window.location.href);
+  if (cleaned) {
+    try { window.history.replaceState(window.history.state, '', cleaned); } catch { /* keep going */ }
+  }
   syncTouches({ ...storages(), href: window.location.href, referrer: document.referrer, host: window.location.hostname, now: new Date() });
 }
 
