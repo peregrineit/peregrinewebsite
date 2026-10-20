@@ -4,7 +4,14 @@
 // valid for 300 seconds and at most 2048 characters; the JSON answer has `success`,
 // `hostname`, `action` and `error-codes`.
 //
-// Enabled only when TURNSTILE_SECRET_KEY is set. TURNSTILE_VERIFY_URL exists for tests only.
+// Configuration (turnstileMode):
+//   enabled        both TURNSTILE_SECRET_KEY and NEXT_PUBLIC_TURNSTILE_SITE_KEY are set
+//   off            neither is set (local development, tests, or not yet configured)
+//   misconfigured  exactly one is set. The forms cannot produce tokens the server can check,
+//                  so nothing can be verified: every lead is accepted into quarantine and an
+//                  error is logged. Protection is never silently skipped, and leads are not
+//                  silently refused either.
+// TURNSTILE_VERIFY_URL exists for tests only.
 
 export type TurnstileResult =
   | { status: 'disabled' }
@@ -18,8 +25,18 @@ const VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 const DEFAULT_HOSTNAMES = ['peregrine-it.com', 'www.peregrine-it.com'];
 const TIMEOUT_MS = 4000;
 
-export function turnstileEnabled(env: Record<string, string | undefined> = process.env): boolean {
-  return Boolean(env.TURNSTILE_SECRET_KEY);
+export type TurnstileMode = 'enabled' | 'off' | 'misconfigured';
+/** The site key compiled into this build (Next.js inlines NEXT_PUBLIC_* at build time), which is
+ *  what the visitor's form actually has. A key added in Vercel without a redeploy is not in the
+ *  forms yet, so it does not count. TURNSTILE_TEST_SITE_KEY=1 stands in for a built key in the
+ *  integration tests and is ignored in production. */
+const BUILT_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '';
+
+export function turnstileMode(env: Record<string, string | undefined> = process.env, builtSiteKey = BUILT_SITE_KEY): TurnstileMode {
+  const secret = Boolean(env.TURNSTILE_SECRET_KEY);
+  const site = Boolean(builtSiteKey) || (env.VERCEL_ENV !== 'production' && env.TURNSTILE_TEST_SITE_KEY === '1');
+  if (secret && site) return 'enabled';
+  return secret || site ? 'misconfigured' : 'off';
 }
 
 /** Hostnames a token may come from. Empty list (TURNSTILE_ALLOWED_HOSTNAMES="*") = any. */
@@ -31,8 +48,10 @@ export function allowedHostnames(env: Record<string, string | undefined> = proce
 }
 
 export async function verifyTurnstile(token: unknown, remoteip: string, idempotencyKey: string): Promise<TurnstileResult> {
-  const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) return { status: 'disabled' };
+  const mode = turnstileMode();
+  if (mode === 'off') return { status: 'disabled' };
+  if (mode === 'misconfigured') return { status: 'unavailable', reason: 'turnstile misconfigured: set both keys or neither' };
+  const secret = process.env.TURNSTILE_SECRET_KEY as string;
   if (typeof token !== 'string' || token.length === 0) return { status: 'fail', codes: ['missing-input-response'] };
   if (token.length > 2048) return { status: 'fail', codes: ['invalid-input-response'] };
 

@@ -26,31 +26,39 @@ function memoryHit(key: string, windowMs: number, now: number): number {
   return entry.count;
 }
 
-async function redisHit(key: string, windowMs: number): Promise<number | null> {
+/** Runs Upstash REST commands in one pipeline call. Null when not configured or not answering. */
+export async function redis(commands: (string | number)[][], timeoutMs = 800): Promise<unknown[] | null> {
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
   if (!url || !token) return null;
-  const window = Math.floor(Date.now() / windowMs);
-  const k = `pit:rl:${key}:${window}`;
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 800);
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    // INCR then PEXPIRE in one pipeline call. https://upstash.com/docs/redis/features/restapi
+    // https://upstash.com/docs/redis/features/restapi: POST /pipeline with a JSON array of
+    // commands, Authorization: Bearer <token>; the answer is one {result} or {error} per command.
     const res = await fetch(`${url.replace(/\/$/, '')}/pipeline`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify([['INCR', k], ['PEXPIRE', k, String(windowMs)]]),
+      body: JSON.stringify(commands.map((c) => c.map(String))),
       signal: controller.signal,
     });
     if (!res.ok) return null;
-    const data = (await res.json()) as { result?: unknown }[];
-    const n = Number(data?.[0]?.result);
-    return Number.isFinite(n) ? n : null;
+    const data = (await res.json()) as { result?: unknown; error?: unknown }[];
+    if (!Array.isArray(data) || data.some((d) => d && d.error)) return null;
+    return data.map((d) => d?.result ?? null);
   } catch {
     return null;
   } finally {
     clearTimeout(timer);
   }
+}
+
+async function redisHit(key: string, windowMs: number): Promise<number | null> {
+  const window = Math.floor(Date.now() / windowMs);
+  const k = `pit:rl:${key}:${window}`;
+  const out = await redis([['INCR', k], ['PEXPIRE', k, windowMs]]);
+  const n = Number(out?.[0]);
+  return out && Number.isFinite(n) ? n : null;
 }
 
 /** Counts one hit against `limit` and reports whether it is over the maximum. */

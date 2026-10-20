@@ -386,8 +386,10 @@ const session = () => window.sessionStorage;
 /** Call once per full page load. */
 export function rememberAttribution() {
   if (typeof window === 'undefined') return;
-  // A native form submission (before the page's script ran) leaves the visitor's details in
-  // the address. Remove them before anything else reads or records the URL.
+  // A native form submission (before the page's script ran, or a crafted link) can leave form
+  // fields in the address. Drop them from the address bar so this page and later pages do not
+  // carry them further. This cannot undo copies already made: the server and CDN logs of that
+  // request, the browser's history entry for it, or anything a third party already received.
   const cleaned = withoutFormParams(window.location.href);
   if (cleaned) {
     try { window.history.replaceState(window.history.state, '', cleaned); } catch { /* keep going */ }

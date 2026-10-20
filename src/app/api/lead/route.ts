@@ -3,8 +3,8 @@ import { after, NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { cleanAttribution, cleanPageUrl, multiLine, oneLine, type LeadAttribution } from "@/lib/attribution";
 import { scoreLead, spamConfigFromEnv } from "@/lib/lead-spam";
-import { envInt, hit, sharedLimiterConfigured } from "@/lib/rate-limit";
-import { turnstileEnabled, verifyTurnstile } from "@/lib/turnstile";
+import { envInt, hit, redis, sharedLimiterConfigured } from "@/lib/rate-limit";
+import { turnstileMode, verifyTurnstile } from "@/lib/turnstile";
 import { leadPriority, priorityLine, type PriorityResult } from "@/lib/lead-priority";
 import { deliverWebhook, usableSecret, type Outcome } from "@/lib/lead-webhook";
 
@@ -94,22 +94,74 @@ const ackLimit = (emailHash: string) => ({ key: `ack:${emailHash}`, max: envInt(
 const clientIp = (request: NextRequest) => request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
 
 // Duplicate requests for one reference (a double click, a client retry, a replayed request,
-// two copies arriving at once) share one result on this instance: nothing is sent twice and
-// the second caller gets the first answer. Across instances, the Resend idempotency key
-// (`lead-notify-<ref>`, honoured for 24 hours) does the same job.
+// copies arriving at once) share one result: nothing is sent twice and later callers get the
+// first answer.
+//   - With Upstash configured: a lock (SET NX, 30 s) and the stored answer (10 minutes) live in
+//     Redis, so this holds across serverless instances.
+//   - Without it, or if Redis does not answer: a map on this instance. Copies that reach other
+//     instances are then caught only by Resend's idempotency key (`lead-notify-<ref>`, 24 hours)
+//     for sequential repeats; truly simultaneous copies on two instances could each send.
+// A failed attempt (anything but 200) is not stored, so the visitor's retry runs again.
 const DEDUPE_MS = 10 * 60 * 1000;
+const LOCK_MS = 30 * 1000;
 type Answer = { status: number; body: Record<string, unknown> };
 const inFlight = new Map<string, { at: number; answer: Promise<Answer> }>();
-function dedupe(ref: string, run: () => Promise<Answer>): { answer: Promise<Answer>; duplicate: boolean } {
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const IN_PROGRESS: Answer = {
+  status: 409,
+  body: { success: false, status: "in-progress", error: "This request is already being processed. Please check your inbox before sending it again." },
+};
+
+function dedupeLocal(ref: string, run: () => Promise<Answer>): { answer: Promise<Answer>; duplicate: boolean } {
   const now = Date.now();
   for (const [k, v] of inFlight) if (now - v.at > DEDUPE_MS) inFlight.delete(k);
   const existing = inFlight.get(ref);
   if (existing) return { answer: existing.answer, duplicate: true };
   const answer = run();
   inFlight.set(ref, { at: now, answer });
-  // A failed attempt must be retryable: forget it once it settles without acceptance.
   answer.then((a) => { if (a.status !== 200) inFlight.delete(ref); }, () => inFlight.delete(ref));
   return { answer, duplicate: false };
+}
+
+/** Null when Redis is not configured or not answering: the caller falls back to dedupeLocal. */
+async function dedupeShared(ref: string, run: () => Promise<Answer>, attempt = 0): Promise<{ answer: Answer; duplicate: boolean } | null> {
+  const lockKey = `pit:lead:lock:${ref}`;
+  const resultKey = `pit:lead:result:${ref}`;
+  const first = await redis([["GET", resultKey], ["SET", lockKey, "1", "NX", "PX", LOCK_MS]]);
+  if (!first) return null;
+  if (typeof first[0] === "string") return { answer: JSON.parse(first[0]) as Answer, duplicate: true };
+  if (first[1] === "OK") {
+    let answer: Answer;
+    try {
+      answer = await run();
+    } catch (err) {
+      await redis([["DEL", lockKey]]);
+      throw err;
+    }
+    if (answer.status === 200) await redis([["SET", resultKey, JSON.stringify(answer), "PX", DEDUPE_MS], ["DEL", lockKey]]);
+    else await redis([["DEL", lockKey]]);
+    return { answer, duplicate: false };
+  }
+  // Another request holds the lock: wait for its answer.
+  const deadline = Date.now() + LOCK_MS;
+  while (Date.now() < deadline) {
+    await sleep(250);
+    const now = await redis([["GET", resultKey], ["EXISTS", lockKey]]);
+    if (!now) break;
+    if (typeof now[0] === "string") return { answer: JSON.parse(now[0]) as Answer, duplicate: true };
+    // Released without a stored answer: the first attempt failed, so this one may try once.
+    if (Number(now[1]) === 0) return attempt === 0 ? dedupeShared(ref, run, 1) : { answer: IN_PROGRESS, duplicate: true };
+  }
+  return { answer: IN_PROGRESS, duplicate: true };
+}
+
+async function dedupe(ref: string, run: () => Promise<Answer>): Promise<{ answer: Answer; duplicate: boolean }> {
+  if (sharedLimiterConfigured()) {
+    const shared = await dedupeShared(ref, run);
+    if (shared) return shared;
+  }
+  const local = dedupeLocal(ref, run);
+  return { answer: await local.answer, duplicate: local.duplicate };
 }
 
 /** Error name and status only: Resend's messages can echo addresses. */
@@ -350,7 +402,8 @@ export async function GET(request: NextRequest) {
       durableStorage: durable(webhook),
       // Spam protection: Turnstile verification on POST, rate limits shared across instances
       // (Upstash) or per instance, and where quarantined leads go.
-      turnstile: turnstileEnabled(),
+      // "enabled", "off" or "misconfigured" (one key set: every lead is quarantined).
+      turnstile: turnstileMode(),
       sharedRateLimit: sharedLimiterConfigured(),
       quarantineTo: process.env.LEAD_QUARANTINE_TO ? "custom" : "inbox",
       environment: process.env.VERCEL_ENV || "local",
@@ -434,8 +487,7 @@ export async function POST(request: NextRequest) {
 
     // A repeat of a request already being handled (or handled in the last 10 minutes) gets the
     // same answer and sends nothing. Checked before Turnstile: a retry's token is already spent.
-    const { answer, duplicate } = dedupe(ref, () => handle(raw, lead, ip, ipHash));
-    const result = await answer;
+    const { answer: result, duplicate } = await dedupe(ref, () => handle(raw, lead, ip, ipHash));
     if (duplicate) console.log("Lead duplicate request", JSON.stringify({ ref, status: result.status }));
     return NextResponse.json(result.body, { status: result.status });
   } catch (err) {
@@ -480,8 +532,9 @@ async function handle(raw: Record<string, unknown>, validated: QualifiedLead, ip
       spamScore: spam.score,
       spamReasons: spam.reasons.join("; "),
     };
-    // Every quarantined lead is low priority, as honeypot leads were before.
-    if (lead.spamSuspected) lead.priority = leadPriority({ ...lead, spamSuspected: true });
+    // Priority and spam score stay independent: priority comes from the form fields only
+    // (computed above, before scoring) and the quarantine is shown separately.
+    if (verification.status === "unavailable") console.error("Lead verification unavailable", JSON.stringify({ ref, ipHash, reason: verification.reason }));
 
     const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
     const webhookUrl = process.env.LEAD_WEBHOOK_URL;
