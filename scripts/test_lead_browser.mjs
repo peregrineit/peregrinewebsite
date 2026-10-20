@@ -180,6 +180,10 @@ async function main() {
     body.landingPage === '/services/saas-development' && body.utm === 'utm_source=test-src&utm_medium=cpc' && body.referrer === 'https://www.google.com/search'
     && body.firstLandingPage === '/services/saas-development' && body.firstUtm === body.utm && body.gclid === ''
     && /^\d{4}-\d\d-\d\dT/.test(body.firstTouchAt) && /^\d{4}-\d\d-\d\dT/.test(body.lastTouchAt), JSON.stringify(body));
+  check('submit: pageUrl has origin, path and utm_* only (no click id or other parameter)', body.pageUrl === `${APP}/services/saas-development` || /^http:\/\/localhost:\d+\/services\/saas-development(\?utm_[^&]+(&utm_[^&]+)*)?$/.test(body.pageUrl), body.pageUrl);
+  check('submit: the time since the form appeared is sent', typeof body.elapsedMs === 'number' && body.elapsedMs > 0, String(body.elapsedMs));
+  check('submit: no Turnstile token when Turnstile is not configured', body.turnstileToken === undefined);
+  check('submit: both forms post rather than get if submitted without script', await js(`Array.from(document.querySelectorAll('form[data-lead-form]')).every(function (f) { return f.method === 'post'; })`));
   check('submit: inline form reports where it sits', body.ctaLocation === 'inline:service:saas-development', body.ctaLocation);
   check('submit: pages viewed is the session count', body.pagesViewed === Number(await js(`sessionStorage.getItem('pit_pages_viewed')`)) && body.pagesViewed >= 6, String(body.pagesViewed));
   check('submit: the webhook mock received the same attribution and a priority', hooks.length === 1 && hooks[0].gclid === '' && ['high', 'normal', 'low'].includes(hooks[0].priority) && hooks[0].ctaLocation === body.ctaLocation
@@ -246,6 +250,20 @@ async function main() {
   check('consent declined: the localStorage record is deleted on the next page', (await js(`localStorage.getItem('pit_first_touch')`)) === null
     && (await js(`sessionStorage.getItem('pit_first_touch')`)) !== null);
   check('consent: still no cookie', (await js(`document.cookie`)) === '');
+
+  // ---------------------------------------------------------------- 8. form fields never stay in the address
+  await goto(`${APP}/contact?scName=Tedc+Pzktxzu&scMessage=3875958733&pit_confirm_field=&utm_source=keep`);
+  const search = await js(`location.search`);
+  check('address: form-field parameters are removed from the URL on load, others kept', search === '?utm_source=keep', search);
+  // With script execution disabled, a native submit must not put the visitor's details in the URL.
+  await send('Emulation.setScriptExecutionDisabled', { value: true });
+  await send('Page.navigate', { url: `${APP}/contact` });
+  await waitFor(() => js(`document.readyState === 'complete' && location.pathname === '/contact'`), 'the no-script page');
+  await js(`(function () { var f = document.querySelector('form[data-lead-form=strategy-call]'); f.scName.value = 'No Script'; f.scEmail.value = 'noscript@example.com'; f.scType.value = 'other'; f.scTimeline.value = 'asap'; f.scMessage.value = 'Native submit browser check.'; HTMLFormElement.prototype.submit.call(f); })()`);
+  await sleep(2500);
+  const after = await js(`location.href`);
+  check('no script: a native submit does not put the details in the address', !after.includes('scName') && !after.includes('No+Script') && !after.includes('noscript'), after);
+  await send('Emulation.setScriptExecutionDisabled', { value: false });
   ws.close();
 }
 

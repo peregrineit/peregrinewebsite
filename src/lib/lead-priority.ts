@@ -19,7 +19,7 @@ export type PriorityInput = {
   company?: string;
   form?: string;
   service?: string;
-  /** The hidden anti-spam field had a value. */
+  /** Quarantined by the spam score (lib/lead-spam.ts); the hidden anti-spam field is one signal. */
   spamSuspected?: boolean;
 };
 
@@ -106,7 +106,7 @@ export function leadPriority(input: PriorityInput): PriorityResult {
   if (input.form === 'strategy-call') add(1, 'strategy-call form');
   if ((input.service || '').trim()) add(1, 'sent from a service, industry, guide or case-study page');
 
-  if (input.spamSuspected) return { priority: 'low', score, reasons: ['anti-spam field was filled', ...reasons] };
+  if (input.spamSuspected) return { priority: 'low', score, reasons: ['quarantined as possible spam', ...reasons] };
   return { priority: score >= HIGH_AT ? 'high' : score <= LOW_AT ? 'low' : 'normal', score, reasons };
 }
 

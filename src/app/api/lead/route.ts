@@ -1,7 +1,10 @@
 import { createHash } from "node:crypto";
 import { after, NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { cleanAttribution, multiLine, oneLine, type LeadAttribution } from "@/lib/attribution";
+import { cleanAttribution, cleanPageUrl, multiLine, oneLine, type LeadAttribution } from "@/lib/attribution";
+import { scoreLead, spamConfigFromEnv } from "@/lib/lead-spam";
+import { envInt, hit, sharedLimiterConfigured } from "@/lib/rate-limit";
+import { turnstileEnabled, verifyTurnstile } from "@/lib/turnstile";
 import { leadPriority, priorityLine, type PriorityResult } from "@/lib/lead-priority";
 import { deliverWebhook, usableSecret, type Outcome } from "@/lib/lead-webhook";
 
@@ -27,6 +30,9 @@ import { deliverWebhook, usableSecret, type Outcome } from "@/lib/lead-webhook";
 // Blob. Data flow and every variable: docs/growth/lead/ARCHITECTURE.md.
 
 const NOTIFY_TO = "info@peregrine-it.com";
+/** Where quarantined leads go. Defaults to the same inbox, where the "[Possible spam]" subject
+ *  prefix lets a mail filter put them in a review folder. */
+const QUARANTINE_TO = process.env.LEAD_QUARANTINE_TO || NOTIFY_TO;
 /** Must match the hidden input in components/LeadForms.tsx. */
 const HONEYPOT_FIELD = "pit_confirm_field";
 // The fallback is Resend's test sender, which Resend only delivers to the account owner.
@@ -46,8 +52,12 @@ interface LeadData {
   pageUrl?: string;
   /** How the visitor arrived. Every field is cleaned by lib/attribution.ts. */
   attribution: LeadAttribution;
-  /** The hidden field had a value: probably a bot, possibly browser autofill. */
+  /** Quarantined: the spam score (lib/lead-spam.ts) reached the threshold. Delivered, marked,
+   *  never acknowledged. The name is kept from the honeypot-only version for webhook receivers. */
   spamSuspected: boolean;
+  /** The score and what produced it. Owner-only; never returned to the visitor. */
+  spamScore: number;
+  spamReasons: string;
 }
 
 /** A lead plus what this API derived from it. Only for the owner; never sent to the visitor. */
@@ -65,20 +75,41 @@ function validateEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-// Best-effort rate limit per serverless instance: 5 submissions per IP per 10 minutes.
-const WINDOW_MS = 10 * 60 * 1000;
-const MAX_PER_WINDOW = 5;
-const hits = new Map<string, number[]>();
-function rateLimited(ip: string): boolean {
+/** A short, rotating hash of an IP or address for logs and rate-limit keys: never the value
+ *  itself. Salted with LEAD_LOG_SALT when set; the date makes it change every day. */
+function hashOf(value: string, scope: string): string {
+  const day = new Date().toISOString().slice(0, 10);
+  return createHash("sha256").update(`${process.env.LEAD_LOG_SALT || ""}|${scope}|${day}|${value.toLowerCase()}`).digest("hex").slice(0, 12);
+}
+
+const TEN_MINUTES = 10 * 60 * 1000;
+/** POST /api/lead per IP. Default 5 per 10 minutes (LEAD_RATE_MAX). */
+const postLimit = (ipHash: string) => ({ key: `post:${ipHash}`, max: envInt(process.env.LEAD_RATE_MAX, 5), windowMs: TEN_MINUTES });
+/** GET /api/lead?delivery= per IP. */
+const deliveryLimit = (ipHash: string) => ({ key: `delivery:${ipHash}`, max: envInt(process.env.LEAD_DELIVERY_RATE_MAX, 30), windowMs: TEN_MINUTES });
+/** Acknowledgement emails per recipient address per 24 hours (LEAD_ACK_MAX_PER_DAY, default 3):
+ *  stops the form being used to send repeated mail to someone else's address. */
+const ackLimit = (emailHash: string) => ({ key: `ack:${emailHash}`, max: envInt(process.env.LEAD_ACK_MAX_PER_DAY, 3), windowMs: 24 * 60 * 60 * 1000 });
+
+const clientIp = (request: NextRequest) => request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
+
+// Duplicate requests for one reference (a double click, a client retry, a replayed request,
+// two copies arriving at once) share one result on this instance: nothing is sent twice and
+// the second caller gets the first answer. Across instances, the Resend idempotency key
+// (`lead-notify-<ref>`, honoured for 24 hours) does the same job.
+const DEDUPE_MS = 10 * 60 * 1000;
+type Answer = { status: number; body: Record<string, unknown> };
+const inFlight = new Map<string, { at: number; answer: Promise<Answer> }>();
+function dedupe(ref: string, run: () => Promise<Answer>): { answer: Promise<Answer>; duplicate: boolean } {
   const now = Date.now();
-  const recent = (hits.get(ip) || []).filter((t) => now - t < WINDOW_MS);
-  recent.push(now);
-  hits.set(ip, recent);
-  // Keep the map from growing without bound on a long-lived instance.
-  if (hits.size > 5000) {
-    for (const [key, times] of hits) if (times.every((t) => now - t >= WINDOW_MS)) hits.delete(key);
-  }
-  return recent.length > MAX_PER_WINDOW;
+  for (const [k, v] of inFlight) if (now - v.at > DEDUPE_MS) inFlight.delete(k);
+  const existing = inFlight.get(ref);
+  if (existing) return { answer: existing.answer, duplicate: true };
+  const answer = run();
+  inFlight.set(ref, { at: now, answer });
+  // A failed attempt must be retryable: forget it once it settles without acceptance.
+  answer.then((a) => { if (a.status !== 200) inFlight.delete(ref); }, () => inFlight.delete(ref));
+  return { answer, duplicate: false };
 }
 
 /** Error name and status only: Resend's messages can echo addresses. */
@@ -159,7 +190,7 @@ function notificationEmail(lead: QualifiedLead) {
     "",
     ...(lead.spamSuspected
       ? [
-          "NOTE: the form's hidden anti-spam field was filled in. That is usually a bot and sometimes a browser's autofill. No acknowledgement was sent to this address.",
+          `QUARANTINED: spam score ${lead.spamScore} (${lead.spamReasons}). This is a sorting aid, not proof: read it before deleting. No acknowledgement was sent to this address.`,
           "",
         ]
       : []),
@@ -193,7 +224,7 @@ function notificationEmail(lead: QualifiedLead) {
     ...lead.message.split("\n").map((l) => (l ? `> ${l}` : ">")),
   ].join("\n");
   return {
-    to: NOTIFY_TO,
+    to: lead.spamSuspected ? QUARANTINE_TO : NOTIFY_TO,
     replyTo: lead.email,
     subject: `${lead.spamSuspected ? "[Possible spam] " : ""}New Project Inquiry – Peregrine IT [${lead.ref}]`,
     text,
@@ -280,6 +311,9 @@ export async function GET(request: NextRequest) {
   const headers = { "Cache-Control": "no-store" };
   const delivery = request.nextUrl.searchParams.get("delivery");
   if (delivery !== null) {
+    if ((await hit(deliveryLimit(hashOf(clientIp(request), "ip")))).limited) {
+      return NextResponse.json({ error: "Too many requests." }, { status: 429, headers });
+    }
     const ids = delivery.split(",").filter((id) => UUID.test(id)).slice(0, 2);
     const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
     const events = await Promise.all(
@@ -314,6 +348,11 @@ export async function GET(request: NextRequest) {
       // Someone is told when the notification email fails but the lead was still accepted.
       ownerAlert: Boolean(process.env.LEAD_ALERT_WEBHOOK_URL),
       durableStorage: durable(webhook),
+      // Spam protection: Turnstile verification on POST, rate limits shared across instances
+      // (Upstash) or per instance, and where quarantined leads go.
+      turnstile: turnstileEnabled(),
+      sharedRateLimit: sharedLimiterConfigured(),
+      quarantineTo: process.env.LEAD_QUARANTINE_TO ? "custom" : "inbox",
       environment: process.env.VERCEL_ENV || "local",
     },
     { headers }
@@ -324,12 +363,14 @@ export async function POST(request: NextRequest) {
   let ref = "unassigned";
   try {
     const raw = await request.json().catch(() => null);
-    if (!raw || typeof raw !== "object") {
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
       return NextResponse.json({ error: "Invalid request." }, { status: 400 });
     }
 
-    const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "unknown";
-    if (rateLimited(ip)) {
+    const ip = clientIp(request);
+    const ipHash = hashOf(ip, "ip");
+    if ((await hit(postLimit(ipHash))).limited) {
+      console.warn("Lead rate-limited", JSON.stringify({ ipHash }));
       return NextResponse.json({ error: "Too many requests. Please try again in a few minutes." }, { status: 429 });
     }
 
@@ -347,7 +388,8 @@ export async function POST(request: NextRequest) {
       // Older clients sent the timeline in `budget`.
       timeline: oneLine(raw.timeline, 60) || oneLine(raw.budget, 60),
       service: oneLine(raw.service, 100),
-      pageUrl: oneLine(raw.pageUrl, 500),
+      // Origin, path and utm_* only: form fields or other parameters never reach the email.
+      pageUrl: cleanPageUrl(oneLine(raw.pageUrl, 2000)).slice(0, 500),
       attribution: cleanAttribution(raw),
       // Honeypot. A filled field used to return a silent "success" with nothing sent, which
       // also swallowed real visitors whose browser autofilled it. Now the lead still goes to
@@ -356,7 +398,10 @@ export async function POST(request: NextRequest) {
       // Flagged by anything a person's browser would not send: the form sends "" for an
       // untouched field. A non-empty string, or any other type at all (true, 1, 0, [], {}),
       // is a script.
-      spamSuspected: honeypotFilled(raw[HONEYPOT_FIELD]),
+      // Set from the spam score below; the honeypot is one of its signals.
+      spamSuspected: false,
+      spamScore: 0,
+      spamReasons: "",
     };
 
     // Reference. The form sends one submissionId per attempt and reuses it when it retries.
@@ -387,6 +432,57 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Message must be at least 10 characters." }, { status: 400 });
     }
 
+    // A repeat of a request already being handled (or handled in the last 10 minutes) gets the
+    // same answer and sends nothing. Checked before Turnstile: a retry's token is already spent.
+    const { answer, duplicate } = dedupe(ref, () => handle(raw, lead, ip, ipHash));
+    const result = await answer;
+    if (duplicate) console.log("Lead duplicate request", JSON.stringify({ ref, status: result.status }));
+    return NextResponse.json(result.body, { status: result.status });
+  } catch (err) {
+    console.error("Lead API error", JSON.stringify({ ref, error: describe(err) }));
+    return NextResponse.json({ success: false, status: "error", error: "Something went wrong. Please try again." }, { status: 500 });
+  }
+}
+
+/** Verification, scoring and delivery for one new submission. */
+async function handle(raw: Record<string, unknown>, validated: QualifiedLead, ip: string, ipHash: string): Promise<Answer> {
+  const ref = validated.ref;
+  try {
+    // Cloudflare Turnstile, when TURNSTILE_SECRET_KEY is set. A missing or failed token is
+    // refused (the visitor's form gets a fresh token and can retry). If Cloudflare cannot be
+    // reached, the lead is not lost: it is accepted into quarantine.
+    const verification = await verifyTurnstile(raw.turnstileToken, ip, crypto.randomUUID());
+    if (verification.status === "fail") {
+      console.warn("Lead verification failed", JSON.stringify({ ref, ipHash, codes: verification.codes }));
+      return {
+        status: 400,
+        body: { success: false, status: "verification-failed", code: "verification_failed", error: "We could not verify this request. Please try again." },
+      };
+    }
+
+    const elapsed = typeof raw.elapsedMs === "number" ? raw.elapsedMs : null;
+    const spam = scoreLead(
+      {
+        name: validated.name,
+        email: validated.email,
+        company: validated.company,
+        message: validated.message,
+        pageUrl: typeof raw.pageUrl === "string" ? raw.pageUrl.slice(0, 2000) : "",
+        honeypot: honeypotFilled(raw[HONEYPOT_FIELD]),
+        elapsedMs: elapsed,
+        verificationUnavailable: verification.status === "unavailable",
+      },
+      spamConfigFromEnv(process.env)
+    );
+    const lead: QualifiedLead = {
+      ...validated,
+      spamSuspected: spam.quarantine,
+      spamScore: spam.score,
+      spamReasons: spam.reasons.join("; "),
+    };
+    // Every quarantined lead is low priority, as honeypot leads were before.
+    if (lead.spamSuspected) lead.priority = leadPriority({ ...lead, spamSuspected: true });
+
     const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
     const webhookUrl = process.env.LEAD_WEBHOOK_URL;
     const receivedAt = new Date().toISOString();
@@ -406,7 +502,8 @@ export async function POST(request: NextRequest) {
     let acknowledging: Promise<Outcome> | Outcome;
     if (!resend) acknowledging = { status: "skipped", reason: "RESEND_API_KEY not set" };
     else if (!accepted) acknowledging = { status: "skipped", reason: "lead was not accepted" };
-    else if (lead.spamSuspected) acknowledging = { status: "skipped", reason: "hidden field was filled" };
+    else if (lead.spamSuspected) acknowledging = { status: "skipped", reason: "quarantined" };
+    else if ((await hit(ackLimit(hashOf(lead.email, "email")))).limited) acknowledging = { status: "skipped", reason: "acknowledgement limit for this address" };
     else acknowledging = sendEmail(resend, acknowledgementEmail(lead), `lead-ack-${ref}`, ACK_DEADLINE_MS);
 
     const acknowledgement = await acknowledging;
@@ -418,6 +515,10 @@ export async function POST(request: NextRequest) {
       environment: process.env.VERCEL_ENV || "local",
       sender: process.env.LEAD_FROM_EMAIL ? "custom" : "resend-test-sender",
       spamSuspected: lead.spamSuspected,
+      spamScore: lead.spamScore,
+      spamReasons: lead.spamReasons,
+      verification: verification.status,
+      ipHash,
       priority: lead.priority.priority,
       notification,
       acknowledgement,
@@ -436,14 +537,16 @@ export async function POST(request: NextRequest) {
               notification: [notification.reason, notification.status === "failed" ? notification.detail : ""].filter(Boolean).join(": "),
               webhook: webhook.reason,
             };
-      return NextResponse.json(
-        { success: false, status: "not-accepted", ref, error: `We could not send your request. Please email ${NOTIFY_TO} directly.`, diagnostic },
-        { status: 502 }
-      );
+      return {
+        status: 502,
+        body: { success: false, status: "not-accepted", ref, error: `We could not send your request. Please email ${NOTIFY_TO} directly.`, diagnostic },
+      };
     }
 
     if (notification.status === "failed" || acknowledgement.status === "failed" || webhook.status === "failed") {
       console.error("Lead accepted with a failed step", JSON.stringify(record));
+    } else if (lead.spamSuspected) {
+      console.log("Lead quarantined", JSON.stringify(record));
     } else {
       console.log("Lead accepted", JSON.stringify(record));
     }
@@ -476,7 +579,7 @@ export async function POST(request: NextRequest) {
     }
 
     const publicOutcome = (o: Outcome) => ({ status: o.status, id: o.status === "accepted" ? o.id : undefined });
-    return NextResponse.json({
+    return { status: 200, body: {
       success: true,
       // Accepted by the mail provider or the webhook. Not a delivery confirmation.
       status: "accepted",
@@ -485,9 +588,9 @@ export async function POST(request: NextRequest) {
       acknowledgement: publicOutcome(acknowledgement),
       webhook: { status: webhook.status },
       durableStorage: record.durableStorage,
-    });
+    } };
   } catch (err) {
     console.error("Lead API error", JSON.stringify({ ref, error: describe(err) }));
-    return NextResponse.json({ success: false, status: "error", error: "Something went wrong. Please try again." }, { status: 500 });
+    return { status: 500, body: { success: false, status: "error", error: "Something went wrong. Please try again." } };
   }
 }
