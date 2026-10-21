@@ -295,7 +295,7 @@ export default function EdTechLearningPlatform() {
             The video pipeline was the most complex piece. We built an event-driven flow: uploads go
             to S3, trigger Lambda to start MediaConvert jobs, and on completion we write HLS manifest
             URLs to PostgreSQL. The learner app requests signed CloudFront URLs at playback time,
-            so we never expose raw S3 paths. Adaptive bitrate means learners on mobile get lower
+            so raw S3 paths are not exposed. Adaptive bitrate means learners on mobile get lower
             quality segments automatically, eliminating buffering complaints.
           </p>
         </div>

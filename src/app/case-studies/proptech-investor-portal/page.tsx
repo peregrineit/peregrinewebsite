@@ -440,7 +440,7 @@ export default function PropTechInvestorPortal() {
             The reporting engine eliminated the most painful bottleneck in the IR workflow. Distribution
             waterfall calculations, IRR computations, and performance benchmarking all run automatically
             from the source data. The quarterly report that used to take 3 weeks of manual Excel work
-            now generates in under 2 hours — and the numbers are always consistent because they come
+            now generates in under 2 hours — and the numbers are consistent because they come
             from one system of record.
           </p>
         </div>

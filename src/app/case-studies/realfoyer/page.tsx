@@ -173,7 +173,7 @@ export default function RealFoyerCaseStudy() {
           </p>
           <p>
             The engineering goal followed from that: one data model shared by the agent&apos;s website, the listing
-            search and the CRM, so that an enquiry arrives, in the words of the{' '}
+            search and the CRM, so that an inquiry arrives, in the words of the{' '}
             <Src href={RF.idxWebsites}>IDX websites page</Src>, &ldquo;with the property and the search that
             produced it attached.&rdquo; Everything below is a consequence of serving that model to many agents, in
             more than one market, from one platform.
@@ -269,7 +269,7 @@ export default function RealFoyerCaseStudy() {
                 <div className="csd-arch-layer-icon"><i className="ri-search-line" /></div>
                 <div className="csd-arch-layer-content">
                   <div className="csd-arch-layer-name">Search Index and CRM</div>
-                  <div className="csd-arch-layer-desc">Search, map results and listing pages read from the index; visitor activity and enquiries land on the lead record in the CRM.</div>
+                  <div className="csd-arch-layer-desc">Search, map results and listing pages read from the index; visitor activity and inquiries land on the lead record in the CRM.</div>
                 </div>
               </div>
             </div>

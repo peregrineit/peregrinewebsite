@@ -298,7 +298,7 @@ export default function FoodDeliveryAggregatorPlatform() {
             pickup, current load, and historical performance. Orders are pushed to the top-ranked
             available driver; if they don&apos;t accept within 30 seconds, we cascade to the next.
             Firebase syncs acceptance and status changes to all clients within milliseconds, so
-            restaurants and customers see updates instantly.
+            restaurants and customers see each update as soon as it syncs.
           </p>
         </div>
 

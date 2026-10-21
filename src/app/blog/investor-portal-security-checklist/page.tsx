@@ -282,7 +282,7 @@ export default function Guide() {
         <li>Has the application been assessed against ASVS? Which version and level, by whom, and may we see the report?</li>
         <li>Is there an independent audit report or penetration test we can read under NDA, and what was its scope and date?</li>
         <li>Show us the ID-swap test from the table above, live, on a test tenant.</li>
-        <li>How are your own staff&apos;s access to production data granted, logged and reviewed?</li>
+        <li>How is your own staff&apos;s access to production data granted, logged and reviewed?</li>
       </ul>
       <h3>Data location and exit</h3>
       <ul>

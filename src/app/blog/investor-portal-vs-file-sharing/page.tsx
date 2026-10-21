@@ -109,9 +109,9 @@ export default function Guide() {
       <p>
         This is the real gap. A file-sharing tool does not know that an investor is a limited partner in one fund and a
         co-investor in a single deal, or what their capital account balance is. Someone has to prepare each
-        investor&apos;s statement, put it in the right folder and repeat that every quarter. In our case study, that
-        work took the investor relations team three weeks each quarter for 280+ investors before the portal, and two
-        hours after it.
+        investor&apos;s statement, put it in the right folder and repeat that every quarter. In our{' '}
+        <Link href="/case-studies/proptech-investor-portal">case study</Link>, that work took the investor relations team three
+        weeks each quarter for 280+ investors before the portal, and under 2 hours after it.
       </p>
       <p>
         Capital calls, subscription documents and distribution notices have the same problem: they are workflows with
@@ -194,7 +194,7 @@ export default function Guide() {
       <h2>When a custom portal makes sense</h2>
       <p>A custom portal is worth considering when one or more of these is true:</p>
       <ul>
-        <li><strong>Your structure does not fit a product&apos;s model.</strong> The portal in our case study uses six role types and sets permissions at the entity level, so one investor can be an LP in a fund, a co-investor in a single deal and have a family office administrator with read-only access to both.</li>
+        <li><strong>Your structure does not fit a product&apos;s model.</strong> The portal in our <Link href="/case-studies/proptech-investor-portal">case study</Link> uses six role types and sets permissions at the entity level, so one investor can be an LP in a fund, a co-investor in a single deal and have a family office administrator with read-only access to both.</li>
         <li><strong>Your calculations are your own.</strong> Distribution waterfalls, IRR and equity multiple are computed from one system of record, to your rules, rather than adapted to a product&apos;s.</li>
         <li><strong>The portal has to connect to systems a product does not support,</strong> such as an internal accounting or deal system.</li>
         <li><strong>Document control is a requirement, not a preference:</strong> permission checks at the API level, per-investor watermarking and a complete audit trail.</li>
@@ -202,7 +202,8 @@ export default function Guide() {
       <p>
         It is also a development project with a build cost and ongoing maintenance. Our{' '}
         <Link href="/services/investor-portal-development">investor portal development</Link> page describes what that
-        involves; the one portal we have published as a case study took six months.
+        involves; the one portal we have published as a{' '}
+        <Link href="/case-studies/proptech-investor-portal">case study</Link> took six months.
       </p>
 
       <h2>A note on obligations</h2>

@@ -57,7 +57,7 @@ export default function W3reAIRealEstatePlatform() {
           </h1>
 
           <p className="csd-hero-sub">
-            A mid-size brokerage operating across 4 MLS regions was struggling with data silos, losing leads to slow response times, and struggling with inaccurate pricing. Here&apos;s how we rebuilt their entire digital infrastructure with AI at the core.
+            A mid-size brokerage operating across 4 MLS regions was struggling with data silos, leads lost to slow response times, and inaccurate pricing. Here&apos;s how we rebuilt their entire digital infrastructure with AI at the core.
           </p>
 
           <div className="csd-hero-meta">
@@ -407,7 +407,7 @@ export default function W3reAIRealEstatePlatform() {
 
         {/* CTA */}
         <CaseStudyCta slug="w3re-ai-real-estate-platform" heading="Building Something Similar?">
-          We help real estate companies replace outdated tools with AI-powered platforms that actually move the needle.
+          We help real estate companies replace outdated tools with natural-language search, automated valuation, and AI lead qualification.
         </CaseStudyCta>
       </div>
     </main>
