@@ -24,14 +24,14 @@ const ES_GEOTILE = `${ES}/reference/aggregations/search-aggregations-bucket-geot
 const ES_GEOHASH = `${ES}/reference/aggregations/search-aggregations-bucket-geohashgrid-aggregation`;
 const ES_CENTROID = `${ES}/reference/aggregations/search-aggregations-metrics-geocentroid-aggregation`;
 const MDB_2DS = 'https://www.mongodb.com/docs/manual/core/indexes/index-types/geospatial/2dsphere/';
-const MDB_WITHIN = 'https://www.mongodb.com/docs/manual/reference/operator/query/geoWithin/';
+const MDB_WITHIN = 'https://www.mongodb.com/docs/manual/reference/operator/query/geowithin/';
 const MDB_BOX = 'https://www.mongodb.com/docs/manual/reference/operator/query/box/';
 const SUPERCLUSTER = 'https://github.com/mapbox/supercluster/blob/main/README.md';
 const DD_ADDRESS = 'https://dd.reso.org/DD2.0/Property/InternetAddressDisplayYN/';
 const DD_LATITUDE = 'https://dd.reso.org/DD2.0/Property/Latitude/';
 const MDN_ABORT = 'https://developer.mozilla.org/en-US/docs/Web/API/AbortController';
 const MDN_REPLACE = 'https://developer.mozilla.org/en-US/docs/Web/API/History/replaceState';
-const MDN_TOUCH = 'https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action';
+const MDN_TOUCH = 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/touch-action';
 const RFC7946 = 'https://www.rfc-editor.org/rfc/rfc7946.html';
 const G_URL = 'https://developers.google.com/search/docs/crawling-indexing/url-structure';
 const G_FACETED = 'https://developers.google.com/crawling/docs/faceted-navigation';
@@ -229,7 +229,8 @@ LIMIT  200;`}</code></pre>
           drawn area shows fewer results instead of loading markers the user cannot see.
         </li>
         <li>
-          <strong>Store it as data.</strong> A drawn area that becomes a saved search is stored as GeoJSON with
+          <strong>Store it as data.</strong> A drawn area that{' '}
+          <Link href="/blog/saved-searches-listing-alerts">becomes a saved search</Link> is stored as GeoJSON with
           the other criteria, not as a URL string.
         </li>
       </ul>

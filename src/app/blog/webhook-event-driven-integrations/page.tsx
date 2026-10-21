@@ -15,7 +15,8 @@ const GH_BEST = 'https://docs.github.com/en/webhooks/using-webhooks/best-practic
 const GH_FAILED = 'https://docs.github.com/en/webhooks/using-webhooks/handling-failed-webhook-deliveries';
 const STD_WH = 'https://github.com/standard-webhooks/standard-webhooks/blob/main/spec/standard-webhooks.md';
 const AWS_JITTER = 'https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/';
-const AWS_RETRIES = 'https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/';
+// aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/ redirects (301) to this URL.
+const AWS_RETRIES = 'https://builder.aws.com/content/3EumjoZascWd1oZiEgL8ORlv3qE/timeouts-retries-and-backoff-with-jitter';
 const AWS_OUTBOX = 'https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html';
 const OWASP_SSRF = 'https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html';
 const NODE_CRYPTO = 'https://nodejs.org/api/crypto.html';
@@ -343,8 +344,9 @@ wait = random_between(0, min(cap, base * 2 ^ attempt))`}</code></pre>
         <Src href={STD_WH}>a retry schedule spanning multiple days, with an exponential backoff</Src> and{' '}
         <Src href={STD_WH}>some level of random jitter</Src>. It also suggests reading the status code: throttle
         on <Src href={STD_WH}>429 Too Many Requests</Src>, and on <Src href={STD_WH}>410 Gone</Src> disable the
-        endpoint and stop sending. Retries are per endpoint, so one customer&apos;s broken URL never delays
-        another&apos;s deliveries, and each endpoint gets a concurrency limit so a recovering subscriber is not
+        endpoint and stop sending. Retries are per endpoint, so{' '}
+        <Link href="/blog/multi-tenant-real-estate-saas">one customer&apos;s broken URL never delays another&apos;s deliveries</Link>,
+        and each endpoint gets a concurrency limit so a recovering subscriber is not
         hit with its whole backlog at once. The queue mechanics (attempt counts, backoff settings, per-key
         limits) are covered in{' '}
         <Link href="/blog/background-jobs-redis-bullmq">reliable background jobs with Redis and BullMQ</Link>.

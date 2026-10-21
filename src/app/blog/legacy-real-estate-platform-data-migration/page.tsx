@@ -11,7 +11,7 @@ const G_MOVE = 'https://developers.google.com/search/docs/crawling-indexing/site
 const G_SOFT404 = 'https://developers.google.com/search/docs/crawling-indexing/troubleshoot-crawling-errors';
 const PG_LOGICAL = 'https://www.postgresql.org/docs/current/logical-replication.html';
 const PG_RESTRICT = 'https://www.postgresql.org/docs/current/logical-replication-restrictions.html';
-const MONGO_CS = 'https://www.mongodb.com/docs/manual/changeStreams/';
+const MONGO_CS = 'https://www.mongodb.com/docs/manual/changestreams/';
 const DMS_INTRO = 'https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html';
 const DMS_VALIDATE = 'https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Validating.html';
 const FOWLER = 'https://martinfowler.com/bliki/StranglerFigApplication.html';
@@ -142,8 +142,8 @@ export default function Guide() {
           event.
         </li>
         <li><strong>Consent and suppression.</strong> Unsubscribes, do-not-contact flags and communication preferences move with the user, and the import must not trigger welcome or verification email.</li>
-        <li><strong>Saved searches.</strong> Translate criteria into the new search schema field by field, and test that the translated search returns a comparable result set. Carry over each search&apos;s last-notified state, or the first alert run after cutover treats the whole market as new.</li>
-        <li><strong>Lead history.</strong> Import events with their original timestamps and authors, with automation switched off for the import: no assignment rules, no notifications, no drip campaigns starting from day one.</li>
+        <li><strong>Saved searches.</strong> Translate criteria into the new search schema field by field, and test that the translated search returns a comparable result set. Carry over each search&apos;s <Link href="/blog/saved-searches-listing-alerts">last-notified state</Link>, or the first alert run after cutover treats the whole market as new.</li>
+        <li><strong>Lead history.</strong> Import <Link href="/blog/real-estate-crm-architecture">events with their original timestamps and authors</Link>, with automation switched off for the import: no assignment rules, no notifications, no drip campaigns starting from day one.</li>
         <li><strong>Tenancy.</strong> If the old system kept all tenants in shared tables, the migration is the moment to assign every row an owner. Our <Link href="/case-studies/scaling-real-estate-saas-platform">real estate SaaS case study</Link> describes a platform where all agents shared configuration, leads and property data in flat collections, and MongoDB collections were restructured for clean multi-tenant separation. <Link href="/blog/multi-tenant-real-estate-saas">Multi-tenant real estate SaaS</Link> covers the target design.</li>
       </ul>
 
@@ -241,7 +241,7 @@ export default function Guide() {
         <li><strong>Cutover.</strong> Freeze writes, let the final changes drain, run the gates one last time, arm reverse sync, switch traffic and turn on redirects.</li>
         <li><strong>Rollback window.</strong> The new system is the source of truth. Changes are synced back to the legacy system, which stands by read-only, so a return loses nothing.</li>
         <li><strong>Retire.</strong> When the window closes, reverse sync stops, rollback is no longer possible and the legacy system is archived.</li>
-        <li><strong>Throughout,</strong> listing data follows its own lane: a fresh import from the MLS feed into the new system, then incremental sync. It is never copied from legacy.</li>
+        <li><strong>Throughout,</strong> listing data follows its own lane: <Link href="/services/mls-idx-integration">a fresh import from the MLS feed into the new system</Link>, then incremental sync. It is never copied from legacy.</li>
       </ol>
 
       <h2>Mapping and transformation</h2>

@@ -19,9 +19,10 @@ const TRESTLE_API = 'https://trestle-documentation.corelogic.com/web-api/';
 const WEB_VITALS = 'https://web.dev/articles/vitals';
 const WEB_TTFB = 'https://web.dev/articles/ttfb';
 const WEB_LAB_FIELD = 'https://web.dev/articles/lab-and-field-data-differences';
-const G_STATUS = 'https://developers.google.com/search/docs/crawling-indexing/http-network-errors';
+// developers.google.com/search/docs/crawling-indexing/http-network-errors redirects (301) to this URL.
+const G_STATUS = 'https://developers.google.com/crawling/docs/troubleshooting/http-status-codes';
 const G_JS = 'https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics';
-const OWASP_A01 = 'https://top10.owasp.org/2021/A01_2021-Broken_Access_Control';
+const OWASP_A01 = 'https://top10.owasp.org/2021/A01_2021-Broken_Access_Control/';
 const OWASP_SECRETS = 'https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html';
 const OWASP_LOGGING = 'https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html';
 const PG_PITR = 'https://www.postgresql.org/docs/current/continuous-archiving.html';
@@ -249,8 +250,9 @@ export default function Guide() {
 
       <h2>Security</h2>
       <p>
-        An IDX platform holds three things worth protecting: credentials that reach licensed data, consumer
-        accounts and enquiries, and the display restrictions it has agreed to. The third is usually written up as
+        An IDX platform holds three things worth protecting: credentials that reach licensed data,{' '}
+        <Link href="/blog/real-estate-crm-architecture">consumer accounts and enquiries</Link>, and the display
+        restrictions it has agreed to. The third is usually written up as
         a compliance checklist; it belongs here, as a property of the system.
       </p>
       <h3>S1. Feed credentials are managed secrets</h3>
@@ -406,7 +408,8 @@ export default function Guide() {
       </p>
       <h3>O4. Deploys are reversible and environments are separate</h3>
       <p>
-        The system must be able to roll back any release, which means schema changes that the previous version
+        The system must be able to{' '}
+        <Link href="/services/cloud-devops">roll back any release</Link>, which means schema changes that the previous version
         can still run against and index changes made by building a new index beside the old one and switching.
         Staging must have its own credentials, stores and search cluster. The case study describes{' '}
         <Link href={CASE}>separate environments for USA Live, Canada Live and Staging</Link>, each with its own

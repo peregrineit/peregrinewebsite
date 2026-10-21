@@ -437,8 +437,9 @@ export function HeroPhoto({ photo, address }) {
       </ul>
       <p>
         Cached pages make invalidation part of correctness. A listing that goes under contract must not show as
-        active for the length of a cache lifetime, so the sync that records the change should also invalidate the
-        listing page, the area pages that count it, and any cached search responses. Tie cache tags to listing and
+        active for the length of a cache lifetime, so the sync that records the change should also{' '}
+        <Link href="/blog/listing-lifecycle-sold-expired-deleted">invalidate the listing page</Link>, the area
+        pages that count it, and any cached search responses. Tie cache tags to listing and
         area identifiers from the start.
       </p>
       <p>

@@ -360,7 +360,7 @@ CREATE UNIQUE INDEX one_open_assignment ON assignment (enquiry_id) WHERE ended_a
         <li><strong>Raw interactions go to a high-volume store;</strong> the timeline gets a digest. Fifty views in one session become one &ldquo;viewed 12 listings, mostly three-bedroom, one zip code&rdquo; (illustrative) activity, with the detail one click away.</li>
         <li><strong>Listing data is referenced, not copied.</strong> The CRM stores source and key, plus a small snapshot for display. Price and status are read from the listing store at view time, so the agent sees that a saved listing has dropped in price or gone pending.</li>
         <li><strong>Listing changes fan out to people.</strong> A price change on a listing is a reason to contact everyone who saved it; that is a query from listing to contacts, which the interaction store must support. The alert side of this is covered in the guide to <Link href="/blog/saved-searches-listing-alerts">saved searches and listing alerts</Link>.</li>
-        <li><strong>MLS display rules still apply.</strong> Whether a listing that leaves the feed may still be shown inside the CRM is set by the MLS license; the interaction record stays either way.</li>
+        <li><strong>MLS display rules still apply.</strong> Whether <Link href="/blog/listing-lifecycle-sold-expired-deleted">a listing that leaves the feed</Link> may still be shown inside the CRM is set by the MLS license; the interaction record stays either way.</li>
       </ul>
 
       <h2>Pipeline stages</h2>

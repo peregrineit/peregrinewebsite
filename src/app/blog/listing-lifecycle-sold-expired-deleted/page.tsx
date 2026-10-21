@@ -358,8 +358,9 @@ async function reconcile(key) {
       </ul>
       <p>
         Because per-record deletes can be missed, verify in bulk as well: compare the document count in the index
-        with the count of displayable rows in the store, per originating system, on a schedule. And rebuild the
-        index from the store periodically behind an alias. Elasticsearch&apos;s alias API can{' '}
+        with the count of displayable rows in the store, per originating system, on a schedule. And{' '}
+        <Link href="/blog/real-estate-search-elasticsearch">rebuild the index from the store periodically behind an alias</Link>.
+        Elasticsearch&apos;s alias API can{' '}
         <Src href={ES_ALIAS}>perform multiple actions in a single atomic operation</Src>, so the swap to a clean
         index is not visible to users, and anything orphaned in the old one disappears with it.
       </p>
@@ -395,7 +396,8 @@ const displayPolicy = {
       <p>
         <strong>Some transitions are caused by the calendar, not the feed.</strong> A closed listing under a
         three-year limit becomes non-displayable on a date, with no update arriving to trigger it. The lifecycle
-        therefore needs a scheduled job that evaluates age-based rules and applies the same removal actions as
+        therefore needs a <Link href="/blog/background-jobs-redis-bullmq">scheduled job</Link> that evaluates
+        age-based rules and applies the same removal actions as
         any other transition. Without it, compliance decays silently.
       </p>
       <p>
