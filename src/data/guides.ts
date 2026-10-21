@@ -171,6 +171,23 @@ export const guides: Guide[] = [
     caseStudy: 'self-storage-management-platform',
   },
   {
+    slug: 'self-storage-software-migration',
+    hero: 'Cover: three acquired facilities, each with its own software, gate system and payment processor, moving through a pilot into one system.',
+    related: ['self-storage-software-build-vs-buy', 'self-storage-access-control-integration', 'legacy-real-estate-platform-data-migration'],
+    cta: {
+      heading: 'Consolidating Facilities onto One System?',
+      text: 'Tell us how many facilities you acquired, which software, gates and payment processor each one runs, and when you need to switch. An engineer will tell you how we would plan the move.',
+    },
+    title: 'Migrating Self-Storage Software After Acquiring Facilities',
+    metaTitle: 'Self-Storage Software Migration Runbook',
+    description:
+      'Moving acquired self-storage facilities onto one system: exports, tenants, paid-through dates, payment data, gate codes, a pilot site, cutover and checks.',
+    datePublished: '2026-10-21',
+    dateModified: '2026-10-21',
+    service: 'api-integration',
+    caseStudy: 'self-storage-management-platform',
+  },
+  {
     slug: 'mls-data-access-canada',
     related: ['how-to-get-mls-data-access', 'mls-idx-integration-cost'],
     cta: {
