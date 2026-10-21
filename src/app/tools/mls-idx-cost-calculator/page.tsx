@@ -33,6 +33,18 @@ export default function MlsCostCalculatorPage() {
         isPartOf: { '@id': `${SITE_URL}/#website` },
         publisher: ORGANIZATION_REF,
         dateModified: FEES_CHECKED,
+        mainEntity: { '@id': `${url}#app` },
+      },
+      {
+        '@type': 'WebApplication',
+        '@id': `${url}#app`,
+        name: h1,
+        url,
+        description,
+        applicationCategory: 'FinanceApplication',
+        operatingSystem: 'Web browser',
+        isAccessibleForFree: true,
+        publisher: ORGANIZATION_REF,
       },
       breadcrumbList(url, [
         { name: 'Home', path: '' },

@@ -18,8 +18,9 @@ const REALFOYER = 'https://realfoyer.com/';
 const AS_OF = '21 October 2026';
 const url = `${SITE_URL}/products/realfoyer`;
 const title = 'RealFoyer: Our Real Estate SaaS Product';
-const description =
-  'RealFoyer is the real estate SaaS product Peregrine IT Solutions builds and runs: IDX websites, MLS feeds, a CRM and site CMS. What it does and how we built it.';
+const productSummary =
+  'RealFoyer is the real estate SaaS product Peregrine IT Solutions builds and runs: IDX websites, MLS feeds, a CRM and site CMS.';
+const description = `${productSummary} What it does and how we built it.`;
 
 export const metadata: Metadata = {
   title,
@@ -141,6 +142,7 @@ export default function RealFoyerPage() {
         '@type': 'SoftwareApplication',
         '@id': 'https://realfoyer.com/#software',
         name: 'RealFoyer',
+        description: productSummary,
         url: REALFOYER,
         applicationCategory: 'BusinessApplication',
         operatingSystem: 'Web browser',

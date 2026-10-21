@@ -12,10 +12,13 @@ import '../css/content-pages.css';
 export function guideMetadata(slug: string): Metadata {
   const g = getGuide(slug);
   const url = `${SITE_URL}/blog/${slug}`;
+  const author = getCaseStudyAuthor();
   return {
     title: g.metaTitle,
     description: g.description,
     alternates: { canonical: url },
+    // Same author as the visible byline and the Article JSON-LD (otherwise the layout's organization default applies).
+    ...(author ? { authors: [{ name: author.name, url: `${SITE_URL}/about#${author.id}` }] } : {}),
     openGraph: {
       title: g.title,
       description: g.description,
