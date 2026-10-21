@@ -37,6 +37,11 @@ export interface Service {
   /** Date the page content last changed (YYYY-MM-DD); shown as "Last updated". */
   updated: string;
   faq: { question: string; answer: string }[];
+  /** Optional extra sections. Rendered after "What we build" (`placement: 'build'`) or
+   *  after "How does a project start" (`placement: 'start'`). Text may contain
+   *  [label](href) links; external hrefs must be primary sources logged in
+   *  docs/content/sources/services-<slug>.md. */
+  sections?: ServiceSection[];
   icon: string;
   /** 40-60-word direct answers that open each question-led section. Facts only from
    *  the existing site. In `cost`, [[guide]] becomes a link to the first guide. */
@@ -74,6 +79,23 @@ export interface BuyerGuide {
   bring: string[];
 }
 
+/** An extra content section on a service page (see `Service.sections`). */
+export interface ServiceSection {
+  id: string;
+  placement: 'build' | 'start';
+  /** Small label above the heading. */
+  label: string;
+  heading: string;
+  paragraphs?: string[];
+  list?: string[];
+  /** Term and description pairs. */
+  items?: { title: string; body: string }[];
+  /** Paragraphs after the list or items. */
+  after?: string[];
+  /** Small print, such as the date sources were read. */
+  note?: string;
+}
+
 /** Shared by every service page. Facts only from the existing site (discovery call,
  *  discovery sprint, 2-week sprints with weekly demos, scoped estimates). The only
  *  reply-time promise on the site is "within 1 business day". */
@@ -104,6 +126,18 @@ export const ipFaq = {
 export const startAnswer = (name: string) =>
   `A Peregrine ${name} project starts with a 30-minute technical discovery call with an engineer, not a salesperson. Larger builds then begin with a discovery sprint that maps requirements, designs the architecture and produces a written technical plan. Smaller, well-defined tasks can use the quick project form for a scoped estimate.`;
 
+// Third-party documentation cited in the saas-development white-label section (read
+// 2026-10-19; quotes in docs/content/sources/services-saas-development.md).
+const SAAS = {
+  awsIsolation: 'https://docs.aws.amazon.com/wellarchitected/latest/saas-lens/tenant-isolation.html',
+  awsModels: 'https://docs.aws.amazon.com/wellarchitected/latest/saas-lens/silo-pool-and-bridge-models.html',
+  postgresRls: 'https://www.postgresql.org/docs/current/ddl-rowsecurity.html',
+  vercelPlatforms: 'https://vercel.com/docs/platforms',
+  vercelConcepts: 'https://vercel.com/docs/platforms/multi-tenant-platforms/concepts',
+  stripeBilling: 'https://docs.stripe.com/billing/subscriptions/overview',
+  stripeConnect: 'https://docs.stripe.com/connect',
+};
+
 const coreServiceList: Service[] = [
   {
     slug: 'saas-development',
@@ -128,6 +162,7 @@ const coreServiceList: Service[] = [
       {
         title: 'White-label and self-service products',
         body: 'Platforms where each customer gets their own branded experience, such as agent websites, career pages or tenant apps, all running from one codebase and one backend that you maintain once.',
+        proof: ['scaling-real-estate-saas-platform', 'recruitment-ats-platform'],
       },
       {
         title: 'Billing and subscriptions',
@@ -189,8 +224,66 @@ const coreServiceList: Service[] = [
         answer: 'Yes. White-label platforms serve every customer from one codebase and one backend, while each customer gets its own theme, domain and content. Our real estate SaaS case study runs branded agent websites this way, and our ATS case study gives each company its own career pages.',
       },
       {
+        question: 'Should each customer of a white-label SaaS get its own database?',
+        answer: 'Not necessarily. A shared database with tenant-scoped rows, enforced by the application and by database policies such as PostgreSQL row security, is the cheapest to run. A schema or a database per customer gives stronger separation and per-customer backups but multiplies migrations and operating work. Compliance needs, data volume and customer contracts decide which fits.',
+      },
+      {
         question: 'Do you only build real estate software?',
         answer: 'No. Real estate and proptech are a large share of our work, but our case studies also cover HR and payroll, recruitment, logistics, healthcare, education and e-commerce platforms. The multi-tenant patterns are the same across industries.',
+      },
+    ],
+    sections: [
+      {
+        id: 'white-label',
+        placement: 'build',
+        label: 'White-label platforms',
+        heading: 'Building a White-Label SaaS Platform You Own',
+        paragraphs: [
+          'Some companies want to own a platform that their customers present as their own: a brokerage giving each agent a branded website, or a software company letting each client run the product under its own name and domain. That is a multi-tenant SaaS with branding, domains, roles and billing designed per tenant. It is not a reseller program: you own the platform, and once the work is paid for, its code.',
+          // TODO(link): after PR 3 merges, link "agency subcontracting" to /services/white-label-development.
+          'It is also different from agency subcontracting, where a development team builds one client project that an agency delivers under its own name. Here the platform itself is the product, and every tenant runs on it.',
+          `No single architecture fits every product. AWS\'s SaaS guidance says the [strategies and approaches to achieving this isolation are not universal](${SAAS.awsIsolation}): the domain, compliance needs and deployment model all change the answer. These are the decisions we work through with you in discovery.`,
+        ],
+        items: [
+          {
+            title: 'Tenant isolation options',
+            body: `Tenants can get dedicated resources, share them, or a mix of both, which AWS calls the [silo, pool and bridge models](${SAAS.awsModels}). In a shared PostgreSQL database, [row security policies](${SAAS.postgresRls}) restrict which rows each query can see, and once row security is enabled on a table with no policy, no rows are visible. Superusers always bypass row security and table owners normally do too, so the application should connect as a separate role. A schema or a database per tenant gives stronger separation at the cost of running migrations once per tenant. Our [multi-tenant SaaS guide](/blog/multi-tenant-real-estate-saas) compares the three models in detail.`,
+          },
+          {
+            title: 'Per-tenant branding',
+            body: `Each tenant\'s logo, colors, typography, email sender and content are stored as data and applied at runtime, not kept in a fork of the code. Vercel\'s documentation describes the same model: [each tenant has its own data, configuration, and branding, but all tenants share the same codebase and deployment](${SAAS.vercelConcepts}). Our [real estate SaaS case study](/case-studies/scaling-real-estate-saas-platform) deployed white-label agent themes this way.`,
+          },
+          {
+            title: 'Custom domains and certificates',
+            body: `Tenants usually start on a subdomain and later bring their own domain. The application resolves the tenant from the request\'s host name, and the hosting platform issues certificates. On Vercel, for example, [one wildcard certificate covers every first-level subdomain](${SAAS.vercelConcepts}), and for custom domains [Vercel issues and renews certificates after domain verification](${SAAS.vercelPlatforms}). Vercel also advises stripping inbound tenant headers so [clients can\'t supply tenant context themselves](${SAAS.vercelConcepts}). Our [ATS case study](/case-studies/recruitment-ats-platform) built branded career pages with custom domains.`,
+          },
+          {
+            title: 'Role-based access',
+            body: 'Two layers of roles: platform staff who operate every tenant, and roles inside each tenant, such as owner, admin and member, that tenant admins assign themselves. Every permission check includes the tenant, so a valid user of one tenant cannot act in another. In our [self-storage case study](/case-studies/self-storage-management-platform), facility managers, corporate admins and tenants each see only their data.',
+          },
+          {
+            title: 'Tenant-level configuration',
+            body: 'Plans and the features they unlock, usage limits, enabled integrations and their credentials (stored encrypted), and settings such as time zone, currency and notification rules, all held per tenant so a change for one customer never needs a deployment for all.',
+          },
+          {
+            title: 'Billing architecture',
+            body: `The design depends on who gets paid. If you charge your tenants a subscription, a billing system such as Stripe Billing handles it: [Stripe automatically generates invoices, attempts payment collection and manages the subscription status](${SAAS.stripeBilling}). If your tenants also take payments from their own customers through your platform, that is a platform payments problem, which Stripe Connect addresses: [provide platform services to businesses that collect payments from their own customers](${SAAS.stripeConnect}). Some platforms need both.`,
+          },
+          {
+            title: 'Central administration',
+            body: 'An operator console for your own team: create and suspend tenants, see usage and billing state per tenant, change plans, and support a tenant\'s users with every action recorded in an audit log. Tenant export and deletion belong here too, because customers who leave will ask for their data.',
+          },
+          {
+            title: 'Deployment considerations',
+            body: `One codebase and one deployment for all tenants suits products where [content and branding differ, but functionality is the same](${SAAS.vercelPlatforms}); a deployment per tenant suits tenants that need custom code or isolated infrastructure, with more complexity to run. Shared infrastructure also needs per-tenant limits on heavy jobs, so one busy tenant cannot slow the rest, and some products need separate regional environments, as in our real estate SaaS case study, which split environment configurations for USA, Canada and staging.`,
+          },
+        ],
+        after: [
+          // TODO(link): /services/ai-app-to-production (PR 1) is not on main yet; add a link
+          //   here for products that began as AI-built prototypes once that page is live.
+          'Our published work on white-label and multi-tenant platforms: the [real estate SaaS platform](/case-studies/scaling-real-estate-saas-platform) of branded agent websites, the [recruitment ATS](/case-studies/recruitment-ats-platform) with branded career pages and per-company isolation, and the [self-storage platform](/case-studies/self-storage-management-platform) with per-operator schema isolation and Stripe billing. For the engineering detail, read [Building a Multi-Tenant Real Estate SaaS Platform](/blog/multi-tenant-real-estate-saas).',
+        ],
+        note: 'Third-party documentation read on October 19, 2026.',
       },
     ],
     icon: 'ri-cloud-line',
@@ -1096,6 +1189,7 @@ const coreBuyerGuides: Record<string, BuyerGuide> = {
       'You are building a subscription product that many customers will use from one platform, each with their own data, users and settings.',
       'An MVP works for the first customers and is starting to fail as accounts, data or traffic grow.',
       'Billing, roles, tenant isolation and integrations need to be designed together instead of added one at a time.',
+      'You want to own a white-label platform that your customers run under their own brand and domain, rather than resell someone else\'s product.',
     ],
     notFit: [
       { text: 'An existing product meets the need with configuration. Buying is usually cheaper than building; our brokerage comparison shows how to weigh it:', link: { href: '/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages', label: 'custom SaaS vs off-the-shelf CRM' } },
@@ -1104,6 +1198,7 @@ const coreBuyerGuides: Record<string, BuyerGuide> = {
     scope: [
       { factor: 'Tenancy model', effect: 'How isolated each customer\'s data must be, and whether tenants get their own configuration, branding or domain. This is the hardest decision to change later.' },
       { factor: 'Roles and permissions', effect: 'The number of roles, and whether customers define their own. Each role multiplies the screens and the access rules to test.' },
+      { factor: 'Who gets paid', effect: 'Charging your tenants a subscription is a billing integration. Letting tenants take payments from their own customers through your platform adds connected payment accounts, onboarding and payouts.' },
       { factor: 'Billing', effect: 'Flat plans are small. Usage-based pricing, trials, invoicing, tax handling and split payments between parties each add work.' },
       { factor: 'Integrations', effect: 'Every third-party system your customers expect on day one is its own piece of work, sized by the quality of that system\'s API.' },
       { factor: 'Data volume and search', effect: 'Whether users filter thousands of records or millions decides if a search index and a cache are needed beside the database.' },
@@ -1117,6 +1212,7 @@ const coreBuyerGuides: Record<string, BuyerGuide> = {
       'Who your customers are and what one customer account contains: users, data and settings.',
       'The three or four workflows the product cannot launch without.',
       'The pricing model you intend: plans, per seat, usage or a mix.',
+      'For a white-label product: what each customer may brand (logo, colors, domain, email sender) and whether customers take payments through the platform.',
       'The integrations customers will expect on day one.',
       'For an existing product: the stack, hosting, customer and record counts, and where it fails today.',
       'Any regulatory requirement, such as HIPAA or SOC 2.',

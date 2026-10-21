@@ -9,6 +9,7 @@ import { technologyPageFor, technologyServices } from '@/data/technology-service
 import { formatDate, getGuide, type Guide } from '@/data/guides';
 import ConsultationCta from '../../components/ConsultationCta';
 import { BringBlock, FitBlock, ProofLinks, ScopeBlock } from '../_components/BuyerBlocks';
+import { ServiceSections } from '../_components/ServiceSections';
 import '../../css/content-pages.css';
 
 export const dynamicParams = false;
@@ -212,6 +213,8 @@ export default async function ServicePage({ params }: Props) {
         </div>
       </section>
 
+      <ServiceSections sections={service.sections?.filter((s) => s.placement === 'build')} />
+
       <section className="cp-section">
         <div className="cp-container">
           <span className="cp-label">Timeline</span>
@@ -323,6 +326,8 @@ export default async function ServicePage({ params }: Props) {
           <p><Link href="/contact" className="cp-standalone-link">Book a discovery call or send a quick project request</Link></p>
         </div>
       </section>
+
+      <ServiceSections sections={service.sections?.filter((s) => s.placement === 'start')} />
 
       <section className="cp-section">
         <div className="cp-container">

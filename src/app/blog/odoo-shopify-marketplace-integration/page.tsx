@@ -344,7 +344,8 @@ export default function Guide() {
         describes a client project or a delivered integration.
       </p>
       <p>
-        Planning an Odoo integration? See our <Link href="/services/odoo-erp">Odoo service</Link> and how we
+        Planning an Odoo integration? See our <Link href="/services/odoo-erp">Odoo service</Link>, our{' '}
+        <Link href="/services/shopify-development">Shopify development service</Link> for the store side, and how we
         approach <Link href="/services/api-integration">API integration</Link> in general. Every project starts
         with a 30-minute technical discovery call with an engineer.
       </p>
