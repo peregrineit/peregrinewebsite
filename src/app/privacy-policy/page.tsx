@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import JsonLd, { ORGANIZATION_REF, SITE_URL } from '../components/JsonLd';
+import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../components/JsonLd';
 import AnalyticsChoice from '../components/AnalyticsChoice';
 import { formatDate } from '@/data/guides';
 import { privacyPolicyUpdated } from '@/data/legal';
@@ -24,15 +24,25 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPolicy() {
+  const url = `${SITE_URL}/privacy-policy`;
   const schema = {
     '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    '@id': `${SITE_URL}/privacy-policy#webpage`,
-    url: `${SITE_URL}/privacy-policy`,
-    name: 'Privacy Policy',
-    isPartOf: { '@id': `${SITE_URL}/#website` },
-    publisher: ORGANIZATION_REF,
-    dateModified: privacyPolicyUpdated,
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `${url}#webpage`,
+        url,
+        name: 'Privacy Policy',
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        breadcrumb: { '@id': `${url}#breadcrumb` },
+        publisher: ORGANIZATION_REF,
+        dateModified: privacyPolicyUpdated,
+      },
+      breadcrumbList(url, [
+        { name: 'Home', path: '/' },
+        { name: 'Privacy Policy', path: '/privacy-policy' },
+      ]),
+    ],
   };
   return (
     <main style={{ maxWidth: '960px', margin: '0 auto', padding: '7rem 2rem 5rem' }}>

@@ -13,6 +13,8 @@ Engineers work directly with client teams in sprint-based delivery, with daily o
 - IP ownership: once the work is paid for, the client owns the IP rights to what Peregrine builds.
 - A typical SaaS MVP ships in 4 to 6 weeks; complex platforms take 8 to 12 weeks.
 - [Frequently asked questions](https://peregrine-it.com/#faq): how engagements start, location and hours, industries, existing codebases, cost, timelines and past work
+- [Home](https://peregrine-it.com/): what Peregrine builds, the services, selected work and the FAQ in one page
+- [Guides index](https://peregrine-it.com/blog): every guide below, grouped by topic
 
 ## Services
 
@@ -87,9 +89,9 @@ Industry pages exist only where published case studies back them; every figure o
 - [Designing Reliable Background Jobs with Redis and BullMQ](https://peregrine-it.com/blog/background-jobs-redis-bullmq): How to run BullMQ on Redis in production: retries and backoff, concurrency, stalled jobs, idempotent handlers, Job Schedulers, Redis settings and failure modes; engineering guidance with illustrative examples and primary sources, no Peregrine project claims beyond its published case studies
 - [Vibe-Coded App Security Checklist: What to Check Before Launch](https://peregrine-it.com/blog/vibe-coded-app-security-checklist): What to check before an AI-built app takes real users and data: authentication, server-side authorization, Supabase row-level security, secrets, webhooks, backups, monitoring and CI/CD, each with a safe self-check; defensive guidance with official documentation as sources, no Peregrine project claims
 
-## Selected case studies
+## Case studies
 
-Each case study opens with a "Results at a glance" table: client, industry, stack, project duration and three headline results, or "No outcomes published" where none are published.
+All twenty, in the order they appear on the hub. Each case study opens with a "Results at a glance" table: client, industry, stack, project duration and three headline results, or "No outcomes published" where none are published.
 
 - [Scaling a real estate SaaS platform](https://peregrine-it.com/case-studies/scaling-real-estate-saas-platform): re-architected a US/Canada property search product to serve millions of MLS listings with sub-second search.
 - [AI-powered multi-market real estate platform](https://peregrine-it.com/case-studies/w3re-ai-real-estate-platform): unified four MLS feeds for a brokerage and added natural-language search, automated valuation and an AI lead-qualification assistant.
@@ -97,6 +99,20 @@ Each case study opens with a "Results at a glance" table: client, industry, stac
 - [Supply chain visibility platform](https://peregrine-it.com/case-studies/supply-chain-visibility-platform): normalized tracking data from 12 carrier APIs with ETA prediction and exception alerts.
 - [Self-storage management SaaS](https://peregrine-it.com/case-studies/self-storage-management-platform): operator platform with smart-lock integration, automated billing and live occupancy dashboards.
 - [Engineering RealFoyer](https://peregrine-it.com/case-studies/realfoyer): how we engineered our own real estate SaaS (not a client project): one shared database with a tenant key per site resolved by hostname, MLS feeds per board activated per agent after board approval, search, CRM and CMS; no outcomes published.
+- [Real-Time Fleet Tracking Platform for a Regional Logistics Company](https://peregrine-it.com/case-studies/logistics-fleet-tracking-platform): a GPS fleet management system with live tracking, route optimization, driver apps and customer ETA alerts for 500+ vehicles in the MENA region.
+- [Unified Clinic Management System for a Multi-Location Healthcare Network](https://peregrine-it.com/case-studies/multi-location-clinic-management): a HIPAA-compliant practice management platform unifying patient records, telehealth, scheduling and insurance billing across 35 clinics.
+- [Multi-Vendor E-Commerce Marketplace with Split Payments & Bilingual UX](https://peregrine-it.com/case-studies/multi-vendor-ecommerce-marketplace): a bilingual Arabic/English marketplace for 400+ Gulf vendors with automated split payments, vendor onboarding and real-time inventory sync.
+- [EdTech Learning Platform with LMS & Video Streaming](https://peregrine-it.com/case-studies/edtech-learning-platform): a custom EdTech LMS with HLS video streaming and course management, serving 12K+ enrollments across 500+ courses at 99.2% uptime.
+- [Food Delivery Aggregator for Multi-Restaurant Marketplace](https://peregrine-it.com/case-studies/food-delivery-aggregator-platform): a multi-restaurant food delivery platform with 200+ restaurants, 50K+ orders a month and real-time driver dispatch.
+- [HR & Payroll SaaS for Mid-Market Companies](https://peregrine-it.com/case-studies/hr-payroll-saas-platform): an HR and payroll SaaS for 85+ mid-market companies and 12K employees, with multi-state tax, benefits integration and 99.9% payroll accuracy.
+- [Insurance Claims Automation for Claims Processing](https://peregrine-it.com/case-studies/insurance-claims-automation-platform): a claims automation platform processing 45K+ claims a year, with document extraction, multi-carrier rules and a full audit trail.
+- [Restaurant POS & Online Ordering for QSR Chains](https://peregrine-it.com/case-studies/restaurant-pos-ordering-system): a POS and online ordering platform for QSR chains across 120+ locations, with offline-first POS, kitchen display and multi-location sync.
+- [Fitness Subscription App with Workout Tracking & Live Classes](https://peregrine-it.com/case-studies/fitness-wellness-subscription-app): a fitness subscription app with 80K+ subscribers and 2M+ workouts logged, featuring video streaming, workout sync and offline mode.
+- [Legal Document Automation for Contract Generation & E-Signature](https://peregrine-it.com/case-studies/legal-document-automation-platform): a legal document automation platform for 15K+ documents a month, with contract templates, clause libraries and multi-party e-signature.
+- [Manufacturing ERP for Production & Inventory](https://peregrine-it.com/case-studies/manufacturing-erp-system): a manufacturing ERP for 8 factories and 50K SKUs with multi-plant sync, BOM management, shop-floor data capture and 30% lower inventory.
+- [Recruitment ATS for Applicant Tracking & Hiring](https://peregrine-it.com/case-studies/recruitment-ats-platform): a multi-tenant ATS SaaS for 200+ companies and 80K+ candidates, with resume parsing, candidate pipelines and a 65% cut in time-to-hire.
+- [Event Ticketing Platform with Real-Time Availability](https://peregrine-it.com/case-studies/event-ticketing-platform): an event ticketing platform for 500+ events and 120K tickets, with real-time availability, scalable checkout, fraud prevention and refund workflows.
+- [Real-Time Collaboration Tool for Documents & Chat](https://peregrine-it.com/case-studies/realtime-collaboration-tool): a real-time collaboration platform for 5K+ workspaces and 25K users, with presence, permissions, offline sync and sub-100ms sync latency.
 - [All case studies](https://peregrine-it.com/case-studies)
 
 ## Company
@@ -105,6 +121,11 @@ Each case study opens with a "Results at a glance" table: client, industry, stac
 - Clients named on the site: W3|re, Easy Agent PRO, BrokerLinx, Kypiq, Search Realty, Bahia International Realty, Torrins and MM Nova Tech
 - Own product: [RealFoyer](https://realfoyer.com/), IDX websites, CRM and marketing tools for agents and brokerages
 - [RealFoyer, built by Peregrine](https://peregrine-it.com/products/realfoyer): what our own real estate SaaS does and the engineering behind it
+
+## Legal
+
+- [Privacy policy](https://peregrine-it.com/privacy-policy): what the site collects, how enquiry data is handled, and the retention and rights sections
+- [Terms of use](https://peregrine-it.com/terms-of-use): the terms governing use of the site, including IP ownership of delivered work
 
 ## Contact
 

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import JsonLd, { ORGANIZATION_REF, SITE_URL } from '../components/JsonLd';
+import JsonLd, { ORGANIZATION_REF, SITE_URL, breadcrumbList } from '../components/JsonLd';
 import { formatDate } from '@/data/guides';
 import { termsOfUseUpdated } from '@/data/legal';
 import Link from 'next/link';
@@ -27,15 +27,25 @@ const liStyle = { marginBottom: '0.35rem' };
 const capsStyle = { fontSize: '0.92rem', lineHeight: '1.7' as const, marginTop: '0.75rem' };
 
 export default function TermsOfUse() {
+  const url = `${SITE_URL}/terms-of-use`;
   const schema = {
     '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    '@id': `${SITE_URL}/terms-of-use#webpage`,
-    url: `${SITE_URL}/terms-of-use`,
-    name: 'Terms of Use',
-    isPartOf: { '@id': `${SITE_URL}/#website` },
-    publisher: ORGANIZATION_REF,
-    dateModified: termsOfUseUpdated,
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `${url}#webpage`,
+        url,
+        name: 'Terms of Use',
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        breadcrumb: { '@id': `${url}#breadcrumb` },
+        publisher: ORGANIZATION_REF,
+        dateModified: termsOfUseUpdated,
+      },
+      breadcrumbList(url, [
+        { name: 'Home', path: '/' },
+        { name: 'Terms of Use', path: '/terms-of-use' },
+      ]),
+    ],
   };
   return (
     <main style={{ maxWidth: '780px', margin: '0 auto', padding: '7rem 2rem 5rem' }}>
