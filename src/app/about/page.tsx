@@ -146,7 +146,7 @@ export default function AboutPage() {
           <span className="cp-label">Our work</span>
           <h2>Published Case Studies</h2>
           <p>
-            We publish {caseStudies.length} case studies, each covering the problem, the architecture and the results.
+            We publish {caseStudies.length} case studies, each covering the problem, the architecture and what was built.
             They span real estate and proptech, logistics and supply chain, healthcare, HR and payroll, insurance,
             legal, education, e-commerce and marketplaces, hospitality, events and manufacturing.
           </p>
