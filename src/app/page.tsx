@@ -44,7 +44,7 @@ const faqs = [
   },
   {
     question: "How can I see Peregrine's past work?",
-    answer: `Peregrine IT Solutions publishes ${caseStudies.length} case studies, each covering the problem, the architecture and the results, across real estate and proptech, logistics, healthcare, HR and payroll, insurance, legal, education, e-commerce, hospitality, events and manufacturing. We also build and operate our own real estate product, RealFoyer. The case studies page lists them all by category.`,
+    answer: `Peregrine IT Solutions publishes ${caseStudies.length} case studies, each covering the problem, the architecture and what was built, across real estate and proptech, logistics, healthcare, HR and payroll, insurance, legal, education, e-commerce, hospitality, events and manufacturing. We also build and operate our own real estate product, RealFoyer. The case studies page lists them all by category.`,
   },
   {
     question: "When should a company hire a development partner like Peregrine instead of employees?",
@@ -749,7 +749,7 @@ export default function Home() {
             <div className="w-layout-vflex content-wrap" style={{ marginBottom: '2.5rem' }}>
               <p className="section-borrow">Selected Work</p>
               <h2 className="heading-primary gradient">Platforms We&apos;ve Engineered</h2>
-              <div className="section-sub" style={{ color: 'rgba(255,255,255,0.75)' }}>A few recent builds, from multi-market MLS platforms to carrier integrations. Each case study covers the problem, the architecture and the results.</div>
+              <div className="section-sub" style={{ color: 'rgba(255,255,255,0.75)' }}>A few recent builds, from multi-market MLS platforms to carrier integrations. Each case study covers the problem, the architecture and what was built.</div>
             </div>
             <div className="tw-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {featuredCaseStudySlugs.map((slug) => (

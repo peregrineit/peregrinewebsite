@@ -87,7 +87,7 @@ const engineering: { title: string; body: string; href?: string; hrefLabel?: str
   },
   {
     title: 'MLS ingestion per board',
-    body: 'Each board is a separate feed with its own fields, refresh cadence and rules. Scheduled sync, delta detection and removal reconciliation keep a site in step with the feed its agreement allows.',
+    body: 'Each board is a separate feed with its own fields, refresh cadence and rules. Scheduled sync and removal reconciliation keep a site in step with the feed its agreement allows.',
     href: '/blog/mls-sync-engine',
     hrefLabel: 'MLS sync engine',
   },
