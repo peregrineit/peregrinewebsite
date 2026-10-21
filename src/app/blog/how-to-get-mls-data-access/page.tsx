@@ -4,7 +4,9 @@ import GuideLayout, { GuideFaq, Src, guideMetadata } from '../../components/Guid
 const SLUG = 'how-to-get-mls-data-access';
 export const metadata = guideMetadata(SLUG);
 
-// Sources checked 2026-09-30 on the MLS, NAR, RESO, MLS Grid, Trestle and Bridge pages.
+// Sources checked 2026-09-30 on the MLS, NAR, RESO, MLS Grid, Trestle and Bridge pages. Platform details for
+// MLS Grid, Trestle, Bridge and CREA DDF re-read and extended on 2026-10-21; quotes are logged in
+// docs/content/sources/how-to-get-mls-data-access.md.
 const NAR_IDX = 'https://www.nar.realtor/handbook-on-multiple-listing-policy/advertising-print-and-electronic-section-1-internet-data-exchange-idx-policy-policy-statement-7-58';
 const NAR_VOW = 'https://www.nar.realtor/handbook-on-multiple-listing-policy/virtual-office-websites-policy-governing-use-of-mls-data-in-connection-with-internet-brokerage';
 const STELLAR = 'https://www.stellarmls.com/data-delivery';
@@ -14,6 +16,7 @@ const NORTHSTAR = 'https://northstarmls.com/third-party-data-usage/';
 const RECO = 'https://cdn.recolorado.com/files/data/Participant-Pricing-Schedule.pdf';
 // CREA's DDF Policy and Rules, June 2026 revision (replaces the February 2024 PDF cited before).
 const CREA = 'https://us.v-cdn.net/6029909/uploads/WCDHHJMCZ480/ddf-28r-29-policy-and-rules-june-2026-eng.pdf';
+const CREA_TP_PRICING = 'https://crea.vanillacommunity.com/discussion/73/ddf-r-technology-provider-pricing-tiers';
 const MLSGRID_FAQ = 'https://www.mlsgrid.com/faq';
 const MLSGRID_GUIDE = 'https://www.mlsgrid.com/s/MLS-Grid-Data-Consumer-Access-Guide.pdf';
 const TRESTLE_FAQ = 'https://trestle-documentation.corelogic.com/support/faq/';
@@ -58,15 +61,16 @@ export default function Guide() {
         <li>Stellar MLS requires <Src href={STELLAR}>a three-party agreement between the Broker, Vendor, and Stellar MLS</Src> for custom feeds, with <Src href={STELLAR}>an individual agreement for each broker you work with</Src>. A vendor product <Src href={STELLAR}>must be actively working with at least one Broker that belongs to Stellar MLS</Src>.</li>
         <li>At ARMLS, <Src href={ARMLS}>broker data feed requests must be associated with an active ARMLS subscriber</Src>, and <Src href={ARMLS}>all feeds must be used under broker control</Src>.</li>
         <li>Trestle notes that <Src href={TRESTLE_FAQ}>MLOs typically require a real estate broker or agent to ratify the contract</Src>, or a periodic report of which members use your service.</li>
-        <li>If you are a brokerage building your own technology, MLS Grid&apos;s access guide says <Src href={MLSGRID_GUIDE}>your brokerage will function as your own &ldquo;Vendor&rdquo;</Src>.</li>
+        <li>If you are a brokerage building your own technology, MLS Grid&apos;s access guide says <Src href={MLSGRID_GUIDE}>the brokerage will function as your &ldquo;Vendor&rdquo;</Src>.</li>
       </ul>
 
       <h2>Find out how each MLS delivers data</h2>
       <p>Some MLSs deliver feeds themselves; many use a platform. The platform changes the paperwork, not the need for MLS approval.</p>
       <ul>
-        <li><strong>MLS Grid</strong> has <Src href={MLSGRID_FAQ}>one standard license agreement</Src> across its feed types. It says <Src href={MLSGRID_FAQ}>you will only pay the license fee required by your MLS</Src>, which MLS Grid collects on the MLS&apos;s behalf, and that <Src href={MLSGRID_FAQ}>participation is at your MLS&apos;s discretion</Src>. NorthstarMLS, for example, requires that <Src href={NORTHSTAR}>VOW or back-office agreements be completed through the MLS Grid</Src>.</li>
-        <li><strong>Trestle (Cotality)</strong>: you register and <Src href={TRESTLE_FAQ}>click &ldquo;ADD MLO CONNECTION&rdquo; to begin the data request workflow</Src>. Trestle <Src href={TRESTLE_FAQ}>only facilitates the license agreement; Cotality is not a party to it</Src>.</li>
-        <li><strong>Bridge Interactive (Zillow)</strong>: <Src href={BRIDGE_DOCS}>all datasets require approval from the data provider</Src>, which <Src href={BRIDGE_DOCS}>may require license agreements, fees or compliance testing</Src>; every application gets <Src href={BRIDGE_DOCS}>automatic access to a test dataset</Src>. Zillow&apos;s developer page says the platform is <Src href={ZILLOW_BRIDGE}>currently invite only</Src>.</li>
+        <li><strong>MLS Grid</strong> has <Src href={MLSGRID_FAQ}>one standard license agreement</Src> across its feed types. It says <Src href={MLSGRID_FAQ}>you will only pay the license fee required by your MLS</Src>, which MLS Grid collects on the MLS&apos;s behalf, and that <Src href={MLSGRID_FAQ}>participation in the MLS Grid is at your MLS&apos;s discretion</Src>. NorthstarMLS, for example, requires that <Src href={NORTHSTAR}>VOW or back-office agreements be completed through the MLS Grid</Src>. The technology company holds the account: MLS Grid asks a broker or agent to <Src href={MLSGRID_GUIDE}>have the technology organization you are working with contact the MLS Grid</Src>. Costs are per MLS (<Src href={MLSGRID_GUIDE}>some MLS charge setup fees, and ongoing monthly licensing fees</Src>), and the dashboard shows each MLS&apos;s pricing before you sign. When a request names an agent, <Src href={MLSGRID_GUIDE}>the Agent will receive the email first</Src> and the broker signs after the agent.</li>
+        <li><strong>Trestle (Cotality)</strong>: you register and <Src href={TRESTLE_FAQ}>click &ldquo;ADD MLO CONNECTION&rdquo; to begin the data request workflow</Src>. Trestle <Src href={TRESTLE_FAQ}>only facilitates the license agreement between you and the MLO; Cotality is not a party to the agreement</Src>, and its dashboard <Src href={TRESTLE_FAQ}>walks them through setting up an e-signing contract to collect signatures from all parties</Src>. Plan the feed type up front: <Src href={TRESTLE_FAQ}>your credentials are tied to a specific product/feed type</Src>, and switching from, say, IDX to IDX Plus means you <Src href={TRESTLE_FAQ}>set up a new connection with the MLS through the Trestle Dashboard</Src>.</li>
+        <li><strong>Bridge Interactive (Zillow)</strong>: <Src href={BRIDGE_DOCS}>all datasets available through the platform require approval from the data provider</Src>, and providers <Src href={BRIDGE_DOCS}>may require you to execute data license agreements, pay fees or do compliance testing</Src>. Zillow&apos;s developer page says the platform is <Src href={ZILLOW_BRIDGE}>currently invite only</Src>, and Bridge&apos;s documentation says <Src href={BRIDGE_DOCS}>access to the Bridge platform is typically initiated by the MLS</Src>, so the first step is asking the MLS for an invite. The MLS also decides <Src href={BRIDGE_DOCS}>whether you are allowed to replicate datasets (as opposed to only making on-demand API queries)</Src>. <Src href={BRIDGE_DOCS}>Every application is automatically approved for access</Src> to a machine-generated test dataset.</li>
+        <li><strong>CREA DDF® (Canada)</strong>: a developer works as a technology provider, defined in CREA&apos;s rules as <Src href={CREA}>a company that has entered into a data access agreement with REALTOR.ca Canada Inc.</Src> to run a website on a member&apos;s behalf. Members <Src href={CREA}>must opt-in to the National Shared Pool and/or Member Website Feed through the DDF® Dashboard before retaining the services of a Technology Provider</Src>, and <Src href={CREA_TP_PRICING}>New Technology Providers will be subject to a $1,500 onboarding fee</Src> (CAD). Channels, rules and the fee tiers are in our <Link href="/blog/mls-data-access-canada">guide to MLS data access in Canada</Link>.</li>
       </ul>
 
       <h2>Apply and pass the review</h2>
@@ -124,7 +128,10 @@ export default function Guide() {
         <li><strong>Monitoring and audits:</strong> participants must <Src href={NAR_IDX}>give the MLS direct access for purposes of monitoring/ensuring compliance</Src>; an MLS may require an <Src href={NAR_VOW}>audit trail of registrants&apos; activity on the VOW</Src>; and Stellar vendor products are <Src href={STELLAR}>subject to routine data audit checks for compliance</Src>.</li>
       </ul>
       <p>
-        These rules shape the architecture: sync frequency, where attribution appears, and what you log. Our{' '}
+        These rules shape the architecture: sync frequency, where attribution appears, and what you log. Once listings
+        are live, the leads they bring in have to reach your CRM; our{' '}
+        <Link href="/blog/idx-crm-integration">IDX CRM integration guide</Link> covers Follow Up Boss, HubSpot and
+        GoHighLevel. Our{' '}
         <Link href="/case-studies/w3re-ai-real-estate-platform">W3|re case study</Link> shows a pipeline built across four
         MLS systems.
       </p>
@@ -132,14 +139,16 @@ export default function Guide() {
       <GuideFaq slug={SLUG} items={[
         { question: 'Can we get MLS data without a broker?', answer: ['Usually not directly. MLSs license data to companies that serve their members, and many require a member broker to sign or ratify the agreement. Stellar MLS, for example, requires ', ['a three-party agreement between the Broker, Vendor, and Stellar MLS', STELLAR], ', and Trestle notes that ', ['MLOs typically require a real estate broker or agent to ratify the contract', TRESTLE_FAQ], '.'] },
         { question: 'Does RESO provide MLS data?', answer: ['No. RESO publishes the data standards, but ', ['does not provide MLS data and directs data requests to MLSs', RESO_API], '.'] },
-        { question: 'Do MLS Grid, Trestle or Bridge charge their own fees?', answer: ['It varies. MLS Grid says ', ['you will only pay the license fee required by your MLS', MLSGRID_FAQ], ', Bridge says it ', ['charges no additional service fees', BRIDGE_DOCS], ', and Trestle charges ', ['$30 to $175 per connection per month depending on the feed and customer', TRESTLE_PRICING], ' on top of MLS fees.'] },
+        { question: 'Do MLS Grid, Trestle or Bridge charge their own fees?', answer: ['It varies. MLS Grid says ', ['you will only pay the license fee required by your MLS', MLSGRID_FAQ], ', Bridge says it ', ['does not charge vendors and brokerages any additional service fees', BRIDGE_DOCS], ', and Trestle charges ', ['$30 to $175 per connection per month depending on the feed and customer', TRESTLE_PRICING], ' on top of MLS fees.'] },
         { question: 'How often must listing data be refreshed?', answer: ['Under NAR policy, IDX displays must refresh ', ['not less frequently than every 12 hours', NAR_IDX], ' and VOWs ', ['not less frequently than every three (3) days', NAR_VOW], '. Individual MLSs can set their own rules, so check each license.'] },
         { question: 'How long does MLS approval take?', answer: ['None of the MLS or platform pages cited in this guide publish an approval timeline. Approval usually involves a review of your application and a working product, for example Stellar MLS asks for the ', ['ability to demonstrate a fully working application', STELLAR], ', so ask each MLS how long its review takes.'] },
       ]} />
 
       <p className="cp-note">
         Requirements and fees were taken from the linked MLS, NAR, RESO, MLS Grid, Trestle and Bridge pages on September 30,
-        2026. On October 9, 2026 the CREA citation was updated to CREA&apos;s June 2026 rules. On that date NAR&apos;s
+        2026. On October 9, 2026 the CREA citation was updated to CREA&apos;s June 2026 rules. On October 21, 2026 the
+        MLS Grid, Trestle, Bridge and CREA DDF® platform details were re-read on those providers&apos; own pages and
+        extended. On that date NAR&apos;s
         policy handbook required a member login and NorthstarMLS&apos;s page could not be reached, so the NAR and
         NorthstarMLS statements are as read on September 30. Policies and fees change and differ by MLS; confirm them
         with each MLS before you apply.
