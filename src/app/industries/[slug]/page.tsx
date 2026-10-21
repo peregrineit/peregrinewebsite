@@ -99,7 +99,8 @@ export default async function IndustryPage({ params }: Props) {
             {industry.ownProduct && (
               <>
                 {' '}We also build and operate our own real estate product,{' '}
-                <a href="https://realfoyer.com/" target="_blank" rel="noopener">RealFoyer</a>.
+                <a href="https://realfoyer.com/" target="_blank" rel="noopener">RealFoyer</a>
+                {' '}(<Link href="/products/realfoyer">how we built it</Link>).
               </>
             )}
           </p>

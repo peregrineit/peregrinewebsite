@@ -37,6 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: SITE_URL },
     { url: `${SITE_URL}/services` },
     ...services.map((s) => ({ url: `${SITE_URL}/services/${s.slug}`, lastModified: s.updated })),
+    { url: `${SITE_URL}/products/realfoyer` },
     { url: `${SITE_URL}/industries` },
     ...industries.map((i) => ({ url: `${SITE_URL}/industries/${i.slug}` })),
     { url: `${SITE_URL}/blog` },

@@ -154,7 +154,7 @@ export default function AboutPage() {
           <p>
             We also build and operate our own real estate product,{' '}
             <a href="https://realfoyer.com/" target="_blank" rel="noopener">RealFoyer</a>, which combines IDX websites, a
-            CRM and marketing tools for agents and brokerages.
+            CRM and marketing tools for agents and brokerages. <Link href="/products/realfoyer">How we built RealFoyer</Link>.
           </p>
         </div>
       </section>

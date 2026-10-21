@@ -858,7 +858,7 @@ export default function Home() {
                       We also build and operate our own product in this space: <a
                         href="https://realfoyer.com/"
                         style={{ color: '#4f46e5', textDecoration: 'underline', display: 'inline' }}>RealFoyer</a>, a real estate
-                      platform combining IDX websites, CRM and marketing tools.
+                      platform combining IDX websites, CRM and marketing tools (<Link href="/products/realfoyer" style={{ color: '#4f46e5', textDecoration: 'underline', display: 'inline' }}>how we built it</Link>).
                     </p>
                     <p className="checkitem-lrg" style={{ marginTop: '0.75rem' }}>
                       Go deeper: <Link href="/services/mls-idx-integration" style={{ color: '#4f46e5', textDecoration: 'underline', display: 'inline' }}>MLS and IDX integration</Link>
