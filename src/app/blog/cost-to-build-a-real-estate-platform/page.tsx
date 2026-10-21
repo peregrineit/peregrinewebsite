@@ -6,6 +6,9 @@ export const metadata = guideMetadata(SLUG);
 
 // Sources checked 2026-09-29. Figures are as published on each page on that date.
 const CLUTCH = 'https://clutch.co/developers/pricing';
+// Clutch's mobile app pricing guide, read 2026-10-21 (page shows "Updated September 21, 2026"); quotes in
+// docs/content/sources/cost-to-build-a-real-estate-platform.md.
+const CLUTCH_APP = 'https://clutch.co/directory/mobile-application-developers/pricing';
 const BLS = 'https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm';
 const JOBBANK = 'https://www.jobbank.gc.ca/marketreport/wages-occupation/22548/ca';
 const GMAPS = 'https://developers.google.com/maps/billing-and-pricing/pricing';
@@ -92,10 +95,27 @@ export default function Guide() {
         engineering time after launch rather than treating the build as a one-off cost.
       </p>
 
+      <h2>If you also need a mobile app</h2>
+      <p>
+        A native or cross-platform app is a separate build on top of the platform: it uses the same listing data and
+        accounts through your API, but adds its own screens, app store releases and device testing. Clutch publishes
+        separate figures for app development companies (updated September 21, 2026):
+      </p>
+      <ul>
+        <li>Hourly rates by company location: <Src href={CLUTCH_APP}>United States of America $25 - $49</Src>, <Src href={CLUTCH_APP}>India &lt;$25</Src> and <Src href={CLUTCH_APP}>Canada $50 - $99</Src> per hour.</li>
+        <li>Project cost: <Src href={CLUTCH_APP}>the average cost of app development projects is $90,780.11</Src>, and <Src href={CLUTCH_APP}>most app development projects reviewed on Clutch usually range between $10,000 - $49,999</Src>.</li>
+      </ul>
+      <p>
+        Clutch says these figures are <Src href={CLUTCH_APP}>derived from the countless verified first-party reviews provided by app development clients</Src>,
+        so they describe projects reviewed on its site, not real estate apps specifically. Its app rates by country
+        differ from its software development rates in the table above, so compare like with like when you read
+        quotes.
+      </p>
+
       <h2>How to keep the first release affordable</h2>
       <ol>
         <li><strong>Start with one MLS.</strong> Design the data model for several boards, but launch with the market that matters most.</li>
-        <li><strong>Use off-the-shelf pieces where they are not your differentiator.</strong> An existing CRM, e-signature or email service connected by API is cheaper than building one. Our guide on <Link href="/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages">custom SaaS versus off-the-shelf CRMs</Link> covers this choice.</li>
+        <li><strong>Use off-the-shelf pieces where they are not your differentiator.</strong> An existing CRM, e-signature or email service connected by API is cheaper than building one. Our guide on <Link href="/blog/custom-saas-vs-off-the-shelf-crm-for-brokerages">custom SaaS versus off-the-shelf CRMs</Link> covers this choice, and our <Link href="/blog/idx-crm-integration">IDX CRM integration guide</Link> shows how website leads reach Follow Up Boss, HubSpot or GoHighLevel.</li>
         <li><strong>Get the data architecture right early.</strong> Our <Link href="/case-studies/scaling-real-estate-saas-platform">real estate SaaS case study</Link> is a rebuild of a platform whose original data design could not scale past a handful of agents.</li>
         <li><strong>Ship in short increments.</strong> Two-week sprints with working demos let you drop features that turn out not to matter.</li>
         <li><strong>Check MLS rules before design.</strong> Display, attribution and refresh requirements shape the architecture.</li>
@@ -118,7 +138,8 @@ export default function Guide() {
 ]} />
 
       <p className="cp-note">
-        Figures were taken from the linked public sources on September 29, 2026. Rates and prices change; confirm them
+        Figures were taken from the linked public sources on September 29, 2026; the mobile app figures were added from
+        Clutch&apos;s app pricing guide on October 21, 2026. Rates and prices change; confirm them
         before budgeting. Project durations are from Peregrine IT Solutions&apos; published case studies.
       </p>
       <p>

@@ -67,7 +67,7 @@ export const guides: Guide[] = [
     description:
       'What drives the cost of a real estate platform: developer rates in the US, Canada and India, MLS data fees, maps and hosting, with every figure sourced.',
     datePublished: '2026-09-29',
-    dateModified: '2026-09-30',
+    dateModified: '2026-10-21',
     service: 'saas-development',
     caseStudy: 'proptech-investor-portal',
   },
@@ -83,7 +83,7 @@ export const guides: Guide[] = [
     description:
       'The licenses, broker sponsorship, agreements, platforms (MLS Grid, Trestle, Bridge), fees and compliance rules for getting MLS data into your app, with sources.',
     datePublished: '2026-09-30',
-    dateModified: '2026-10-09',
+    dateModified: '2026-10-21',
     service: 'mls-idx-integration',
     caseStudy: 'w3re-ai-real-estate-platform',
   },
@@ -570,6 +570,21 @@ export const guides: Guide[] = [
     dateModified: '2026-10-13',
     service: 'nextjs-development',
     caseStudy: 'scaling-real-estate-saas-platform',
+  },
+  {
+    slug: 'idx-crm-integration',
+    related: ['real-estate-crm-architecture', 'webhook-event-driven-integrations', 'how-to-get-mls-data-access'],
+    cta: {
+      heading: 'Connecting Your IDX Website to a CRM?',
+      text: 'Tell us which IDX vendor and CRM you use and which leads are getting lost. An engineer will tell you which documented path fits and what to build around it.',
+    },
+    title: 'IDX CRM Integration: Sending Website Leads to Follow Up Boss, HubSpot and GoHighLevel',
+    metaTitle: 'IDX CRM Integration: FUB, HubSpot, HighLevel',
+    description:
+      'How IDX website leads reach Follow Up Boss, HubSpot and GoHighLevel: each vendor\'s documented intake path, credentials, duplicates and failure handling.',
+    datePublished: '2026-10-21',
+    dateModified: '2026-10-21',
+    service: 'api-integration',
   },
 ];
 
