@@ -4,18 +4,10 @@ import GuideLayout, { GuideFaq, Src, guideMetadata } from '../../components/Guid
 const SLUG = 'self-storage-software-migration';
 export const metadata = guideMetadata(SLUG);
 
-// Sources fetched and checked 2026-10-21 (curl, and a headless Chromium render for the PTI table,
-// which loads with JavaScript); the sentence relied on for each link is logged in
-// docs/content/sources/self-storage-software-migration.md. Vendors are quoted from their own public
-// pages as examples of published behavior. We have not evaluated these products and claim no
-// partnership with any of them. Peregrine statements restate the published self-storage case study only;
-// it does not describe a data conversion, so this guide claims none.
-const STRIPE_IMPORT = 'https://docs.stripe.com/get-started/data-migrations/pan-import';
-const STRIPE_EXPORT = 'https://docs.stripe.com/get-started/data-migrations/pan-export';
-const SPIDER = 'https://www.spiderdoor.com/multi-site-gate-access-control/';
-const PTI = 'https://www.ptisecurity.com/us/en/pti-partners/pms-integrations';
-const NOKE = 'https://www.janusintl.com/products/noke/noke-faqs';
-const DAVINCI = 'https://support.davincilock.com/facility-management-software-integration-partners';
+// Sources are logged in docs/content/sources/self-storage-software-migration.md. Owner decision
+// 2026-10-21: gate, lock and payment vendors are not named; they are referred to generically, as the
+// case study does. Stripe appears only as the case study states it (its billing integration).
+// Peregrine statements restate the published self-storage case study only.
 const ISS = 'https://www.insideselfstorage.com/software/iss-blog-upgrading-my-self-storage-management-software-hiccups-and-lessons-learned';
 const CASE = '/case-studies/self-storage-management-platform';
 const LEGACY = '/blog/legacy-real-estate-platform-data-migration';
@@ -174,34 +166,27 @@ export default function Guide() {
         carry out. Whether a given set of stored cards or bank accounts can move to your new processor depends on the
         old processor, the new processor and your agreements with them. Confirm it with both before you set a date.
       </p>
-      <p>Stripe&apos;s documentation shows what such a transfer involves when Stripe is the receiving side:</p>
+      <p>Questions to put to both the old and the new processor before you set a date:</p>
       <ul>
-        <li>Stripe says it can retain existing customer and payment data in a migration and works <Src href={STRIPE_IMPORT}>with your team and current payment provider, as needed</Src>.</li>
-        <li>It notes that <Src href={STRIPE_IMPORT}>many processors require the account owner to request a data transfer</Src>, and that the previous processor <Src href={STRIPE_IMPORT}>might take a few days or several weeks to transfer the final data to Stripe</Src>.</li>
-        <li>New customers can be charged on Stripe while existing customers continue to be charged <Src href={STRIPE_IMPORT}>with your current processor until the migration is complete</Src>.</li>
-        <li>Updates made at the old processor during the transfer are a gap: if customers update their payment information there <Src href={STRIPE_IMPORT}>in the window between transferring the data and completing the import, those changes are lost</Src>.</li>
-        <li>After the import, Stripe provides a file that <Src href={STRIPE_IMPORT}>shows the mapped relationship between your current processor&apos;s IDs and the imported Stripe object IDs</Src>, which your system has to load.</li>
-        <li>It warns that retrying numerous cards after a migration <Src href={STRIPE_IMPORT}>can appear suspicious to issuers</Src>.</li>
+        <li>Who has to request the transfer, and how long does it take from request to completion?</li>
+        <li>Which payment methods move (cards, bank accounts) and which do not?</li>
+        <li>What happens to card updates made at the old processor while the transfer is running?</li>
+        <li>How will the new processor tell you which old customer record became which new one, so your system can link each tenant to the right payment method?</li>
+        <li>Can new tenants be charged on the new processor while existing tenants are still charged on the old one?</li>
       </ul>
       <p>
-        Going the other way, Stripe states that it{' '}
-        <Src href={STRIPE_EXPORT}>can only transfer your card data to another PCI DSS Level 1-compliant payment processor</Src>,
-        and that it <Src href={STRIPE_EXPORT}>doesn&apos;t export your account&apos;s payment history, subscriptions, or other objects</Src>.
-        Credentials saved through its Link wallet do not move either:{' '}
-        <Src href={STRIPE_EXPORT}>we exclude any credentials saved through Link from our exports</Src>.
-      </p>
-      <p>
-        That is one processor&apos;s documented process, not a general rule. Other processors have their own terms,
-        and some transfers are not possible at all. Plan for three outcomes per facility:
+        Each processor has its own terms, and some transfers are not possible at all. Plan for three outcomes per
+        facility:
       </p>
       <ol>
-        <li><strong>Transfer confirmed.</strong> Schedule it with both processors, freeze card updates in the old system for the window, and load the ID mapping file before the first billing run.</li>
+        <li><strong>Transfer confirmed.</strong> Schedule it with both processors, freeze card updates in the old system for the window, and load the old-to-new customer mapping before the first billing run.</li>
         <li><strong>Transfer partial.</strong> For example, cards move but bank accounts do not, or some tenants&apos; records are rejected. Identify those tenants before cutover.</li>
         <li><strong>No transfer.</strong> Tenants re-enter their payment details. Start the outreach well before cutover, through more than one channel, and keep those tenants off automatic late fees until they have had a fair chance to re-enroll.</li>
       </ol>
       <p>
         Payment history is separate from the stored payment method: export it from the old software&apos;s ledger and
-        from the old processor&apos;s reports.
+        from the old processor&apos;s reports. For reference, billing in our <Link href={CASE}>case study</Link> runs on
+        Stripe with automatic retries for failed payments.
       </p>
 
       <h2>Gate codes and lock assignments</h2>
@@ -216,31 +201,22 @@ export default function Guide() {
         needs a different format, or old codes were shared, change them and tell tenants before the switch.
       </p>
       <p>
-        <strong>Sync speed differs by platform, and it decides your cutover window.</strong> SpiderDoor, a gate-access
-        vendor, says that{' '}
-        <Src href={SPIDER}>the management software at that location decides how fast a code reaches the keypad</Src>:{' '}
-        <Src href={SPIDER}>some platforms sync in real time. Others sync every eight to twelve minutes</Src>. It also
-        notes that <Src href={SPIDER}>edited codes are slower than new ones</Src>, and that{' '}
-        <Src href={SPIDER}>on SiteLink, an edited gate code syncs roughly three times in a twenty four hour period</Src>.
-        Ask your gate vendor the same question for both the old and the new software. If the new path is slower than
-        staff expect, a tenant who pays a past-due balance after cutover may stand at a locked gate.
+        <strong>Sync speed decides your cutover window.</strong> Ask your gate-access vendor how quickly a new code,
+        and separately an edited code, reaches the keypad on both the old and the new software; the answers can
+        differ. If the new path is slower than staff expect, a tenant who pays a past-due balance after cutover may
+        stand at a locked gate.
       </p>
       <p>
-        <strong>The gate integration may need to be set up, not just switched.</strong> PTI says its StorLogix Cloud
-        platform <Src href={PTI}>integrates with nearly every PMS on the market</Src>, and its integrations table lists
-        each management system under two columns, <Src href={PTI}>&ldquo;BridgeApp&rdquo; and &ldquo;API&rdquo;</Src>,
-        without defining them on the page. Nokē says its system{' '}
-        <Src href={NOKE}>integrates with all major property management software providers</Src> and that{' '}
-        <Src href={NOKE}>new integrations typically take 4-6 weeks</Src>. Treat those as vendor statements to confirm
-        for your exact hardware and target software, and put the setup lead time in the plan.
+        <strong>The gate integration may need to be set up, not just switched.</strong> A gate or smart-lock vendor
+        listing your new software as supported does not mean the connection is live for your facilities. Confirm
+        support for your exact hardware and target software, ask how the connection is made and how long setup
+        takes, and put that lead time in the plan.
       </p>
       <p>
         <strong>Lock assignment depends on unit naming.</strong> For smart locks and electronic overlocks, the
-        lock-to-unit assignment must survive the move. DaVinci Lock&apos;s help center says that when a facility is
-        connected to a management system,{' '}
-        <Src href={DAVINCI}>the software will attempt to retroactively assign the locks to your units in your FMS</Src>,
-        and asks operators to <Src href={DAVINCI}>ensure the unit numbers match the naming convention within your FMS</Src>.
-        This is another reason to settle unit identifiers before anything else.
+        lock-to-unit assignment must survive the move. Ask your smart-lock vendor how it matches locks to units when
+        it is connected to a new management system; if it relies on unit numbers, those numbers must match the
+        naming in the new system exactly. This is another reason to settle unit identifiers before anything else.
       </p>
       <p>
         <strong>Mixed hardware across acquired facilities is normal.</strong> If facilities keep different gate and
@@ -250,10 +226,9 @@ export default function Guide() {
         fourth lock vendor, integration took two weeks instead of two months.
       </p>
       <p>
-        <strong>Several software platforms can also mean several vendor accounts.</strong> SpiderDoor notes that if
-        locations run different management software,{' '}
-        <Src href={SPIDER}>you get a separate SpiderDoor account for each platform</Src>. During a staged migration
-        you will have facilities on both the old and the new software, so expect staff to work across two admin
+        <strong>Several software platforms can also mean several vendor accounts.</strong> Ask whether your gate
+        vendor needs a separate account or configuration for each management software platform. During a staged
+        migration you will have facilities on both the old and the new software, so staff may work across two admin
         logins until the last facility moves.
       </p>
 
@@ -357,7 +332,7 @@ export default function Guide() {
       <h2>Validation through the first billing cycle</h2>
       <p>Most data errors surface when the new system first acts on its own. Watch:</p>
       <ul>
-        <li><strong>The first autopay run.</strong> Compare the number and value of charges with what the old system would have run, and review declines by reason before any retry. Stripe&apos;s import documentation lists <Src href={STRIPE_IMPORT}>decline codes</Src> that can follow a migration, each with its likely cause and the responses Stripe suggests and advises against.</li>
+        <li><strong>The first autopay run.</strong> Compare the number and value of charges with what the old system would have run, and review declines by reason before retrying cards in bulk.</li>
         <li><strong>The first invoice or statement run.</strong> Review a sample before it is sent.</li>
         <li><strong>The first late-fee and notice run</strong>, against counsel&apos;s per-state configuration, with someone checking it before it goes out.</li>
         <li><strong>Gate access logs</strong> for denied entries by tenants who are current.</li>
@@ -379,16 +354,15 @@ export default function Guide() {
       </p>
 
       <GuideFaq slug={SLUG} items={[
-        { question: 'Can stored cards move from one payment processor to another?', answer: ['Sometimes, as a transfer between the processors rather than a software export. Stripe, for example, says ', ['many processors require the account owner to request a data transfer', STRIPE_IMPORT], ', and that it ', ['can only transfer your card data to another PCI DSS Level 1-compliant payment processor', STRIPE_EXPORT], '. Confirm with both processors before setting a date, and plan for tenants whose details do not transfer.'] },
-        { question: 'Do gate codes have to change when we switch management software?', answer: ['Not necessarily. Migrating each code with its tenant and unit avoids calls on cutover day. Change codes only if the new system needs a different format or old codes were shared, and tell tenants first. Ask the gate vendor how long new and edited codes take to reach the keypad on the new software; SpiderDoor, for example, says ', ['edited codes are slower than new ones', SPIDER], '.'] },
+        { question: 'Can stored cards move from one payment processor to another?', answer: ['Sometimes, as a transfer between the processors rather than a software export. Whether it is possible depends on the old processor, the new processor and your agreements with them. Confirm with both before setting a date, and plan for tenants whose details do not transfer.'] },
+        { question: 'Do gate codes have to change when we switch management software?', answer: ['Not necessarily. Migrating each code with its tenant and unit avoids calls on cutover day. Change codes only if the new system needs a different format or old codes were shared, and tell tenants first. Ask the gate vendor how long new and edited codes take to reach the keypad on the new software.'] },
         { question: 'How should tenants who are past due on cutover day be handled?', answer: ['Pause delinquency automation before the final export, carry each tenant’s current stage, fees and notice history into the new system, and resume automation only after reconciliation passes. Late-fee, notice and lien rules are set by each state’s law and the operator’s counsel, not by the migration.'] },
         { question: 'Should all acquired facilities move at once?', answer: ['Move one pilot facility first, then the rest in waves grouped by source software, gate vendor and state. The rollout in our self-storage case study went to 10 pilot sites before the full deployment across 150+ facilities.'] },
       ]} />
 
       <p className="cp-note">
-        Vendor and processor statements were read on their public pages on October 21, 2026, and products change
-        often. We have not evaluated these products, this is not a ranking, and we do not claim a partnership with any
-        vendor named. Nothing here is legal advice; delinquency, notice and lien procedures are for your counsel.
+        This guide does not name gate, lock or payment vendors and claims no partnership with any. Nothing here is
+        legal advice; delinquency, notice and lien procedures are for your counsel.
       </p>
       <p>
         Consolidating facilities onto one system? See our <Link href="/industries/self-storage">self-storage software</Link>{' '}
