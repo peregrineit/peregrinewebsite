@@ -35,7 +35,7 @@ export const guides: Guide[] = [
     description:
       'MLS and IDX costs per month and per year in 2026: IDX plugin plans, MLS license fees by board, MLS Grid and Trestle fees, and development rates, all sourced.',
     datePublished: '2026-09-29',
-    dateModified: '2026-10-09',
+    dateModified: '2026-10-21',
     service: 'mls-idx-integration',
     caseStudy: 'w3re-ai-real-estate-platform',
   },
