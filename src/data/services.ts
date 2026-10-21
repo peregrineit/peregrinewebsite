@@ -1022,7 +1022,7 @@ const coreServiceList: Service[] = [
       delivered: 'Custom software for your agency\'s client project: web and mobile apps, SaaS platforms, integrations, e-commerce, modernization and deployment, under the terms agreed with your agency',
       // TODO(owner): typical timeline; omitted until stated on the site.
     },
-    updated: '2026-10-20',
+    updated: '2026-10-21',
     faq: [
       {
         question: 'What is the difference between white-label development and a white-label reseller program?',
@@ -1058,6 +1058,15 @@ const coreServiceList: Service[] = [
         answer: 'What is handed over at the end, such as code, documentation and access, is listed in the scope. If your client needs changes, fixes or new features after launch, the work can continue as a monthly retainer, which is one of the engagement models we offer.',
       },
     ],
+    heroCta: {
+      primary: 'Discuss a White-Label Project',
+      secondary: 'Send a project brief',
+      note: 'Your first conversation is with an engineer. Bring the client brief, the deadline and the systems the project must connect to; confidentiality, branding and who speaks to your client are agreed before any work starts.',
+    },
+    cta: {
+      heading: 'Discuss a White-Label Project',
+      text: 'Tell us what your client needs, when they expect it and how you want communication to run. We reply with questions, not a quote, and scope the work from your brief.',
+    },
     icon: 'ri-team-line',
   },
 ];
