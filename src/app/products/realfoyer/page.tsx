@@ -250,6 +250,9 @@ export default function RealFoyerPage() {
               </div>
             ))}
           </div>
+          <p style={{ marginTop: 20 }}>
+            <Link href="/case-studies/realfoyer" className="cp-standalone-link">Read the engineering case study: how we built RealFoyer</Link>
+          </p>
         </div>
       </section>
 

@@ -28,19 +28,30 @@ export interface CaseStudy {
     industryIcon: string;
     /** Only set where the card label differs from `industry`. */
     industry?: string;
-    duration: string;
+    /** Omitted when no duration is published; the card then shows no duration. */
+    duration?: string;
     summary: string;
-    badges: [string, string];
+    /** Two badges, or none when `glance.results` is empty (the card then reads
+     *  "No outcomes published" instead). */
+    badges: [string, string] | [];
   };
   /** "Results at a glance" table. Every value is copied from the page itself: the
    *  client as the Overview names it, the hero's Duration, and three of the page's
-   *  stat cards. No figures that are not already in the body. */
+   *  stat cards. No figures that are not already in the body.
+   *  `results` may be empty when no outcome is published (e.g. RealFoyer, our own
+   *  product): every place that shows results then reads NO_OUTCOMES instead. Never
+   *  invent results to fill it. `duration` is omitted when none is published. */
   glance: {
     client: string;
-    duration: string;
+    duration?: string;
     results: [string, string][];
   };
 }
+
+/** Shown wherever results would appear when a case study publishes none. */
+export const NO_OUTCOMES = "No outcomes published";
+
+export const hasOutcomes = (study: CaseStudy) => study.glance.results.length > 0;
 
 export const SITE_URL = "https://peregrine-it.com";
 
@@ -520,6 +531,33 @@ export const caseStudies: CaseStudy[] = [
       client: "A fitness brand moving to digital subscriptions",
       duration: "7 Months",
       results: [["80K+", "Subscribers"], ["2M+", "Workouts Logged"], ["4.8", "App Rating"]],
+    },
+  },
+  {
+    // Peregrine's own product, not a client. Sourced only from realfoyer.com (quotes re-checked
+    // 2026-10-21) and two owner confirmations (2026-10-21): tenancy, and the TRREB/MLS PIN board
+    // integrations. No stack, duration or results are published, so `stack`, `badges` and
+    // `glance.results` are empty and `duration` is omitted. TODO(owner): REALFOYER-FACT-SHEET.md.
+    slug: "realfoyer",
+    title: "Engineering RealFoyer: Building a Multi-Tenant Real Estate SaaS Platform",
+    description: "How Peregrine engineered RealFoyer, its own real estate SaaS: tenancy by hostname, MLS feeds per board and agent, search, a lead CRM. Not a client project.",
+    image: "/ogimage.png",
+    industry: "Real Estate / PropTech",
+    stack: [],
+    related: ["w3re-ai-real-estate-platform", "proptech-investor-portal"],
+    service: "mls-idx-integration",
+    card: {
+      category: "proptech saas",
+      theme: "blue",
+      icons: ["ri-global-line", "ri-flow-chart", "ri-user-follow-line"],
+      flow: "Agent Sites · MLS Feeds · CRM",
+      industryIcon: "ri-building-line",
+      summary: "How we engineered RealFoyer, our own real estate SaaS: one shared database with a tenant key per site, MLS feeds activated per agent, search and a lead CRM.",
+      badges: [],
+    },
+    glance: {
+      client: "None: RealFoyer is Peregrine's own product",
+      results: [],
     },
   },
 ];

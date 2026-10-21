@@ -30,6 +30,7 @@ const caseStudySlugs = [
   "event-ticketing-platform",
   "supply-chain-visibility-platform",
   "realtime-collaboration-tool",
+  "realfoyer",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

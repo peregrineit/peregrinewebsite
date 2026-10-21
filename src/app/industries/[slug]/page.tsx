@@ -6,7 +6,7 @@ import ConsultationCta from '../../components/ConsultationCta';
 import { BringBlock, FitBlock, ProofLinks, ScopeBlock } from '../../services/_components/BuyerBlocks';
 import { getIndustry, industries } from '@/data/industries';
 import { getService } from '@/data/services';
-import { getCaseStudy } from '@/data/case-studies';
+import { NO_OUTCOMES, getCaseStudy, hasOutcomes } from '@/data/case-studies';
 import { getGuide } from '@/data/guides';
 import '../../css/content-pages.css';
 
@@ -146,7 +146,8 @@ export default async function IndustryPage({ params }: Props) {
                 <h3>{c.title}</h3>
                 <p>{c.card.summary}</p>
                 <p style={{ fontSize: 14 }}>
-                  {c.glance.results.map(([value, label]) => `${value} ${label}`).join(' · ')} · {c.glance.duration}
+                  {hasOutcomes(c) ? c.glance.results.map(([value, label]) => `${value} ${label}`).join(' · ') : NO_OUTCOMES}
+                  {c.glance.duration && <> · {c.glance.duration}</>}
                 </p>
                 <span className="cp-card-more">
                   Read the case study · Service: {getService(c.service).name}
