@@ -141,7 +141,7 @@ export default function FitnessWellnessSubscriptionApp() {
             plans to add live classes with real-time instructor interaction. Their existing app
             was a simple video player — no workout tracking, no progress history, and no offline
             support. Subscribers complained about buffering during peak hours and the inability
-            to workout in gyms or outdoors without Wi‑Fi.
+            to work out in gyms or outdoors without Wi‑Fi.
           </p>
           <p>
             They needed a React Native app with high-quality video streaming (on-demand and live),
