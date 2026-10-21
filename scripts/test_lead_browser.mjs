@@ -92,11 +92,13 @@ async function main() {
   await send('Page.enable'); await send('Network.enable'); await send('Runtime.enable');
   // Nothing but the local app is reachable from the page.
   await send('Network.setBlockedURLs', { urls: ['*calendly.com*', '*googletagmanager.com*', '*google-analytics.com*', '*vercel-insights.com*', '*vercel-scripts.com*'] });
-  // Record every tracking event the page sends (lib/track.ts calls window.gtag when it exists).
+  // Record every tracking event the page sends. lib/track.ts sends each event to Vercel
+  // Analytics (window.va) always, and to GA4 only with consent (scripts/test_consent_browser.mjs
+  // covers that path), so the Vercel queue is the one stubbed here.
   await send('Page.addScriptToEvaluateOnNewDocument', { source: `
     window.__ev = [];
     // Each event is also copied to sessionStorage, so events fired while a page unloads can be read afterwards.
-    window.gtag = function () { var a = [].slice.call(arguments); if (a[0] !== 'event') return; window.__ev.push({ name: a[1], props: a[2] });
+    window.va = function (kind, ev) { if (kind !== 'event' || !ev) return; window.__ev.push({ name: ev.name, props: ev.data || {} });
       try { sessionStorage.setItem('__ev', JSON.stringify(window.__ev)); } catch (e) {} };
     // A Calendly click must not open a tab or leave the page during the test.
     document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('a[href*="calendly.com"]'); if (a) e.preventDefault(); }, false);
