@@ -153,6 +153,24 @@ export const guides: Guide[] = [
     caseStudy: 'self-storage-management-platform',
   },
   {
+    slug: 'self-storage-access-control-integration',
+    hero: 'Cover: a tenancy moving from active to past due, gate lockout and overlock, and back to active when the balance clears.',
+    examples: 'The desired-state function and the adapter interface are pseudocode and were not executed. Vendor behavior is quoted from public pages read on October 19, 2026.',
+    related: ['self-storage-software-build-vs-buy', 'webhook-event-driven-integrations', 'background-jobs-redis-bullmq'],
+    cta: {
+      heading: 'Integrating Management, Billing and Access Systems?',
+      text: 'Tell us which management software, payment processor and gate or lock vendors your facilities run, and where access and billing drift apart today. An engineer will walk through the integration with you.',
+    },
+    title: 'Self-Storage Access Control Integration: Keeping Gates, Smart Locks and Billing in Sync',
+    metaTitle: 'Self-Storage Access Control Integration',
+    description:
+      'How self-storage management, billing and gate or smart-lock systems stay in sync: who owns tenant status, integration models, lockout states and reconciliation.',
+    datePublished: '2026-10-20',
+    dateModified: '2026-10-20',
+    service: 'api-integration',
+    caseStudy: 'self-storage-management-platform',
+  },
+  {
     slug: 'mls-data-access-canada',
     related: ['how-to-get-mls-data-access', 'mls-idx-integration-cost'],
     cta: {

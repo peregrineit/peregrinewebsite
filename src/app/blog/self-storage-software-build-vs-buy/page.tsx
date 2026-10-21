@@ -106,6 +106,8 @@ export default function Guide() {
         <Src href={NOKE_FAQ}>integrates with all major property management software providers</Src> and that{' '}
         <Src href={NOKE_FAQ}>new integrations typically take 4-6 weeks</Src>, and OpenTech says its platform{' '}
         <Src href={OPENTECH}>includes an open API so any property management software can integrate</Src>.
+        How that sync works, and what to check when it fails, is covered in{' '}
+        <Link href="/blog/self-storage-access-control-integration">self-storage access control integration</Link>.
       </p>
 
       <h2>Where multi-site operators hit limits</h2>

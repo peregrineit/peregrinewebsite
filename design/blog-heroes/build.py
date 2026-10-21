@@ -160,6 +160,20 @@ storage = page("Guide · Self-storage software", "Self-storage software: <em>bui
 .row u:nth-child(2),.row u:nth-child(5){background:repeating-linear-gradient(180deg,#22d3ee 0 13px,#0891b2 13px 15px);box-shadow:inset 0 0 0 2px rgba(8,51,68,.6),0 0 26px rgba(34,211,238,.3)}
 .ground{height:14px;background:#334155;border-radius:0 0 8px 8px;box-shadow:0 30px 60px rgba(2,6,23,.8)}""")
 
+access = page("Guide · Self-storage access", "Self-Storage Access Control Integration: <em>Keeping Gates, Smart Locks and Billing in Sync</em>", "Who owns tenant status, how changes reach the gate, and how to catch the ones that do not.",
+ "<b>System of record</b><span class='dot'></span><b>Lockout states</b><span class='dot'></span><b>Reconciliation</b>",
+ """<svg class="ac" viewBox="0 0 520 470"><defs><marker id='ah2' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='7' markerHeight='7' orient='auto-start-reverse'><path d='M0 0L10 5L0 10z' fill='#818cf8'/></marker></defs>
+<g font-weight="800" fill="#f8fafc" text-anchor="middle">
+<rect x="20" y="20" width="220" height="70" rx="18" fill="#0e3a4a" stroke="#22d3ee" stroke-width="2.5"/><text x="130" y="52" font-size="21">Active</text><text x="130" y="74" font-size="14" fill="#a5f3fc" font-weight="600">gate and unit</text>
+<rect x="280" y="20" width="220" height="70" rx="18" fill="#162036" stroke="#64748b" stroke-width="2"/><text x="390" y="52" font-size="21">Past due</text><text x="390" y="74" font-size="14" fill="#94a3b8" font-weight="600">access unchanged</text>
+<rect x="280" y="170" width="220" height="70" rx="18" fill="#1a2550" stroke="#818cf8" stroke-width="2"/><text x="390" y="202" font-size="21">Gate locked out</text><text x="390" y="224" font-size="14" fill="#c7d2fe" font-weight="600">operator policy</text>
+<rect x="280" y="320" width="220" height="70" rx="18" fill="#2a1a3a" stroke="#c084fc" stroke-width="2"/><text x="390" y="352" font-size="21">Overlocked</text><text x="390" y="374" font-size="14" fill="#e9d5ff" font-weight="600">unit secured</text>
+<rect x="20" y="320" width="220" height="70" rx="18" fill="#132a22" stroke="#34d399" stroke-width="2"/><text x="130" y="352" font-size="20">Balance cleared</text><text x="130" y="374" font-size="14" fill="#a7f3d0" font-weight="600">restore first</text></g>
+<g fill="none" stroke="#818cf8" stroke-width="2.5" marker-end="url(#ah2)"><path d="M242 55 H274"/><path d="M390 92 V164"/><path d="M390 242 V314"/><path d="M278 355 H246"/><path d="M130 318 V96" stroke="#34d399"/></g>
+<text x="144" y="210" fill="#a7f3d0" font-size="15" font-weight="700">restore</text>
+<rect x="20" y="420" width="480" height="44" rx="14" fill="#101c38" stroke="#2a3a59"/><text x="260" y="448" text-anchor="middle" fill="#e2e8f0" font-size="15" font-weight="700">PMS decides · access platform enforces · jobs reconcile</text></svg>""",
+ ".left{width:600px}.sub{font-size:19px;max-width:560px}h1{font-size:38px}.ac{position:absolute;right:-4px;top:4px;width:524px;height:474px}")
+
 
 # ---------------------------------------------------------------------------------------
 # Technical article batch, 2026-10-12. Each cover carries the article's exact title.
@@ -326,5 +340,6 @@ PAGES = {"idx-website-features-checklist": features, "mls-boards-compared": boar
          "real-estate-crm-architecture": crm, "webhook-event-driven-integrations": webhooks, "background-jobs-redis-bullmq": bullmq}
 PAGES["vibe-coded-app-security-checklist"] = vibesec
 if __name__ == "__main__":
+    PAGES["self-storage-access-control-integration"] = access
     for slug, doc in PAGES.items():
         open(os.path.join(D, slug + ".html"), "w").write(doc); print("wrote", slug + ".html")
