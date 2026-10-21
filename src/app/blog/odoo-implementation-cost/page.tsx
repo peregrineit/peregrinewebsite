@@ -32,7 +32,7 @@ export default function Guide() {
     <GuideLayout slug={SLUG}>
       <h2>The short answer</h2>
       <p>
-        An Odoo implementation has four costs: user licences, hosting, implementation services, and the upkeep of any
+        An Odoo implementation has four costs: user licenses, hosting, implementation services, and the upkeep of any
         custom code. The first two are published and predictable. The last two depend on how far you move from
         standard Odoo, and one decision drives most of it: as soon as you need custom modules or an integration through
         Odoo&apos;s API, you are on Odoo&apos;s Custom plan, off Odoo Online, and paying to maintain code through
@@ -85,7 +85,7 @@ export default function Guide() {
         <Src href={LICENSES}>licensed under LGPL version 3</Src>, and Odoo calls it{' '}
         <Src href={EDITIONS}>the core upon which Odoo Enterprise is built</Src>. Enterprise{' '}
         <Src href={LICENSES}>can only be used with a valid Odoo Enterprise Subscription for the correct number of users</Src>.
-        Community has no licence fee, but it lacks the Enterprise-only apps and Odoo&apos;s hosting, support and
+        Community has no license fee, but it lacks the Enterprise-only apps and Odoo&apos;s hosting, support and
         upgrade service, so its cost moves into hosting and engineering.
       </p>
 
@@ -164,7 +164,7 @@ export default function Guide() {
         </table>
       </div>
       <p>
-        As an example of the licence line alone, 20 users on the Standard plan at the Canadian yearly-billing price
+        As an example of the license line alone, 20 users on the Standard plan at the Canadian yearly-billing price
         above come to CAD 8,448 for the first year (20 × 35.20 × 12) and CAD 10,560 a year at the list price. That is
         our arithmetic on Odoo&apos;s published figures; it excludes implementation, hosting beyond Odoo Online and
         any custom work.

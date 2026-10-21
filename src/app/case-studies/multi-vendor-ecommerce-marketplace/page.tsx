@@ -424,7 +424,7 @@ export default function MultiVendorEcommerceMarketplace() {
           <p>
             True bilingual support is an architectural decision, not a translation task. Every
             component — from the navigation bar to the checkout flow — needs to be designed
-            bidirectionally from the start. Retrofitting RTL onto an LTR codebase always produces a
+            bidirectionally from the start. Retrofitting RTL onto an LTR codebase tends to produce a
             broken experience. We built a shared component library where directionality is a
             first-class prop, not a CSS override.
           </p>

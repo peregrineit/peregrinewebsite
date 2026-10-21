@@ -288,7 +288,7 @@ export default function ScalingRealEstateSaas() {
 
           <p>
             For individual property detail pages, we bypass both Redis and Elasticsearch entirely and
-            query MongoDB directly. This ensures agents always see the most current property data —
+            query MongoDB directly. This means agents see the listing data from the latest sync —
             including status changes, price updates, and newly uploaded photos — without waiting for
             the cache to refresh.
           </p>
@@ -428,8 +428,8 @@ export default function ScalingRealEstateSaas() {
           </p>
           <p>
             Every environment — USA Live, Canada Live, and Staging — runs its own local
-            Elasticsearch and Redis instances. This isolation means a Canadian MLS sync failure never
-            impacts US agent websites, and staging changes never touch production data.
+            Elasticsearch and Redis instances. This isolation means a Canadian MLS sync failure does not
+            affect US agent websites, and staging changes do not touch production data.
           </p>
         </div>
 

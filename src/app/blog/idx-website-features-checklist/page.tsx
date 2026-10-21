@@ -251,7 +251,7 @@ export default function Guide() {
       <h2>Security</h2>
       <p>
         An IDX platform holds three things worth protecting: credentials that reach licensed data,{' '}
-        <Link href="/blog/real-estate-crm-architecture">consumer accounts and enquiries</Link>, and the display
+        <Link href="/blog/real-estate-crm-architecture">consumer accounts and inquiries</Link>, and the display
         restrictions it has agreed to. The third is usually written up as
         a compliance checklist; it belongs here, as a property of the system.
       </p>
@@ -271,7 +271,7 @@ export default function Guide() {
       <h3>S2. Authorization is enforced on the server, per record</h3>
       <p>
         The system must check, on the server, that the caller may act on the specific record requested: a saved
-        search, an enquiry, an agent&apos;s leads, another brokerage&apos;s configuration. OWASP&apos;s guidance
+        search, an inquiry, an agent&apos;s leads, another brokerage&apos;s configuration. OWASP&apos;s guidance
         on broken access control is direct:{' '}
         <Src href={OWASP_A01}>except for public resources, deny by default</Src>, and{' '}
         <Src href={OWASP_A01}>enforce record ownership rather than accepting that the user can create, read, update, or delete any record</Src>.
@@ -298,7 +298,7 @@ export default function Guide() {
       </p>
       <h3>S4. Consumer data is inventoried and removable</h3>
       <p>
-        The system must know every place a consumer&apos;s account, saved searches and enquiries are stored,
+        The system must know every place a consumer&apos;s account, saved searches and inquiries are stored,
         keep them out of logs, and be able to export and delete them per account. OWASP&apos;s logging guidance
         lists what should not be written to logs directly, including{' '}
         <Src href={OWASP_LOGGING}>access tokens, authentication passwords and database connection strings</Src>,
@@ -396,7 +396,7 @@ export default function Guide() {
       <h3>O3. Backups are restored on a schedule</h3>
       <p>
         The team must set a recovery point and a recovery time for each store, and the system must meet them in
-        a rehearsed restore. Sort the stores first. Consumer accounts, saved searches, enquiries and
+        a rehearsed restore. Sort the stores first. Consumer accounts, saved searches, inquiries and
         configuration exist nowhere else. Listing data can be replicated again, but only as fast as the feed
         allows (MLS Grid, for example, caps consumers at{' '}
         <Src href={GRID}>2 requests per second</Src>), so a backup of it still shortens recovery. Use each

@@ -80,7 +80,7 @@ export default function Guide() {
       <ol>
         <li><strong>Edge.</strong> Shared. Terminates TLS and turns a host name or path into a tenant id; an unknown host gets a not-found response, never a default tenant.</li>
         <li><strong>Application.</strong> Shared and stateless. Authenticates the user, checks that the user belongs to the resolved tenant, and sets the tenant context for the database transaction.</li>
-        <li><strong>Per-tenant data partitions.</strong> Contacts, enquiries, saved searches and other operational records, each row carrying a tenant id that the database enforces.</li>
+        <li><strong>Per-tenant data partitions.</strong> Contacts, inquiries, saved searches and other operational records, each row carrying a tenant id that the database enforces.</li>
         <li><strong>Shared listing store.</strong> One copy of listing data per MLS source, read through a filter that maps each tenant to the sources it is licensed for.</li>
         <li><strong>Per-tenant configuration.</strong> Domains, theme, MLS licenses, plan limits and feature flags, read by the edge, the application and the license filter.</li>
       </ol>
@@ -378,7 +378,7 @@ COMMIT;`}</code></pre>
 
       <h2>Tenant lifecycle: provisioning, export, deletion</h2>
       <p><strong>Provisioning</strong> should be one idempotent workflow that can be re-run after a failure at any step: create the tenant row, default configuration and first admin membership; reserve the subdomain; record requested MLS sources as pending; create the billing customer; then mark the tenant active. Custom domains and MLS approval finish later, on their own clocks, and the tenant can see their status.</p>
-      <p><strong>Export</strong> is a feature, not a support ticket. A brokerage will ask for its contacts, enquiry history and site content when it leaves, and sometimes when one agent leaves. Because every row carries the tenant id, an export is a walk over the tenant-owned tables. Listing data is not part of it: that belongs to the MLS license, not the tenant.</p>
+      <p><strong>Export</strong> is a feature, not a support ticket. A brokerage will ask for its contacts, inquiry history and site content when it leaves, and sometimes when one agent leaves. Because every row carries the tenant id, an export is a walk over the tenant-owned tables. Listing data is not part of it: that belongs to the MLS license, not the tenant.</p>
       <p><strong>Deletion</strong> has to reach every store the tenant id reached: primary database, search index, caches, object storage, queued jobs, analytics, and backups according to a stated retention period. We would run it as a staged job (suspend, export offered, soft-delete with a grace period, hard-delete, certificate and domain release) and keep a deletion record that holds no personal data. What must be retained, and for how long, is a question for the customer&apos;s counsel and your contract, not something to assume.</p>
 
       <h2>A pre-launch isolation checklist</h2>

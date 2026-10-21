@@ -423,8 +423,8 @@ export default function RestaurantPOSOrderingSystem() {
             Offline-first is non-negotiable for restaurant POS. Internet in restaurants is
             notoriously bad — we designed the POS to assume connectivity is intermittent. Local
             SQLite holds everything needed to take and complete orders; sync runs in the
-            background when the network is available. We use idempotent API design so retries
-            never create duplicates. Zero order loss in 18 months of production.
+            background when the network is available. We use idempotent API design, so a
+            retried order is not duplicated. Zero order loss in 18 months of production.
           </p>
           <p>
             Kitchen display drove significant operational improvement. Cooks see orders in

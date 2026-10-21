@@ -395,7 +395,7 @@ export default function RecruitmentAtsPlatform() {
             <div className="csd-result-card">
               <div className="csd-result-before">Manual resume entry</div>
               <div className="csd-result-after">92% parsed</div>
-              <div className="csd-result-label">Automated extraction and structuration</div>
+              <div className="csd-result-label">Automated extraction and structure</div>
             </div>
           </div>
         </div>

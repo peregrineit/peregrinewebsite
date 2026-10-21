@@ -144,7 +144,7 @@ export default function Guide() {
       <h3>3. Build the platform</h3>
       <p>
         A full build makes sense when the platform is your product, or when no product fits the way your portfolio
-        runs. The case study above took this route: one platform for units, tenants, billing and smart locks, with an
+        runs. The <Link href="/case-studies/self-storage-management-platform">case study</Link> above took this route: one platform for units, tenants, billing and smart locks, with an
         abstraction layer that put three lock vendors behind one API, Stripe billing with automatic retries, and live
         occupancy and revenue dashboards. It ran for 10 months in four phases, with 10 pilot sites before the full
         rollout, and the case study reports 99.7% billing accuracy and an 82% reduction in revenue leakage.
@@ -172,7 +172,7 @@ export default function Guide() {
         { question: 'How much does self-storage management software cost?', answer: ['Most vendors do not publish a price. Storable Easy says its price ', ['varies based on how many facilities and units you have', EASY_FAQ], ', 6Storage says it does ', ['not list fixed pricing', SIX], ', and Unit Trac publishes its pricing, with ', ['a minimum of $30.00 per month', UNITTRAC], '.'] },
         { question: 'Do self-storage software products have an API?', answer: ['Several say so. Storeganise includes ', ['an open API in every subscription', STOREGANISE_PRICING], ', Tenant Inc. lists ', ['an open API with a developer portal', NECTAR], ', and Stora offers its API ', ['on Advanced and Premium plans', STORA_API], '.'] },
         { question: 'Can smart locks from different vendors work with one management system?', answer: ['Often, yes. Nokē says its system ', ['integrates with all major property management software providers', NOKE_FAQ], ', and OpenTech says its platform ', ['includes an open API so any property management software can integrate', OPENTECH], '. Confirm the exact hardware at each of your facilities with the software vendor.'] },
-        { question: 'How long does it take to build a custom self-storage platform?', answer: ['It depends on the number of facilities, the lock hardware and what has to be migrated. The platform in our case study took 10 months in four phases, with 10 pilot sites before a 150+ facility rollout. That is one project, not a typical timeline.'] },
+        { question: 'How long does it take to build a custom self-storage platform?', answer: ['It depends on the number of facilities, the lock hardware and what has to be migrated. The platform in our ', ['case study', '/case-studies/self-storage-management-platform'], ' took 10 months in four phases, with 10 pilot sites before a 150+ facility rollout. That is one project, not a typical timeline.'] },
       ]} />
 
       <p className="cp-note">
