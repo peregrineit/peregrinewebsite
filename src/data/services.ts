@@ -240,8 +240,7 @@ const coreServiceList: Service[] = [
         heading: 'Building a White-Label SaaS Platform You Own',
         paragraphs: [
           'Some companies want to own a platform that their customers present as their own: a brokerage giving each agent a branded website, or a software company letting each client run the product under its own name and domain. That is a multi-tenant SaaS with branding, domains, roles and billing designed per tenant. It is not a reseller program: you own the platform, and once the work is paid for, its code.',
-          // TODO(link): after PR 3 merges, link "agency subcontracting" to /services/white-label-development.
-          'It is also different from agency subcontracting, where a development team builds one client project that an agency delivers under its own name. Here the platform itself is the product, and every tenant runs on it.',
+          'It is also different from [agency subcontracting](/services/white-label-development), where a development team builds one client project that an agency delivers under its own name. Here the platform itself is the product, and every tenant runs on it.',
           `No single architecture fits every product. AWS\'s SaaS guidance says the [strategies and approaches to achieving this isolation are not universal](${SAAS.awsIsolation}): the domain, compliance needs and deployment model all change the answer. These are the decisions we work through with you in discovery.`,
         ],
         items: [
@@ -279,8 +278,7 @@ const coreServiceList: Service[] = [
           },
         ],
         after: [
-          // TODO(link): /services/ai-app-to-production (PR 1) is not on main yet; add a link
-          //   here for products that began as AI-built prototypes once that page is live.
+          'If your product began as an AI-built prototype, [AI app to production](/services/ai-app-to-production) covers the review and hardening that usually comes before multi-tenant work.',
           'Our published work on white-label and multi-tenant platforms: the [real estate SaaS platform](/case-studies/scaling-real-estate-saas-platform) of branded agent websites, the [recruitment ATS](/case-studies/recruitment-ats-platform) with branded career pages and per-company isolation, and the [self-storage platform](/case-studies/self-storage-management-platform) with per-operator schema isolation and Stripe billing. For the engineering detail, read [Building a Multi-Tenant Real Estate SaaS Platform](/blog/multi-tenant-real-estate-saas).',
         ],
         note: 'Third-party documentation read on October 19, 2026.',
