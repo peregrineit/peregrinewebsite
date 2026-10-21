@@ -204,7 +204,7 @@ export default function MultiLocationClinicManagement() {
           <h2>System Architecture</h2>
           <p>
             We engineered a zero-trust healthcare platform with end-to-end encryption, role-based access
-            control, and comprehensive audit logging. The architecture separates PHI storage from
+            control, and audit logging. The architecture separates PHI storage from
             application logic with an encrypted data layer that meets HIPAA technical safeguard
             requirements.
           </p>
@@ -234,7 +234,7 @@ export default function MultiLocationClinicManagement() {
                   <div className="csd-arch-layer-name">Zero-Trust Security Layer</div>
                   <div className="csd-arch-layer-desc">
                     End-to-end TLS 1.3, field-level encryption for PHI, RBAC with 12 role types,
-                    comprehensive audit trail for every data access
+                    audit trail for every data access
                   </div>
                 </div>
               </div>
@@ -410,7 +410,7 @@ export default function MultiLocationClinicManagement() {
           <p>
             Healthcare software projects fail when teams treat HIPAA compliance as a checkbox at the
             end. We built security into the architecture from day one — field-level encryption,
-            comprehensive audit logging, and zero-trust access controls weren&apos;t features added
+            audit logging, and zero-trust access controls weren&apos;t features added
             later, they were foundational design decisions.
           </p>
           <p>
