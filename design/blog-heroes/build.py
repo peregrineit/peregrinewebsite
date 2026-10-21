@@ -175,6 +175,22 @@ access = page("Guide · Self-storage access", "Self-Storage Access Control Integ
  ".left{width:600px}.sub{font-size:19px;max-width:560px}h1{font-size:38px}.ac{position:absolute;right:-4px;top:4px;width:524px;height:474px}")
 
 
+# 2026-10-21: self-storage migration guide. Three acquired facilities on different software, through a pilot, into one system.
+storage_migration = page("Guide · Self-storage migration", "Migrating Self-Storage Software <em>After Acquiring Facilities</em>", "Exports, paid-through dates, payment data and gate codes, moved one facility at a time.",
+ "<b>Inventory</b><span class='dot'></span><b>Pilot</b><span class='dot'></span><b>Cutover</b><span class='dot'></span><b>Reconcile</b>",
+ """<svg class="sm" viewBox="0 0 520 470"><defs><linearGradient id='gm' x1='0' x2='1'><stop offset='0' stop-color='#22d3ee'/><stop offset='1' stop-color='#818cf8'/></linearGradient><marker id='ah3' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='7' markerHeight='7' orient='auto-start-reverse'><path d='M0 0L10 5L0 10z' fill='#818cf8'/></marker></defs>
+<g font-weight="800" fill="#f8fafc">
+<rect x="0" y="10" width="200" height="84" rx="16" fill="#162036" stroke="#64748b" stroke-width="2"/><text x="18" y="42" font-size="19">Facility A</text><text x="18" y="66" font-size="13.5" fill="#94a3b8" font-weight="600">software 1 · keypad</text><text x="18" y="84" font-size="13.5" fill="#94a3b8" font-weight="600">processor 1</text>
+<rect x="0" y="118" width="200" height="84" rx="16" fill="#162036" stroke="#64748b" stroke-width="2"/><text x="18" y="150" font-size="19">Facility B</text><text x="18" y="174" font-size="13.5" fill="#94a3b8" font-weight="600">software 2 · smart locks</text><text x="18" y="192" font-size="13.5" fill="#94a3b8" font-weight="600">processor 2</text>
+<rect x="0" y="226" width="200" height="84" rx="16" fill="#162036" stroke="#64748b" stroke-width="2"/><text x="18" y="258" font-size="19">Facility C</text><text x="18" y="282" font-size="13.5" fill="#94a3b8" font-weight="600">software 3 · gate app</text><text x="18" y="300" font-size="13.5" fill="#94a3b8" font-weight="600">processor 1</text>
+<rect x="262" y="40" width="120" height="64" rx="32" fill="#0e3a4a" stroke="#22d3ee" stroke-width="2.5"/><text x="322" y="79" font-size="19" text-anchor="middle">Pilot</text>
+<rect x="262" y="196" width="120" height="64" rx="32" fill="#1a2550" stroke="#818cf8" stroke-width="2"/><text x="322" y="235" font-size="19" text-anchor="middle">Waves</text>
+<rect x="414" y="96" width="106" height="120" rx="18" fill="#132a22" stroke="#34d399" stroke-width="2.5"/><text x="467" y="150" font-size="18" text-anchor="middle">One</text><text x="467" y="172" font-size="18" text-anchor="middle">system</text></g>
+<g fill="none" stroke="url(#gm)" stroke-width="2.5" marker-end="url(#ah3)"><path d="M202 52 C230 52 236 72 256 72"/><path d="M202 160 C232 160 236 228 256 228"/><path d="M202 268 C230 268 236 228 256 228"/><path d="M384 72 C404 72 404 130 410 140"/><path d="M384 228 C404 228 404 180 410 170"/></g>
+<rect x="0" y="352" width="520" height="104" rx="16" fill="#101c38" stroke="#2a3a59"/>
+<g font-size="15.5" font-weight="700" fill="#e2e8f0"><text x="22" y="384">✓ balances match per tenant</text><text x="270" y="384">✓ paid-through dates match</text><text x="22" y="416">✓ codes tested at the keypad</text><text x="270" y="416">✓ autopay methods loaded</text><text x="22" y="444" fill="#94a3b8" font-weight="600" font-size="14">reconciled before each old system is switched off</text></g></svg>""",
+ ".left{width:600px}.sub{font-size:19.5px;max-width:560px}h1{font-size:44px}.sm{position:absolute;right:-4px;top:4px;width:524px;height:474px}")
+
 # ---------------------------------------------------------------------------------------
 # Technical article batch, 2026-10-12. Each cover carries the article's exact title.
 # ---------------------------------------------------------------------------------------
@@ -341,5 +357,6 @@ PAGES = {"idx-website-features-checklist": features, "mls-boards-compared": boar
 PAGES["vibe-coded-app-security-checklist"] = vibesec
 if __name__ == "__main__":
     PAGES["self-storage-access-control-integration"] = access
+    PAGES["self-storage-software-migration"] = storage_migration
     for slug, doc in PAGES.items():
         open(os.path.join(D, slug + ".html"), "w").write(doc); print("wrote", slug + ".html")
