@@ -97,6 +97,7 @@ Each case study opens with a "Results at a glance" table: client, industry, stac
 - [About Peregrine IT Solutions](https://peregrine-it.com/about): legal name Peregrine IT Solutions LLP; founded in 2018; a team of 25+; founded and led by Mukesh Swami, Founder & CEO; office in Noida, India
 - Clients named on the site: W3|re, Easy Agent PRO, BrokerLinx, Kypiq, Search Realty, Bahia International Realty, Torrins and MM Nova Tech
 - Own product: [RealFoyer](https://realfoyer.com/), IDX websites, CRM and marketing tools for agents and brokerages
+- [RealFoyer, built by Peregrine](https://peregrine-it.com/products/realfoyer): what our own real estate SaaS does and the engineering behind it
 
 ## Contact
 
