@@ -252,8 +252,8 @@ async function runSync(key) {
         </li>
       </ul>
       <p>
-        With the third rule a mass update still downloads every record, but the index, the media queue and the
-        alert emails see only what really changed. A re-stamped record must never look like a new listing or a
+        With the third rule a mass update still downloads every record, but the index, the media queue and the{' '}
+        <Link href="/blog/saved-searches-listing-alerts">alert emails</Link> see only what really changed. A re-stamped record must never look like a new listing or a
         price change to anything that notifies people.
       </p>
 

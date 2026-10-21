@@ -25,8 +25,8 @@ const BQ_STOP = `${BQ}/patterns/stop-retrying-jobs`;
 const BQ_TIMEOUT = `${BQ}/patterns/timeout-jobs`;
 const BQ_IDEM = `${BQ}/patterns/idempotent-jobs`;
 const BQ_RATE = `${BQ}/guide/rate-limiting`;
-const BQ_FLOWS = `${BQ}/guide/flows`;
-const BQ_SCHED = `${BQ}/guide/job-schedulers`;
+const BQ_FLOWS = `${BQ}/guide/flows/`;
+const BQ_SCHED = `${BQ}/guide/job-schedulers/`;
 const BQ_JOBIDS = `${BQ}/guide/jobs/job-ids`;
 const BQ_DEDUP = `${BQ}/guide/jobs/deduplication`;
 const BQ_DELAYED = `${BQ}/guide/jobs/delayed`;
@@ -35,10 +35,10 @@ const BQ_REMOVE = `${BQ}/guide/queues/auto-removal-of-jobs`;
 const BQ_PROD = `${BQ}/guide/going-to-production`;
 const BQ_CONN = `${BQ}/guide/connections`;
 const BQ_FAILFAST = `${BQ}/patterns/failing-fast-when-redis-is-down`;
-const BQ_EVENTS = `${BQ}/guide/events`;
-const BQ_METRICS = `${BQ}/guide/metrics`;
+const BQ_EVENTS = `${BQ}/guide/events/`;
+const BQ_METRICS = `${BQ}/guide/metrics/`;
 const BQ_PROM = `${BQ}/guide/metrics/prometheus`;
-const BQ_TELEMETRY = `${BQ}/guide/telemetry`;
+const BQ_TELEMETRY = `${BQ}/guide/telemetry/`;
 const BQ_TROUBLE = `${BQ}/guide/troubleshooting`;
 const BQ_GETTERS = `${BQ}/guide/jobs/getters`;
 const REDIS_EVICT = 'https://redis.io/docs/latest/develop/reference/eviction/';
@@ -477,7 +477,9 @@ process.on('SIGTERM', shutdown);`}</code></pre>
         Even with AOF, up to a second of acknowledged <code>add</code> calls can be lost in a crash. If a job
         must not be lost, the database is the source of truth and the queue is the delivery mechanism: write a
         row saying the work is needed, in the same transaction as the business change, then enqueue from it.
-        That is the outbox pattern from the webhook article, applied to jobs.
+        That is{' '}
+        <Link href="/blog/webhook-event-driven-integrations">the outbox pattern from the webhook article</Link>,
+        applied to jobs.
       </p>
 
       <h2>Connection handling</h2>

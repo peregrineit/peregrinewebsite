@@ -553,7 +553,9 @@ export default function Guide() {
       <p>
         Changes are not searchable at once. By default Elasticsearch{' '}
         <Src href={NRT}>periodically refreshes indices every second, but only on indices that have received one search request or more in the last 30 seconds</Src>.
-        A listing index fed by a sync that runs every few minutes has little use for one-second refreshes, and
+        A listing index fed by{' '}
+        <Link href="/blog/mls-sync-engine">a sync that runs every few minutes</Link> has little use for
+        one-second refreshes, and
         Elastic notes that raising <code>index.refresh_interval</code>,{' '}
         <Src href={INDEXING_SPEED}>e.g. 30s, might help improve indexing speed</Src>. A longer interval also keeps
         cached facet responses valid for longer.
@@ -572,7 +574,9 @@ export default function Guide() {
 
       <h3>Removals</h3>
       <p>
-        A listing that is sold, withdrawn or no longer licensed for display must leave search results. We would
+        A listing that is{' '}
+        <Link href="/blog/listing-lifecycle-sold-expired-deleted">sold, withdrawn or no longer licensed for display</Link>{' '}
+        must leave search results. We would
         handle that in three layers. The indexer turns &quot;no longer displayable&quot; into a delete action in
         the same bulk request as the updates. The search API adds the status and display filters to every query,
         so a document that lingers is still not returned. And a scheduled reconciliation compares listing keys in

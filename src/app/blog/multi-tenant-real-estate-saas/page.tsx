@@ -406,7 +406,8 @@ COMMIT;`}</code></pre>
         illustrative are examples, not measurements or descriptions of a client system.
       </p>
       <p>
-        Designing a multi-tenant platform, or untangling a single-tenant one? See our{' '}
+        Designing a multi-tenant platform, or{' '}
+        <Link href="/blog/legacy-real-estate-platform-data-migration">untangling a single-tenant one</Link>? See our{' '}
         <Link href="/services/saas-development">SaaS development service</Link>, and the companion article on{' '}
         <Link href="/blog/real-estate-crm-architecture">real estate CRM architecture</Link> for the lead data
         that lives inside each tenant. Every project starts with a 30-minute technical discovery call with an

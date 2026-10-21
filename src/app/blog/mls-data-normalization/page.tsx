@@ -361,7 +361,7 @@ export default function Guide() {
       <ul>
         <li><strong>Do not map a missing flag to true.</strong> Decide the default per source from that MLS&apos;s documentation, and until it is decided, use the most restrictive reading.</li>
         <li><strong>Enforce them in one filter before the index,</strong> not in page templates. An address that is in the search index can leak through autocomplete, a map pin or an API response even if the page hides it.</li>
-        <li><strong>Apply them to derived data.</strong> A hidden address also means no street-level map pin and no address in the page URL, title or structured data.</li>
+        <li><strong>Apply them to derived data.</strong> A hidden address also means <Link href="/blog/map-based-property-search">no street-level map pin</Link> and no address in the page URL, title or structured data.</li>
       </ul>
       <p>
         Status is the other field that carries rules; see{' '}

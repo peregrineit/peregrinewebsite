@@ -15,12 +15,12 @@ const ES = 'https://www.elastic.co/docs';
 const PERCOLATOR = `${ES}/reference/elasticsearch/mapping-reference/percolator`;
 const PERCOLATE_Q = `${ES}/reference/query-languages/query-dsl/query-dsl-percolate-query`;
 const RFC8058 = 'https://www.rfc-editor.org/rfc/rfc8058.html';
-const GMAIL = 'https://support.google.com/a/answer/81126?hl=en';
-const GMAIL_FAQ = 'https://support.google.com/a/answer/14229414?hl=en';
+const GMAIL = 'https://support.google.com/mail/answer/81126?hl=en';
+const GMAIL_FAQ = 'https://support.google.com/mail/answer/14229414?hl=en';
 const YAHOO = 'https://senders.yahooinc.com/best-practices/';
 const FTC = 'https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business';
 const RESEND_IDEM = 'https://resend.com/docs/dashboard/emails/idempotency-keys';
-const RESEND_EVENTS = 'https://resend.com/docs/dashboard/webhooks/event-types';
+const RESEND_EVENTS = 'https://resend.com/docs/webhooks/event-types';
 const RESEND_SUPP = 'https://resend.com/docs/dashboard/emails/email-suppressions';
 const DD_SAVED = 'https://dd.reso.org/DD2.0/SavedSearch/';
 const DD_MOD = 'https://dd.reso.org/DD2.0/Property/ModificationTimestamp/';
@@ -142,7 +142,8 @@ CREATE TABLE delivery (
       <h2>Change detection: the sync pipeline decides what happened</h2>
       <p>
         An alert begins with a statement like &quot;this listing&apos;s price went from 700,000 to 640,000&quot;
-        (an illustrative figure). Only the sync pipeline can make it, because only it sees the record before and
+        (an illustrative figure). Only the <Link href="/blog/mls-sync-engine">sync pipeline</Link> can make it,
+        because only it sees the record before and
         after. So when the pipeline writes a listing, it compares the stored version with the incoming one and
         emits a typed event.
       </p>
@@ -393,7 +394,7 @@ function matchBatch(changes):
         <li><strong>What the header unsubscribes from.</strong> We would make the one-click header stop all listing-alert email for that address; a person who unsubscribes and then receives an alert from a different saved search is likely to report spam. Finer control belongs on the preference page linked in the body.</li>
         <li><strong>Preferences without a login.</strong> The body link opens a page, authorized by the same kind of token, where each search can be paused, switched to a digest or deleted. Yahoo asks for <Src href={YAHOO}>an obvious and visible unsubscribe process that doesn&apos;t require users to log in</Src>.</li>
         <li><strong>Opt-out is per channel and outlives the search.</strong> Deleting and recreating a search must not re-subscribe an address that opted out. Push and SMS have their own consent rules, which this article does not cover.</li>
-        <li><strong>Agent-created searches.</strong> Where an agent sets up a search for a client, the client is the recipient, and we would let the client&apos;s opt-out win.</li>
+        <li><strong>Agent-created searches.</strong> Where <Link href="/blog/real-estate-crm-architecture">an agent sets up a search for a client</Link>, the client is the recipient, and we would let the client&apos;s opt-out win.</li>
       </ul>
 
       <h2>Delivery failures: bounces, suppression and safe retries</h2>
@@ -434,7 +435,9 @@ function matchBatch(changes):
           its status and attempt count, is the durable guard.
         </li>
         <li>
-          <strong>Status events can repeat and arrive out of order.</strong> Apply them idempotently, keyed by the
+          <strong>Status events can{' '}
+          <Link href="/blog/webhook-event-driven-integrations">repeat and arrive out of order</Link>.</strong> Apply
+          them idempotently, keyed by the
           provider&apos;s message ID, and never move a delivery backward from a final state.
         </li>
       </ul>
