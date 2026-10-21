@@ -403,8 +403,7 @@ export const technologyServices: Service[] = [
         label: 'Working with us',
         heading: 'Working With Our Engineering Team in Noida',
         paragraphs: [
-          // TODO(link): after PR 3 merges, link "agencies" to /services/white-label-development.
-          'Peregrine\'s engineers work from our office in Noida, India, with merchants and agencies mainly in the US and Canada. A merchant may need an app, an integration or storefront work on its own store; an agency may need engineering on a client\'s store beyond theme setup. Both start the same way:',
+          'Peregrine\'s engineers work from our office in Noida, India, with merchants and [agencies](/services/white-label-development) mainly in the US and Canada. A merchant may need an app, an integration or storefront work on its own store; an agency may need engineering on a client\'s store beyond theme setup. Both start the same way:',
         ],
         list: [
           'A 30-minute technical discovery call with an engineer, not a salesperson, about the store, the systems around it and what has to change.',
