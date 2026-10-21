@@ -984,6 +984,23 @@ export default function Home() {
             </div>
           </div>
         </section>
+        {/* Approved 2026-10-21: one compact band below the industries stack. Reuses the
+            blog section's classes; no new styles. Destination page ships in PR #26. */}
+        <section id="sec-ai-launch" className="section !pt-6 !pb-10">
+          <div className="container">
+            <div className="w-layout-vflex content-wrap">
+              <p className="section-borrow">AI-assisted development</p>
+              <h2 className="heading-primary">Built Something with AI? We Can Help You Launch It.</h2>
+              <div className="section-sub">
+                Started an application with Lovable, Cursor, Bolt, Replit or Claude Code? Our engineers review what
+                you have, fix what blocks launch and rebuild only where it is justified.
+              </div>
+              <div style={{ marginTop: '1rem' }}>
+                <Link href="/services/ai-app-to-production" className="home-guide-all">Explore AI App to Production &rarr;</Link>
+              </div>
+            </div>
+          </div>
+        </section>
         <section id="sec-tech" className="section dark !pt-3">
           <div className="container">
             <div className="section-text-5"></div>
