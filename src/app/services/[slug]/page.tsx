@@ -121,9 +121,34 @@ export default async function ServicePage({ params }: Props) {
           {service.intro.map((p, i) => (
             <p key={i} className={i === 0 ? 'cp-lead' : 'cp-lead-muted'}>{p}</p>
           ))}
+          {service.heroCta && (
+            <div data-cta-location={`service-hero:${service.slug}`} style={{ marginTop: 24 }}>
+              <div className="cp-buttons" style={{ justifyContent: 'flex-start' }}>
+                {/* Both open the site's popup forms (components/Footer.tsx); /contact is the no-JS fallback. */}
+                <a href="/contact" className="cp-btn" data-open-contact>
+                  {service.heroCta.primary} <i className="ri-arrow-right-line" aria-hidden="true" />
+                </a>
+                <a href="/contact" className="cp-btn cp-btn-secondary" data-open-quick-project>{service.heroCta.secondary}</a>
+              </div>
+              <p className="cp-muted" style={{ fontSize: 14, marginTop: 14, maxWidth: 760 }}>{service.heroCta.note}</p>
+            </div>
+          )}
           <p className="cp-byline">Last updated <time dateTime={service.updated}>{formatDate(service.updated)}</time></p>
         </div>
       </section>
+
+      {service.symptoms && (
+        <section className="cp-section" id="familiar">
+          <div className="cp-container cp-narrow">
+            <span className="cp-label">Common blockers</span>
+            <h2>{service.symptoms.heading}</h2>
+            <p className="cp-muted">{service.symptoms.intro}</p>
+            <ul className="cp-checks">
+              {service.symptoms.items.map((t) => <li key={t}>{t}</li>)}
+            </ul>
+          </div>
+        </section>
+      )}
 
       <section className="cp-section">
         <div className="cp-container">
@@ -202,6 +227,57 @@ export default async function ServicePage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {service.decision && (
+        <section className="cp-section" id="fix-or-rebuild">
+          <div className="cp-container">
+            <span className="cp-label">Fix or rebuild</span>
+            <h2>{service.decision.heading}</h2>
+            <p style={{ maxWidth: 820 }}>{service.decision.intro}</p>
+            {/* Below 640px each row stacks, with the column name above each cell. */}
+            <style>{`@media (max-width: 640px) {
+              .cp-decision thead { display: none; }
+              .cp-decision tr { display: block; padding: 14px 0; border-bottom: 1px solid var(--cp-border); }
+              .cp-prose .cp-decision th, .cp-prose .cp-decision td { display: block; border: 0; padding: 4px 0; }
+              .cp-decision td::before { content: attr(data-label); display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cp-accent); }
+            }`}</style>
+            <div className="cp-prose">
+              <div className="cp-table-wrap">
+                <table className="cp-decision">
+                  <thead>
+                    <tr>{service.decision.columns.map((c) => <th key={c} scope="col">{c}</th>)}</tr>
+                  </thead>
+                  <tbody>
+                    {service.decision.rows.map(([situation, approach, why]) => (
+                      <tr key={situation}>
+                        <th scope="row" style={{ fontWeight: 600 }}>{situation}</th>
+                        <td data-label={service.decision!.columns[1]}>{approach}</td>
+                        <td data-label={service.decision!.columns[2]}>{why}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <p className="cp-muted" style={{ fontSize: 15 }}>{service.decision.note}</p>
+          </div>
+        </section>
+      )}
+
+      {service.references && (
+        <section className="cp-section" id="sources">
+          <div className="cp-container cp-narrow">
+            <span className="cp-label">Published guidance</span>
+            <h2>{service.references.heading}</h2>
+            <p className="cp-muted">{service.references.intro}</p>
+            <ul className="cp-related">
+              {service.references.items.map(({ text, source, href }) => (
+                <li key={href}>{text} Source: <a href={href} className="cp-src" rel="noopener">{source}</a>.</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {buyer && (
         <section className="cp-section" id="scope">
@@ -327,8 +403,8 @@ export default async function ServicePage({ params }: Props) {
       </section>
 
       <ConsultationCta
-        heading={`Talk to an Engineer About ${service.name}`}
-        text="Tell us what you are building or fixing. Your first conversation is with an engineer, not a salesperson."
+        heading={service.cta?.heading ?? `Talk to an Engineer About ${service.name}`}
+        text={service.cta?.text ?? 'Tell us what you are building or fixing. Your first conversation is with an engineer, not a salesperson.'}
         source={`service:${service.slug}`}
       />
     </main>
