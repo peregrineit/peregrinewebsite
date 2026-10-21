@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { CaseStudy, CaseStudyTheme } from '@/data/case-studies';
+import { NO_OUTCOMES, hasOutcomes, type CaseStudy, type CaseStudyTheme } from '@/data/case-studies';
 
 // Class strings are written out in full so Tailwind can find them.
 const themes: Record<CaseStudyTheme, {
@@ -79,16 +79,20 @@ export default function CaseStudyCard({ study }: { study: CaseStudy }) {
       <div className="p-6">
         <div className="flex items-center gap-4 mb-4 text-xs text-gray-400">
           <div className="flex items-center gap-1.5"><i className={card.industryIcon}></i><span>{card.industry ?? study.industry}</span></div>
-          <div className="flex items-center gap-1.5"><i className="ri-time-line"></i><span>{card.duration}</span></div>
+          {card.duration && (
+            <div className="flex items-center gap-1.5"><i className="ri-time-line"></i><span>{card.duration}</span></div>
+          )}
         </div>
         <h3 className={`text-xl font-bold text-white mb-3 ${t.title} transition-colors line-clamp-2`}>{study.title}</h3>
         <p className="text-gray-400 text-sm leading-relaxed mb-5 line-clamp-3">{card.summary}</p>
         <div className="flex items-center justify-between pt-4 border-t border-slate-700">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 text-xs text-gray-500">
-              {card.badges.map((badge) => (
+              {hasOutcomes(study) ? card.badges.map((badge) => (
                 <span key={badge} className="px-2 py-0.5 bg-slate-700/80 rounded text-gray-300">{badge}</span>
-              ))}
+              )) : (
+                <span className="px-2 py-0.5 bg-slate-700/80 rounded text-gray-300">{NO_OUTCOMES}</span>
+              )}
             </div>
           </div>
           <i className={`ri-arrow-right-line ${t.arrow} group-hover:translate-x-1 transition-transform`}></i>

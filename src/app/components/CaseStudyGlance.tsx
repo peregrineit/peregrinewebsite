@@ -1,10 +1,11 @@
 import Link from 'next/link';
-import { getCaseStudy } from '@/data/case-studies';
+import { NO_OUTCOMES, getCaseStudy } from '@/data/case-studies';
 import { industryForCaseStudy } from '@/data/industries';
 import { technologyPageFor } from '@/data/technology-services';
 
 // "Results at a glance" table at the top of a case study. Every value comes from the
 // page itself (see `glance` in src/data/case-studies.ts); nothing new is stated here.
+// A study with no published stack, duration or results says so rather than leaving a gap.
 export default function CaseStudyGlance({ slug }: { slug: string }) {
   const study = getCaseStudy(slug);
   const { client, duration, results } = study.glance;
@@ -22,6 +23,7 @@ export default function CaseStudyGlance({ slug }: { slug: string }) {
           <tr>
             <th scope="row">Stack</th>
             <td>
+              {study.stack.length === 0 && 'Not published'}
               {study.stack.map((item, i) => {
                 const page = technologyPageFor(item);
                 return (
@@ -33,15 +35,17 @@ export default function CaseStudyGlance({ slug }: { slug: string }) {
               })}
             </td>
           </tr>
-          <tr><th scope="row">Project duration</th><td>{duration}</td></tr>
+          <tr><th scope="row">Project duration</th><td>{duration ?? 'Not published'}</td></tr>
           <tr>
             <th scope="row">Headline results</th>
             <td>
-              <ul>
-                {results.map(([value, label]) => (
-                  <li key={label}><strong>{value}</strong> {label}</li>
-                ))}
-              </ul>
+              {results.length === 0 ? NO_OUTCOMES : (
+                <ul>
+                  {results.map(([value, label]) => (
+                    <li key={label}><strong>{value}</strong> {label}</li>
+                  ))}
+                </ul>
+              )}
             </td>
           </tr>
         </tbody>
