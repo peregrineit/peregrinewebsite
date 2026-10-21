@@ -59,7 +59,7 @@ export const industries: Industry[] = [
       'MLS data pipelines and IDX search, brokerage and agent platforms, AI search and lead qualification, and investor portals.',
     caseStudies: ['w3re-ai-real-estate-platform', 'scaling-real-estate-saas-platform', 'proptech-investor-portal', 'self-storage-management-platform'],
     services: ['mls-idx-integration', 'investor-portal-development', 'saas-development', 'ai-automation', 'api-integration', 'cloud-devops'],
-    guides: ['mls-idx-integration-cost', 'how-to-get-mls-data-access', 'cost-to-build-a-real-estate-platform', 'custom-saas-vs-off-the-shelf-crm-for-brokerages', 'investor-portal-vs-file-sharing', 'idx-vendor-vs-custom-build', 'reso-web-api-vs-rets', 'mls-data-access-canada'],
+    guides: ['mls-idx-integration-cost', 'how-to-get-mls-data-access', 'cost-to-build-a-real-estate-platform', 'custom-saas-vs-off-the-shelf-crm-for-brokerages', 'investor-portal-vs-file-sharing', 'idx-vendor-vs-custom-build', 'reso-web-api-vs-rets', 'mls-data-access-canada', 'mls-data-pipeline-architecture', 'real-estate-search-elasticsearch', 'idx-website-features-checklist', 'real-estate-crm-architecture', 'multi-tenant-real-estate-saas', 'investor-portal-security-checklist'],
     ownProduct: true,
     // Cards restate the linked case studies (re-read 2026-10-10); `proof` names the source of each.
     // Buyer guidance is vendor-neutral. Its only statements about Peregrine are in `firstPhase`
@@ -144,7 +144,7 @@ export const industries: Industry[] = [
       'One platform for reservations, Stripe billing, smart-lock access and multi-site occupancy dashboards.',
     caseStudies: ['self-storage-management-platform'],
     services: ['saas-development', 'api-integration', 'cloud-devops'],
-    guides: ['self-storage-software-build-vs-buy'],
+    guides: ['self-storage-software-build-vs-buy', 'webhook-event-driven-integrations'],
     whatWeBuild: [
       {
         title: 'Reservations, units and leases',

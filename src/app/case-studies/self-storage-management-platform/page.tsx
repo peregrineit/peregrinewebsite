@@ -355,8 +355,8 @@ export default function SelfStorageManagementPlatform() {
               <div className="csd-timeline-phase">Phase 3 — Weeks 17–28</div>
               <div className="csd-timeline-title">IoT Integration &amp; Mobile App</div>
               <p className="csd-timeline-desc">
-                Developed the MQTT-based IoT bridge. Integrated three smart lock vendors behind a
-                unified API. Built the React Native tenant app with Bluetooth and remote unlock
+                Developed the MQTT-based IoT bridge. <Link href="/services/api-integration">Integrated three smart lock vendors behind a
+                unified API</Link>. Built the React Native tenant app with Bluetooth and remote unlock
                 capabilities.
               </p>
             </div>
@@ -365,8 +365,8 @@ export default function SelfStorageManagementPlatform() {
               <div className="csd-timeline-phase">Phase 4 — Weeks 29–40</div>
               <div className="csd-timeline-title">Dashboards, Testing &amp; Rollout</div>
               <p className="csd-timeline-desc">
-                Built real-time occupancy and revenue dashboards for corporate. Load-tested with
-                simulated 45K-unit traffic. Phased rollout across facilities — 10 pilot sites, then full
+                Built real-time occupancy and revenue dashboards for corporate. <Link href="/services/cloud-devops">Load-tested with
+                simulated 45K-unit traffic</Link>. Phased rollout across facilities — 10 pilot sites, then full
                 150+ deployment.
               </p>
             </div>

@@ -76,7 +76,7 @@ export const technologyServices: Service[] = [
       { slug: 'recruitment-ats-platform', note: 'A Next.js recruiter portal with a Kanban pipeline, plus branded career pages for each company.' },
       { slug: 'insurance-claims-automation-platform', note: 'A Next.js workspace where adjusters handle claim intake, the review queue, corrections to extracted data and approvals.' },
     ],
-    guides: ['listing-page-core-web-vitals', 'real-estate-website-seo-aeo-geo', 'real-estate-platform-tech-stack'],
+    guides: ['listing-page-core-web-vitals', 'real-estate-website-seo-aeo-geo', 'real-estate-platform-tech-stack', 'multi-tenant-real-estate-saas'],
     answers: {
       includes:
         'Peregrine\'s Next.js development covers server-rendered storefronts and public pages, signed-in portals and dashboards, admin consoles, white-label and multi-tenant sites, and performance work on existing Next.js apps. We build the React frontend together with the API, authentication and data layer behind it, so one team owns the whole product.',
@@ -255,7 +255,7 @@ export const technologyServices: Service[] = [
     ],
     stack: ['Shopify Admin API', 'Storefront API', 'Liquid', 'Hydrogen', 'Next.js', 'Node.js', 'Webhooks', 'PostgreSQL'],
     caseStudies: [],
-    guides: [],
+    guides: ['odoo-shopify-marketplace-integration', 'webhook-event-driven-integrations'],
     answers: {
       includes:
         'Peregrine\'s Shopify development covers custom apps built on Shopify\'s Admin API and webhooks, integrations between Shopify and ERP, accounting and fulfillment systems, Liquid theme customization, headless storefronts on the Storefront API, and migrations to Shopify from another platform. Work is done on a development store, not on the live one.',
