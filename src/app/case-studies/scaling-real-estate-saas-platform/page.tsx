@@ -368,7 +368,7 @@ export default function ScalingRealEstateSaas() {
               <div className="csd-timeline-title">Frontend Optimization &amp; Launch</div>
               <p className="csd-timeline-desc">
                 Optimized Next.js frontend with ISR, dynamic imports, image optimization via S3 +
-                CDN. Deployed white-label agent themes. Load-tested the full stack with simulated
+                CDN. Deployed white-label agent themes. <Link href="/services/cloud-devops">Load-tested the full stack</Link> with simulated
                 200-agent traffic before go-live.
               </p>
             </div>
