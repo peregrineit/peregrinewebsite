@@ -28,7 +28,7 @@ NOTIFY = "info@peregrine-it.com"
 DEFAULTS = dict(emails=[], attempts=0, hooks=[], keys={}, key_bodies={}, events={}, fail=None, fail_once=None, fail_ack=None,
                 hook_fail=False, hook_sleep=0, hook_plan=[], hook_attempts=[], email_sleep=0, ack_sleep=0,
                 alerts=[], alert_fail=False, alert_sleep=0,
-                blob_puts=[])
+                blob_puts=[], verifies=[], ts_mode="ok")
 state = dict(DEFAULTS, domains=[{"name": "test.invalid", "status": "verified"}])
 ERRORS = {
     422: {"statusCode": 422, "name": "validation_error", "message": "Invalid `from` field: hello@test.invalid is not allowed."},
@@ -51,6 +51,20 @@ class Mock(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
         raw = self.rfile.read(int(self.headers.get("Content-Length", 0)))
         body = json.loads(raw or b"{}")
+        if self.path.startswith("/siteverify"):
+            # Cloudflare Turnstile siteverify, as documented at
+            # https://developers.cloudflare.com/turnstile/get-started/server-side-validation/
+            state["verifies"].append(body)
+            mode = state["ts_mode"]
+            if body.get("secret") != TS_SECRET:
+                return self._send(200, {"success": False, "error-codes": ["invalid-input-secret"]})
+            if mode == "down": return self._send(503, {})
+            if mode == "slow": time.sleep(7)
+            if mode == "badhost": return self._send(200, {"success": True, "hostname": "evil.example", "error-codes": []})
+            if mode == "reused": return self._send(200, {"success": False, "error-codes": ["timeout-or-duplicate"]})
+            if mode == "fail" or body.get("response") != TS_TOKEN:
+                return self._send(200, {"success": False, "error-codes": ["invalid-input-response"]})
+            return self._send(200, {"success": True, "hostname": "peregrine-it.com", "error-codes": [], "challenge_ts": "2026-10-26T00:00:00.000Z"})
         if self.path.startswith("/emails"):
             state["attempts"] += 1
             to = body.get("to"); to = to[0] if isinstance(to, list) else to
@@ -114,7 +128,12 @@ class Mock(http.server.BaseHTTPRequestHandler):
 def get(path="/api/lead"):
     with urllib.request.urlopen(APP + path, timeout=30) as r: return json.loads(r.read())
 
-def post(payload, ip):
+# Every lead carries a Turnstile token, as the forms send it; NO_TOKEN leaves it out.
+TS_SECRET = "turnstile-test-secret-not-real"; TS_TOKEN = "turnstile-test-token-not-real"; NO_TOKEN = object()
+TS_ENV = {"TURNSTILE_SECRET_KEY": TS_SECRET, "TURNSTILE_VERIFY_URL": MOCK + "/siteverify"}
+def post(payload, ip, token=TS_TOKEN):
+    if isinstance(payload, dict) and token is not NO_TOKEN and "turnstileToken" not in payload:
+        payload = {**payload, "turnstileToken": token}
     req = urllib.request.Request(APP + "/api/lead", data=json.dumps(payload).encode(),
                                  headers={"Content-Type": "application/json", "X-Forwarded-For": ip})
     try:
@@ -124,8 +143,10 @@ def post(payload, ip):
 LOG = os.path.join(ROOT, ".lead-test.log")
 def start_app(env_extra):
     env = {k: v for k, v in os.environ.items() if k not in ("RESEND_API_KEY", "LEAD_WEBHOOK_URL", "LEAD_FROM_EMAIL", "RESEND_BASE_URL", "VERCEL_ENV")
-           and not k.startswith(("LEAD_", "BLOB_"))}
-    env.update(env_extra, PORT=str(APP_PORT))
+           and not k.startswith(("LEAD_", "BLOB_", "TURNSTILE_"))}
+    # Turnstile verified against the mock unless the test passes its own TURNSTILE_* (or None to unset).
+    env.update(TS_ENV); env.update(env_extra, PORT=str(APP_PORT))
+    env = {k: v for k, v in env.items() if v is not None}
     proc = subprocess.Popen(["npx", "next", "start"], cwd=ROOT, env=env, stdout=open(LOG, "w"), stderr=subprocess.STDOUT)
     for _ in range(60):
         try: urllib.request.urlopen(APP + "/robots.txt", timeout=2); return proc
@@ -555,6 +576,60 @@ def run():
     try:
         st = get(); s, b = post(LEAD, ip())
         check("no store: store variables alone are not a destination -> 502", st.get("ok") is False and s == 502 and b.get("success") is False and not state["blob_puts"], f"got {st} {s}")
+    finally: stop_app(app)
+
+    # --- Turnstile (src/lib/turnstile.ts): verified after validation and before anything is sent.
+    reset(); app = start_app({**RESEND_ENV, **HOOK_ENV})
+    try:
+        st = get()
+        check("turnstile: status reports secret configured (boolean only)", st.get("turnstileSecret") is True and TS_SECRET not in json.dumps(st), f"got {st}")
+        def nothing_sent(): return not state["emails"] and not state["hooks"] and state["attempts"] == 0
+        s, b = post(LEAD, ip(), token=NO_TOKEN)
+        check("turnstile: missing token -> 400, nothing sent, Cloudflare not asked",
+              s == 400 and b.get("error") == "Please verify that you're human and try again." and nothing_sent() and not state["verifies"], f"got {s} {b} verifies={len(state['verifies'])}")
+        s, b = post(LEAD, ip(), token="")
+        check("turnstile: empty token -> 400, nothing sent", s == 400 and nothing_sent(), f"got {s} {b}")
+        s, b = post({**LEAD, "turnstileToken": 12345}, ip())
+        check("turnstile: non-string token -> 400, nothing sent", s == 400 and nothing_sent(), f"got {s} {b}")
+        s, b = post(LEAD, ip(), token="forged-token")
+        check("turnstile: invalid token -> 403, nothing sent, one siteverify call",
+              s == 403 and b.get("error") == "Please verify that you're human and try again." and nothing_sent() and len(state["verifies"]) == 1, f"got {s} {b}")
+        check("turnstile: generic error only, no Cloudflare codes", "invalid-input" not in json.dumps(b) and "error-codes" not in json.dumps(b), f"got {b}")
+        reset(ts_mode="reused"); s, b = post(LEAD, ip())
+        check("turnstile: expired/reused token -> 403, nothing sent", s == 403 and nothing_sent(), f"got {s} {b}")
+        reset(ts_mode="badhost"); s, b = post(LEAD, ip())
+        check("turnstile: token from another hostname -> 403, nothing sent", s == 403 and nothing_sent(), f"got {s} {b}")
+        reset(ts_mode="down"); s, b = post(LEAD, ip())
+        check("turnstile: Cloudflare 5xx -> 503 (fail closed), nothing sent", s == 503 and nothing_sent() and "success" not in b, f"got {s} {b}")
+        reset(); s, b = post({**LEAD, "email": "not-an-email"}, ip())
+        check("turnstile: invalid payload is refused by validation before Cloudflare is asked", s == 400 and not state["verifies"] and nothing_sent(), f"got {s} {b} verifies={len(state['verifies'])}")
+        reset(); s, b = post(LEAD, ip())
+        check("turnstile: valid token -> accepted, notification sent once, webhook once, one siteverify call",
+              s == 200 and b.get("status") == "accepted" and len(to_notify()) == 1 and len(state["hooks"]) == 1 and len(state["verifies"]) == 1, f"got {s} {b} notify={len(to_notify())} hooks={len(state['hooks'])}")
+        v = state["verifies"][0]
+        check("turnstile: siteverify got secret, token and remoteip", v.get("secret") == TS_SECRET and v.get("response") == TS_TOKEN and v.get("remoteip"), f"got keys {sorted(v)}")
+        sent = json.dumps(state["emails"]) + json.dumps([{k: x for k, x in h.items() if k != "_raw"} for h in state["hooks"]]) + json.dumps(b)
+        check("turnstile: token not in the emails, the webhook row or the response", TS_TOKEN not in sent)
+        log = app_log()
+        check("turnstile: failures logged as TURNSTILE_FAILED / TURNSTILE_UNAVAILABLE", "TURNSTILE_FAILED" in log and "TURNSTILE_UNAVAILABLE" in log)
+        check("turnstile: neither the secret nor any token is logged", TS_SECRET not in log and TS_TOKEN not in log and "forged-token" not in log)
+    finally: stop_app(app)
+    reset(ts_mode="slow"); app = start_app({**RESEND_ENV, **HOOK_ENV})
+    try:
+        t0 = time.time(); s, b = post(LEAD, ip())
+        check("turnstile: siteverify timeout -> 503 within ~5 s, nothing sent", s == 503 and time.time() - t0 < 6.5 and not state["emails"] and not state["hooks"], f"got {s} in {time.time() - t0:.1f}s")
+    finally: stop_app(app)
+    reset(); app = start_app({**RESEND_ENV, **HOOK_ENV, "TURNSTILE_VERIFY_URL": f"http://127.0.0.1:{MOCK_PORT + 2}/siteverify"})
+    try:
+        s, b = post(LEAD, ip())
+        check("turnstile: Cloudflare unreachable -> 503 (fail closed), nothing sent", s == 503 and not state["emails"] and not state["hooks"], f"got {s} {b}")
+    finally: stop_app(app)
+    reset(); app = start_app({**RESEND_ENV, **HOOK_ENV, "TURNSTILE_SECRET_KEY": None})
+    try:
+        st = get(); s, b = post(LEAD, ip())
+        check("turnstile: no secret configured -> every lead refused (503), nothing sent, Cloudflare not asked",
+              st.get("turnstileSecret") is False and s == 503 and not state["emails"] and not state["hooks"] and not state["verifies"], f"got {s} {b}")
+        check("turnstile: missing secret logged", "TURNSTILE_SECRET_KEY not set" in app_log())
     finally: stop_app(app)
 
     server.shutdown()

@@ -4,6 +4,7 @@ import { Resend } from "resend";
 import { cleanAttribution, multiLine, oneLine, type LeadAttribution } from "@/lib/attribution";
 import { leadPriority, priorityLine, type PriorityResult } from "@/lib/lead-priority";
 import { deliverWebhook, usableSecret, type Outcome } from "@/lib/lead-webhook";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 // Lead intake for the two site forms (components/LeadForms.tsx).
 //
@@ -29,6 +30,7 @@ import { deliverWebhook, usableSecret, type Outcome } from "@/lib/lead-webhook";
 const NOTIFY_TO = "info@peregrine-it.com";
 /** Must match the hidden input in components/LeadForms.tsx. */
 const HONEYPOT_FIELD = "pit_confirm_field";
+const HUMAN_CHECK = "Please verify that you're human and try again.";
 // The fallback is Resend's test sender, which Resend only delivers to the account owner.
 const FROM = process.env.LEAD_FROM_EMAIL || "Peregrine IT <onboarding@resend.dev>";
 
@@ -313,6 +315,11 @@ export async function GET(request: NextRequest) {
       webhookRetry: webhook && process.env.LEAD_WEBHOOK_RETRY === "1",
       // Someone is told when the notification email fails but the lead was still accepted.
       ownerAlert: Boolean(process.env.LEAD_ALERT_WEBHOOK_URL),
+      // Turnstile: the server secret is set, and this build's forms carry a site key
+      // (NEXT_PUBLIC_* is inlined at build time, so a key added later needs a redeploy).
+      // Without both, every lead is refused (lib/turnstile.ts).
+      turnstileSecret: Boolean(process.env.TURNSTILE_SECRET_KEY),
+      turnstileSiteKey: Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY),
       durableStorage: durable(webhook),
       environment: process.env.VERCEL_ENV || "local",
     },
@@ -385,6 +392,25 @@ export async function POST(request: NextRequest) {
     }
     if (lead.message.length < 10) {
       return NextResponse.json({ error: "Message must be at least 10 characters." }, { status: 400 });
+    }
+
+    // Cloudflare Turnstile (lib/turnstile.ts), after the checks above and before anything is
+    // sent: no notification, webhook row or acknowledgement exists for a submission whose
+    // token was not verified. It fails closed: missing secret, missing or failed token and an
+    // unreachable Cloudflare all refuse the lead. The token itself is never stored or logged.
+    if (typeof raw.turnstileToken !== "string" || !raw.turnstileToken) {
+      console.warn("TURNSTILE_FAILED", JSON.stringify({ ref, form: lead.form, codes: ["missing-input-response"] }));
+      return NextResponse.json({ error: HUMAN_CHECK }, { status: 400 });
+    }
+    const verification = await verifyTurnstile(raw.turnstileToken, ip === "unknown" ? undefined : ip);
+    if (verification.status === "fail") {
+      console.warn("TURNSTILE_FAILED", JSON.stringify({ ref, form: lead.form, codes: verification.codes }));
+      return NextResponse.json({ error: HUMAN_CHECK }, { status: 403 });
+    }
+    if (verification.status !== "pass") {
+      const reason = verification.status === "unconfigured" ? "TURNSTILE_SECRET_KEY not set" : verification.reason;
+      console.error("TURNSTILE_UNAVAILABLE", JSON.stringify({ ref, form: lead.form, reason }));
+      return NextResponse.json({ error: "We could not verify this request just now. Please try again in a minute." }, { status: 503 });
     }
 
     const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
