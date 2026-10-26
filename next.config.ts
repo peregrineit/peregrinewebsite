@@ -3,16 +3,19 @@ import type { NextConfig } from "next";
 // Content-Security-Policy, sent as Report-Only for now: violations are reported in the
 // browser console and to /api/csp-report without blocking anything. Third-party origins actually used at
 // runtime: cdnjs (lottie-web, homepage only) and, only when NEXT_PUBLIC_GA_ID is set,
-// Google Analytics 4. Switch to an enforced CSP once the reports are clean.
+// Google Analytics 4, plus Cloudflare Turnstile on the lead forms (script and challenge iframe
+// from challenges.cloudflare.com, per
+// https://developers.cloudflare.com/turnstile/reference/content-security-policy/).
+// Switch to an enforced CSP once the reports are clean.
 const cspReportOnly = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.googletagmanager.com",
+  "script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.googletagmanager.com https://challenges.cloudflare.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://*.google-analytics.com https://www.googletagmanager.com",
   "font-src 'self' data:",
   "media-src 'self'",
   "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com",
-  "frame-src 'none'",
+  "frame-src https://challenges.cloudflare.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",

@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { ctaLocationFor, getAttribution } from '@/lib/attribution';
+import { useTurnstile, type TurnstileGuard } from '@/lib/turnstile-client';
 import { formTracker, track } from '@/lib/track';
 
 // The site's two lead forms (strategy call and quick project request). Used in the
@@ -39,11 +40,23 @@ type Fields = Record<string, HTMLInputElement | HTMLSelectElement | HTMLTextArea
 // it is treated as a new message with a new reference.
 const pendingIds: Record<string, string> = {};
 
-async function submitLead(formEl: HTMLFormElement, formData: Record<string, string>, setStatus: (s: Status) => void) {
+const HUMAN_CHECK = "Please verify that you're human and try again.";
+
+async function submitLead(formEl: HTMLFormElement, formData: Record<string, string>, setStatus: (s: Status) => void, turnstile: TurnstileGuard) {
   setStatus({ loading: true, success: false, error: '' });
   const page = window.location.pathname;
   const event = { form: formData.form, page, service: formData.service || '' };
   const submissionId = (pendingIds[formData.form] ??= crypto.randomUUID());
+  // The server refuses a lead without a verified Turnstile token, so nothing is sent until
+  // the widget has produced one. If it cannot (script blocked, challenge not completed), the
+  // visitor can still reach us from their own mail client.
+  const turnstileToken = await turnstile.getToken();
+  if (!turnstileToken) {
+    setStatus({ loading: false, success: false, error: HUMAN_CHECK, fallback: mailtoFallback(formData), note: 'verification did not complete' });
+    // -1 = refused in the browser: no request was sent.
+    track('lead_error', { ...event, status: -1 });
+    return;
+  }
   try {
     const res = await fetch('/api/lead', {
       method: 'POST',
@@ -53,8 +66,11 @@ async function submitLead(formEl: HTMLFormElement, formData: Record<string, stri
         submissionId,
         ...getAttribution(ctaLocationFor(formEl, formData.form)),
         pageUrl: window.location.href,
+        turnstileToken,
       }),
     });
+    // A token is single use: spend it whatever the outcome, so a retry gets a fresh one.
+    turnstile.reset();
     const json = await res.json();
     // Accepted or refused as invalid: the next attempt is a new submission. After a 5xx the id
     // is kept: an email that timed out on our side may still have been sent, and the same id
@@ -87,6 +103,7 @@ async function submitLead(formEl: HTMLFormElement, formData: Record<string, stri
       track('lead_error', { ...event, status: res.status });
     }
   } catch {
+    turnstile.reset();
     // No JSON came back: the request did not reach the API, or something in front of it answered.
     setStatus({ loading: false, success: false, error: 'Network error. Please try again.', fallback: mailtoFallback(formData), note: 'no response from /api/lead' });
     // 0 = no HTTP response at all.
@@ -160,12 +177,13 @@ function Received({ receipt, form, children }: { receipt: Receipt; form: string;
 /** `service` records which service or landing page the form sits on. */
 export function StrategyCallForm({ service = '' }: { service?: string }) {
   const [formStatus, setFormStatus] = useState<Status>(idle);
+  const { setContainer, start, getToken, reset } = useTurnstile('strategy-call');
   return (
     <>
     {formStatus.success && formStatus.receipt ? (
       <Received receipt={formStatus.receipt} form="strategy-call">An engineer will review it and reply within 1 business day.</Received>
     ) : (
-    <form data-lead-form="strategy-call" onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+    <form data-lead-form="strategy-call" onFocusCapture={start} onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const f = e.currentTarget as HTMLFormElement & Fields;
       submitLead(f, {
@@ -178,7 +196,7 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
         timeline: f.scTimeline.value,
         message: f.scMessage.value || 'Strategy call request',
         pit_confirm_field: f.pit_confirm_field.value,
-      }, setFormStatus);
+      }, setFormStatus, { getToken, reset });
     }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
       <input type="text" name="scName" aria-label="Your name" placeholder="Your name" required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
@@ -205,6 +223,9 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
       </select>
       <textarea name="scMessage" aria-label="What you need" placeholder="Tell us briefly what you need" rows={2}
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%', resize: 'vertical' as const }} />
+      {/* Turnstile widget (lib/turnstile-client.ts). display: contents adds no box, so the form's
+          spacing is unchanged until Cloudflare shows its checkbox. */}
+      <div ref={setContainer} style={{ display: 'contents' }} />
       {formStatus.error && (
         <p role="alert" style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>
           {formStatus.error}
@@ -229,12 +250,13 @@ export function StrategyCallForm({ service = '' }: { service?: string }) {
 
 export function QuickProjectForm() {
   const [qpFormStatus, setQpFormStatus] = useState<Status>(idle);
+  const { setContainer, start, getToken, reset } = useTurnstile('quick-project');
   return (
     <>
     {qpFormStatus.success && qpFormStatus.receipt ? (
       <Received receipt={qpFormStatus.receipt} form="quick-project">We&apos;ll review your request and reply within 1 business day.</Received>
     ) : (
-    <form data-lead-form="quick-project" onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+    <form data-lead-form="quick-project" onFocusCapture={start} onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const f = e.currentTarget as HTMLFormElement & Fields;
       submitLead(f, {
@@ -245,7 +267,7 @@ export function QuickProjectForm() {
         timeline: f.qpTimeline.value,
         message: f.qpNeed.value,
         pit_confirm_field: f.pit_confirm_field.value,
-      }, setQpFormStatus);
+      }, setQpFormStatus, { getToken, reset });
     }} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
       <input type="text" name="qpName" aria-label="Your name" placeholder="Your name" required
         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', padding: '0.75rem 1rem', color: 'white', fontSize: '0.95rem', outline: 'none', width: '100%' }} />
@@ -262,6 +284,9 @@ export function QuickProjectForm() {
         <option value="2-6-months">2–6 months</option>
         <option value="exploring">Just exploring</option>
       </select>
+      {/* Turnstile widget (lib/turnstile-client.ts). display: contents adds no box, so the form's
+          spacing is unchanged until Cloudflare shows its checkbox. */}
+      <div ref={setContainer} style={{ display: 'contents' }} />
       {qpFormStatus.error && (
         <p role="alert" style={{ color: '#f87171', fontSize: '0.85rem', margin: '0', textAlign: 'center' }}>
           {qpFormStatus.error}

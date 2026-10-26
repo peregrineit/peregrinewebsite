@@ -4,10 +4,14 @@
 // Covers what unit tests cannot: storage after a real page load, the page-view counter
 // across a client-side navigation, Calendly hrefs at click time on real pages, the form
 // start / abandon events from real input and a real pagehide, and the body the form POSTs.
-// Nothing leaves the machine: calendly.com and every non-local host are blocked, and the
-// app's webhook points at a mock started by this script.
+// Nothing leaves the machine except the Cloudflare Turnstile widget script and challenge:
+// calendly.com and analytics hosts are blocked, the app's webhook and its Turnstile
+// verification point at a mock started by this script.
 //
-// Needs a build (`npm run build`). Usage:
+// Needs a build with Cloudflare's always-pass test site key, so the real widget hands the
+// form a token without a challenge:
+//   NEXT_PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA npm run build
+// (https://developers.cloudflare.com/turnstile/troubleshooting/testing/). Usage:
 //   node scripts/test_lead_browser.mjs
 // Ports (override with env): LEAD_BROWSER_APP_PORT 3071, LEAD_BROWSER_CDP_PORT 3072,
 // LEAD_BROWSER_MOCK_PORT 3073. CHROME_BIN overrides the Chrome path.
@@ -31,11 +35,23 @@ const check = (name, cond, detail = '') => { if (cond) passed++; else fails.push
 
 // --- mock webhook: accepts every lead, keeps the bodies
 const hooks = [];
+const verifies = [];
 let failNext = 0;   // answer this many requests with 500 first
 const mock = http.createServer((req, res) => {
   let body = '';
   req.on('data', (c) => { body += c; });
   req.on('end', () => {
+    // Turnstile siteverify. The page runs the real widget with Cloudflare's always-pass test
+    // site key (the build must have NEXT_PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA);
+    // the server's verification is answered here, never by Cloudflare.
+    if (req.url.startsWith('/siteverify')) {
+      let v = {}; try { v = JSON.parse(body); } catch { /* ignore */ }
+      verifies.push(v);
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(v.secret === 'turnstile-test-secret-not-real' && typeof v.response === 'string' && v.response
+        ? { success: true, hostname: 'peregrine-it.com', 'error-codes': [] } : { success: false, 'error-codes': ['invalid-input-response'] }));
+      return;
+    }
     if (failNext > 0) { failNext--; res.writeHead(500, { 'Content-Type': 'application/json' }); res.end('{"error":"mock"}'); return; }
     try { hooks.push(JSON.parse(body)); } catch { /* ignore */ }
     res.writeHead(200, { 'Content-Type': 'application/json' }); res.end('{"ok":true}');
@@ -43,8 +59,9 @@ const mock = http.createServer((req, res) => {
 }).listen(MOCK_PORT, '127.0.0.1');
 
 // --- the built app, with only the webhook configured
-const env = { ...process.env, PORT: String(APP_PORT), LEAD_WEBHOOK_URL: `http://127.0.0.1:${MOCK_PORT}/hook` };
-for (const k of ['RESEND_API_KEY', 'LEAD_FROM_EMAIL', 'NEXT_PUBLIC_GA_ID', 'LEAD_WEBHOOK_RETRY', 'LEAD_WEBHOOK_SECRET', 'LEAD_ALERT_WEBHOOK_URL']) delete env[k];
+const env = { ...process.env, PORT: String(APP_PORT), LEAD_WEBHOOK_URL: `http://127.0.0.1:${MOCK_PORT}/hook`,
+  TURNSTILE_SECRET_KEY: 'turnstile-test-secret-not-real', TURNSTILE_VERIFY_URL: `http://127.0.0.1:${MOCK_PORT}/siteverify` };
+for (const k of ['RESEND_API_KEY', 'LEAD_FROM_EMAIL', 'NEXT_PUBLIC_GA_ID', 'LEAD_WEBHOOK_RETRY', 'LEAD_WEBHOOK_SECRET', 'LEAD_ALERT_WEBHOOK_URL', 'TURNSTILE_ALLOWED_HOSTNAMES']) delete env[k];
 const app = spawn('npx', ['next', 'start'], { cwd: ROOT, env, stdio: 'ignore', detached: true });
 const profile = mkdtempSync(path.join(tmpdir(), 'pit-chrome-'));
 const chrome = spawn(CHROME, ['--headless=new', `--remote-debugging-port=${CDP_PORT}`, `--user-data-dir=${profile}`, '--no-first-run',
@@ -187,6 +204,11 @@ async function main() {
   check('submit: the webhook mock received the same attribution and a priority', hooks.length === 1 && hooks[0].gclid === '' && ['high', 'normal', 'low'].includes(hooks[0].priority) && hooks[0].ctaLocation === body.ctaLocation
     && hooks[0].pagesViewed === body.pagesViewed, JSON.stringify(hooks[0]));
   check('submit: lead_submit fired', (await events('lead_submit')).length === 1);
+  check('turnstile: the form waited for the widget and sent its token', typeof body.turnstileToken === 'string' && body.turnstileToken.length > 0, String(body.turnstileToken));
+  check('turnstile: the server verified that token once', verifies.length === 1 && verifies[0].response === body.turnstileToken, `verifies=${verifies.length}`);
+  check('turnstile: the token is not in the webhook row', !JSON.stringify(hooks[0]).includes(body.turnstileToken));
+  check('turnstile: the token is not in any tracked event', !(await js('JSON.stringify(window.__ev)')).includes(body.turnstileToken));
+  check('turnstile: the widget script came from challenges.cloudflare.com', await js(`!!document.querySelector('script[src^="https://challenges.cloudflare.com/turnstile/v0/api.js"]')`));
   await js(`window.dispatchEvent(new Event('pagehide'))`);
   check('abandon: a submitted form is not reported as abandoned', (await events('lead_form_abandon')).length === 0);
 
