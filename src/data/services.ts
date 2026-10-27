@@ -2197,6 +2197,7 @@ const related: Record<string, [string, string][]> = {
     ['laravel-development', 'when the application runs on Laravel and needs new features once it is current'],
     ['wordpress-development', 'when the site runs on WordPress and custom plugins or themes need rework'],
     ['cloud-devops', 'for hosting moves, deployment pipelines and monitoring around the upgrade'],
+    ['hire-php-developers', 'when the application also needs ongoing maintenance or new PHP features once it is current'],
   ],
   'hire-laravel-developers': [
     ['laravel-development', 'for what Laravel development covers: APIs, SaaS backends, admin panels and upgrades'],
@@ -2250,6 +2251,7 @@ const related: Record<string, [string, string][]> = {
     ['react-development', 'for mobile apps against the same API'],
     ['cloud-devops', 'for deployment pipelines and hosting moves'],
     ['php-upgrade-migration', 'when the PHP version under the application has to move to a supported release, such as off PHP 8.2 before its security support ends'],
+    ['hire-laravel-developers', 'when you need Laravel engineers for a defined project or ongoing development on your application'],
   ],
   'wordpress-development': [
     ['nextjs-development', 'for a headless frontend that reads content from WordPress'],
@@ -2286,6 +2288,12 @@ export const serviceNeeds: { id: string; heading: string; blurb: string; slugs: 
     heading: 'Deliver Projects for Your Clients',
     blurb: 'For agencies that have sold a software project and need the engineering delivered under their brand.',
     slugs: ['white-label-development'],
+  },
+  {
+    id: 'engineering',
+    heading: 'Get Laravel and PHP Engineering',
+    blurb: 'For SaaS products, APIs and integrations on Laravel, and for legacy PHP applications that need maintenance or modernization, as fixed-scope projects or monthly retainers.',
+    slugs: ['hire-laravel-developers', 'hire-php-developers'],
   },
 ];
 
