@@ -217,7 +217,7 @@ export default async function ServicePage({ params }: Props) {
 
       <ServiceSections sections={service.sections?.filter((s) => s.placement === 'build')} />
 
-      <section className="cp-section" id="process">
+      <section className="cp-section" id="process" style={{ scrollMarginTop: 96 }}>
         <div className="cp-container">
           <span className="cp-label">Timeline</span>
           <h2>How Long Does {withArticle(service.name)} Project Take?</h2>

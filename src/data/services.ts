@@ -1367,7 +1367,7 @@ const coreServiceList: Service[] = [
       delivered: 'Security patch assessments, compatibility reviews, staged PHP and framework upgrades, regression testing, production release planning and ongoing maintenance',
       // TODO(owner): no timeline is stated; the inventory sets it.
     },
-    updated: '2026-10-27',
+    updated: '2026-10-28',
     faq: [
       {
         question: 'Can you upgrade an application from PHP 5 or PHP 7?',

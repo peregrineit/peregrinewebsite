@@ -614,8 +614,8 @@ export const guides: Guide[] = [
     metaTitle: 'PHP2Shell: Patched PHP Versions & What to Do',
     description:
       'The October 2026 PHP security releases: the two CVEs, which PHP versions are patched, and what WordPress, Laravel and custom PHP site owners should check.',
-    datePublished: '2026-10-27',
-    dateModified: '2026-10-27',
+    datePublished: '2026-10-28',
+    dateModified: '2026-10-28',
     service: 'php-upgrade-migration',
     // No caseStudy: Peregrine has no published PHP case study.
   },

@@ -4,7 +4,7 @@ import GuideLayout, { GuideFaq, Src, guideMetadata } from '../../components/Guid
 const SLUG = 'php2shell-php-security-vulnerabilities-2026';
 export const metadata = guideMetadata(SLUG);
 
-// Sources read 2026-10-27. The claim-by-claim source record is kept outside this public
+// Sources read 2026-10-27, re-checked 2026-10-28. The claim-by-claim source record is kept outside this public
 // repository (see docs/content/sources/php2shell-php-security-vulnerabilities-2026.md).
 // Only facts the record marks confirmed or qualified are used, with their caveats:
 // honeypot observations are attempts, not confirmed breaches; no scan counts; no
@@ -27,7 +27,8 @@ export default function Guide() {
       <p>
         On October 21, 2026 the PHP project released PHP 8.5.12, 8.4.27, 8.3.36 and 8.2.35 to{' '}
         <Src href={ARCHIVE}>fix two critical vulnerabilities that can allow unauthenticated remote code execution</Src>,
-        tracked as CVE-2026-109618 and CVE-2026-109619. In this guide, PHP2Shell is shorthand for that pair.
+        tracked as CVE-2026-109618 and CVE-2026-109619. PHP2Shell is the name{' '}
+        <Src href={WATCHTOWR}>used in security coverage</Src> for that pair.
         Unauthenticated means an attacker does not need an account on your site; remote code execution means
         they could run their own code on your server.
       </p>
@@ -183,14 +184,14 @@ export default function Guide() {
         <code>php_serialize</code> and then switched to <code>php</code> at runtime with <code>ini_set()</code>{' '}
         before <code>session_start()</code>, with session upload progress enabled. php.net{' '}
         <Src href={ARCHIVE}>suggests setting <code>session.upload_progress.enabled=0</code></Src> until the next
-        regular bugfix release, which will carry the full advisory. As of October 27, 2026, that release has not
+        regular bugfix release, which will carry the full advisory. As of October 28, 2026, that release has not
         shipped. This setting does not fix CVE-2026-109618 or CVE-2026-109619; it is in addition to the October 21
         update, not instead of it.
       </p>
 
       <h2>Still on PHP 5, 7 or early 8.x?</h2>
       <p>
-        There is no upstream fix for these branches, but there are options. First, check whether your operating
+        There is no upstream release for these branches (php.net published only minimal source backports for 7.4, 8.0 and 8.1), but there are options. First, check whether your operating
         system vendor or an extended-support vendor ships a patched package.
         Second, contain the exposure. Limiting who can reach the application helps; for organizations that cannot
         update or run PHP 8.1 or earlier,{' '}
@@ -208,7 +209,7 @@ export default function Guide() {
       <p>
         Patching closes this pair of vulnerabilities. It does not change the support calendar. PHP 8.2 receives
         security fixes only until <Src href={SUPPORTED}>December 31, 2026</Src>, so an application patched to
-        8.2.35 today needs to move again within weeks. PHP 8.3 has security support until{' '}
+        8.2.35 still needs a move to a newer branch planned before that date. PHP 8.3 has security support until{' '}
         <Src href={SUPPORTED}>December 31, 2027</Src>, PHP 8.4 until <Src href={SUPPORTED}>December 31, 2028</Src>{' '}
         and PHP 8.5 until <Src href={SUPPORTED}>December 31, 2029</Src>.
       </p>
@@ -241,7 +242,7 @@ export default function Guide() {
       ]} />
 
       <p className="cp-note">
-        Last reviewed October 27, 2026, against the linked sources. Advisories change as the situation develops,
+        Last reviewed October 28, 2026, against the linked sources. Advisories change as the situation develops,
         so check them before you act. This guide summarizes published information; it is not a security
         assessment of your system.
       </p>
