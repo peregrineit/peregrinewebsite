@@ -114,11 +114,12 @@ export const metadata: Metadata = {
     type: "website",
   },
 
+  // Card type only. A title, description or image here is inherited by every page that sets
+  // no twitter metadata of its own (none do), so X and Slack showed this site-wide text and
+  // image instead of the page's. Without them, X falls back to each page's og:title,
+  // og:description and og:image (https://developer.x.com/en/docs/x-for-websites/cards/guides/getting-started).
   twitter: {
     card: "summary_large_image",
-    title: "Engineering Scalable Software Systems",
-    description: "Peregrine IT Solutions builds scalable SaaS platforms, API integrations, automation systems and cloud infrastructure for startups and enterprises. We design, develop and optimize high-performance software products.",
-    images: ["/ogimage.png"],
   },
 
   category: "technology",
