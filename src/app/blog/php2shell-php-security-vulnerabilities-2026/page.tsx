@@ -32,11 +32,10 @@ export default function Guide() {
         they could run their own code on your server.
       </p>
       <p>
-        What to do depends on the exact PHP runtime serving your site, not on your CMS or framework version.
-        Find out which PHP build each site runs, then check whether it is one of the fixed upstream releases or a
-        package your host or Linux distribution has patched. Start from the{' '}
-        <Src href={ARCHIVE}>PHP project&apos;s announcement</Src>, and treat any site on PHP 8.1 or older as a
-        separate, more urgent problem.
+        What matters is the exact PHP runtime serving your site, not your CMS or framework version. Check whether
+        each site runs a fixed upstream release or a package your host or distribution has patched, starting from
+        the <Src href={ARCHIVE}>PHP project&apos;s announcement</Src>. Treat any site on PHP 8.1 or older as a
+        more urgent problem.
       </p>
 
       <h2>Timeline</h2>
@@ -57,16 +56,15 @@ export default function Guide() {
           <strong>October 26, 2026.</strong> CISA updates its alert:{' '}
           <Src href={CISA}>both CVEs are added to its Known Exploited Vulnerabilities catalog</Src>. The same day,
           php.net publishes <Src href={ARCHIVE}>rebuilt Windows packages, labelled 8.x.y-1</Src>, with Brotli
-          1.2.1 for a separate library issue (CVE-2026-111497) reachable through cURL&apos;s automatic
-          decompression. The PHP version numbers themselves do not change. This affects Windows builds only.
+          1.2.1 for a separate issue (CVE-2026-111497) reachable through cURL&apos;s automatic decompression. PHP
+          version numbers do not change, and only Windows builds are affected.
         </li>
       </ul>
 
       <h2>The two vulnerabilities, at a high level</h2>
       <p>
         Both concern how the PHP engine manages memory and state while it handles requests. Neither is a bug in
-        WordPress, Laravel or your own code, which is why updating those does not fix them. This guide does not describe how either one
-        is exploited.
+        WordPress, Laravel or your own code. This guide does not describe how either one is exploited.
       </p>
       <ul>
         <li>
@@ -86,16 +84,15 @@ export default function Guide() {
         php.net lists who is at risk as{' '}
         <Src href={ARCHIVE}>all PHP installations serving web requests</Src>, including PHP-FPM, Apache mod_php,
         php-cgi, FrankenPHP and LiteSpeed, with the highest risk for mod_php, where it says a pre-application
-        exploit was demonstrated. In other words, the problem sits below your application: a site can be exposed
-        even if its own code is flawless.
+        exploit was demonstrated. A site can be exposed even if its own code is flawless.
       </p>
       <p>
-        How much is being exploited? Be precise here. The Canadian Centre says{' '}
+        On exploitation, be precise. The Canadian Centre says{' '}
         <Src href={CCCS}>open-source reporting indicates both CVEs are being exploited in the wild</Src>, and CISA
         has added both to its catalog of known exploited vulnerabilities. The security firm watchTowr reports{' '}
         <Src href={WATCHTOWR}>exploitation observed in its honeypot network since October 21</Src>; honeypots are
         decoy systems, so that shows attempts against sensors, not confirmed breaches of real sites. None of this
-        means every PHP site has been compromised. It does mean an unpatched site should be treated as a target.
+        means every PHP site has been compromised, but an unpatched site should be treated as a target.
       </p>
 
       <h2>Which PHP versions are patched?</h2>
@@ -123,21 +120,19 @@ export default function Guide() {
       </p>
       <p>
         For PHP 8.1 and older, php.net states that{' '}
-        <Src href={ARCHIVE}>these branches no longer receive updates from the PHP project</Src>. The source
-        backports for 7.4, 8.0 and 8.1 are for those who build PHP themselves or package it for others; they are not
-        an installable update for most site owners.
+        <Src href={ARCHIVE}>these branches no longer receive updates from the PHP project</Src>. Its source
+        backports are for people who build or package PHP, not an installable update for most site owners.
       </p>
 
       <h2>Is my WordPress site affected?</h2>
       <p>
-        The WordPress version does not decide this. The PHP runtime your host runs underneath WordPress does. A
-        fully updated WordPress site on an unpatched PHP build is exposed; an old WordPress site on a patched build
-        is not exposed to these two CVEs, though it has other reasons to update.
+        The PHP runtime under WordPress decides this, not the WordPress version. A fully updated WordPress site on
+        an unpatched PHP build is exposed.
       </p>
       <p>
         To find the PHP version, look in your hosting control panel, or in the WordPress admin under Tools, Site
-        Health, Info, in the Server section. The version shown does not tell you whether a vendor backport is
-        included, so the next step is to ask your host directly. Do not create a public <code>phpinfo()</code> page
+        Health, Info, Server. The version alone does not show whether a vendor backport is
+        included, so ask your host. Do not create a public <code>phpinfo()</code> page
         to check: it shows your server&apos;s configuration to anyone who finds it. If one exists from earlier work,
         remove it.
       </p>
@@ -149,8 +144,8 @@ export default function Guide() {
 
       <h2>Is my Laravel application affected?</h2>
       <p>
-        The same logic applies. Laravel runs on top of the PHP runtime, so the question is which PHP build serves
-        your application, on every server and container. Running <code>composer update</code> updates your PHP
+        Laravel runs on top of the PHP runtime, so the question is which PHP build serves your application on every
+        server and container. Running <code>composer update</code> updates your PHP
         packages; it does not change the PHP interpreter, and it does not fix these CVEs. The fix is a patched PHP
         package or image, deployed and loaded.
       </p>
@@ -165,21 +160,20 @@ export default function Guide() {
       <h2>A safe response checklist</h2>
       <h3>You can do this without server access</h3>
       <ul className="cp-checklist">
-        <li>List every PHP site you own, including staging copies, old subdomains and microsites nobody updates.</li>
-        <li>Find the PHP version of each one in the hosting panel or WordPress Site Health.</li>
+        <li>List every PHP site you own, including staging copies and old subdomains, with its PHP version from the hosting panel or Site Health.</li>
         <li>Ask your host or IT provider, in writing, whether the package each site runs includes the fixes for CVE-2026-109618 and CVE-2026-109619, and when it was applied.</li>
         <li>Mark every site on PHP 8.1 or older. Those need a plan, not just a ticket.</li>
-        <li>Confirm a recent backup exists for each site, and where it is kept.</li>
+        <li>Confirm a recent backup exists for each site.</li>
         <li>Do not rely on a firewall. CISA says <Src href={CISA}>a web application firewall may provide some protection</Src>; that is not the same as a fix.</li>
       </ul>
       <h3>This needs server access or your host</h3>
       <ul className="cp-checklist">
         <li>Install the fixed upstream release or your vendor&apos;s patched package, then restart PHP-FPM or the web server so the new binary is actually loaded.</li>
-        <li>Check every PHP that serves requests: web servers, worker pools, containers and anything behind a load balancer. Rebuild container images from a patched base image and redeploy them.</li>
+        <li>Cover every PHP that serves requests, including worker pools and containers; rebuild images from a patched base image.</li>
         <li>Confirm the running version through the web server itself, not only the command line, since the two can differ. Remove any temporary check afterwards.</li>
-        <li>If you cannot update yet, php.net lists interim measures, but says they <Src href={ARCHIVE}>reduce exposure but do not make an installation safe</Src>; only an update is a complete fix. Read them on php.net rather than from a summary.</li>
+        <li>If you cannot update yet, php.net lists interim measures, but says they <Src href={ARCHIVE}>reduce exposure but do not make an installation safe</Src>; only an update is a complete fix.</li>
         <li>If a system cannot be updated at all, restrict who can reach it. <Src href={CISA}>CISA</Src> and the <Src href={NCSC}>NCSC</Src> go further and advise taking such a system offline until it is fixed.</li>
-        <li>If you see signs that a server was already compromised, such as files you did not upload or unexpected processes, patching alone is not enough. Bring in a security specialist.</li>
+        <li>If a server shows signs of compromise, such as files you did not upload, patching alone is not enough. Bring in a security specialist.</li>
       </ul>
 
       <h2>CVE-2026-115560: a separate session issue</h2>
@@ -196,8 +190,8 @@ export default function Guide() {
 
       <h2>Still on PHP 5, 7 or early 8.x?</h2>
       <p>
-        There is no upstream fix for these branches, but you still have options, roughly in this order. First, check
-        whether your operating system vendor or an extended-support vendor ships a patched package for your branch.
+        There is no upstream fix for these branches, but there are options. First, check whether your operating
+        system vendor or an extended-support vendor ships a patched package.
         Second, contain the exposure. Limiting who can reach the application helps; for organizations that cannot
         update or run PHP 8.1 or earlier,{' '}
         <Src href={CISA}>CISA advises taking PHP systems offline until they are patched</Src>, and the{' '}
@@ -219,10 +213,9 @@ export default function Guide() {
         and PHP 8.5 until <Src href={SUPPORTED}>December 31, 2029</Src>.
       </p>
       <p>
-        Use the urgency to fix what made this patch hard. If nobody knew which PHP version ran where, keep that
-        inventory up to date. If the team was afraid to update, add tests around the critical paths. If deploying
-        a runtime change took days, build a release process that can ship it the same day. Then put PHP, framework
-        and dependency updates on a regular schedule, so the next security release is routine work.
+        Use the urgency to fix what made this patch hard: keep an inventory of which PHP runs where, add tests
+        around the critical paths, and build a release process that can ship a runtime change quickly. Then put PHP,
+        framework and dependency updates on a regular schedule.
       </p>
 
       <h2>When to bring in a development partner</h2>
@@ -232,7 +225,7 @@ export default function Guide() {
         <li>your developers can change the code but not the runtime safely, or the host will not move without a compatibility check;</li>
         <li>plugins, extensions or packages block the move to a patched or supported version;</li>
         <li>payment, CRM or other integrations need regression tests before anything changes;</li>
-        <li>several servers, workers or environments have to be updated in a coordinated way.</li>
+        <li>several servers or environments have to be updated together.</li>
       </ul>
       <p>
         That is the work our{' '}
@@ -245,14 +238,12 @@ export default function Guide() {
         { question: 'Does updating WordPress or running composer update fix PHP2Shell?', answer: ['No. Both CVEs are in the PHP runtime, below WordPress, Laravel and your own code. Only a patched PHP build fixes them: an upstream release such as ', ['8.3.36 or 8.4.27', ARCHIVE], ', or a vendor package that includes the fixes.'] },
         { question: 'My host says I am on PHP 8.3. Am I patched?', answer: ['Not necessarily. The upstream fix for that branch is ', ['PHP 8.3.36', ARCHIVE], '. Hosts and distributions often backport fixes without using the upstream version number, so ask your host whether the package you run includes the fixes for CVE-2026-109618 and CVE-2026-109619.'] },
         { question: 'Is a web application firewall enough?', answer: ['No. CISA says ', ['a web application firewall may provide some protection', CISA], ', and php.net says interim measures ', ['do not make an installation safe', ARCHIVE], '. Updating PHP is the fix.'] },
-        { question: 'Is PHP 8.2 still safe to use?', answer: ['PHP 8.2.35 includes the October 21 fixes, and 8.2 receives security fixes until ', ['December 31, 2026', SUPPORTED], '. After that date it gets no more security releases, so plan the move to a newer branch now.'] },
       ]} />
 
       <p className="cp-note">
-        Last reviewed October 27, 2026. Versions, dates and advisories were read from the linked php.net,
-        GitHub, CISA, NCSC, Canadian Centre for Cyber Security, watchTowr, Laravel and WordPress pages on that
-        date. Advisories are updated as the situation develops, so check the sources before you act. This guide
-        describes published information; it is not a security assessment of your system.
+        Last reviewed October 27, 2026, against the linked sources. Advisories change as the situation develops,
+        so check them before you act. This guide summarizes published information; it is not a security
+        assessment of your system.
       </p>
     </GuideLayout>
   );
