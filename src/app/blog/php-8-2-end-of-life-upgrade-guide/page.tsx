@@ -239,7 +239,7 @@ export default function Guide() {
       </ul>
 
       <h2>What drives cost and timeline</h2>
-      <p>No two upgrades are the same size. The factors that decide it:</p>
+      <p>The size of an upgrade depends on:</p>
       <ul>
         <li><strong>Codebase size</strong>: how much code has to be checked against the target version.</li>
         <li><strong>Age</strong>: how many PHP branches the code has to cross.</li>
