@@ -211,7 +211,9 @@ export default function Guide() {
         security fixes only until <Src href={SUPPORTED}>December 31, 2026</Src>, so an application patched to
         8.2.35 still needs a move to a newer branch planned before that date. PHP 8.3 has security support until{' '}
         <Src href={SUPPORTED}>December 31, 2027</Src>, PHP 8.4 until <Src href={SUPPORTED}>December 31, 2028</Src>{' '}
-        and PHP 8.5 until <Src href={SUPPORTED}>December 31, 2029</Src>.
+        and PHP 8.5 until <Src href={SUPPORTED}>December 31, 2029</Src>. Our{' '}
+        <Link href="/blog/php-8-2-end-of-life-upgrade-guide">PHP 8.2 end-of-life planning guide</Link> compares
+        those targets and lists the migration steps.
       </p>
       <p>
         Use the urgency to fix what made this patch hard: keep an inventory of which PHP runs where, add tests

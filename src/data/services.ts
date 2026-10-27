@@ -1278,7 +1278,7 @@ const coreServiceList: Service[] = [
           ],
         },
         after: [
-          `PHP 8.2 is still supported today, and it received the October 21, 2026 security fixes in [PHP 8.2.35](${PHP.archive}). After December 31, 2026 the PHP project stops publishing security releases for it, so an application on 8.2 needs a plan for the move. PHP 8.6 is still a [release candidate](${PHP.archive}), not a production release, and [PHP 8.1 and older no longer receive updates](${PHP.archive}) from the PHP project.`,
+          `PHP 8.2 is still supported today, and it received the October 21, 2026 security fixes in [PHP 8.2.35](${PHP.archive}). After December 31, 2026 the PHP project stops publishing security releases for it, so an application on 8.2 needs a plan for the move; our [PHP 8.2 end-of-life upgrade guide](/blog/php-8-2-end-of-life-upgrade-guide) compares 8.3, 8.4 and 8.5 as targets. PHP 8.6 is still a [release candidate](${PHP.archive}), not a production release, and [PHP 8.1 and older no longer receive updates](${PHP.archive}) from the PHP project.`,
           'For the October 2026 security releases, which versions are patched and what to check first, read our [PHP2Shell guide](/blog/php2shell-php-security-vulnerabilities-2026).',
         ],
         note: 'Dates read from php.net on October 27, 2026. The page changes with each release, so check it again before planning.',
@@ -1807,11 +1807,13 @@ const related: Record<string, [string, string][]> = {
     ['nextjs-development', 'for a web frontend on a Laravel API'],
     ['react-development', 'for mobile apps against the same API'],
     ['cloud-devops', 'for deployment pipelines and hosting moves'],
+    ['php-upgrade-migration', 'when the PHP version under the application has to move to a supported release, such as off PHP 8.2 before its security support ends'],
   ],
   'wordpress-development': [
     ['nextjs-development', 'for a headless frontend that reads content from WordPress'],
     ['saas-development', 'when the site has become an application and needs a purpose-built platform'],
     ['api-integration', 'for CRM, payment and internal-system connections'],
+    ['php-upgrade-migration', 'when the host is retiring the PHP version the site runs on and themes, plugins and custom code need a compatibility check before the switch'],
   ],
 };
 export const relatedServicesFor = (slug: string): { service: Service; why: string }[] =>

@@ -512,7 +512,7 @@ export const technologyServices: Service[] = [
     glance: {
       delivered: 'Laravel APIs and SaaS backends, admin panels, queues and integrations, and staged upgrades of older PHP applications',
     },
-    updated: '2026-10-10',
+    updated: '2026-10-28',
     faq: [
       {
         question: 'Can you take over an existing Laravel application?',
@@ -601,7 +601,7 @@ export const technologyServices: Service[] = [
     glance: {
       delivered: 'Custom WordPress themes and plugins, headless WordPress with Next.js, performance and security work, and migration to a custom platform',
     },
-    updated: '2026-10-10',
+    updated: '2026-10-28',
     faq: [
       {
         question: 'When should a site move off WordPress?',
