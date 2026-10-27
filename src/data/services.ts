@@ -1199,7 +1199,7 @@ const coreServiceList: Service[] = [
     offer: 'Security patch assessments, staged PHP and Laravel upgrades, and ongoing maintenance for PHP applications.',
     intro: [
       'From urgent patch assessments to legacy PHP and Laravel migrations, we help teams assess compatibility, plan the upgrade and move toward a supported production environment.',
-      'We work with teams in the US and Canada that run custom PHP applications, Laravel backends and WordPress sites with custom plugins. Our engineers work from our office in Noida, India, and the first step is a 30-minute technical discovery call with an engineer.',
+      'We work with teams in the US, UK, Canada and Australia that run custom PHP applications, Laravel backends and WordPress sites with custom plugins. Our engineers work from our office in Noida, India, and the first step is a 30-minute technical discovery call with an engineer.',
     ],
     heroCta: {
       primary: 'Discuss a PHP Upgrade',
@@ -1361,7 +1361,7 @@ const coreServiceList: Service[] = [
       cost:
         'Peregrine takes on PHP upgrades as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on how far behind the versions are, the packages, plugins and integrations involved, and existing tests. We publish no price list. For the framework side, read [[guide]].',
       work:
-        'Peregrine has not published a PHP upgrade case study, so this page makes no project claims about PHP work. Every published case study lists Node.js in its stack. Ask about your PHP version, framework and hosting on the discovery call, and an engineer will tell you plainly whether we are the right team.',
+        'Peregrine has not published a PHP upgrade case study, so this page makes no project claims about PHP work. Ask about your PHP version, framework and hosting on the discovery call, and an engineer will tell you plainly whether we are the right team.',
     },
     glance: {
       delivered: 'Security patch assessments, compatibility reviews, staged PHP and framework upgrades, regression testing, production release planning and ongoing maintenance',
