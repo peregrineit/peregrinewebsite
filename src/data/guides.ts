@@ -603,6 +603,22 @@ export const guides: Guide[] = [
     dateModified: '2026-10-21',
     service: 'api-integration',
   },
+  {
+    slug: 'php2shell-php-security-vulnerabilities-2026',
+    related: ['laravel-upgrade-checklist'],
+    cta: {
+      heading: 'Need Help Assessing or Upgrading a PHP Application?',
+      text: 'Tell us which PHP version, framework and host you run. An engineer will help you confirm the patch status and plan a move to a supported version.',
+    },
+    title: 'PHP2Shell in 2026: Vulnerabilities, Patched Versions & What Website Owners Should Do',
+    metaTitle: 'PHP2Shell: Patched PHP Versions & What to Do',
+    description:
+      'The October 2026 PHP security releases: the two CVEs, which PHP versions are patched, and what WordPress, Laravel and custom PHP site owners should check.',
+    datePublished: '2026-10-27',
+    dateModified: '2026-10-27',
+    service: 'php-upgrade-migration',
+    // No caseStudy: Peregrine has no published PHP case study.
+  },
 ];
 
 export function getGuide(slug: string): Guide {

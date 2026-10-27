@@ -1279,6 +1279,7 @@ const coreServiceList: Service[] = [
         },
         after: [
           `PHP 8.2 is still supported today, and it received the October 21, 2026 security fixes in [PHP 8.2.35](${PHP.archive}). After December 31, 2026 the PHP project stops publishing security releases for it, so an application on 8.2 needs a plan for the move. PHP 8.6 is still a [release candidate](${PHP.archive}), not a production release, and [PHP 8.1 and older no longer receive updates](${PHP.archive}) from the PHP project.`,
+          'For the October 2026 security releases, which versions are patched and what to check first, read our [PHP2Shell guide](/blog/php2shell-php-security-vulnerabilities-2026).',
         ],
         note: 'Dates read from php.net on October 27, 2026. The page changes with each release, so check it again before planning.',
       },
@@ -1351,7 +1352,7 @@ const coreServiceList: Service[] = [
     },
     stack: ['PHP', 'Laravel', 'WordPress', 'Composer', 'PHPUnit', 'MySQL', 'PostgreSQL', 'Nginx', 'Apache', 'Docker', 'AWS'],
     caseStudies: [],
-    guides: ['laravel-upgrade-checklist'],
+    guides: ['laravel-upgrade-checklist', 'php2shell-php-security-vulnerabilities-2026'],
     answers: {
       includes:
         'Peregrine\'s PHP upgrade and migration service covers three kinds of work: assessing an urgent security patch against your runtime and hosting, moving a legacy PHP, Laravel or WordPress application to a supported PHP release in controlled steps, and maintaining the runtime, dependencies and release process once the application is current.',
