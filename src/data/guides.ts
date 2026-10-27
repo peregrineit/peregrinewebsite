@@ -249,7 +249,7 @@ export const guides: Guide[] = [
     description:
       'A phase-by-phase Laravel upgrade checklist from the official support policy and upgrade guides, plus a decision table: upgrade, replace in stages or rewrite.',
     datePublished: '2026-10-10',
-    dateModified: '2026-10-10',
+    dateModified: '2026-10-28',
     service: 'laravel-development',
     // No caseStudy: Peregrine has no published Laravel case study. The guide makes no project claims.
   },
