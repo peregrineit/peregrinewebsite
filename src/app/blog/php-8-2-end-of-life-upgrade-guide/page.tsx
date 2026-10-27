@@ -26,10 +26,9 @@ export default function Guide() {
       </p>
       <p>
         End of life describes the PHP project&apos;s release work, not the state of your server. Nothing on a PHP
-        8.2 site breaks on January 1, 2027, and the date alone does not compromise anything. What changes is that a
-        vulnerability discovered in 8.2 after that day will not get a fix from the PHP project. The sensible
-        order is to assess first (what runs where, and what would block a newer version), then pick a target
-        version, then upgrade.
+        8.2 site breaks or is compromised because the date passes; what changes is that a vulnerability found in
+        8.2 afterwards gets no fix from the PHP project. Assess first (what runs where, and what blocks a newer
+        version), then pick a target, then upgrade.
       </p>
 
       <h2>PHP support timeline: 8.2 to 8.5</h2>
@@ -56,10 +55,9 @@ export default function Guide() {
         some of them keep backporting security fixes into a branch after upstream support ends. In October 2026,
         for example, php.net noted that{' '}
         <Src href={ARCHIVE}>Linux distributions and long-term support vendors received the patches in advance</Src>.
-        Whether a given vendor does this for 8.2, for how long and for which fixes is specific to that vendor, so
-        confirm it with yours in writing. It is also not the same as upstream support: you depend on one
-        vendor&apos;s packages and schedule, and the frameworks and libraries you use will still drop 8.2 on their own
-        timetable.
+        Whether a vendor does this for 8.2, for how long and for which fixes is vendor-specific, so confirm it
+        with yours in writing. It is not the same as upstream support: you depend on one vendor&apos;s packages,
+        and your frameworks and libraries will still drop 8.2 on their own timetable.
       </p>
 
       <h2>8.2 vs 8.3 vs 8.4 vs 8.5: choosing a target</h2>
@@ -119,16 +117,15 @@ export default function Guide() {
           your dependencies at old versions too.
         </li>
         <li>
-          <strong>Maintenance gets harder.</strong> Fewer hosts, base images and tools carry an unsupported branch,
-          and fixes for unrelated problems start to require a newer PHP first.
+          <strong>Maintenance gets harder.</strong> Fewer hosts, images and tools carry an unsupported branch.
         </li>
         <li>
           <strong>Technical debt compounds.</strong> Every year of delay adds another release&apos;s changes to the
           eventual upgrade.
         </li>
         <li>
-          <strong>Continuity risk.</strong> An upgrade forced by an incident or a host retiring the version is done
-          under time pressure, with less testing than a planned one.
+          <strong>Continuity risk.</strong> An upgrade forced by an incident or a host retiring the version happens
+          under time pressure.
         </li>
       </ul>
 
@@ -136,19 +133,18 @@ export default function Guide() {
       <ol>
         <li>
           <strong>Identify the actual PHP runtime.</strong> Record the version that serves web requests on every
-          server, container, worker and scheduled job, plus staging. Example: the command line on a server reports
-          8.3 while the PHP-FPM pool behind the site still runs 8.2, and a cron container uses a third image.
+          server, container, worker and scheduled job, plus staging. Example: the command line reports 8.3 while the
+          PHP-FPM pool behind the site still runs 8.2.
         </li>
         <li>
           <strong>Check vendor patch status.</strong> If a distribution or host supplies your PHP, ask which security
           fixes its current package includes and how long it will patch the branch. Example: a package whose version
-          string looks older than the upstream release but contains backported fixes.
+          string looks older than upstream but contains backported fixes.
         </li>
         <li>
-          <strong>Inventory the framework and dependencies.</strong> List the framework version, every Composer
-          package or plugin, and every PHP extension installed on the server. Example: a PDF library whose last
-          release does not declare support for anything newer than 8.2, or a theme that has not been updated in
-          years.
+          <strong>Inventory the framework and dependencies.</strong> List the framework version, Composer packages
+          or plugins, and PHP extensions. Example: a PDF library whose last release supports nothing newer than
+          8.2.
         </li>
         <li>
           <strong>Select a compatible target version.</strong> Use the inventory and the matrix above. Example:
@@ -158,7 +154,7 @@ export default function Guide() {
         <li>
           <strong>Prepare backups and a rollback.</strong> Keep a tested database backup, the previous release and
           the previous PHP image or package, and write down the rollback steps. Example: a restore rehearsed on
-          staging, with the time it took noted.
+          staging.
         </li>
         <li>
           <strong>Set up staging.</strong> Match production: the target PHP version, the same extensions and
@@ -171,13 +167,13 @@ export default function Guide() {
         </li>
         <li>
           <strong>Run application and integration tests.</strong> Cover the paths that earn money or hold data.
-          Example: sign-in, checkout and payment callbacks, a CSV import, a scheduled report email and a CRM
-          webhook, each run against sandbox accounts on staging.
+          Example: sign-in, payment callbacks, a CSV import and a CRM webhook, run against sandbox accounts on
+          staging.
         </li>
         <li>
           <strong>Deploy in controlled stages.</strong> Move one server, one site or a small share of traffic first,
-          in a quiet period, then the rest. Example: queue workers and cron jobs restarted on the new runtime in the
-          same step, so no part keeps running the old one.
+          in a quiet period, then the rest. Example: restart queue workers and cron jobs on the new runtime in the
+          same step.
         </li>
         <li>
           <strong>Monitor errors and performance.</strong> Compare error logs, response times and failed jobs
@@ -224,7 +220,7 @@ export default function Guide() {
         <li><strong>Custom code.</strong> In-house plugins and child themes get no vendor updates, so they need a code review against the target version.</li>
         <li><strong>Staging.</strong> Switch PHP on a staging copy first.</li>
         <li><strong>Backups.</strong> Back up both files and database, and know how to restore them.</li>
-        <li><strong>Regression testing.</strong> Test forms, checkout, member logins, search and anything that sends email.</li>
+        <li><strong>Regression testing.</strong> Test forms, checkout, logins and email.</li>
         <li><strong>Managed hosting.</strong> If a managed host patches or upgrades PHP for you, ask what it does for 8.2 and when it plans to change it.</li>
       </ul>
 
@@ -236,9 +232,9 @@ export default function Guide() {
       </p>
       <ul>
         <li><strong>Vendor-supported patching</strong>, where an operating system or extended-support vendor still maintains the branch you run. Confirm exactly what it covers.</li>
-        <li><strong>Interim risk reduction:</strong> limit who can reach the application, remove unused entry points, and watch logs and access closely. For what the October 2026 security releases meant for older branches, see our <Link href="/blog/php2shell-php-security-vulnerabilities-2026">guide to the PHP2Shell vulnerabilities</Link>.</li>
+        <li><strong>Interim risk reduction:</strong> limit who can reach the application and remove unused entry points. For what the October 2026 security releases meant for older branches, see our <Link href="/blog/php2shell-php-security-vulnerabilities-2026">guide to the PHP2Shell vulnerabilities</Link>.</li>
         <li><strong>Dependency modernization:</strong> replace abandoned libraries before the PHP version changes, so each step has fewer moving parts.</li>
-        <li><strong>Incremental migration:</strong> move one PHP branch at a time with tests at each step, or route parts of the application to new code while the rest keeps running.</li>
+        <li><strong>Incremental migration:</strong> one PHP branch at a time with tests at each step, or parts of the application moved to new code while the rest keeps running.</li>
         <li><strong>Full modernization</strong>, only where the code cannot be brought forward safely in steps.</li>
       </ul>
 
@@ -249,10 +245,10 @@ export default function Guide() {
         <li><strong>Age</strong>: how many PHP branches the code has to cross.</li>
         <li><strong>Tests</strong>: whether there is a suite to catch regressions, or one has to be written first.</li>
         <li><strong>Dependency compatibility</strong>: how many packages, plugins and extensions need upgrades or replacements.</li>
-        <li><strong>Database</strong>: driver and extension changes, and the database server version.</li>
+        <li><strong>Database</strong>: driver, extension and server version changes.</li>
         <li><strong>Hosting architecture</strong>: one server, several, containers, or a managed platform with its own PHP schedule.</li>
         <li><strong>Third-party integrations</strong>: payment, CRM and other connections that need sandbox testing.</li>
-        <li><strong>Rollback requirements</strong>: how quickly the previous version must be restorable, and with what data.</li>
+        <li><strong>Rollback requirements</strong>: how quickly the previous version must be restorable.</li>
       </ul>
       <p>
         If you want these assessed for your application, our{' '}
@@ -263,12 +259,12 @@ export default function Guide() {
       <GuideFaq slug={SLUG} items={[
         { question: 'Is PHP 8.2 still supported?', answer: ['Yes, until the end of 2026. It is in security-only support until ', ['December 31, 2026', SUPPORTED], ', and it received ', ['PHP 8.2.35 on October 21, 2026', ARCHIVE], '. It no longer receives ordinary bug fixes.'] },
         { question: 'When does PHP 8.2 reach end of life?', answer: ['After ', ['December 31, 2026', SUPPORTED], ', when its security support ends. From then on the PHP project publishes no further releases for 8.2.'] },
-        { question: 'Should we upgrade to PHP 8.4 or 8.5?', answer: ['It depends on what your framework, extensions, packages and host support. PHP 8.4 has security support until ', ['December 31, 2028', SUPPORTED], ' and PHP 8.5 until ', ['December 31, 2029', SUPPORTED], '. 8.5 gives the longest runway but is the newest, so confirm every dependency supports it; if one does not, 8.4 or 8.3 can be the right step for now.'] },
-        { question: 'Will my Laravel application break?', answer: ['It should not need to, as long as the target PHP version is inside your Laravel release’s range and your packages support it. ', ['Laravel 11 supports PHP 8.2 to 8.4, Laravel 12 supports 8.2 to 8.5, and Laravel 13 supports 8.3 to 8.5', LARAVEL], '. Deprecations and package constraints are what usually cause failures, which is why the move is tested on staging first.'] },
+        { question: 'Should we upgrade to PHP 8.4 or 8.5?', answer: ['It depends on what your framework, extensions, packages and host support. PHP 8.4 has security support until ', ['December 31, 2028', SUPPORTED], ' and PHP 8.5 until ', ['December 31, 2029', SUPPORTED], '. Choose 8.5 only if every dependency supports it; otherwise 8.4 or 8.3 is the right step for now.'] },
+        { question: 'Will my Laravel application break?', answer: ['It should not need to, as long as the target PHP version is inside your Laravel release’s range and your packages support it. ', ['Laravel 11 supports PHP 8.2 to 8.4, Laravel 12 supports 8.2 to 8.5, and Laravel 13 supports 8.3 to 8.5', LARAVEL], '. Test the move on staging first.'] },
         { question: 'Will my WordPress plugins work?', answer: ['Check each one. WordPress ', ['recommends PHP 8.3 or greater', WORDPRESS], ', so actively maintained plugins have reason to keep up; plugins that are no longer maintained and custom in-house code are where problems usually appear. Switch PHP on a staging copy first and test the plugins you depend on.'] },
-        { question: 'Can a legacy PHP application be upgraded without a rewrite?', answer: ['Usually, yes. Most applications can be moved one PHP branch at a time, with dependencies replaced and tests added along the way. A rewrite is only worth considering for the parts that cannot be brought forward safely.'] },
-        { question: 'What if we cannot finish before December 31, 2026?', answer: ['Use verified vendor backports or a managed provider that patches 8.2 for you, and confirm in writing what they cover. Reduce exposure by limiting who can reach the system, keep monitoring and access controls tight, document the remaining risk, and put the upgrade plan first in the queue. None of this replaces running a supported, patched version.'] },
-        { question: 'Do managed hosts provide extended patches for PHP 8.2?', answer: ['Some do, but it is vendor-specific: what is covered, for how long and how quickly varies. Ask your host directly which fixes its 8.2 packages will receive after the upstream end date, and when it plans to retire 8.2.'] },
+        { question: 'Can a legacy PHP application be upgraded without a rewrite?', answer: ['Usually, yes: one PHP branch at a time, replacing dependencies and adding tests along the way. A rewrite is worth considering only for parts that cannot be brought forward safely.'] },
+        { question: 'What if we cannot finish before December 31, 2026?', answer: ['Use verified vendor backports or a managed provider that patches 8.2, confirmed in writing. Limit who can reach the system, keep monitoring and access controls tight, document the remaining risk and prioritize the upgrade plan. None of this replaces a supported, patched version.'] },
+        { question: 'Do managed hosts provide extended patches for PHP 8.2?', answer: ['Some do, but it is vendor-specific. Ask your host which fixes its 8.2 packages will receive after the upstream end date, and when it plans to retire 8.2.'] },
       ]} />
 
       <p className="cp-note">
