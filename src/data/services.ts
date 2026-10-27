@@ -1591,6 +1591,189 @@ const coreServiceList: Service[] = [
     },
     icon: 'ri-user-add-line',
   },
+  {
+    // Hiring-intent page for PHP engineering (owner-approved content release, 2026-10-28). Led by
+    // legacy applications, maintenance, modernization and migrations; new builds and Laravel are
+    // secondary and point to /services/hire-laravel-developers. Same public-claim contract as
+    // that page. No PHP case study is published, so no project claims. Third-party facts:
+    // php.net and wordpress.org, read 2026-10-28 (docs/content/sources/services-hire-php-developers.md).
+    slug: 'hire-php-developers',
+    name: 'PHP Engineering Support',
+    serviceType: 'PHP application development and maintenance',
+    title: 'Hire PHP Developers for Custom & Legacy Apps',
+    metaDescription:
+      'Need PHP engineering support for custom applications, legacy platforms, integrations or ongoing development? Discuss your requirements with Peregrine IT.',
+    h1: 'Hire PHP Developers for Your Application',
+    offer: 'PHP engineers for legacy applications, maintenance, modernization and migrations, plus new custom PHP work.',
+    intro: [
+      'Running a PHP application that your business depends on? Peregrine maintains, stabilizes and modernizes custom and legacy PHP applications, moves them to supported PHP versions, and builds new features on them.',
+      'Work is arranged as fixed-scope projects, monthly retainers, or a combination agreed after the discovery call. We work with businesses and agencies, including teams in the US, UK, Canada and Australia, from our office in Noida, India.',
+    ],
+    heroCta: {
+      primary: 'Discuss PHP Developer Requirements',
+      secondary: 'Explore PHP Upgrade Services',
+      secondaryHref: '/services/php-upgrade-migration',
+      note: 'Your first conversation is a 30-minute technical discovery call with an engineer. The button opens a short form; please do not send passwords, server credentials or code through it.',
+    },
+    whatWeBuild: [
+      { title: 'Legacy maintenance', body: 'Fixes, security patches and dependency updates for applications whose original developers have moved on, released in small steps that can each be rolled back.' },
+      { title: 'Runtime and framework migrations', body: 'Moving an application to a supported PHP version, and its framework or CMS with it, in tested steps while it stays in use.' },
+      { title: 'Existing business portals', body: 'Customer portals, booking systems and back-office tools that staff and customers use every day, changed without long maintenance windows.' },
+      { title: 'Custom PHP applications', body: 'Applications in plain PHP or a smaller framework, extended with new features within the structure the code already has.' },
+      { title: 'Performance', body: 'Slow pages and reports traced to queries, missing indexes, caching or server configuration, measured before and after each change.' },
+      { title: 'Integrations', body: 'Payment providers, CRMs, email services and vendor APIs connected to an existing PHP application, with retries and logging for the calls that fail.' },
+      { title: 'PHP APIs', body: 'APIs that serve mobile apps, JavaScript frontends and partner systems, where the responses other systems depend on must not change by accident.' },
+      { title: 'Custom WordPress functionality', body: 'Custom plugins, blocks and integrations where WordPress needs behavior that off-the-shelf plugins do not provide.' },
+      { title: 'SaaS backends', body: 'Multi-tenant data, roles, billing and background jobs for subscription products on PHP. New SaaS work on Laravel is covered on our Laravel engineering support page.' },
+      { title: 'Laravel applications', body: 'Maintenance and upgrades of Laravel applications. For new Laravel features, APIs and SaaS work, see Laravel engineering support.' },
+    ],
+    sections: [
+      {
+        id: 'legacy-code',
+        placement: 'build',
+        label: 'Legacy PHP',
+        heading: 'Understanding Legacy PHP Code Before Changing It',
+        paragraphs: [
+          'Older PHP applications usually work, which is why they are still running. The risk is in changing them without knowing what they depend on. These are the areas we check before the first change.',
+        ],
+        items: [
+          { title: 'Unsupported packages', body: 'Libraries with no release for current PHP, abandoned packages, and code copied into the project instead of installed through Composer.' },
+          { title: 'Version compatibility', body: 'Functions and behavior that newer PHP versions have deprecated or removed, and stricter type handling that turns old warnings into errors.' },
+          { title: 'Error handling', body: 'Suppressed errors, empty catch blocks and logs nobody reads, which hide problems until a user reports them.' },
+          { title: 'Database drivers', body: 'Old database extensions and connection options that are missing or behave differently on a newer runtime.' },
+          { title: 'Authentication', body: 'Hand-written login code, password hashing, sessions and cookies, where a regression locks users out first.' },
+          { title: 'Deployment risk', body: 'Releases copied to the server by hand, no staging environment, or configuration that exists only on the production server.' },
+          { title: 'Dependency upgrades', body: 'The order in which packages, extensions and the runtime can move, since each has its own supported range.' },
+          { title: 'Regression testing', body: 'Tests around the paths that matter most to the business, written before the code or runtime changes.' },
+        ],
+        after: [
+          'The findings come back in writing before the main work is estimated. When the PHP version itself has to move, our [PHP upgrade and migration service](/services/php-upgrade-migration) covers the staged upgrade.',
+        ],
+      },
+      {
+        id: 'php-security',
+        placement: 'build',
+        label: 'Security and supported versions',
+        heading: 'PHP Security and Supported Versions',
+        paragraphs: [
+          `A PHP application should run on a branch the PHP project still supports and be updated when security releases come out. The PHP project publishes each branch's support dates on its [supported versions page](${PHP.supported}).`,
+          `On October 21, 2026 the PHP project [released PHP 8.5.12, 8.4.27, 8.3.36 and 8.2.35](${PHP.archive}) to fix two critical vulnerabilities. Our [PHP2Shell guide](/blog/php2shell-php-security-vulnerabilities-2026) explains which versions are patched and what to check first.`,
+          `[PHP 8.2 security support ends December 31, 2026](${PHP.supported}). Our [PHP 8.2 end-of-life upgrade guide](/blog/php-8-2-end-of-life-upgrade-guide) compares the target versions.`,
+        ],
+        note: 'Dates read from php.net on October 28, 2026. The pages change with each release, so check them again before planning.',
+      },
+      {
+        id: 'php-or-laravel',
+        placement: 'build',
+        label: 'PHP or Laravel',
+        heading: 'Do You Need a PHP Developer or a Laravel Developer?',
+        paragraphs: [
+          'Laravel is a framework written in PHP, so a Laravel developer is a PHP developer, but not every PHP application follows Laravel\'s conventions. Work on custom or legacy PHP means reading code with hand-written routing, direct database calls and older practices that a framework would have replaced. Laravel work happens inside the framework\'s conventions for routing, the database layer, queues, scheduling and testing.',
+          'If your application runs on Laravel, or you are planning a new SaaS product or API on it, see [Hire Laravel developers](/services/hire-laravel-developers). If it is custom PHP, WordPress or an older framework, this page applies. Many applications are a mix, and the codebase review shows which experience the work needs.',
+        ],
+      },
+      {
+        id: 'engagement-models',
+        placement: 'start',
+        label: 'Engagement options',
+        heading: 'Ways to Engage PHP Engineers',
+        items: [
+          { title: 'Defined project', body: 'A fixed scope agreed after the discovery call, such as a stabilization, a migration to a supported PHP version or a new feature, delivered in tested steps.' },
+          { title: 'Ongoing maintenance retainer', body: 'A monthly retainer for fixes, dependency and runtime updates, security patch coordination and small features, with priorities reviewed at an agreed cadence.' },
+          { title: 'Engineering capacity discussion', body: 'For teams exploring a more continuous allocation of PHP engineering time, subject to an agreed arrangement. It is discussed on the call and set out in writing if it suits both sides.' },
+          { title: 'White-label development', body: 'For agencies delivering a PHP or WordPress project to their own client, under the agency\'s brand. See [white-label development](/services/white-label-development).' },
+        ],
+        after: [
+          'Engagements are fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call.',
+        ],
+      },
+    ],
+    process: [
+      { title: 'Discovery call', body: 'A 30-minute technical call with an engineer about what the application does, what is going wrong or needs to change, and any deadline.' },
+      { title: 'Review the code and hosting', body: 'PHP version, packages, error logs, tests and how releases reach production, using the legacy checklist on this page.' },
+      { title: 'Agree scope and engagement', body: 'A written scope as a defined project, a monthly retainer or a combination, with access arranged once it is agreed.' },
+      { title: 'Stabilize first', body: 'Tests around the critical paths, error logging that someone reads, and a staging environment before larger changes.' },
+      { title: 'Change in small releases', body: 'Fixes, upgrades and features released one step at a time, each tested in staging and able to be rolled back.' },
+      { title: 'Maintain or hand over', body: 'Continue with updates on a retainer, or hand over code, documentation and access as the scope lists.' },
+    ],
+    decision: {
+      id: 'new-or-existing',
+      label: 'New or existing',
+      heading: 'New Development or Work on an Existing Application?',
+      intro: 'Most PHP work starts from an application that already exists. This table shows how we would usually begin in each situation and what helps us start; the review of your code decides.',
+      columns: ['Situation', 'Typical first step', 'What we need from you'],
+      rows: [
+        ['Legacy stabilization', 'An inventory of the PHP version, packages and errors, and tests around the critical paths before anything changes', 'Error reports or logs, the hosting setup and the parts of the application that matter most to the business'],
+        ['Ongoing maintenance', 'Agree an update and release routine, then work through fixes and updates on a monthly retainer', 'Known issues, who approves releases and how urgent problems reach us'],
+        ['Modernization', 'A compatibility review of the runtime, framework and dependencies that ends in a staged plan; see [PHP upgrade & migration](/services/php-upgrade-migration)', 'The PHP and framework versions, your host\'s options and any support end date you are working to'],
+        ['Enhancement of an existing application', 'A review of the code around the feature, then one change built, tested and released through your process', 'The feature description and how releases work today; repository access once the scope is agreed'],
+        ['New custom application', 'A discovery sprint that maps requirements and designs the data model, ending in a written technical plan', 'The goal, the users and their workflows, and the systems it must connect to'],
+      ],
+      note: 'Typical starting points only; what applies depends on what we find in the code.',
+    },
+    references: {
+      heading: 'What the PHP and WordPress Projects Publish',
+      intro: 'Version facts on this page come from the projects themselves. Each item links to its source, read on October 28, 2026.',
+      items: [
+        { text: 'PHP 8.2 receives security fixes until December 31, 2026, PHP 8.3 until December 31, 2027, PHP 8.4 until December 31, 2028 and PHP 8.5 until December 31, 2029.', source: 'PHP: Supported versions', href: PHP.supported },
+        { text: 'On October 21, 2026 the PHP project released PHP 8.5.12, 8.4.27, 8.3.36 and 8.2.35 to fix two critical vulnerabilities that can allow unauthenticated remote code execution.', source: 'PHP: 2026 news archive', href: PHP.archive },
+        { text: 'WordPress recommends PHP 8.3 or greater.', source: 'WordPress: Requirements', href: WP_REQUIREMENTS },
+      ],
+    },
+    stack: ['PHP', 'Composer', 'PHPUnit', 'MySQL', 'PostgreSQL', 'Laravel', 'WordPress', 'Nginx', 'Apache', 'Docker', 'AWS'],
+    caseStudies: [],
+    guides: ['php-8-2-end-of-life-upgrade-guide', 'php2shell-php-security-vulnerabilities-2026'],
+    answers: {
+      includes:
+        'Peregrine\'s PHP engineering support is mainly work on existing applications: legacy maintenance, stabilization, migrations to a supported PHP version, performance fixes, integrations and new features for business portals and custom PHP code. It also covers custom WordPress functionality and new PHP applications, as fixed-scope projects, monthly retainers or a combination.',
+      timeline:
+        'Peregrine sets the timeline after the discovery call and a review of the code, because two PHP applications of a similar size can need very different amounts of work. Changes to existing applications are split into small releases; new applications start with a discovery sprint, and larger work runs in two-week sprints with weekly demos.',
+      cost:
+        'Peregrine scopes PHP work as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on the codebase\'s condition and tests, its complexity, the integrations, the maintenance burden and how long work continues. We publish no rates. For PHP 8.2, read [[guide]].',
+      work:
+        'Peregrine has not published a PHP case study, so this page makes no project claims about PHP work. Every published case study lists Node.js in its stack. Ask about your PHP version, framework and hosting on the discovery call, and an engineer will tell you plainly whether we are the right team.',
+    },
+    glance: {
+      delivered: 'Engineering for existing and new PHP applications: legacy maintenance, stabilization, migrations to a supported runtime, performance, integrations and new features',
+    },
+    updated: '2026-10-28',
+    faq: [
+      {
+        question: 'Can you work on PHP 5 or PHP 7 systems?',
+        answer: 'Yes. We start by finding what the code depends on: functions that later PHP versions removed, packages with no current release, extensions and database drivers. Tests go around the critical paths first, then the system moves in stages to a version the PHP project still supports.',
+      },
+      {
+        question: 'Can you take over code written by another vendor?',
+        answer: 'Yes. We review the code, dependencies, tests, hosting and documentation first and tell you in writing what we found before estimating the main work. A handover from the previous vendor helps, but we can start from repository and server access once the scope is agreed.',
+      },
+      {
+        question: 'Do you work on custom PHP without Laravel?',
+        answer: 'Yes. Many business applications are plain PHP or use a smaller framework. We work within the structure the code already has, add tests around the parts we change, and introduce Composer or a framework only where it makes later work safer.',
+      },
+      {
+        question: 'Will our WordPress plugins and custom code work on a newer PHP version?',
+        answer: 'Not necessarily. WordPress itself recommends PHP 8.3 or greater, according to its requirements page, but each plugin, theme and piece of custom code has its own compatibility. We list them with the PHP versions they are tested on, run the site on the target version in staging and fix or replace what breaks.',
+      },
+      {
+        question: 'Do you offer ongoing PHP support?',
+        answer: 'Yes, as a monthly retainer: fixes, dependency and runtime updates, security patch coordination and small features, with priorities reviewed at an agreed cadence. It can follow a defined project or start after a review of the application.',
+      },
+      {
+        question: 'How do we get an estimate?',
+        answer: 'Start with the 30-minute discovery call. For an existing application we usually review the code before estimating the main work, because its condition changes the effort more than its size. The scope is then agreed as a fixed-scope project, a monthly retainer or a combination. We do not publish rates.',
+      },
+      {
+        question: 'Our PHP version needs a security update. Where should we start?',
+        answer: 'With an inventory of which PHP versions run where, and whether your host or Linux distribution has shipped a patched package. Security-driven patches and upgrades are covered by our PHP upgrade and migration service, which starts with that inventory.',
+      },
+    ],
+    ipAnswer: 'IP ownership and assignment are governed by the executed client agreement.',
+    cta: {
+      heading: 'Need Help Building or Maintaining a PHP Application?',
+      text: 'Tell us what the application does, the PHP version and framework if you know them, and the kind of help you need.',
+    },
+    icon: 'ri-stack-line',
+  },
 ];
 
 /** Every service page: core services first, then technology pages. */
@@ -1933,6 +2116,41 @@ const coreBuyerGuides: Record<string, BuyerGuide> = {
       'Any deadline, such as a launch date or a support end date.',
     ],
   },
+  'hire-php-developers': {
+    fit: [
+      'A PHP application runs part of your business and nobody on your team knows the code well any more.',
+      'A system on PHP 5 or PHP 7 has to keep working while a move to a supported version is planned.',
+      'Your application was built by another vendor and you need a second team to review it and take it on.',
+      'You need fixes, updates and security patches applied regularly, not only when something breaks.',
+      'You need new features or an integration added to a custom PHP application without rewriting it.',
+      'WordPress needs custom functionality or an integration that plugins do not provide.',
+    ],
+    notFit: [
+      { text: 'You want to hire an employee onto your own payroll. Peregrine is an engineering firm, not a recruitment agency.' },
+      { text: 'The site is a brochure on a stock WordPress theme. A WordPress freelancer or a site builder will cost less.' },
+      { text: 'The work is mainly new SaaS features or APIs on Laravel. See', link: { href: '/services/hire-laravel-developers', label: 'Hire Laravel developers' } },
+    ],
+    scope: [
+      { factor: 'Codebase condition', effect: 'Code with tests, current packages and documentation can be changed sooner than code without them.' },
+      { factor: 'Technical complexity', effect: 'Custom frameworks, many extensions, large databases and unusual server setups each add review and testing work.' },
+      { factor: 'Experience the work needs', effect: 'Routine fixes need different experience from security-sensitive changes, migrations or performance work.' },
+      { factor: 'Maintenance burden', effect: 'How often things break today, how many updates are overdue and how much is changed by hand on the server.' },
+      { factor: 'Integrations', effect: 'Each payment provider, CRM or vendor API has to keep working, and be retested, through every change.' },
+      { factor: 'Scope and length', effect: 'A defined fix or migration ends at handover; ongoing maintenance continues as a monthly retainer.' },
+      { factor: 'Testing', effect: 'Without tests, tests around the critical paths come before the code or runtime changes.' },
+      { factor: 'Deployment', effect: 'Whether staging and a deployment pipeline exist, or releases are copied to the server by hand.' },
+    ],
+    firstPhase:
+      'For an existing application, a sensible first phase is a codebase review covering the PHP version, packages, error logs, tests and deployment, ending in written findings and an order of work. For a new application it is a discovery sprint that ends in a written technical plan.',
+    bring: [
+      'The application URL and what it does for the business.',
+      'The PHP version and the framework or CMS, if you know them.',
+      'Where it is hosted and how changes reach production today.',
+      'Known errors, slow areas or updates that are blocked.',
+      'Who built and maintains it, and what documentation exists.',
+      'Whether you need a defined project, ongoing maintenance or a combination.',
+    ],
+  },
 };
 
 const buyerGuides: Record<string, BuyerGuide> = { ...coreBuyerGuides, ...technologyBuyerGuides };
@@ -1984,6 +2202,13 @@ const related: Record<string, [string, string][]> = {
     ['laravel-development', 'for what Laravel development covers: APIs, SaaS backends, admin panels and upgrades'],
     ['php-upgrade-migration', 'when the PHP version under the application has to move to a supported release'],
     ['white-label-development', 'when your agency is delivering a Laravel project to its own client'],
+    ['hire-php-developers', 'when the application is custom or legacy PHP rather than Laravel'],
+  ],
+  'hire-php-developers': [
+    ['php-upgrade-migration', 'for security patch assessments and staged moves to a supported PHP version'],
+    ['hire-laravel-developers', 'when the work is new SaaS features, APIs or integrations on Laravel'],
+    ['wordpress-development', 'when the PHP work is a WordPress theme, plugin or migration'],
+    ['white-label-development', 'when your agency is delivering a PHP project to its own client'],
   ],
   'cloud-devops': [
     ['saas-development', 'when the limit is the application\'s data model, not its hosting'],
