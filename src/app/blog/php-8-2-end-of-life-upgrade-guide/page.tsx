@@ -132,51 +132,51 @@ export default function Guide() {
       <h2>A ten-step migration checklist</h2>
       <ol>
         <li>
-          <strong>Identify the actual PHP runtime.</strong> Record the version that serves web requests on every
+          <strong>1. Identify the actual PHP runtime.</strong> Record the version that serves web requests on every
           server, container, worker and scheduled job, plus staging. Example: the command line reports 8.3 while the
           PHP-FPM pool behind the site still runs 8.2.
         </li>
         <li>
-          <strong>Check vendor patch status.</strong> If a distribution or host supplies your PHP, ask which security
+          <strong>2. Check vendor patch status.</strong> If a distribution or host supplies your PHP, ask which security
           fixes its current package includes and how long it will patch the branch. Example: a package whose version
           string looks older than upstream but contains backported fixes.
         </li>
         <li>
-          <strong>Inventory the framework and dependencies.</strong> List the framework version, Composer packages
+          <strong>3. Inventory the framework and dependencies.</strong> List the framework version, Composer packages
           or plugins, and PHP extensions. Example: a PDF library whose last release supports nothing newer than
           8.2.
         </li>
         <li>
-          <strong>Select a compatible target version.</strong> Use the inventory and the matrix above. Example:
+          <strong>4. Select a compatible target version.</strong> Use the inventory and the matrix above. Example:
           everything supports 8.4 except one reporting package; either replace that package first or move to 8.3
           now and schedule 8.4.
         </li>
         <li>
-          <strong>Prepare backups and a rollback.</strong> Keep a tested database backup, the previous release and
+          <strong>5. Prepare backups and a rollback.</strong> Keep a tested database backup, the previous release and
           the previous PHP image or package, and write down the rollback steps. Example: a restore rehearsed on
           staging.
         </li>
         <li>
-          <strong>Set up staging.</strong> Match production: the target PHP version, the same extensions and
+          <strong>6. Set up staging.</strong> Match production: the target PHP version, the same extensions and
           settings, the same web server, and a recent copy of the data with personal information masked.
         </li>
         <li>
-          <strong>Upgrade dependencies.</strong> Move Composer packages, plugins and extensions to releases that
+          <strong>7. Upgrade dependencies.</strong> Move Composer packages, plugins and extensions to releases that
           support the target version, and clear the deprecation notices that appear. Example: an older HTTP client
           library upgraded one major version, with its changed method names updated in the code.
         </li>
         <li>
-          <strong>Run application and integration tests.</strong> Cover the paths that earn money or hold data.
+          <strong>8. Run application and integration tests.</strong> Cover the paths that earn money or hold data.
           Example: sign-in, payment callbacks, a CSV import and a CRM webhook, run against sandbox accounts on
           staging.
         </li>
         <li>
-          <strong>Deploy in controlled stages.</strong> Move one server, one site or a small share of traffic first,
+          <strong>9. Deploy in controlled stages.</strong> Move one server, one site or a small share of traffic first,
           in a quiet period, then the rest. Example: restart queue workers and cron jobs on the new runtime in the
           same step.
         </li>
         <li>
-          <strong>Monitor errors and performance.</strong> Compare error logs, response times and failed jobs
+          <strong>10. Monitor errors and performance.</strong> Compare error logs, response times and failed jobs
           against the numbers from before the change. Example: watching through a full business cycle, including
           month-end jobs, before removing the rollback option.
         </li>
