@@ -249,7 +249,7 @@ export const guides: Guide[] = [
     description:
       'A phase-by-phase Laravel upgrade checklist from the official support policy and upgrade guides, plus a decision table: upgrade, replace in stages or rewrite.',
     datePublished: '2026-10-10',
-    dateModified: '2026-10-10',
+    dateModified: '2026-10-28',
     service: 'laravel-development',
     // No caseStudy: Peregrine has no published Laravel case study. The guide makes no project claims.
   },
@@ -614,6 +614,22 @@ export const guides: Guide[] = [
     metaTitle: 'PHP2Shell: Patched PHP Versions & What to Do',
     description:
       'The October 2026 PHP security releases: the two CVEs, which PHP versions are patched, and what WordPress, Laravel and custom PHP site owners should check.',
+    datePublished: '2026-10-28',
+    dateModified: '2026-10-28',
+    service: 'php-upgrade-migration',
+    // No caseStudy: Peregrine has no published PHP case study.
+  },
+  {
+    slug: 'php-8-2-end-of-life-upgrade-guide',
+    related: ['php2shell-php-security-vulnerabilities-2026', 'laravel-upgrade-checklist'],
+    cta: {
+      heading: 'Need Help Upgrading a Legacy PHP Application?',
+      text: 'Tell us which PHP version, framework and host you run. An engineer will discuss compatibility, migration requirements, testing and deployment planning for your application.',
+    },
+    title: 'PHP 8.2 End of Life: What to Upgrade Before December 31, 2026',
+    metaTitle: 'PHP 8.2 End of Life: Upgrade Before Dec 31',
+    description:
+      'PHP 8.2 security support ends December 31, 2026. Support dates for 8.2 to 8.5, how to choose 8.3, 8.4 or 8.5, and a 10-step upgrade checklist.',
     datePublished: '2026-10-28',
     dateModified: '2026-10-28',
     service: 'php-upgrade-migration',

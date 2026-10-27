@@ -4,7 +4,8 @@ import GuideLayout, { GuideFaq, Src, guideMetadata } from '../../components/Guid
 const SLUG = 'laravel-upgrade-checklist';
 export const metadata = guideMetadata(SLUG);
 
-// Sources fetched and checked 2026-10-10; the sentence relied on for each link is logged in
+// Sources fetched and checked 2026-10-10; the Laravel release table, PHP supported-versions page and
+// PHP 2026 news archive were (re-)checked on 2026-10-28. The sentence relied on for each link is logged in
 // docs/growth/content/SOURCES-laravel-upgrade-checklist.md. Versions and dates are as the
 // Laravel and PHP pages showed them on that date. Peregrine has no published Laravel case
 // study, so this guide makes no claim about Peregrine Laravel projects, clients or results.
@@ -24,6 +25,7 @@ const MIGRATIONS = 'https://laravel.com/docs/13.x/migrations';
 const PINT = 'https://laravel.com/docs/13.x/pint';
 const PULSE = 'https://laravel.com/docs/13.x/pulse';
 const PHP_SUPPORTED = 'https://www.php.net/supported-versions.php';
+const PHP_ARCHIVE = 'https://www.php.net/archive/2026.php';
 const PHP_EOL = 'https://www.php.net/eol.php';
 const PHP_MIGRATION = 'https://www.php.net/manual/en/migration85.php';
 const COMPOSER = 'https://getcomposer.org/doc/03-cli.md';
@@ -50,7 +52,8 @@ export default function Guide() {
 
       <h2>Where each version stands</h2>
       <p>
-        From Laravel&apos;s release table and PHP&apos;s supported-versions page, as shown on October 10, 2026:
+        From Laravel&apos;s release table and PHP&apos;s supported-versions page, as shown on October 10, 2026 and
+        unchanged when re-checked on October 28, 2026:
       </p>
       <div className="cp-table-wrap">
         <table>
@@ -84,6 +87,18 @@ export default function Guide() {
         <Src href={PHP_SUPPORTED}>fully supported for two years, then supported for two more years for critical security issues only</Src>.
         The two tables have to be read together: the framework and the language each have their own clock, and
         the application is unsupported as soon as either one runs out.
+      </p>
+      <p>
+        The nearest PHP deadline is 8.2: its security support ends on{' '}
+        <Src href={PHP_SUPPORTED}>December 31, 2026</Src>, even though Laravel 11 and 12 still list it in their
+        range. Our <Link href="/blog/php-8-2-end-of-life-upgrade-guide">guide to the PHP 8.2 end of life</Link>{' '}
+        covers choosing between 8.3, 8.4 and 8.5. Separately, on October 21, 2026 the PHP project released{' '}
+        <Src href={PHP_ARCHIVE}>PHP 8.5.12, 8.4.27, 8.3.36 and 8.2.35 to fix two critical vulnerabilities</Src>;
+        our <Link href="/blog/php2shell-php-security-vulnerabilities-2026">PHP2Shell guide</Link> explains what to
+        check. Patching the PHP runtime and upgrading Laravel are separate tasks: <code>composer update</code>{' '}
+        changes your packages, not the PHP interpreter, so a framework upgrade does not apply a PHP security fix.
+        If you need help with the runtime side, see our{' '}
+        <Link href="/services/php-upgrade-migration">PHP upgrade and migration service</Link>.
       </p>
       <p>
         One reading of the first table is worth planning around. PHP 8.3 is the only PHP version inside the
@@ -307,7 +322,8 @@ export default function Guide() {
 
       <p className="cp-note">
         Versions, dates and support windows were read from the linked Laravel, PHP, Composer, PHPStan, Rector and
-        Larastan pages on October 10, 2026. Both support tables change with every release, so check them again
+        Larastan pages on October 10, 2026; the Laravel and PHP support tables were re-checked on October 28,
+        2026. Both support tables change with every release, so check them again
         before you plan. This guide is drawn from that documentation; Peregrine has not
         published a Laravel case study, and nothing here describes a client project.
       </p>

@@ -61,3 +61,11 @@ Every URL below was fetched on **2026-10-10** (HTTP 200) and the quoted text was
 - "Peregrine has not published a Laravel case study, and nothing here describes a client project": `src/data/technology-services.ts` (laravel-development: "We have not published a Laravel case study yet") and `src/data/guides.ts` (no `caseStudy`).
 - "Engagements are fixed-scope projects, monthly retainers, or a combination, agreed after a 30-minute technical discovery call": `public/llms.txt`, "How engagements start".
 - The guide makes no claim of Laravel projects, clients, results, prices or timelines.
+
+## Re-check 2026-10-28
+
+| URL | Text relied on |
+|---|---|
+| https://laravel.com/docs/releases | Support table unchanged: 10 · 8.1 - 8.3 · Feb 14th 2023 · Aug 6th 2024 · Feb 4th 2025; 11 · 8.2 - 8.4 · Mar 12th 2024 · Sep 3rd 2025 · Mar 12th 2026; 12 · 8.2 - 8.5 · Feb 24th 2025 · Aug 13th 2026 · Feb 24th 2027; 13 · 8.3 - 8.5 · Mar 17th 2026 · Q3 2027 · Mar 17th 2028. Every row in the guide's table matches; nothing corrected. |
+| https://www.php.net/supported-versions.php | Unchanged: 8.2 security support until 31 Dec 2026; 8.3 until 31 Dec 2027; 8.4 active until 31 Dec 2026, security until 31 Dec 2028; 8.5 active until 31 Dec 2027, security until 31 Dec 2029. |
+| https://www.php.net/archive/2026.php | 21 Oct 2026 entry: PHP 8.5.12, 8.4.27, 8.3.36 and 8.2.35 "fix two critical vulnerabilities that can allow unauthenticated remote code execution". |
