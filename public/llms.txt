@@ -30,6 +30,8 @@ Each service page opens with an "At a glance" table and answers, in order: what 
 - [Investor portal development](https://peregrine-it.com/services/investor-portal-development): role-based investor portals with watermarked documents, capital calls and distribution reporting (one published case study)
 - [Odoo ERP](https://peregrine-it.com/services/odoo-erp): Odoo HR, CRM, Inventory and Accounting implementation, custom modules, data migration and integrations
 - [White-label development for agencies](https://peregrine-it.com/services/white-label-development): custom software built for agencies to deliver under their own brand (web and mobile apps, SaaS, integrations, e-commerce, modernization); not a reseller program
+- [Hire Laravel developers](https://peregrine-it.com/services/hire-laravel-developers): Laravel engineering for SaaS backends, APIs, integrations and ongoing development of existing applications, as fixed-scope projects, monthly retainers or a combination (no published Laravel case study yet)
+- [Hire PHP developers](https://peregrine-it.com/services/hire-php-developers): PHP engineering for legacy applications, maintenance, modernization and migrations to a supported PHP version, plus new custom PHP work (no published PHP case study yet)
 - [All services](https://peregrine-it.com/services)
 
 ### By technology

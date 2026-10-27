@@ -58,7 +58,7 @@ export default async function ServicePage({ params }: Props) {
   const url = `${SITE_URL}/services/${slug}`;
   const cited = service.caseStudies.map((c) => ({ ...c, study: getCaseStudy(c.slug) }));
   const guides = service.guides.map(getGuide);
-  const faq = [...service.faq, ipFaq];
+  const faq = [...service.faq, service.ipAnswer ? { ...ipFaq, answer: service.ipAnswer } : ipFaq];
   // Industry pages that list this service.
   const serviceIndustries = industries.filter((i) => i.services.includes(service.slug));
   const buyer = buyerGuideFor(service.slug);
