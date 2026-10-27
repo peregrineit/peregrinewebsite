@@ -26,6 +26,7 @@ Each service page opens with an "At a glance" table and answers, in order: what 
 - [AI automation](https://peregrine-it.com/services/ai-automation): natural-language search, lead qualification assistants, document extraction and predictive models
 - [AI app to production](https://peregrine-it.com/services/ai-app-to-production): review, fix, secure and deploy an app built with Lovable, Cursor, Replit, Bolt, Claude Code or v0, keeping what works and rebuilding only where justified
 - [Cloud & DevOps](https://peregrine-it.com/services/cloud-devops): AWS architecture, CI/CD, caching and CDN, load testing and monitoring
+- [PHP upgrade & migration](https://peregrine-it.com/services/php-upgrade-migration): security patch assessments, compatibility reviews and staged upgrades of legacy PHP, Laravel and WordPress applications to a supported PHP version, plus ongoing maintenance (no published PHP case study yet)
 - [Investor portal development](https://peregrine-it.com/services/investor-portal-development): role-based investor portals with watermarked documents, capital calls and distribution reporting (one published case study)
 - [Odoo ERP](https://peregrine-it.com/services/odoo-erp): Odoo HR, CRM, Inventory and Accounting implementation, custom modules, data migration and integrations
 - [White-label development for agencies](https://peregrine-it.com/services/white-label-development): custom software built for agencies to deliver under their own brand (web and mobile apps, SaaS, integrations, e-commerce, modernization); not a reseller program

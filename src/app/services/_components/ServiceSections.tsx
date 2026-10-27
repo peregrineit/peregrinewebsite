@@ -52,6 +52,25 @@ export function ServiceSections({ sections }: { sections?: ServiceSection[] }) {
                 ))}
               </dl>
             )}
+            {s.table && (
+              <div className="cp-prose" style={{ maxWidth: 820, marginTop: 20 }}>
+                <div className="cp-table-wrap">
+                  <table>
+                    <thead>
+                      <tr>{s.table.columns.map((c) => <th key={c} scope="col">{c}</th>)}</tr>
+                    </thead>
+                    <tbody>
+                      {s.table.rows.map(([head, ...cells]) => (
+                        <tr key={head}>
+                          <th scope="row">{head}</th>
+                          {cells.map((cell, i) => <td key={i}><RichText text={cell} /></td>)}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
             {s.after?.map((p, i) => (
               <p key={i} style={{ maxWidth: 820, marginTop: 20 }}><RichText text={p} /></p>
             ))}

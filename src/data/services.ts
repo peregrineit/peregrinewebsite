@@ -52,11 +52,21 @@ export interface Service {
   // Optional sections. Rendered only when present, so pages without them are unchanged.
   /** Buttons under the hero intro. Both reuse the site's popup forms (data-open-contact /
    *  data-open-quick-project); `note` is a short line shown under them. */
-  heroCta?: { primary: string; secondary: string; note: string };
+  heroCta?: {
+    primary: string;
+    secondary: string;
+    /** If set, the secondary button is a plain link (e.g. an on-page anchor such as
+     *  '#process') instead of opening the quick project popup. */
+    secondaryHref?: string;
+    /** May contain [label](href) links (see ServiceSections RichText). */
+    note: string;
+  };
   /** "Does this sound familiar?": the buyer's situation, as a checklist. */
   symptoms?: { heading: string; intro: string; items: string[] };
   /** A situation / approach / reasoning table, e.g. "Fix or rebuild?". */
-  decision?: { heading: string; intro: string; columns: [string, string, string]; rows: [string, string, string][]; note: string };
+  /** The first column is the row header; any number of further columns. Cells may contain
+   *  [label](href) links. `label` and `id` default to "Fix or rebuild" / "fix-or-rebuild". */
+  decision?: { heading: string; intro: string; columns: string[]; rows: string[][]; note: string; label?: string; id?: string };
   /** Published third-party requirements the page relies on, each linked to its source.
    *  Log every item in docs/content/sources/services-<slug>.md. */
   references?: { heading: string; intro: string; items: { text: string; source: string; href: string }[] };
@@ -90,7 +100,9 @@ export interface ServiceSection {
   list?: string[];
   /** Term and description pairs. */
   items?: { title: string; body: string }[];
-  /** Paragraphs after the list or items. */
+  /** A small reference table after the list or items; cells may contain [label](href) links. */
+  table?: { columns: string[]; rows: string[][] };
+  /** Paragraphs after the list, items or table. */
   after?: string[];
   /** Small print, such as the date sources were read. */
   note?: string;
@@ -137,6 +149,17 @@ const SAAS = {
   stripeBilling: 'https://docs.stripe.com/billing/subscriptions/overview',
   stripeConnect: 'https://docs.stripe.com/connect',
 };
+
+// Sources for the php-upgrade-migration page (read 2026-10-27; pointer in
+// docs/content/sources/services-php-upgrade-migration.md).
+const PHP = {
+  supported: 'https://www.php.net/supported-versions.php',
+  archive: 'https://www.php.net/archive/2026.php',
+};
+const CISA = 'https://www.cisa.gov/news-events/alerts/2026/10/21/critical-vulnerabilities-php-require-immediate-patching';
+const NCSC = 'https://www.ncsc.gov.uk/news/critical-security-issue-affecting-php';
+const LARAVEL_RELEASES = 'https://laravel.com/docs/releases';
+const WP_REQUIREMENTS = 'https://wordpress.org/about/requirements/';
 
 const coreServiceList: Service[] = [
   {
@@ -1160,6 +1183,234 @@ const coreServiceList: Service[] = [
     },
     icon: 'ri-team-line',
   },
+  {
+    // PHP upgrade, migration and security-patch work (2026-10-27). Third-party facts come from
+    // the PHP, Laravel and WordPress projects' own pages, read 2026-10-27; see
+    // docs/content/sources/services-php-upgrade-migration.md. Peregrine has no published PHP
+    // case study, so the page makes no project claims.
+    // TODO(owner): add a case study here if a PHP, Laravel or WordPress upgrade can be published.
+    slug: 'php-upgrade-migration',
+    name: 'PHP Upgrade & Migration',
+    serviceType: 'PHP application upgrade and migration',
+    title: 'PHP Upgrade & Migration Services',
+    metaDescription:
+      'Upgrade legacy PHP, Laravel and WordPress systems with compatibility reviews, staged migrations, testing and production deployment planning.',
+    h1: 'Upgrade Your PHP Application Without Starting Over',
+    offer: 'Security patch assessments, staged PHP and Laravel upgrades, and ongoing maintenance for PHP applications.',
+    intro: [
+      'From urgent patch assessments to legacy PHP and Laravel migrations, we help teams assess compatibility, plan the upgrade and move toward a supported production environment.',
+      'We work with teams in the US and Canada that run custom PHP applications, Laravel backends and WordPress sites with custom plugins. Our engineers work from our office in Noida, India, and the first step is a 30-minute technical discovery call with an engineer.',
+    ],
+    heroCta: {
+      primary: 'Discuss a PHP Upgrade',
+      secondary: 'See Our Upgrade Process',
+      secondaryHref: '#process',
+      note: `[PHP 8.2 upstream security support ends December 31, 2026](${PHP.supported}). The button opens a short form; please do not send passwords or server credentials through it.`,
+    },
+    whatWeBuild: [
+      {
+        title: 'Urgent security patch assessment',
+        body: 'We identify which PHP versions and builds are running and where, and the deployment constraints around them. We check whether your host or Linux distribution has shipped a patched package and whether the application works on it, then plan a safe remediation and retest after it is applied.',
+      },
+      {
+        title: 'Legacy PHP application migration',
+        body: 'We inventory the PHP version, framework and every Composer package or plugin, identify deprecated APIs, removed functions and unsupported packages, and move the application to a supported release in controlled steps, each tested and released on its own.',
+      },
+      {
+        title: 'Ongoing maintenance',
+        body: 'A plan for runtime and dependency updates, coordination of security patches with your host or infrastructure team, and the monitoring, automated tests and release support that make each update routine.',
+      },
+    ],
+    sections: [
+      {
+        id: 'what-we-modernize',
+        placement: 'build',
+        label: 'What we modernize',
+        heading: 'What Kinds of PHP Systems We Modernize',
+        items: [
+          { title: 'Custom PHP applications', body: 'Plain PHP codebases, often written before Composer or a framework was in place, that rely on functions and behavior newer PHP versions have deprecated or removed.' },
+          { title: 'Laravel backends and SaaS products', body: 'Applications several Laravel versions behind, where the framework, its packages and the PHP version have to move together. Our [Laravel upgrade checklist](/blog/laravel-upgrade-checklist) sets out the phases.' },
+          { title: 'WordPress with custom plugins', body: 'Sites where WordPress core is current but custom or abandoned plugins and themes have not been tested on a newer PHP version.' },
+          { title: 'PHP APIs and integrations', body: 'Backends that serve mobile apps, partners or webhooks, where a runtime change must not alter the responses other systems depend on.' },
+          { title: 'Business portals and internal platforms', body: 'Customer portals, admin tools and back-office systems that staff use every day, where any maintenance window has to be planned and short.' },
+          { title: 'Legacy systems with complex dependencies', body: 'Applications tied to particular PHP extensions, old database drivers, a specific server image or vendor SDKs that have not kept up. Here the dependency map is the first deliverable.' },
+        ],
+      },
+      {
+        id: 'why-not-just-change-the-version',
+        placement: 'build',
+        label: 'For CTOs and founders',
+        heading: 'Why Not Just Change the PHP Version?',
+        paragraphs: [
+          'On most hosts, switching PHP versions is a menu option or one package change. The hard part is what it does to the application: the runtime sits under every library, extension and integration you use, and each has its own compatibility range. These are the areas we check before production is switched.',
+        ],
+        items: [
+          { title: 'Composer dependencies', body: 'Each package declares the PHP versions it supports. An old lock file can block the new version, or install cleanly and fail at runtime.' },
+          { title: 'Framework constraints', body: 'Laravel, Symfony and other frameworks each support a range of PHP versions, so the framework may have to move first or in step.' },
+          { title: 'Removed and changed functions', body: 'Functions deprecated in one release are removed in a later one, and stricter type handling turns old warnings into errors.' },
+          { title: 'Extensions', body: 'Every extension the code relies on has to be available, and maintained, for the new version on the target server.' },
+          { title: 'Sessions and authentication', body: 'Session handlers, serialization settings, cookies and password hashing are where users notice a regression first.' },
+          { title: 'Database drivers', body: 'Older drivers and connection options may be missing or behave differently on a newer runtime.' },
+          { title: 'Payments and third-party APIs', body: 'Payment SDKs and vendor API clients have their own PHP requirements, and a change in HTTP client behavior can break a call that worked before.' },
+          { title: 'Queues and cron jobs', body: 'Workers and scheduled jobs often run under a different PHP binary or configuration from the web server, and are easy to miss.' },
+          { title: 'Web server configuration', body: 'PHP-FPM pools, Apache modules, Nginx settings and php.ini values have to be carried across and reviewed.' },
+          { title: 'Regression risk', body: 'Without tests, the first sign of a broken path is often a customer report. Tests around the critical paths come before the switch.' },
+        ],
+        after: [
+          'None of this means an upgrade has to be large. It means the work starts with an inventory, so the size of the job is known before production is touched.',
+        ],
+      },
+      {
+        id: 'php-support-status',
+        placement: 'build',
+        label: 'PHP support status',
+        heading: 'Which PHP Versions Are Still Supported?',
+        paragraphs: [
+          `The PHP project publishes the support window of each branch on its [supported versions page](${PHP.supported}). As shown there on October 27, 2026:`,
+        ],
+        table: {
+          columns: ['PHP branch', 'Active support until', 'Security support until', 'Status on October 27, 2026'],
+          rows: [
+            ['8.5', 'December 31, 2027', 'December 31, 2029', 'Active support'],
+            ['8.4', 'December 31, 2026', 'December 31, 2028', 'Active support'],
+            ['8.3', 'December 31, 2025', 'December 31, 2027', 'Security fixes only'],
+            ['8.2', 'December 31, 2024', 'December 31, 2026', 'Security fixes only. Upcoming: security support ends December 31, 2026'],
+          ],
+        },
+        after: [
+          `PHP 8.2 is still supported today, and it received the October 21, 2026 security fixes in [PHP 8.2.35](${PHP.archive}). After December 31, 2026 the PHP project stops publishing security releases for it, so an application on 8.2 needs a plan for the move. PHP 8.6 is still a [release candidate](${PHP.archive}), not a production release, and [PHP 8.1 and older no longer receive updates](${PHP.archive}) from the PHP project.`,
+        ],
+        note: 'Dates read from php.net on October 27, 2026. The page changes with each release, so check it again before planning.',
+      },
+      {
+        id: 'engagement-options',
+        placement: 'start',
+        label: 'Engagement options',
+        heading: 'Ways to Work With Us on a PHP Upgrade',
+        items: [
+          { title: 'Security and upgrade assessment', body: 'A scoped review of the runtime, hosting, dependencies and code, ending in written findings: what is exposed, what blocks an upgrade and the order in which to fix it.' },
+          { title: 'Defined migration project', body: 'An agreed move to a supported PHP version, and framework version where needed, delivered in tested steps with a rollback plan for each release.' },
+          { title: 'Ongoing maintenance', body: 'Runtime and dependency updates, security patch coordination and release support after the application is current.' },
+        ],
+        after: [
+          'Engagements are fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. The first step is a 30-minute technical discovery call with an engineer.',
+        ],
+      },
+      {
+        id: 'what-we-need',
+        placement: 'start',
+        label: 'Before the call',
+        heading: 'What to Send Us',
+        paragraphs: [
+          'Send whatever you know. Incomplete is fine: anything missing becomes the first item on the call.',
+        ],
+        list: [
+          'The website or application URL',
+          'The PHP version, if you know it',
+          'The framework or CMS and its version, for example Laravel 10 or WordPress',
+          'Where it is hosted: shared hosting, a managed host, a VPS or a cloud provider',
+          'Whether a staging environment exists that we could use later',
+          'Known issues, errors or updates that are blocked',
+          'Any deadline, such as a support end date or a notice from your host',
+        ],
+        note: 'Please do not send passwords, server credentials or code through the form. Access is arranged securely after the scope is agreed.',
+      },
+    ],
+    process: [
+      { title: 'Inventory what is running', body: 'Record the PHP version and build on every server, container and worker, plus the web server, extensions, framework, and Composer or plugin versions. For example, production on PHP-FPM, a queue worker on a different image, and a cron server nobody has listed.' },
+      { title: 'Check advisories, support status and compatibility', body: 'Compare those versions with the PHP project\'s security releases and support dates, your host\'s or distribution\'s package status, and the PHP range each framework and package supports.' },
+      { title: 'Map the blockers', body: 'List what stops the move: framework constraints, missing or unmaintained extensions, packages with no compatible release, and code that uses removed functions. For example, an abandoned PDF library or a plugin last updated for PHP 7.' },
+      { title: 'Prepare a safe path', body: 'Add regression tests around the critical paths, confirm backups can be restored, set up a staging environment that matches production, and write down how each step is rolled back.' },
+      { title: 'Patch or migrate in controlled steps', body: 'Apply the patched runtime, or move one version and one group of dependencies at a time, releasing each step through staging before production.' },
+      { title: 'Validate and set up maintenance', body: 'Check the critical paths in production, watch error logs and monitoring, then agree how future PHP and dependency updates are planned and released.' },
+    ],
+    decision: {
+      id: 'upgrade-or-migrate',
+      label: 'Upgrade or migrate',
+      heading: 'Upgrade or Migrate?',
+      intro: 'The right first move depends on where the application stands today. This table shows how we would usually start in common situations. It is an aid for the conversation, not a prescription: the inventory of your system decides.',
+      columns: ['Situation', 'Likely first action', 'Longer-term direction', 'What needs investigation'],
+      rows: [
+        ['Supported PHP branch with a patch available', 'Apply the patched release, or your host\'s or distribution\'s patched package, after a check in staging', 'Keep to a regular update schedule and plan the next branch before support ends', 'Whether the package you run includes the fix: vendor version numbers can differ from upstream ones'],
+        ['Older release with vendor backports', 'Apply the vendor\'s backported package and confirm it covers the specific advisories', 'Move to a branch the PHP project still supports', 'What the backports cover and for how long'],
+        ['End-of-life PHP with no suitable supported patch', `Reduce exposure: restrict or isolate the system, or take it offline until it is fixed, as [CISA](${CISA}) and the [UK NCSC](${NCSC}) advise for systems that cannot be updated`, 'Migrate to a supported PHP version, in stages if the code is far behind', 'Which code, extensions and packages block the move'],
+        ['Legacy Laravel with abandoned dependencies', 'Find which packages block the next Laravel and PHP version, and their replacements', 'Upgrade in place one major version at a time, or replace parts in stages', 'Test coverage, changes made to framework code, and what each abandoned package does'],
+        ['Custom PHP without reliable tests', 'Write tests around the critical paths before changing the runtime', 'Upgrade in steps, refactoring where the code is being changed anyway', 'Which paths matter most to the business, and which code uses removed or changed functions'],
+        ['WordPress with incompatible themes or plugins', 'List each theme and plugin with its tested PHP range, and run the site on the target version in staging', 'Update, replace or rewrite what blocks the move, then keep core, plugins and PHP on a schedule', 'Custom plugin code, abandoned plugins and the PHP versions your host offers'],
+      ],
+      note: 'Typical starting points only. What applies to your application depends on what the inventory finds.',
+    },
+    references: {
+      heading: 'What the PHP, Laravel and WordPress Projects Publish',
+      intro: 'The version facts on this page come from the projects themselves. Each item links to its source, read on October 27, 2026.',
+      items: [
+        { text: 'On October 21, 2026 the PHP project released PHP 8.5.12, 8.4.27, 8.3.36 and 8.2.35 to fix two critical vulnerabilities that can allow unauthenticated remote code execution. PHP 8.1 and older no longer receive updates from the PHP project.', source: 'PHP: 2026 news archive', href: PHP.archive },
+        { text: 'Laravel 12 supports PHP 8.2 to 8.5 and Laravel 13 supports PHP 8.3 to 8.5. Laravel provides bug fixes for 18 months and security fixes for 2 years after each release.', source: 'Laravel: Release notes', href: LARAVEL_RELEASES },
+        { text: 'WordPress recommends PHP 8.3 or greater. It can run on PHP 7.4 or later in legacy environments, which are past end of life.', source: 'WordPress: Requirements', href: WP_REQUIREMENTS },
+      ],
+    },
+    stack: ['PHP', 'Laravel', 'WordPress', 'Composer', 'PHPUnit', 'MySQL', 'PostgreSQL', 'Nginx', 'Apache', 'Docker', 'AWS'],
+    caseStudies: [],
+    guides: ['laravel-upgrade-checklist'],
+    answers: {
+      includes:
+        'Peregrine\'s PHP upgrade and migration service covers three kinds of work: assessing an urgent security patch against your runtime and hosting, moving a legacy PHP, Laravel or WordPress application to a supported PHP release in controlled steps, and maintaining the runtime, dependencies and release process once the application is current.',
+      timeline:
+        'Peregrine does not quote a timeline before the inventory, because two applications on the same PHP version can need very different amounts of work. An urgent patch assessment is scoped to the patch. A migration is planned in steps that can each be released on their own, and larger work runs in two-week sprints with weekly demos.',
+      cost:
+        'Peregrine takes on PHP upgrades as fixed-scope projects, monthly retainers, or a combination, agreed after the discovery call. Cost depends on how far behind the versions are, the packages, plugins and integrations involved, and existing tests. We publish no price list. For the framework side, read [[guide]].',
+      work:
+        'Peregrine has not published a PHP upgrade case study, so this page makes no project claims about PHP work. Every published case study lists Node.js in its stack. Ask about your PHP version, framework and hosting on the discovery call, and an engineer will tell you plainly whether we are the right team.',
+    },
+    glance: {
+      delivered: 'Security patch assessments, compatibility reviews, staged PHP and framework upgrades, regression testing, production release planning and ongoing maintenance',
+      // TODO(owner): no timeline is stated; the inventory sets it.
+    },
+    updated: '2026-10-27',
+    faq: [
+      {
+        question: 'Can you upgrade an application from PHP 5 or PHP 7?',
+        answer: 'Yes, though usually not in one jump. Code written for PHP 5 or 7 often uses functions and behavior that later versions removed or changed, and its packages may have no release for current PHP. We inventory what blocks each step, add tests around the critical paths, and move in stages to a version the PHP project still supports.',
+      },
+      {
+        question: 'Do we have to rewrite our Laravel application?',
+        answer: 'Usually not. Most Laravel applications can be upgraded in place, one major version at a time, with tests written first. Replacing parts in stages makes sense when abandoned packages or heavily modified framework code block every step. A full rewrite is the riskiest route and the last resort.',
+      },
+      {
+        question: 'Can you patch a security issue without rebuilding the application?',
+        answer: 'Often, yes. If your PHP branch is still supported, the fix is a patched PHP release or your host\'s or distribution\'s patched package, checked against the application in staging first. Applying a runtime patch does not require a rebuild. The harder case is an end-of-life PHP version with no patch, where reducing exposure and a migration plan come first.',
+      },
+      {
+        question: 'How do you avoid breaking production?',
+        answer: 'By keeping every change small, tested and reversible: regression tests around the critical paths, a staging environment that matches production, backups that have been restored, a written rollback plan, and releases in steps. We check the critical paths again in production after each release. No upgrade is free of risk, so the plan is built to catch problems early.',
+      },
+      {
+        question: 'Is PHP 8.2 safe to keep using until December 31, 2026?',
+        answer: 'PHP 8.2 is in security-only support until December 31, 2026, according to php.net, and it received the October 21, 2026 security fixes in PHP 8.2.35. Running the patched 8.2 release is reasonable for now, but after that date the PHP project stops publishing security fixes for 8.2, so plan the move to a newer branch.',
+      },
+      {
+        question: 'Should we move to PHP 8.4 or PHP 8.5?',
+        answer: 'It depends on what your framework, extensions, plugins and host support. According to Laravel\'s release notes, Laravel 12 supports PHP 8.2 to 8.5 and Laravel 13 supports 8.3 to 8.5, and WordPress recommends PHP 8.3 or greater. We choose the newest version that every part of your stack supports, not the newest version for its own sake.',
+      },
+      {
+        question: 'Will our WordPress plugins and theme work on a newer PHP version?',
+        answer: 'WordPress itself recommends PHP 8.3 or greater, but each plugin and theme has its own compatibility. We list them with the PHP versions they are tested on, run the site on the target version in staging, and update, replace or fix whatever breaks before production is switched.',
+      },
+      {
+        question: 'How is a PHP upgrade estimated?',
+        answer: 'From the inventory: how far behind the PHP and framework versions are, how many packages, plugins and extensions are involved, how much of the code is covered by tests, and how hosting and deployment work. The scope is agreed after the discovery call as a fixed-scope project, a monthly retainer or a combination. We do not publish a price list.',
+      },
+      {
+        question: 'Can we keep our current host?',
+        answer: 'Often, yes, if the host offers a supported PHP version and lets you choose it. Some shared hosts limit versions or extensions, and managed hosts may patch PHP on their own schedule, so we check what yours supports first. If the host cannot run a supported version, moving is part of the plan and is agreed with you.',
+      },
+    ],
+    cta: {
+      heading: 'Planning a PHP Upgrade or Concerned About an Existing Application?',
+      text: 'Tell us what you\'re running. We\'ll discuss the risks, compatibility requirements and a practical upgrade path.',
+    },
+    icon: 'ri-refresh-line',
+  },
 ];
 
 /** Every service page: core services first, then technology pages. */
@@ -1511,6 +1762,11 @@ const related: Record<string, [string, string][]> = {
     ['api-integration', 'when third-party APIs and webhooks are the unreliable part'],
     ['cloud-devops', 'for environments, the release pipeline, monitoring and backups'],
   ],
+  'php-upgrade-migration': [
+    ['laravel-development', 'when the application runs on Laravel and needs new features once it is current'],
+    ['wordpress-development', 'when the site runs on WordPress and custom plugins or themes need rework'],
+    ['cloud-devops', 'for hosting moves, deployment pipelines and monitoring around the upgrade'],
+  ],
   'cloud-devops': [
     ['saas-development', 'when the limit is the application\'s data model, not its hosting'],
     ['api-integration', 'when incidents come from third-party systems failing or drifting out of sync'],
@@ -1578,7 +1834,7 @@ export const serviceNeeds: { id: string; heading: string; blurb: string; slugs: 
     id: 'operate',
     heading: 'Automate and Operate',
     blurb: 'Take repeated work off your staff, and make the platform you already run faster and safer to release.',
-    slugs: ['ai-automation', 'cloud-devops'],
+    slugs: ['ai-automation', 'cloud-devops', 'php-upgrade-migration'],
   },
   {
     id: 'partner',
