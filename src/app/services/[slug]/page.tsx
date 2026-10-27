@@ -9,7 +9,7 @@ import { technologyPageFor, technologyServices } from '@/data/technology-service
 import { formatDate, getGuide, type Guide } from '@/data/guides';
 import ConsultationCta from '../../components/ConsultationCta';
 import { BringBlock, FitBlock, ProofLinks, ScopeBlock } from '../_components/BuyerBlocks';
-import { ServiceSections } from '../_components/ServiceSections';
+import { RichText, ServiceSections } from '../_components/ServiceSections';
 import '../../css/content-pages.css';
 
 export const dynamicParams = false;
@@ -129,9 +129,11 @@ export default async function ServicePage({ params }: Props) {
                 <a href="/contact" className="cp-btn" data-open-contact>
                   {service.heroCta.primary} <i className="ri-arrow-right-line" aria-hidden="true" />
                 </a>
-                <a href="/contact" className="cp-btn cp-btn-secondary" data-open-quick-project>{service.heroCta.secondary}</a>
+                {service.heroCta.secondaryHref
+                  ? <a href={service.heroCta.secondaryHref} className="cp-btn cp-btn-secondary">{service.heroCta.secondary}</a>
+                  : <a href="/contact" className="cp-btn cp-btn-secondary" data-open-quick-project>{service.heroCta.secondary}</a>}
               </div>
-              <p className="cp-muted" style={{ fontSize: 14, marginTop: 14, maxWidth: 760 }}>{service.heroCta.note}</p>
+              <p className="cp-muted" style={{ fontSize: 14, marginTop: 14, maxWidth: 760 }}><RichText text={service.heroCta.note} /></p>
             </div>
           )}
           <p className="cp-byline">Last updated <time dateTime={service.updated}>{formatDate(service.updated)}</time></p>
@@ -215,7 +217,7 @@ export default async function ServicePage({ params }: Props) {
 
       <ServiceSections sections={service.sections?.filter((s) => s.placement === 'build')} />
 
-      <section className="cp-section">
+      <section className="cp-section" id="process" style={{ scrollMarginTop: 96 }}>
         <div className="cp-container">
           <span className="cp-label">Timeline</span>
           <h2>How Long Does {withArticle(service.name)} Project Take?</h2>
@@ -232,9 +234,9 @@ export default async function ServicePage({ params }: Props) {
       </section>
 
       {service.decision && (
-        <section className="cp-section" id="fix-or-rebuild">
+        <section className="cp-section" id={service.decision.id ?? 'fix-or-rebuild'}>
           <div className="cp-container">
-            <span className="cp-label">Fix or rebuild</span>
+            <span className="cp-label">{service.decision.label ?? 'Fix or rebuild'}</span>
             <h2>{service.decision.heading}</h2>
             <p style={{ maxWidth: 820 }}>{service.decision.intro}</p>
             {/* Below 640px each row stacks, with the column name above each cell. */}
@@ -251,11 +253,12 @@ export default async function ServicePage({ params }: Props) {
                     <tr>{service.decision.columns.map((c) => <th key={c} scope="col">{c}</th>)}</tr>
                   </thead>
                   <tbody>
-                    {service.decision.rows.map(([situation, approach, why]) => (
+                    {service.decision.rows.map(([situation, ...cells]) => (
                       <tr key={situation}>
                         <th scope="row" style={{ fontWeight: 600 }}>{situation}</th>
-                        <td data-label={service.decision!.columns[1]}>{approach}</td>
-                        <td data-label={service.decision!.columns[2]}>{why}</td>
+                        {cells.map((cell, i) => (
+                          <td key={i} data-label={service.decision!.columns[i + 1]}><RichText text={cell} /></td>
+                        ))}
                       </tr>
                     ))}
                   </tbody>
