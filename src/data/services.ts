@@ -316,9 +316,9 @@ const coreServiceList: Service[] = [
     slug: 'api-integration',
     name: 'API Integration',
     serviceType: 'API integration and development',
-    title: 'API Integration for CRMs, ERPs & Carriers',
+    title: 'API & Webhook Integration for CRMs & ERPs',
     metaDescription:
-      'API integration connecting CRMs, ERPs, payroll, e-signature and carrier APIs into reliable workflows, with case studies on 12 carrier APIs and DocuSign.',
+      'Connect CRMs, ERPs, payroll, e-signature and carrier systems with APIs and webhooks that keep data in sync and automate workflows across your business.',
     h1: 'API Integration Services That Connect Your Systems',
     offer: 'Reliable integrations between your product, your vendors and your internal systems.',
     intro: [
