@@ -3,6 +3,7 @@ import { after, NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { cleanAttribution, multiLine, oneLine, type LeadAttribution } from "@/lib/attribution";
 import { leadPriority, priorityLine, type PriorityResult } from "@/lib/lead-priority";
+import { classifyPeregrineLead, classificationLines, subjectPrefix, type LeadClassification } from "@/lib/lead-classifier";
 import { deliverWebhook, usableSecret, type Outcome } from "@/lib/lead-webhook";
 import { verifyTurnstile } from "@/lib/turnstile";
 
@@ -53,7 +54,7 @@ interface LeadData {
 }
 
 /** A lead plus what this API derived from it. Only for the owner; never sent to the visitor. */
-type QualifiedLead = LeadData & { priority: PriorityResult };
+type QualifiedLead = LeadData & { priority: PriorityResult; classification: LeadClassification };
 
 const clean = (v: unknown, max = 2000) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
@@ -168,6 +169,9 @@ function notificationEmail(lead: QualifiedLead) {
     line("Reference", lead.ref),
     // Derived from the fields below by lib/lead-priority.ts. A sorting aid, not a verdict.
     line("Priority", priorityLine(lead.priority)),
+    // Inbox prioritisation (lib/lead-classifier.ts): sets the subject prefix. Never a verdict,
+    // never changes delivery.
+    ...classificationLines(lead.classification),
     line("Name", lead.name),
     line("Email", lead.email),
     line("Company", lead.company),
@@ -197,7 +201,9 @@ function notificationEmail(lead: QualifiedLead) {
   return {
     to: NOTIFY_TO,
     replyTo: lead.email,
-    subject: `${lead.spamSuspected ? "[Possible spam] " : ""}New Project Inquiry – Peregrine IT [${lead.ref}]`,
+    // A filled anti-spam field is one of the classifier's signals, so it shows as
+    // "POSSIBLE SPAM" here; the NOTE line above names the reason.
+    subject: `${subjectPrefix(lead.classification.level)}New Project Inquiry – Peregrine IT [${lead.ref}]`,
     text,
   };
 }
@@ -221,7 +227,7 @@ https://peregrine-it.com`,
 
 /** The lead as the webhook receives it: flat, so a spreadsheet receiver can map keys to columns. */
 function webhookBody(lead: QualifiedLead, receivedAt: string) {
-  const { attribution, priority, ...rest } = lead;
+  const { attribution, priority, classification, ...rest } = lead;
   return {
     receivedAt,
     source: "peregrine-it.com",
@@ -229,6 +235,9 @@ function webhookBody(lead: QualifiedLead, receivedAt: string) {
     ...attribution,
     priority: priority.priority,
     priorityReasons: priority.reasons.join("; "),
+    classification: classification.level,
+    classificationScore: classification.score,
+    classificationReasons: classification.reasons.join("; "),
   };
 }
 
@@ -382,7 +391,7 @@ export async function POST(request: NextRequest) {
       : crypto.randomUUID().replace(/-/g, "").slice(0, 8);
     const fields: LeadData = { ref, ...content };
 
-    const lead: QualifiedLead = { ...fields, priority: leadPriority(fields) };
+    const lead: QualifiedLead = { ...fields, priority: leadPriority(fields), classification: classifyPeregrineLead(fields) };
 
     if (!lead.name) {
       return NextResponse.json({ error: "Name is required." }, { status: 400 });
@@ -445,6 +454,7 @@ export async function POST(request: NextRequest) {
       sender: process.env.LEAD_FROM_EMAIL ? "custom" : "resend-test-sender",
       spamSuspected: lead.spamSuspected,
       priority: lead.priority.priority,
+      classification: lead.classification.level,
       notification,
       acknowledgement,
       webhook,
