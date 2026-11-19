@@ -22,7 +22,8 @@ Rules the guide follows:
   whose AI policy NAR profiled is not named, because the policy text was read on NAR's page and not on the MLS's.
 - Nothing says MLS data can be used for AI without the condition that each MLS's license decides.
 - No fees, prices, coverage counts, approval times, latency figures or client results.
-- The reference architecture is how we would approach the build. It does not describe a system we operate.
+- The reference architecture is presented as how we would approach the build. The W3|re case study is linked for
+  related work; its description is the case study's own.
 - The code sample is a JSON tool definition with invented names. It contains no real MLS, endpoint or credential.
 - To re-check on any edit: the MLS Grid AI Use Addendum text, the MCP specification version, each vendor page,
   and whether NAR has published the November 2026 policy text.
