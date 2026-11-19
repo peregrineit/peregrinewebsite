@@ -73,7 +73,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'how-to-get-mls-data-access',
-    related: ['mls-boards-compared', 'reso-web-api-vs-rets'],
+    related: ['mls-boards-compared', 'reso-web-api-vs-rets', 'nar-mls-policy-changes-november-2026'],
     cta: {
       heading: 'Have MLS Access and Need the Pipeline Built?',
       text: 'Tell us which boards have approved you, or which you are applying to. We build the ingestion, normalization and search on top of that access.',
@@ -308,7 +308,7 @@ export const guides: Guide[] = [
   {
     slug: 'mls-boards-compared',
     hero: 'Illustration: nine of the fifteen MLS names arranged around a RESO Web API hub.',
-    related: ['how-to-get-mls-data-access', 'mls-data-normalization'],
+    related: ['how-to-get-mls-data-access', 'mls-data-normalization', 'nar-mls-policy-changes-november-2026'],
     cta: {
       heading: 'Adding a New MLS Market?',
       text: 'Tell us which MLSs you need and which brokers you work with. An engineer will tell you which platform, license and feed type each one involves before you estimate.',
@@ -634,6 +634,24 @@ export const guides: Guide[] = [
     dateModified: '2026-10-28',
     service: 'php-upgrade-migration',
     // No caseStudy: Peregrine has no published PHP case study.
+  },
+  {
+    slug: 'nar-mls-policy-changes-november-2026',
+    hero: 'Four MLS policy cards feeding a broker and MLS licensing checklist',
+    related: ['how-to-get-mls-data-access', 'mls-boards-compared', 'idx-vendor-vs-custom-build'],
+    cta: {
+      heading: 'Planning an IDX Site or a Multi-MLS Platform?',
+      text: 'Tell us which MLSs you work with and which feed types you hold. An engineer will discuss how to keep license terms, attribution and data use configurable per board.',
+    },
+    title: "NAR's November 2026 MLS Policy Changes: What IDX Developers and Brokerages Need to Know",
+    // The brief's 56-character title exceeds the 60-character limit once the layout appends " | Peregrine IT".
+    metaTitle: 'NAR MLS Policy Changes (Nov 2026): IDX Guide',
+    description:
+      'NAR approved four MLS policy changes on Nov 8, 2026: copyright, data-feed eligibility and permitted use. What changes for IDX sites and PropTech builds.',
+    datePublished: '2026-11-19',
+    dateModified: '2026-11-19',
+    service: 'mls-idx-integration',
+    // No caseStudy: the guide is a reading of published policy and makes no project claims.
   },
 ];
 
