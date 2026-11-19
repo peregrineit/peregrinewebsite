@@ -279,6 +279,7 @@ def run():
         reset(); s, b = post(LEAD, ip()); h = state["hooks"]
         check("priority: webhook carries priority and its reasons", s == 200 and h and h[0].get("priority") == "high" and "timeline ASAP +2" in h[0].get("priorityReasons", ""), f"got {h[:1]}")
         check("priority: never returned to the visitor", "priority" not in json.dumps(b).lower(), f"got {b}")
+        check("classification: webhook carries the level, score and reasons", h and h[0].get("classification") in ("HIGH", "NORMAL", "POSSIBLE_SPAM") and isinstance(h[0].get("classificationScore"), int) and "classificationReasons" in h[0], f"got {h[0] if h else None}")
         reset(); s, b = post({**LEAD, "email": "someone@gmail.com", "company": "", "timeline": "exploring", "service": "", "form": "quick-project"}, ip())
         check("priority: a thin enquiry is low, and still delivered", s == 200 and state["hooks"] and state["hooks"][0].get("priority") == "low", f"got {state['hooks'][:1]}")
         reset(); s, b = post({**LEAD, "pit_confirm_field": "x"}, ip())
@@ -401,6 +402,20 @@ def run():
         check("priority: notification has one Priority line with reasons", re.search(r"^Priority: High \(.*timeline ASAP \+2.*email domain is not a free-mail provider \+1.*\)\. Sorting hint from the form fields only; nothing about the sender is verified\.$", text, re.M) is not None and text.count("Priority:") == 1, text)
         check("priority: not in the acknowledgement, not in the response", "riority" not in to_visitor()[0].get("text", "") and "priority" not in json.dumps(b).lower())
 
+        # classification (src/lib/lead-classifier.ts): subject prefix only; never blocks, never reaches the visitor
+        check("classification: the default lead is NORMAL, plain subject", n and n[0].get("subject") == f"New Project Inquiry – Peregrine IT [{b['ref']}]", f"got {[e.get('subject') for e in n]}")
+        check("classification: NORMAL line in the notification", "Lead Classification: NORMAL" in text)
+        HIGH_MSG = "We have an existing Laravel application and need a team to migrate the frontend to Next.js. Budget is around $15k and we want to start next month."
+        reset(); s, b = post({**LEAD, "message": HIGH_MSG}, ip()); n = to_notify(); text = n[0].get("text", "") if n else ""
+        check("classification: detailed project message -> 🔥 HIGH prefix, still accepted and acknowledged",
+              s == 200 and len(n) == 1 and n[0]["subject"] == f"🔥 HIGH — New Project Inquiry – Peregrine IT [{b['ref']}]" and len(to_visitor()) == 1, f"got {s} {[e.get('subject') for e in n]}")
+        check("classification: HIGH reasons listed, max three", "Lead Classification: HIGH" in text and "- Detailed message" in text and text.count("\n- ") <= 3 + text.count("Reasons:") * 0, text)
+        reset(); s, b = post({**LEAD, "message": "A8hf7KkK92mQpP0xLz91BB7w"}, ip()); n = to_notify(); text = n[0].get("text", "") if n else ""
+        check("classification: random token -> ⚠️ POSSIBLE SPAM prefix, STILL accepted, mailed and acknowledged",
+              s == 200 and b.get("success") is True and len(n) == 1 and n[0]["subject"].startswith("⚠️ POSSIBLE SPAM — New Project Inquiry – Peregrine IT [") and len(to_visitor()) == 1, f"got {s} {[e.get('subject') for e in n]} acks {len(to_visitor())}")
+        check("classification: spam note names the message structure, not the sender", "Lead Classification: POSSIBLE_SPAM" in text and "- Random alphanumeric message" in text and not any(w in text.split("Lead Classification")[1].split("\nName:")[0].lower() for w in ("email", "domain", "name")), text)
+        check("classification: never in the acknowledgement or the response", "lassification" not in to_visitor()[0].get("text", "") and "classification" not in json.dumps(b).lower() and "spam" not in json.dumps(b).lower())
+
         # duplicates: the same submission sent twice
         reset(); sid = str(uuid.uuid4())
         s1, b1 = post({**LEAD, "submissionId": sid}, ip()); s2, b2 = post({**LEAD, "submissionId": sid}, ip())
@@ -410,15 +425,15 @@ def run():
 
         # honeypot: flagged and delivered, never a silent success
         reset(); s, b = post({**LEAD, "pit_confirm_field": "x"}, ip()); n = to_notify()
-        check("honeypot: lead still reaches the inbox, marked", s == 200 and len(n) == 1 and n[0]["subject"].startswith("[Possible spam]"), f"got {s} {[e.get('subject') for e in n]}")
+        check("honeypot: lead still reaches the inbox, marked", s == 200 and len(n) == 1 and n[0]["subject"].startswith("⚠️ POSSIBLE SPAM — "), f"got {s} {[e.get('subject') for e in n]}")
         check("honeypot: no acknowledgement is sent", not to_visitor() and b["acknowledgement"]["status"] == "skipped")
         for value in (True, ["x"], 1, {"a": 1}, False, 0, []):
             reset(); s, b = post({**LEAD, "pit_confirm_field": value}, ip()); n = to_notify()
             check(f"honeypot: a non-string value ({json.dumps(value)}) is flagged and gets no acknowledgement",
-                  s == 200 and len(n) == 1 and n[0]["subject"].startswith("[Possible spam]") and not to_visitor(), f"got {s} {[e.get('subject') for e in n]} acks {len(to_visitor())}")
+                  s == 200 and len(n) == 1 and n[0]["subject"].startswith("⚠️ POSSIBLE SPAM — ") and not to_visitor(), f"got {s} {[e.get('subject') for e in n]} acks {len(to_visitor())}")
         for value in ("", "   ", None):
             reset(); s, b = post({**LEAD, "pit_confirm_field": value}, ip()); n = to_notify()
-            check(f"honeypot: an empty value ({json.dumps(value)}) is not flagged", s == 200 and len(n) == 1 and not n[0]["subject"].startswith("[Possible spam]") and len(to_visitor()) == 1)
+            check(f"honeypot: an empty value ({json.dumps(value)}) is not flagged", s == 200 and len(n) == 1 and not n[0]["subject"].startswith("⚠️ POSSIBLE SPAM — ") and len(to_visitor()) == 1)
 
         # realistic Resend failures
         reset(fail_once=500)

@@ -89,7 +89,7 @@ Attribution fields (all optional; the server accepts a lead without any of them)
 
 `utm` no longer contains `gclid`; it has its own field.
 
-**Anti-spam field.** `pit_confirm_field` flags the lead (`[Possible spam]`, no acknowledgement, priority low) when it holds anything other than nothing, `null` or a blank string. That includes non-string values such as `true`, `1`, `0`, `[]` or an object, which only a script sends.
+**Anti-spam field.** `pit_confirm_field` flags the lead (subject prefix `⚠️ POSSIBLE SPAM —`, no acknowledgement, priority low) when it holds anything other than nothing, `null` or a blank string. That includes non-string values such as `true`, `1`, `0`, `[]` or an object, which only a script sends.
 
 ### Reference and duplicates
 
@@ -137,6 +137,29 @@ Score 5 or more is **high**, -1 or less is **low**, otherwise **normal** (0 is n
 Why these bands: a lead with nothing for or against it (free-mail address, "2-6 months", a sentence or two) scores 0 and is an ordinary enquiry, so low needs an actual negative that nothing offsets: "just exploring", a near-empty message, or a throwaway address. A free-mail address is never negative. The quick-project form has no company field and is rarely on a service page, so its leads score about 0 to 3 and are normal unless something counts against them. The disposable penalty is sized so that no combination of other signals reaches high (the maximum with one is 4).
 
 It appears as `Priority: High (timeline ASAP +2; company given +1; ...)` in the notification email, as `priority` and `priorityReasons` in the webhook payload and the stored object, and as `priority` in the log line. It is never in the response to the visitor, never in the acknowledgement, and it does not change whether or how a lead is delivered. The thresholds are a first guess with no lead data behind them; change them in the file, the test and this table together.
+
+### Classification (subject prefix)
+
+`src/lib/lead-classifier.ts`, a pure function of the message and the form's own context fields. Unit tests: `scripts/test_lead_classifier.mjs`; route-level checks in `scripts/test_lead_api.py`. Mirrored, same rules, in crm-apis `helpers/leadClassifier.js` for the RealFoyer marketing form.
+
+It exists so 50 notifications can be scanned by subject. It **never** blocks, suppresses, quarantines or changes delivery: every level is delivered, acknowledged (honeypot aside, as before) and forwarded exactly the same way, and nothing about it is returned to the visitor.
+
+| Signal | Points |
+|---|---|
+| Message of 40+ characters with at least six word-like tokens (any language) | +2 |
+| Project-specific terms in the message (two or more: website, app, migration, budget, timeline, launch, team, integration, …) | +1 |
+| Project type `new-build`, `integration` or `performance` | +1 |
+| Strategy-call form | +1 |
+| Timeline `asap` or `1-2-months` | +1 |
+| Submitted from a service, case-study, industry, guide or solution page | +1 |
+| Long random letter+digit token (16+ mixed-case with digits, or 24+ alphanumeric; URLs and emails excluded) | -3 |
+| Message that is only a number (six or more digits) | -2 |
+| Placeholder or keyboard text (`test`, `asdf`, `abc123`, …) | -2 |
+| Random or numeric message **and** a project type was chosen | -2 |
+| Message under four characters | -1 |
+| Hidden anti-spam field filled | -3, and always POSSIBLE_SPAM |
+
+Context points (project type, form, timeline, page, terms) are not counted next to a random, numeric or placeholder message. Score 3 or more with a detailed or project-specific message is **HIGH** (`🔥 HIGH — ` prefix); -3 or less is **POSSIBLE_SPAM** (`⚠️ POSSIBLE SPAM — ` prefix); everything else, including every borderline case, is **NORMAL** (no prefix). Deliberately not signals: the visitor's name, the email address or its domain, language, grammar, IP. The notification carries `Lead Classification: <level>` and at most three reasons; the webhook carries `classification`, `classificationScore` and `classificationReasons`.
 
 ### Webhook
 
