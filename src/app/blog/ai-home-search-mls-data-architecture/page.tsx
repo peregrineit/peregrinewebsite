@@ -12,7 +12,8 @@ export const metadata = guideMetadata(SLUG);
 //   AI policy NAR profiled is not named here because the policy text was read on NAR's page, not the MLS's.
 // - Nothing says MLS data "can" be used for AI without the condition that each MLS's license decides.
 // - No fees, prices, coverage counts, latency figures or client results.
-// - The architecture is how we would approach the build. It does not describe a system we operate for an MLS.
+// - The architecture is presented as how we would approach the build. Peregrine's own capability is not
+//   denied or hedged here; the W3|re case study is linked for the related work.
 // - NAR's IDX policy page (Policy Statement 7.58) asked for a login on 2026-11-19, so no refresh interval or
 //   attribution wording is quoted from it here.
 const ZILLOW = 'https://www.zillow.com/news/when-people-ask-ai-about-housing-chatgpt-gemini-and-claude-all-connect-to-zillow/';
@@ -308,8 +309,9 @@ export default function Guide() {
 
       <h2>A reference architecture for AI home search</h2>
       <p>
-        This is how we would approach the build. It is a design from engineering principle, not a description of
-        a system we operate for an MLS.
+        This is how we would approach the build. Our{' '}
+        <Link href="/case-studies/w3re-ai-real-estate-platform">W3|re case study</Link> describes natural-language
+        property search across four MLS markets.
       </p>
       <figure className="cp-diagram">
         <div className="cp-diagram-scroll"><AiHomeSearchArchitectureDiagram /></div>
@@ -454,8 +456,7 @@ export default function Guide() {
 
       <h2>Cost and timeline</h2>
       <p>
-        We do not publish a price range for an AI search build, and no MLS approval time is ours to promise. The
-        cost drivers are these:
+        No MLS approval time is ours to promise. The cost drivers are these:
       </p>
       <ul>
         <li><strong>Number of MLSs.</strong> Each one is a separate license, a separate mapping and a separate answer on AI use.</li>

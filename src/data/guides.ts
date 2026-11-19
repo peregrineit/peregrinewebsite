@@ -670,7 +670,7 @@ export const guides: Guide[] = [
     datePublished: '2026-11-19',
     dateModified: '2026-11-19',
     service: 'mls-idx-integration',
-    // No caseStudy: the architecture is how we would approach the build and makes no project claims.
+    caseStudy: 'w3re-ai-real-estate-platform',
   },
 ];
 
