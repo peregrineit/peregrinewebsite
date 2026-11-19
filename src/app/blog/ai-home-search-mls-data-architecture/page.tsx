@@ -339,9 +339,10 @@ export default function Guide() {
           applies the display rules of the MLS a listing came from, on the server.
         </li>
         <li>
-          <strong>Model.</strong> The model receives listings only as the result of a tool call, for the length
-          of one request. No listing data goes into training or fine-tuning, and the contract with the model
-          provider should say the same about your prompts.
+          <strong>Model.</strong> Listing data goes into training or fine-tuning only where the MLS has
+          authorized that use in writing. Without that, the model sees listings only as the result of a tool
+          call, for one request. Tuning a model on something other than listing records, such as example search
+          queries, is a separate question from training on MLS data.
         </li>
         <li>
           <strong>Response.</strong> Attribution, the listing brokerage, the MLS disclaimer and a last-updated
