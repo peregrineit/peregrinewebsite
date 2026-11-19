@@ -17,6 +17,7 @@ const MLSPIN = 'https://www.mlspin.com/resources/data-services';
 const CREA = 'https://crea.vanillacommunity.com/discussion/73/ddf-r-technology-provider-pricing-tiers';
 const TRESTLE = 'https://trestle-documentation.corelogic.com/data-pricing.html';
 const MLSGRID = 'https://www.mlsgrid.com/faq';
+const MLSGRID_RESOURCES = 'https://www.mlsgrid.com/resources';
 const SIMPLYRETS = 'https://simplyrets.com/';
 const REPLIERS = 'https://repliers.com/plans-and-pricing/';
 const NAR_790 = 'https://www.nar.realtor/handbook-on-multiple-listing-policy/operational-issues-section-12-real-estate-transaction-standards-rets-policy-statement-790';
@@ -121,10 +122,13 @@ export default function Guide() {
         the MLS license, or none at all:
       </p>
       <ul>
-        <li><strong>Trestle (Cotality):</strong> <Src href={TRESTLE}>$30 per month for broker data feeds and $100 per month for other feeds</Src>. Technology providers pay <Src href={TRESTLE}>$100 to $175 per connection per month</Src> depending on volume, plus the MLS&apos;s own fees.</li>
+        <li><strong>Trestle (Cotality):</strong> <Src href={TRESTLE}>$30 per month for broker data feeds and $100 per month for other feeds</Src>. Technology providers pay <Src href={TRESTLE}>$100 to $175 per connection per month</Src> depending on volume, plus the MLS&apos;s own fees. Trestle has announced that{' '}
+          <Src href={TRESTLE}>effective January 2027 the connection fee Cotality charges to Technology Providers will increase 5% across all Tiers</Src>,
+          to $105 to $183 per connection per month (checked October 21, 2026).</li>
         <li><strong>MLS Grid:</strong> <Src href={MLSGRID}>states that you only pay the license fee your MLS requires</Src>.</li>
         <li><strong>SimplyRETS:</strong> <Src href={SIMPLYRETS}>$49, $99 or $199 per month, plus a one-time $99 connection fee per feed</Src>.</li>
-        <li><strong>Repliers:</strong> <Src href={REPLIERS}>free Preview plan, then $199, $299 or $399 per month</Src> for one MLS.</li>
+        <li><strong>Repliers:</strong> <Src href={REPLIERS}>free Preview plan, then $199, $299 or $399 per month</Src> for one MLS, billed monthly. With a single
+          annual payment the same plans are <Src href={REPLIERS}>$182, $275 and $365 per month</Src> (checked October 21, 2026).</li>
       </ul>
 
       <h3>What does MLS Grid charge?</h3>
@@ -134,6 +138,12 @@ export default function Guide() {
         So the cost of data through MLS Grid is whatever your MLS charges for your license type, under one license
         agreement and one feed for all participating MLSs you belong to. Ask your MLS for its fee schedule rather than
         looking for an MLS Grid price.
+      </p>
+      <p>
+        If the product will use MLS data with AI, there is one more document to read. MLS Grid&apos;s resources page lists, next to
+        its master data license agreement, an{' '}
+        <Src href={MLSGRID_RESOURCES}>AI Use Addendum if you intend to utilize MLS Data with AI</Src> (checked October 21,
+        2026). Read it before scoping AI features on MLS Grid data; it sets terms, not a price.
       </p>
 
       <h3>Is MLS or IDX data priced per user?</h3>
