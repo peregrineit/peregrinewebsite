@@ -355,6 +355,36 @@ PAGES = {"idx-website-features-checklist": features, "mls-boards-compared": boar
          "saved-searches-listing-alerts": alerts, "listing-page-core-web-vitals": vitals, "multi-tenant-real-estate-saas": tenant,
          "real-estate-crm-architecture": crm, "webhook-event-driven-integrations": webhooks, "background-jobs-redis-bullmq": bullmq}
 PAGES["vibe-coded-app-security-checklist"] = vibesec
+
+# 2026-11-19: NAR November 2026 MLS policy changes. Four policy cards feed one licensing checklist; the two
+# optional policies are on dotted paths, with an amber shield accent. No NAR, REALTOR or MLS marks.
+nar_policy = page("Guide · MLS policy", "NAR's November 2026 <em>MLS Policy Changes</em>: What IDX Developers and Brokerages Need to Know",
+ "Copyright, data feeds and permitted use: which parts are optional, and what to check.",
+ "<b>Two of four are optional</b><span class='dot'></span>No effective dates yet",
+ """<svg class="np" viewBox="0 0 520 470"><defs><linearGradient id='gn' x1='0' x2='1'><stop offset='0' stop-color='#22d3ee'/><stop offset='1' stop-color='#818cf8'/></linearGradient>
+<linearGradient id='am' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#fcd34d'/><stop offset='1' stop-color='#f59e0b'/></linearGradient></defs>
+<g fill="none" stroke-width="2.5" stroke-linecap="round">
+<path d="M192 52 C246 52 240 150 288 150" stroke="#22d3ee" stroke-dasharray="2 8"/>
+<path d="M192 142 C240 142 244 190 288 190" stroke="#22d3ee" stroke-dasharray="2 8"/>
+<path d="M192 232 C240 232 244 230 288 230" stroke="url(#gn)"/>
+<path d="M192 322 C246 322 240 270 288 270" stroke="#475569"/></g>
+<g font-weight="800" fill="#f8fafc">
+<rect x="0" y="16" width="190" height="72" rx="16" fill="#0e2a3a" stroke="#22d3ee" stroke-width="2" stroke-dasharray="7 6"/><text x="18" y="48" font-size="18">Copyright</text><text x="18" y="70" font-size="13.5" fill="#a5f3fc" font-weight="600">optional · local MLS</text>
+<rect x="0" y="106" width="190" height="72" rx="16" fill="#0e2a3a" stroke="#22d3ee" stroke-width="2" stroke-dasharray="7 6"/><text x="18" y="138" font-size="18">Data feed services</text><text x="18" y="160" font-size="13.5" fill="#a5f3fc" font-weight="600">optional · local MLS</text>
+<rect x="0" y="196" width="190" height="72" rx="16" fill="#1a2550" stroke="#818cf8" stroke-width="2"/><text x="18" y="228" font-size="18">Use of MLS data</text><text x="18" y="250" font-size="13.5" fill="#c7d2fe" font-weight="600">follows your license</text>
+<rect x="0" y="286" width="190" height="72" rx="16" fill="#162036" stroke="#64748b" stroke-width="2"/><text x="18" y="318" font-size="18">Committee seats</text><text x="18" y="340" font-size="13.5" fill="#94a3b8" font-weight="600">NAR committee only</text></g>
+<rect x="290" y="84" width="230" height="252" rx="18" fill="#101c38" stroke="url(#gn)" stroke-width="2.5"/>
+<text x="310" y="118" font-size="13" font-weight="700" fill="#67e8f9" letter-spacing="1.6">LICENSING CHECKLIST</text>
+<g font-size="15.5" font-weight="700" fill="#e2e8f0">
+<rect x="310" y="140" width="24" height="24" rx="7" fill="url(#gn)"/><path d="M316 152 l5 5 l8 -10" fill="none" stroke="#04121c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="346" y="158">Participation terms</text>
+<rect x="310" y="186" width="24" height="24" rx="7" fill="url(#gn)"/><path d="M316 198 l5 5 l8 -10" fill="none" stroke="#04121c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="346" y="204">Feed type, license</text>
+<rect x="310" y="232" width="24" height="24" rx="7" fill="url(#gn)"/><path d="M316 244 l5 5 l8 -10" fill="none" stroke="#04121c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="346" y="250">Permitted uses</text>
+<rect x="311" y="279" width="22" height="22" rx="7" fill="none" stroke="#475569" stroke-width="2"/><text x="346" y="296" fill="#94a3b8">MLS adoption date</text></g>
+<g transform="translate(4 -34)"><path d="M478 40 L510 52 V80 C510 100 496 114 478 122 C460 114 446 100 446 80 V52 Z" fill="#1c1608" stroke="url(#am)" stroke-width="3.5"/>
+<path d="M465 80 l9 9 l16 -19" fill="none" stroke="url(#am)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+<rect x="0" y="392" width="520" height="54" rx="14" fill="#101c38" stroke="#2a3a59"/><text x="260" y="425" text-anchor="middle" fill="#e2e8f0" font-size="15.5" font-weight="700">Nothing changes in your feed until your MLS acts</text></svg>""",
+ ".left{width:556px}.sub{font-size:19px;max-width:520px}h1{font-size:36px}.np{position:absolute;right:-4px;top:8px;width:508px;height:460px}")
+PAGES["nar-mls-policy-changes-november-2026"] = nar_policy
 if __name__ == "__main__":
     PAGES["self-storage-access-control-integration"] = access
     PAGES["self-storage-software-migration"] = storage_migration
