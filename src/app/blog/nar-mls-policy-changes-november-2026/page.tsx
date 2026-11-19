@@ -209,7 +209,9 @@ export default function Guide() {
         A note on AI, because product teams ask about it first. Neither NAR&apos;s announcement nor its news item
         mentions AI, and nothing published so far says the policy addresses model training, generated
         descriptions or chat-based search. The ordinary reading applies: any AI use of MLS data has to fit the
-        license you hold, and where the license is silent, ask the MLS in writing before you build.
+        license you hold, and where the license is silent, ask the MLS in writing before you build. Our guide to{' '}
+        <Link href="/blog/ai-home-search-mls-data-architecture">building AI home search on MLS data</Link> covers
+        the published AI terms and the architecture.
       </p>
 
       <h2>Before and after: what actually changes</h2>
