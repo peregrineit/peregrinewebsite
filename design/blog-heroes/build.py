@@ -385,6 +385,23 @@ nar_policy = page("Guide · MLS policy", "NAR's November 2026 <em>MLS Policy Cha
 <rect x="0" y="392" width="520" height="54" rx="14" fill="#101c38" stroke="#2a3a59"/><text x="260" y="425" text-anchor="middle" fill="#e2e8f0" font-size="15.5" font-weight="700">Nothing changes in your feed until your MLS acts</text></svg>""",
  ".left{width:556px}.sub{font-size:19px;max-width:520px}h1{font-size:36px}.np{position:absolute;right:-4px;top:8px;width:508px;height:460px}")
 PAGES["nar-mls-policy-changes-november-2026"] = nar_policy
+
+# 2026-11-19: AI home search on MLS data. The published hero is the supplied illustration in
+# custom/ai-home-search-mls-data-architecture.webp; this layer design is the fallback render.sh needs to
+# find the slug. No vendor, MLS, NAR or AI-company marks.
+ai_search = page("Guide · AI and MLS data", "Building <em>AI Home Search</em> on MLS Data: APIs, MCP, Licensing and Architecture",
+ "What the license allows, where MCP fits, and the controls to have ready.",
+ "<b>A standard is not a license</b><span class='dot'></span>Rules enforced in the tool layer",
+ """<div class="ly glass l1"><i>1</i><b>MLS feed</b><small>RESO Web API · under your license</small></div>
+<div class="ly glass l2"><i>2</i><b>Replication and normalization</b><small>one canonical schema</small></div>
+<div class="ly glass l3"><i>3</i><b>Search index</b><small>filters · vectors only where licensed</small></div>
+<div class="ly glass glow l4"><i>4</i><b>Tool layer or MCP server</b><small>auth · per-MLS rules · audit log</small></div>
+<div class="ly glass l5"><i>5</i><b>AI assistant</b><small>typed tools · attribution on every listing</small></div>""",
+ ".left{width:590px}.sub{font-size:19.5px;max-width:540px}"+"""h1{font-size:38px}.ly{position:absolute;right:0;width:500px;height:70px;border-radius:16px;padding:0 20px 0 72px;display:flex;flex-direction:column;justify-content:center}
+.ly b{font-size:19px;font-weight:800}.ly small{font-size:14px;color:#94a3b8;margin-top:3px}
+.ly i{position:absolute;left:18px;top:17px;width:36px;height:36px;border-radius:50%;border:2px solid #22d3ee;color:#a5f3fc;font-style:normal;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center}
+.l1{top:6px}.l2{top:88px}.l3{top:170px}.l4{top:252px}.l5{top:334px}.l4 i{border-color:#fbbf24;color:#fde68a}""")
+PAGES["ai-home-search-mls-data-architecture"] = ai_search
 if __name__ == "__main__":
     PAGES["self-storage-access-control-integration"] = access
     PAGES["self-storage-software-migration"] = storage_migration

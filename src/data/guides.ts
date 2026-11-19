@@ -73,7 +73,7 @@ export const guides: Guide[] = [
   },
   {
     slug: 'how-to-get-mls-data-access',
-    related: ['mls-boards-compared', 'reso-web-api-vs-rets', 'nar-mls-policy-changes-november-2026'],
+    related: ['mls-boards-compared', 'reso-web-api-vs-rets', 'nar-mls-policy-changes-november-2026', 'ai-home-search-mls-data-architecture'],
     cta: {
       heading: 'Have MLS Access and Need the Pipeline Built?',
       text: 'Tell us which boards have approved you, or which you are applying to. We build the ingestion, normalization and search on top of that access.',
@@ -652,6 +652,25 @@ export const guides: Guide[] = [
     dateModified: '2026-11-19',
     service: 'mls-idx-integration',
     // No caseStudy: the guide is a reading of published policy and makes no project claims.
+  },
+  {
+    slug: 'ai-home-search-mls-data-architecture',
+    hero: 'MLS data sources passing through a license gate and search layer to an AI home search window',
+    examples: 'The tool definition is valid JSON. On November 19, 2026 both of its schemas were checked as JSON Schema 2020-12 and an invented result was validated against the output schema. It was not run inside an MCP server.',
+    related: ['nar-mls-policy-changes-november-2026', 'how-to-get-mls-data-access', 'mls-data-normalization', 'real-estate-search-elasticsearch'],
+    cta: {
+      heading: 'Planning AI Search on MLS Data?',
+      text: 'Tell us which MLSs you hold licenses with and what the assistant should do. An engineer will walk through the license questions, the data layer and the controls before you build.',
+    },
+    title: 'Building AI Home Search on MLS Data: APIs, MCP, Licensing and Architecture',
+    // The brief's 58-character title exceeds the 60-character limit once the layout appends " | Peregrine IT".
+    metaTitle: 'AI Home Search With MLS Data: MCP & Licensing',
+    description:
+      'How to build AI home search on licensed MLS data: RESO Web API vs MCP, what your license allows, a reference architecture and the controls MLSs expect.',
+    datePublished: '2026-11-19',
+    dateModified: '2026-11-19',
+    service: 'mls-idx-integration',
+    // No caseStudy: the architecture is how we would approach the build and makes no project claims.
   },
 ];
 
