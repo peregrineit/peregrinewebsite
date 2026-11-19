@@ -90,8 +90,9 @@ export default function Guide() {
             <tr>
               <td><strong>What do MLSs expect to see?</strong></td>
               <td>
-                Going by MLS Grid&apos;s published terms: attribution on every listing, no retention beyond the
-                query, no training, and a way to cut off an AI tool&apos;s access at any time.
+                Going by MLS Grid&apos;s published terms: attribution that follows its IDX or VOW rules, no
+                retention by the AI tool beyond the query, no training without authorization, and the ability to
+                cut off an AI tool&apos;s access at any time.
               </td>
             </tr>
           </tbody>
@@ -193,9 +194,10 @@ export default function Guide() {
       <h3>MLS Grid&apos;s AI Use Addendum</h3>
       <p>
         MLS Grid lists the addendum as{' '}
-        <Src href={GRID_RES}>required if you intend to use MLS data with AI</Src>. It permits AI search and
-        response, and AI-written marketing content for a participant&apos;s own listings, and prohibits other
-        AI use unless an MLS approves in writing. The terms that matter for search:
+        <Src href={GRID_RES}>required if you intend to use MLS data with AI</Src>. For the usage options a
+        licensee has selected, it permits AI search and response, and AI-written marketing content for a
+        participant&apos;s own listings or business. It prohibits all other AI use unless an MLS approves in
+        writing. The terms that matter for search:
       </p>
       <ul>
         <li>
@@ -481,7 +483,7 @@ export default function Guide() {
         { question: 'Can ChatGPT or Claude access MLS listings?', answer: ['Only through a connection that a licensed data holder provides. Zillow says its ChatGPT app and Claude connector show its ', ['MLS-approved display of real estate listings', ZILLOW], '. Flexmls members can connect an AI client ', ['if their MLS has enabled the Flexmls MCP server', FBS_HELP], '. Neither is open access to MLS data.'] },
         { question: 'What is an MCP server for real estate?', answer: ['It is a server that offers listing tools, such as search and listing detail, to AI assistants over the Model Context Protocol, ', ['an open-source standard for connecting AI applications to external systems', MCP_INTRO], '. It is an integration layer. It is not a data license and it does not replace the feed underneath.'] },
         { question: 'Is the RESO Web API a license to MLS data?', answer: ['No. RESO says it ', ['does not provide MLS real estate data', RESO_API], ' and that access ', ['is gained through local MLSs', RESO_API], ' after you agree to their data use and licensing policies.'] },
-        { question: 'Are vector embeddings of MLS listings allowed?', answer: ['It depends on each MLS’s license. MLS Grid’s addendum counts ', ['vector embeddings and retrieval indices that persist beyond a single user session', GRID_AI], ' as AI training, which needs prior express authorization. Get written approval before storing embeddings of any MLS’s listings.'] },
+        { question: 'Are vector embeddings of MLS listings allowed?', answer: ['It depends on each MLS’s license. MLS Grid’s addendum defines AI training to include ', ['the creation of vector embeddings, retrieval indices, knowledge graphs, or similar representations that persist beyond a single user session', GRID_AI], ', and AI training needs prior express authorization. Get written approval before storing embeddings of any MLS’s listings.'] },
         { question: 'Who approves an AI feature built on MLS data?', answer: ['Each MLS whose data the feature uses. An aggregator cannot approve it for them: Repliers, for example, says it ', ['cannot authorize AI use on behalf of an MLS', REPLIERS_AI], '. Describe the use in writing and keep the written answer.'] },
         { question: 'How much does MLS API access cost?', answer: ['It depends on the MLS and the delivery platform, and each sets its own fees. This guide quotes none. The published fees we have collected are in our MLS and IDX integration cost guide, linked in the cost section above.'] },
       ]} />
